@@ -109,7 +109,6 @@ class BoardColumns extends Component {
 
   handleCreateCard() {
     const { newCardName } = this.state;
-    console.log(newCardName);
   }
 
   handleOnChange(event) {

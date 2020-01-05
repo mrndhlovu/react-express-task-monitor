@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 import { Grid, Container, Header } from "semantic-ui-react";
 import styled from "styled-components";

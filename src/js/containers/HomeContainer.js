@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import BoardsList from "../components/BoardsList";
 import BoardColumns from "../components/BoardColumns";
 
 const StyledDiv = styled.div`
