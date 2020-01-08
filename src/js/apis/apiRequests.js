@@ -11,3 +11,13 @@ export const authQueryParams = {
 export const userInfo = () => {
   return axios.get(TEST_EP);
 };
+
+export const requestCardDetail = () => {};
+
+export const requestCardUpdate = () => {};
+
+export const requestBoardList = () => {};
+
+export const requestBoardDetail = () => {};
+
+export const requestBoardUpdate = () => {};
