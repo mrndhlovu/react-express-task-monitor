@@ -1,2 +1,2 @@
-### Trello Dnd Clone Using React and React Dnd
+### Clone Trello Drag and Drop Using React and React Dnd
 
