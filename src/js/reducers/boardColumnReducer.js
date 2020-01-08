@@ -1,6 +1,10 @@
 "use es6";
 
-import { INITIALIZE_AUTH } from "../actions/ActionTypes";
+import {
+  REQUEST_UPDATE_CARD,
+  REQUEST_UPDATE_COLUMN,
+  FAIL_UPDATE_COLUMN
+} from "../actions/ActionTypes";
 
 const authReducer = (state = {}, action) => {
   switch (action.type) {

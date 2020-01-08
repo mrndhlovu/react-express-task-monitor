@@ -1,30 +1,51 @@
 import React from "react";
-
-import { Label } from "semantic-ui-react";
 import styled from "styled-components";
 
-const StyledLabel = styled(Label)`
+import { DragSource } from "react-dnd";
+
+import { Types } from "../constants/constants";
+
+import { Header, Segment } from "semantic-ui-react";
+
+const StyledCardDiv = styled(Segment)`
   background-color: #fff !important;
-  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
   cursor: pointer;
   display: block;
-  margin-bottom: 5px !important;
-  margin-bottom: 8px;
-  max-width: 300px;
-  min-height: 0;
-  min-height: 20px;
+  margin-bottom: 10px !important;
   position: relative;
   text-decoration: none;
-  width: 95%;
   z-index: 0;
+  padding: 3px 0px 3px 10px;
 `;
 
-const CardItem = ({ cards }) => {
-  return cards.map(card => (
-    <StyledLabel key={card.id}>
-      <Label.Detail>{card.detail}</Label.Detail>
-    </StyledLabel>
-  ));
+const CardItem = ({ connectDragSource, card }) => {
+  const wrappedCardItem = (
+    <div>
+      <StyledCardDiv>
+        <Header size="small">{card.detail}</Header>
+      </StyledCardDiv>
+    </div>
+  );
+
+  return connectDragSource(wrappedCardItem);
 };
 
-export default CardItem;
+const source = {
+  beginDrag() {
+    return {};
+  },
+  endDrag(props, monitor) {
+    const { card, columnId } = props;
+    if (!monitor.didDrop()) {
+      return;
+    }
+    return props.handleDrop(card, columnId);
+  }
+};
+
+const collect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+});
+
+export default DragSource(Types.COLUMN, source, collect)(CardItem);

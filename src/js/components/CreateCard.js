@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Button, Card, TextArea, Icon } from "semantic-ui-react";
+import { Button, Card, TextArea, Icon, Container } from "semantic-ui-react";
 
 const StyledTextArea = styled(TextArea)`
   width: 100%;
@@ -15,11 +15,11 @@ const StyledCardContent = styled(Card.Content)`
   border: none !important;
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Container)`
   text-align: left !important;
   background-color: #ebecf0 !important;
   padding: 0 !important;
-  border: 0px !important;
+  border: none !important;
   color: grey !important;
   outline: none !important;
 

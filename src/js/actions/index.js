@@ -4,7 +4,7 @@ export const makeRequest = type => ({ type });
 
 export const requestSuccess = (type, payload) => ({ type, payload });
 
-export const dataRequestFail = (type, payload) => ({ type, payload });
+export const requestFail = (type, payload) => ({ type, payload });
 
 export const createMessage = message => ({
   type: CREATE_ALERT,

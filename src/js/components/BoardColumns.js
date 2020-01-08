@@ -1,72 +1,34 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import _ from "lodash";
+
+import Backend from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 import { Container, Header } from "semantic-ui-react";
 import ColumnGrid from "./ColumnGrid";
 import CreateBoard from "./CreateBoard";
+import BoardHeadActions from "./BoardHeadActions";
+import { dummyBoardList } from "../constants/constants";
 
 const StyledHeader = styled(Header)`
   margin-top: 50px !important;
   padding-bottom: 10px !important;
 `;
 
-const getCards = () => {
-  let columns = [];
-
-  const card = {
-    name: "Card",
-    id: 0,
-    detail: "Card detail"
-  };
-  _.times(4, i => {
-    let newCard = { ...card, name: `Card ${i + 1}`, id: i++ };
-    columns.push(newCard);
-  });
-
-  return columns;
-};
-
-const getColumns = () => {
-  let columns = [];
-  const cards = getCards();
-
-  const column = {
-    name: "Column",
-    id: 0
-  };
-  _.times(4, i => {
-    let newColumn = {
-      ...column,
-      name: `Column ${i + 1}`,
-      id: i++,
-      cards: []
-    };
-
-    columns.push(newColumn);
-  });
-
-  if (columns[0]) {
-    const updatedColumn = { ...columns[0], cards };
-    columns.shift();
-    columns.unshift(updatedColumn);
-  }
-
-  return columns;
-};
-
 class BoardColumns extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      activeColumn: "",
       boardName: "",
+      cardCount: 0,
       columnCount: 3,
+      columns: "",
+      dropColumn: "",
+      dummyBoardList: false,
       newBoardName: "",
       newCardName: "",
-      columns: "",
-      showAddCardInput: false,
-      cardCount: 0,
-      activeColumn: ""
+      showAddCardInput: false
     };
     this.handleCreateBoard = this.handleCreateBoard.bind(this);
     this.handleAddBoardName = this.handleAddBoardName.bind(this);
@@ -74,13 +36,15 @@ class BoardColumns extends Component {
     this.handleCancelAddCard = this.handleCancelAddCard.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleCreateCard = this.handleCreateCard.bind(this);
+    this.handleDrag = this.handleDrag.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
   }
 
   componentDidMount() {
     this.setState({
-      columns: getColumns(),
-      columnCount: getColumns().length,
-      cardCount: getColumns().cards
+      columns: dummyBoardList(),
+      columnCount: dummyBoardList().length,
+      cardCount: dummyBoardList().cards
     });
   }
 
@@ -107,12 +71,43 @@ class BoardColumns extends Component {
     this.setState({ activeColumn: "" });
   }
 
-  handleCreateCard() {
-    const { newCardName } = this.state;
-  }
+  handleCreateCard() {}
 
   handleOnChange(event) {
     this.setState({ newCardName: event.target.value });
+  }
+
+  handleDrag(dropColumn) {
+    this.setState({ isDragging: true, dropColumn });
+  }
+
+  handleDrop(dragItem, sourceId) {
+    const { columns, dropColumn } = this.state;
+    let updatedColumns;
+    let updatedSourceColumn;
+
+    const dropTargetColumns = columns.filter(column => column.id !== sourceId);
+    const sourceColumn = columns.filter(column => column.id === sourceId)[0];
+    const filteredSourceColumnCards = sourceColumn.cards.filter(
+      card => card.id !== dragItem.id
+    );
+
+    updatedSourceColumn = { ...sourceColumn, cards: filteredSourceColumnCards };
+
+    dropTargetColumns.map(column => {
+      if (column.id === dropColumn.id) {
+        return dropColumn.cards.push(dragItem);
+      }
+      return dropTargetColumns;
+    });
+
+    updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
+    updatedColumns.sort((a, b) => a.position - b.position);
+
+    this.setState({
+      isDragging: false,
+      columns: updatedColumns
+    });
   }
 
   render() {
@@ -122,35 +117,43 @@ class BoardColumns extends Component {
       columns,
       showAddCardInput,
       newCardName,
-      activeColumn
+      activeColumn,
+      isDragging
     } = this.state;
+
     const { boardName } = this.props;
     const emptyColumnGrid = columns === 1;
     const columnHasCards = cardCount !== 0;
 
     return (
-      <Container fluid>
-        <StyledHeader>{boardName}</StyledHeader>
-        {emptyColumnGrid ? (
-          <CreateBoard
-            handleAddBoardName={this.handleAddBoardName}
-            handleCreateBoard={this.handleCreateBoard}
-          />
-        ) : (
-          <ColumnGrid
-            columns={getColumns()}
-            columnCount={columnCount}
-            handleAddCardName={this.handleAddCardName}
-            handleCreateCard={this.handleCreateCard}
-            showAddCardInput={showAddCardInput}
-            newCardName={newCardName}
-            handleCancelAddCard={this.handleCancelAddCard}
-            columnHasCards={columnHasCards}
-            activeColumn={activeColumn}
-            handleOnChange={this.handleOnChange}
-          />
-        )}
-      </Container>
+      <DndProvider backend={Backend}>
+        <Container fluid>
+          <StyledHeader>{boardName}</StyledHeader>
+          <BoardHeadActions />
+          {emptyColumnGrid ? (
+            <CreateBoard
+              handleAddBoardName={this.handleAddBoardName}
+              handleCreateBoard={this.handleCreateBoard}
+            />
+          ) : (
+            <ColumnGrid
+              columns={columns}
+              columnCount={columnCount}
+              handleAddCardName={this.handleAddCardName}
+              handleCreateCard={this.handleCreateCard}
+              showAddCardInput={showAddCardInput}
+              newCardName={newCardName}
+              handleCancelAddCard={this.handleCancelAddCard}
+              columnHasCards={columnHasCards}
+              activeColumn={activeColumn}
+              handleOnChange={this.handleOnChange}
+              handleDrag={this.handleDrag}
+              dragging={isDragging}
+              handleDrop={this.handleDrop}
+            />
+          )}
+        </Container>
+      </DndProvider>
     );
   }
 }

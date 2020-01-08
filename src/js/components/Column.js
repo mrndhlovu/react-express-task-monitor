@@ -1,38 +1,69 @@
 import React from "react";
 
-import { Grid, Container, Header } from "semantic-ui-react";
+import { DropTarget } from "react-dnd";
+
+import { Header, Segment } from "semantic-ui-react";
 import styled from "styled-components";
 import CreateCard from "./CreateCard";
-import CardItem from "./CardItem";
+import CardItemWrapper from "./CardItemWrapper";
+import { Types } from "../constants/constants";
 
-const StyledContainer = styled(Container)`
+const StyledSegment = styled(Segment)`
   max-width: 300px;
   min-height: 100px;
   background-color: #ebecf0 !important;
-  padding-left: 10px;
-  boarder-radius: 3px !important;
-  position: relative;
-  flex-direction: column;
+  margin-right: 10px !important;
 `;
 
 const StyledHeaderHeader = styled(Header)`
   padding-top: 5px !important;
 `;
 
-const Column = ({ name, columnHasCards, activeColumn, columnId, ...rest }) => {
-  return (
-    <Grid.Column>
-      <StyledContainer>
+const Column = ({
+  connectDropTarget,
+  columnHasCards,
+  activeColumn,
+  column,
+  highlighted,
+  isOverCurrent,
+  canDrop,
+  ...rest
+}) => {
+  const { name, id, cards } = column;
+  const styles = {
+    paddingBottom: columnHasCards && "20px !important"
+  };
+  const wrappedColumn = (
+    <div style={styles}>
+      <StyledSegment>
         <StyledHeaderHeader size="tiny">{name}</StyledHeaderHeader>
-        {columnHasCards && <CardItem {...rest} />}
+        {columnHasCards && (
+          <CardItemWrapper cards={cards} columnId={id} {...rest} />
+        )}
         <CreateCard
-          columnId={columnId}
-          activeColumn={activeColumn === columnId}
+          cards={cards}
+          columnId={id}
+          activeColumn={activeColumn === id}
           {...rest}
         />
-      </StyledContainer>
-    </Grid.Column>
+      </StyledSegment>
+    </div>
   );
+
+  return connectDropTarget(wrappedColumn);
 };
 
-export default Column;
+const target = {
+  drop(props) {
+    return props.handleDrag(props.column);
+  }
+};
+
+const collect = (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  highlighted: monitor.canDrop(),
+  isOverCurrent: monitor.isOver({ shallow: true }),
+  canDrop: monitor.canDrop()
+});
+
+export default DropTarget(Types.COLUMN, target, collect)(Column);
