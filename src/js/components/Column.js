@@ -51,7 +51,7 @@ const Column = ({
 
   const wrappedColumn = (
     <div>
-      <StyledSegment>
+      <StyledSegment floated="left">
         <StyledHeaderHeader size="tiny">{name}</StyledHeaderHeader>
         {columnHasCards && (
           <CardItemWrapper

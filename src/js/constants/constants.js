@@ -1,7 +1,8 @@
 import _ from "lodash";
 
 export const Types = {
-  COLUMN: "column"
+  COLUMN: "column",
+  CARD: "card"
 };
 
 const dummyCards = () => {

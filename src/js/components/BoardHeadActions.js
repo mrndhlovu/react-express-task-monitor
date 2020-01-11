@@ -1,8 +1,14 @@
 import React from "react";
-import { Segment } from "semantic-ui-react";
+import styled from "styled-components";
+
+const StyledHeaderCTAs = styled.div`
+  padding-left: 10px;
+  padding-bottom: 20px;
+  padding-top: 80px;
+`;
 
 const BoardHeadActions = () => {
-  return <Segment>BoardHeadActions</Segment>;
+  return <StyledHeaderCTAs>Header CTAs</StyledHeaderCTAs>;
 };
 
 export default BoardHeadActions;

@@ -19,14 +19,14 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <BrowserRouter>
-          <AlertProvider template={AlertTemplate} {...alertStyle}>
-            <AppContainer>
+        <AppContainer>
+          <BrowserRouter>
+            <AlertProvider template={AlertTemplate} {...alertStyle}>
               <Alerts />
               <BaseRouter />
-            </AppContainer>
-          </AlertProvider>
-        </BrowserRouter>
+            </AlertProvider>
+          </BrowserRouter>
+        </AppContainer>
       </Provider>
     );
   }

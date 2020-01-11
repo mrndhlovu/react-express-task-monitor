@@ -1,19 +1,12 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component, Fragment } from "react";
 
 import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
-import { Container, Header } from "semantic-ui-react";
 import ColumnGrid from "./ColumnGrid";
 import CreateBoard from "./CreateBoard";
 import BoardHeadActions from "./BoardHeadActions";
 import { dummyBoardList } from "../constants/constants";
-
-const StyledHeader = styled(Header)`
-  margin-top: 50px !important;
-  padding-bottom: 10px !important;
-`;
 
 class BoardColumns extends Component {
   constructor(props) {
@@ -47,7 +40,6 @@ class BoardColumns extends Component {
     this.updateDropTarget = this.updateDropTarget.bind(this);
     this.handleBeginDrag = this.handleBeginDrag.bind(this);
     this.handleChangeCardPosition = this.handleChangeCardPosition.bind(this);
-    this.drag = this.drag.bind(this);
   }
 
   componentDidMount() {
@@ -137,12 +129,13 @@ class BoardColumns extends Component {
     });
   }
 
-  handleChangeCardPosition(sourceColumn, dragItem) {}
+  handleChangeCardPosition(dragItem) {
+    console.log("dragItem: ", dragItem);
+  }
 
   updateDropTarget(dropColumn) {
     this.setState({ dropColumn });
   }
-  drag(dragItem) {}
 
   handleBeginDrag(dropColumn, sourceId, dragItem) {
     this.setState({ sourceId, dragItem });
@@ -166,14 +159,12 @@ class BoardColumns extends Component {
       dragItem
     } = this.state;
 
-    const { boardName } = this.props;
-    const emptyColumnGrid = columns === 1;
+    const emptyColumnGrid = columns.length === 0;
     const columnHasCards = cardCount !== 0;
 
     return (
       <DndProvider backend={Backend}>
-        <Container fluid>
-          <StyledHeader>{boardName}</StyledHeader>
+        <Fragment>
           <BoardHeadActions />
           {emptyColumnGrid ? (
             <CreateBoard
@@ -199,10 +190,10 @@ class BoardColumns extends Component {
               sourceId={sourceId}
               updateDropTarget={this.updateDropTarget}
               handleBeginDrag={this.handleBeginDrag}
-              drag={this.drag}
+              handleChangeCardPosition={this.handleChangeCardPosition}
             />
           )}
-        </Container>
+        </Fragment>
       </DndProvider>
     );
   }

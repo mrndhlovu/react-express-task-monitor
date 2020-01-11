@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 
 class BoardsList extends Component {
   render() {
-    return <div>BoardsList</div>;
+    return <Fragment>BoardsList</Fragment>;
   }
 }
 
