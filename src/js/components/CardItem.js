@@ -1,8 +1,7 @@
-import React, { useRef } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { DragSource } from "react-dnd";
-import { useDrag, useDrop } from "react-dnd";
 
 import { Types } from "../constants/constants";
 
@@ -10,14 +9,13 @@ import { Header } from "semantic-ui-react";
 
 const StyledCardDiv = styled.div`
   background-color: #fff !important;
+  border-radius: inherit;
   cursor: pointer;
   margin: 10px 5px !important;
+  padding: 8px 0px 6px 10px;
   position: relative;
   text-decoration: none;
-  z-index: 0;
-  padding: 5px 0px 3px 10px;
   visibility: ${props => props.isDragging && "hidden"};
-  border-radius: inherit;
 `;
 
 const CardItem = ({ connectDragSource, card, isDragging, moveCard }) => {
@@ -40,9 +38,9 @@ const CardItem = ({ connectDragSource, card, isDragging, moveCard }) => {
 
 const source = {
   beginDrag(props) {
-    const { dropColumn, card, sourceId, cardIndex } = props;
+    const { dropColumn, card, sourceId } = props;
     props.handleBeginDrag(dropColumn, sourceId, card);
-    props.handleChangeCardPosition(card.position);
+    props.handleChangeCardPosition(card);
 
     return {};
   },

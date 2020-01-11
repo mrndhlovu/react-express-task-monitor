@@ -1,9 +1,9 @@
 import React from "react";
+import styled from "styled-components";
 
 import { DropTarget } from "react-dnd";
 
 import { Header, Segment } from "semantic-ui-react";
-import styled from "styled-components";
 import CreateCard from "./CreateCard";
 import CardItemWrapper from "./CardItemWrapper";
 import { Types } from "../constants/constants";
@@ -49,9 +49,15 @@ const Column = ({
     updateDropTarget(column);
   }
 
+  const styles = {
+    display: "inline-block",
+    verticalAlign: "top",
+    boxSizing: "border-box"
+  };
+
   const wrappedColumn = (
-    <div>
-      <StyledSegment floated="left">
+    <div style={styles}>
+      <StyledSegment>
         <StyledHeaderHeader size="tiny">{name}</StyledHeaderHeader>
         {columnHasCards && (
           <CardItemWrapper

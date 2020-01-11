@@ -1,5 +1,5 @@
-import React, { Component, Fragment } from "react";
-
+import React, { Component } from "react";
+import styled from "styled-components";
 import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
@@ -7,6 +7,15 @@ import ColumnGrid from "./ColumnGrid";
 import CreateBoard from "./CreateBoard";
 import BoardHeadActions from "./BoardHeadActions";
 import { dummyBoardList } from "../constants/constants";
+
+const StyledListContainer = styled.div`
+  display: flex;
+
+  width: ${props => props.width && props.width + props.height};
+  height: ${props => props.height && props.height};
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
 
 class BoardColumns extends Component {
   constructor(props) {
@@ -27,19 +36,22 @@ class BoardColumns extends Component {
       newColumns: "",
       newSourceColumn: "",
       showAddCardInput: false,
-      sourceId: undefined
+      sourceId: undefined,
+      width: 0,
+      height: 0
     };
-    this.handleCreateBoard = this.handleCreateBoard.bind(this);
     this.handleAddBoardName = this.handleAddBoardName.bind(this);
     this.handleAddCardName = this.handleAddCardName.bind(this);
+    this.handleBeginDrag = this.handleBeginDrag.bind(this);
     this.handleCancelAddCard = this.handleCancelAddCard.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleChangeCardPosition = this.handleChangeCardPosition.bind(this);
+    this.handleCreateBoard = this.handleCreateBoard.bind(this);
     this.handleCreateCard = this.handleCreateCard.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
     this.updateDropTarget = this.updateDropTarget.bind(this);
-    this.handleBeginDrag = this.handleBeginDrag.bind(this);
-    this.handleChangeCardPosition = this.handleChangeCardPosition.bind(this);
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
@@ -48,6 +60,17 @@ class BoardColumns extends Component {
       columnCount: dummyBoardList().length,
       cardCount: dummyBoardList().cards
     });
+
+    this.updateWindowDimensions();
+    window.addEventListener("resize", this.updateWindowDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
   handleAddBoardName(event) {
@@ -87,6 +110,7 @@ class BoardColumns extends Component {
 
     let updatedColumns;
     let updatedSourceColumn;
+    const adjustedCardPositions = [];
 
     const dropTargetColumns = copyColumns.filter(
       column => column.id !== sourceId
@@ -100,14 +124,22 @@ class BoardColumns extends Component {
       changeCardColumn ? card.id !== dragItem.id : dragItem.id
     );
 
+    sourceColumnCards.filter((card, index) => {
+      const newCard = {
+        ...card,
+        position: index + 1
+      };
+      return adjustedCardPositions.push(newCard);
+    });
+
     updatedSourceColumn = {
       ...sourceColumn,
-      cards: sourceColumnCards
+      cards: adjustedCardPositions
     };
 
     if (changeCardColumn) {
       dropTargetColumns.filter(
-        (column, index) =>
+        column =>
           column.id === dropColumn.id &&
           column.cards.push({ ...dragItem, position: column.cards.length + 1 })
       );
@@ -156,7 +188,9 @@ class BoardColumns extends Component {
       activeColumn,
       dropColumn,
       sourceId,
-      dragItem
+      dragItem,
+      width,
+      height
     } = this.state;
 
     const emptyColumnGrid = columns.length === 0;
@@ -164,8 +198,8 @@ class BoardColumns extends Component {
 
     return (
       <DndProvider backend={Backend}>
-        <Fragment>
-          <BoardHeadActions />
+        <BoardHeadActions />
+        <StyledListContainer width={width} height={height}>
           {emptyColumnGrid ? (
             <CreateBoard
               handleAddBoardName={this.handleAddBoardName}
@@ -193,7 +227,7 @@ class BoardColumns extends Component {
               handleChangeCardPosition={this.handleChangeCardPosition}
             />
           )}
-        </Fragment>
+        </StyledListContainer>
       </DndProvider>
     );
   }

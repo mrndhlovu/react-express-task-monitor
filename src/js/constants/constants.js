@@ -37,7 +37,7 @@ export const dummyBoardList = () => {
     id: 0,
     position: ""
   };
-  _.times(4, i => {
+  _.times(5, i => {
     let newList = {
       ...listObject,
       name: `Column ${i + 1}`,
