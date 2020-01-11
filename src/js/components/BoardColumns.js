@@ -46,6 +46,8 @@ class BoardColumns extends Component {
     this.handleDrop = this.handleDrop.bind(this);
     this.updateDropTarget = this.updateDropTarget.bind(this);
     this.handleBeginDrag = this.handleBeginDrag.bind(this);
+    this.handleChangeCardPosition = this.handleChangeCardPosition.bind(this);
+    this.drag = this.drag.bind(this);
   }
 
   componentDidMount() {
@@ -89,7 +91,7 @@ class BoardColumns extends Component {
     const { columns, sourceId, dropColumn, dragItem } = this.state;
 
     const copyColumns = [...columns];
-    const changeCardPosition = sourceId === dropColumn.id;
+    const changeCardColumn = sourceId !== dropColumn.id;
 
     let updatedColumns;
     let updatedSourceColumn;
@@ -102,32 +104,29 @@ class BoardColumns extends Component {
       .filter(column => column.id === sourceId)
       .shift();
 
-    const updatedSourceCards = sourceColumn.cards.filter(card =>
-      !changeCardPosition ? card.id !== dragItem.id : dragItem.id
+    const sourceColumnCards = sourceColumn.cards.filter(card =>
+      changeCardColumn ? card.id !== dragItem.id : dragItem.id
     );
 
     updatedSourceColumn = {
       ...sourceColumn,
-      cards: updatedSourceCards
+      cards: sourceColumnCards
     };
 
-    if (!changeCardPosition) {
-      updatedSourceColumn = {
-        ...sourceColumn,
-        cards: updatedSourceCards
-      };
-
+    if (changeCardColumn) {
       dropTargetColumns.filter(
-        column => column.id === dropColumn.id && column.cards.push(dragItem)
+        (column, index) =>
+          column.id === dropColumn.id &&
+          column.cards.push({ ...dragItem, position: column.cards.length + 1 })
       );
 
       updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
       updatedColumns.sort((a, b) => a.position - b.position);
     } else {
-      console.log("same column", updatedSourceColumn);
-
       updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
       updatedColumns.sort((a, b) => a.position - b.position);
+
+      this.handleChangeCardPosition(sourceColumn, dragItem);
     }
 
     this.setState({
@@ -138,9 +137,12 @@ class BoardColumns extends Component {
     });
   }
 
+  handleChangeCardPosition(sourceColumn, dragItem) {}
+
   updateDropTarget(dropColumn) {
     this.setState({ dropColumn });
   }
+  drag(dragItem) {}
 
   handleBeginDrag(dropColumn, sourceId, dragItem) {
     this.setState({ sourceId, dragItem });
@@ -197,6 +199,7 @@ class BoardColumns extends Component {
               sourceId={sourceId}
               updateDropTarget={this.updateDropTarget}
               handleBeginDrag={this.handleBeginDrag}
+              drag={this.drag}
             />
           )}
         </Container>
