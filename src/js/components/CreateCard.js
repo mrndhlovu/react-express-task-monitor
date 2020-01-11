@@ -29,7 +29,7 @@ const StyledButton = styled(Container)`
 `;
 
 const StyleSpan = styled.span`
-  margin-left: 54%;
+  margin-left: 44%;
 `;
 
 const CreateCard = ({

@@ -12,7 +12,7 @@ const dummyCards = () => {
     id: 0,
     detail: "Card detail"
   };
-  _.times(5, i => {
+  _.times(7, i => {
     const index = i + 1;
     let newCard = {
       ...card,
@@ -36,7 +36,7 @@ export const dummyBoardList = () => {
     id: 0,
     position: ""
   };
-  _.times(3, i => {
+  _.times(4, i => {
     let newList = {
       ...listObject,
       name: `Column ${i + 1}`,

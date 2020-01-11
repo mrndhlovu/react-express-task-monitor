@@ -5,23 +5,30 @@ import { DragSource } from "react-dnd";
 
 import { Types } from "../constants/constants";
 
-import { Header, Segment } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 
-const StyledCardDiv = styled(Segment)`
+const StyledCardDiv = styled.div`
   background-color: #fff !important;
   cursor: pointer;
-  display: block;
-  margin-bottom: 10px !important;
+  margin: 10px 5px !important;
   position: relative;
   text-decoration: none;
   z-index: 0;
-  padding: 3px 0px 3px 10px;
+  padding: 5px 0px 3px 10px;
+  visibility: ${props => props.isDragging && "hidden"};
+  border-radius: inherit;
 `;
 
-const CardItem = ({ connectDragSource, card }) => {
+const CardItem = ({ connectDragSource, card, isDragging }) => {
+  const styles = {
+    backgroundColor: !isDragging ? "white" : "grey",
+    borderRadius: "5px",
+    boxShadow: "0 1px 0 rgba(15, 30, 66, 0.35)"
+  };
+
   const wrappedCardItem = (
-    <div>
-      <StyledCardDiv>
+    <div style={styles}>
+      <StyledCardDiv isDragging={isDragging}>
         <Header size="small">{card.detail}</Header>
       </StyledCardDiv>
     </div>
@@ -31,15 +38,17 @@ const CardItem = ({ connectDragSource, card }) => {
 };
 
 const source = {
-  beginDrag() {
+  beginDrag(props) {
+    const { dropColumn, card, sourceId } = props;
+    props.handleBeginDrag(dropColumn, sourceId, card);
+
     return {};
   },
   endDrag(props, monitor) {
-    const { card, columnId } = props;
     if (!monitor.didDrop()) {
       return;
     }
-    return props.handleDrop(card, columnId);
+    return props.handleDrop();
   }
 };
 

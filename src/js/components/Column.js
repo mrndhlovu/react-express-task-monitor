@@ -19,27 +19,52 @@ const StyledHeaderHeader = styled(Header)`
   padding-top: 5px !important;
 `;
 
+const StyledNewCardDropZone = styled.div`
+  background-color: #c4c4c4 !important;
+  margin: 10px 10px !important;
+  min-height: 25px;
+  position: relative;
+  text-decoration: none;
+  z-index: 0;
+  padding: 5px 0px 3px 10px;
+  border-radius: 5px;
+`;
+
 const Column = ({
-  connectDropTarget,
-  columnHasCards,
   activeColumn,
+  canDrop,
   column,
+  columnHasCards,
+  connectDropTarget,
+  dropColumn,
   highlighted,
   isOverCurrent,
-  canDrop,
+  sourceId,
+  updateDropTarget,
   ...rest
 }) => {
   const { name, id, cards } = column;
-  const styles = {
-    paddingBottom: columnHasCards && "20px !important"
-  };
+
+  if (isOverCurrent) {
+    updateDropTarget(column);
+  }
+
   const wrappedColumn = (
-    <div style={styles}>
+    <div>
       <StyledSegment>
         <StyledHeaderHeader size="tiny">{name}</StyledHeaderHeader>
         {columnHasCards && (
-          <CardItemWrapper cards={cards} columnId={id} {...rest} />
+          <CardItemWrapper
+            cards={cards}
+            columnId={id}
+            dropColumn={dropColumn ? dropColumn : column}
+            sourceId={sourceId ? sourceId : id}
+            isOverCurrent={isOverCurrent}
+            {...rest}
+          />
         )}
+
+        {isOverCurrent && <StyledNewCardDropZone />}
         <CreateCard
           cards={cards}
           columnId={id}

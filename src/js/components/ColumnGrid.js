@@ -7,7 +7,7 @@ import Column from "./Column";
 const ColumnGrid = ({ columns, columnCount, ...rest }) => {
   const renderColumns = () => {
     return Object.keys(columns).map(key => (
-      <Grid.Column width={5} key={key}>
+      <Grid.Column width={3} key={key}>
         <Column key={key} column={columns[key]} {...rest} />
       </Grid.Column>
     ));
