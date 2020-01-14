@@ -3,10 +3,6 @@ import React from "react";
 import CardItem from "./CardItem";
 
 const CardItemWrapper = ({ cards, ...rest }) =>
-  cards.map(card => (
-    <div key={card.id}>
-      <CardItem card={card} {...rest} />
-    </div>
-  ));
+  cards.map(card => <CardItem key={card.id} card={card} {...rest} />);
 
 export default CardItemWrapper;
