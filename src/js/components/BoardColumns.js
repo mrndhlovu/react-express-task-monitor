@@ -27,9 +27,8 @@ class BoardColumns extends Component {
       cardPositions: "",
       columnCount: 3,
       columns: "",
-      dragItem: "",
-      dropColumn: undefined,
-      dropColumnId: "",
+      draggingCardId: "",
+      dropColumnId: undefined,
       dummyBoardList: false,
       newBoardName: "",
       newCardName: "",
@@ -37,14 +36,15 @@ class BoardColumns extends Component {
       newSourceColumn: "",
       showAddCardInput: false,
       sourceId: undefined,
+      dragging: false,
       width: 0,
       height: 0
     };
     this.handleAddBoardName = this.handleAddBoardName.bind(this);
     this.handleAddCardName = this.handleAddCardName.bind(this);
-    this.handleBeginDrag = this.handleBeginDrag.bind(this);
+    this.handleMoveCard = this.handleMoveCard.bind(this);
     this.handleCancelAddCard = this.handleCancelAddCard.bind(this);
-    this.handleChangeCardPosition = this.handleChangeCardPosition.bind(this);
+    this.handleReorderCards = this.handleReorderCards.bind(this);
     this.handleCreateBoard = this.handleCreateBoard.bind(this);
     this.handleCreateCard = this.handleCreateCard.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
@@ -103,10 +103,10 @@ class BoardColumns extends Component {
   }
 
   handleDrag() {
-    const { columns, sourceId, dropColumn, dragItem } = this.state;
+    const { columns, sourceId, dropColumnId, draggingCardId } = this.state;
 
     const copyColumns = [...columns];
-    const changeCardColumn = sourceId !== dropColumn.id;
+    const changeCardColumn = sourceId !== dropColumnId;
 
     let updatedColumns;
     let updatedSourceColumn;
@@ -120,8 +120,12 @@ class BoardColumns extends Component {
       .filter(column => column.id === sourceId)
       .shift();
 
+    const draggingCard = sourceColumn.cards.find(
+      card => card.id === draggingCardId
+    );
+
     const sourceColumnCards = sourceColumn.cards.filter(card =>
-      changeCardColumn ? card.id !== dragItem.id : dragItem.id
+      changeCardColumn ? card.id !== draggingCardId : draggingCardId
     );
 
     sourceColumnCards.filter((card, index) => {
@@ -140,8 +144,11 @@ class BoardColumns extends Component {
     if (changeCardColumn) {
       dropTargetColumns.filter(
         column =>
-          column.id === dropColumn.id &&
-          column.cards.push({ ...dragItem, position: column.cards.length + 1 })
+          column.id === dropColumnId &&
+          column.cards.push({
+            ...draggingCard,
+            position: column.cards.length + 1
+          })
       );
 
       updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
@@ -150,32 +157,32 @@ class BoardColumns extends Component {
       updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
       updatedColumns.sort((a, b) => a.position - b.position);
 
-      this.handleChangeCardPosition(sourceColumn, dragItem);
+      this.handleReorderCards(sourceId, draggingCardId);
     }
 
     this.setState({
       newColumns: updatedColumns,
       newSourceColumn: updatedSourceColumn,
-      dropColumn: undefined,
+      dropColumnId: undefined,
       sourceId: undefined
     });
   }
 
-  handleChangeCardPosition(dragItem) {
-    console.log("dragItem: ", dragItem);
+  handleReorderCards(sourceId, draggingCardId, newPosition) {
+    // TODO  handle card reorder on same column
   }
 
-  updateDropTarget(dropColumn) {
-    this.setState({ dropColumn });
+  updateDropTarget(dropColumnId) {
+    this.setState({ dropColumnId });
   }
 
-  handleBeginDrag(dropColumn, sourceId, dragItem) {
-    this.setState({ sourceId, dragItem });
-    this.updateDropTarget(dropColumn);
+  handleMoveCard(sourceId, draggingCardId) {
+    this.setState({ sourceId, draggingCardId, dragging: true });
+    this.updateDropTarget(sourceId);
   }
 
   handleDrop() {
-    this.setState({ columns: this.state.newColumns });
+    this.setState({ columns: this.state.newColumns, dragging: false });
   }
 
   render() {
@@ -186,11 +193,12 @@ class BoardColumns extends Component {
       showAddCardInput,
       newCardName,
       activeColumn,
-      dropColumn,
+      dropColumnId,
       sourceId,
-      dragItem,
+      draggingCardId,
       width,
-      height
+      height,
+      dragging
     } = this.state;
 
     const emptyColumnGrid = columns.length === 0;
@@ -211,8 +219,8 @@ class BoardColumns extends Component {
               columnCount={columnCount}
               columnHasCards={columnHasCards}
               columns={columns}
-              dragItem={dragItem}
-              dropColumn={dropColumn}
+              draggingCardId={draggingCardId}
+              dropColumnId={dropColumnId}
               handleAddCardName={this.handleAddCardName}
               handleCancelAddCard={this.handleCancelAddCard}
               handleCreateCard={this.handleCreateCard}
@@ -223,8 +231,9 @@ class BoardColumns extends Component {
               showAddCardInput={showAddCardInput}
               sourceId={sourceId}
               updateDropTarget={this.updateDropTarget}
-              handleBeginDrag={this.handleBeginDrag}
-              handleChangeCardPosition={this.handleChangeCardPosition}
+              handleMoveCard={this.handleMoveCard}
+              handleReorderCards={this.handleReorderCards}
+              dragging={dragging}
             />
           )}
         </StyledListContainer>
