@@ -4,4 +4,4 @@ const getBaseUrl = () => "/react-boiler-plate";
 
 export const getRootUrl = () => getBaseUrl();
 
-export const TEST_EP = "https://jsonplaceholder.typicode.com/todos/1";
+export const TEST_EP = "http://localhost:5000/boards/list";
