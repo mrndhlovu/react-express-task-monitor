@@ -65,7 +65,7 @@ const CreateCard = ({
             color="green"
             size="tiny"
             content="Add Card"
-            onClick={() => handleCreateCard()}
+            onClick={() => handleCreateCard(columnId)}
           />
           <Icon name="close" onClick={() => handleCancelAddCard()} />
         </StyledCardContent>

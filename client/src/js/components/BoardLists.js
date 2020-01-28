@@ -4,17 +4,16 @@ import styled from "styled-components";
 import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
-import { dummyBoardList } from "../constants/constants";
 import BoardHeadActions from "./BoardHeadActions";
 import ColumnGrid from "./ColumnGrid";
 import CreateBoard from "./CreateBoard";
+import { filterObject } from "../utils/appUtils";
 
 const StyledListContainer = styled.div`
   display: flex;
-  width: ${props => props.width && props.width + props.height};
-  height: ${props => props.height && props.height};
   overflow-y: auto;
   overflow-x: hidden;
+  vertical-align: top;
 `;
 
 class BoardLists extends Component {
@@ -23,9 +22,7 @@ class BoardLists extends Component {
     this.state = {
       activeColumn: "",
       boardName: "",
-      cardCount: 0,
       cardPositions: "",
-      columnCount: 3,
       columns: "",
       draggingCardId: "",
       dropColumnId: undefined,
@@ -37,8 +34,7 @@ class BoardLists extends Component {
       showAddCardInput: false,
       sourceId: undefined,
       dragging: false,
-      width: 0,
-      height: 0
+      allowed: ["title", "lists"]
     };
     this.handleAddList = this.handleAddList.bind(this);
     this.handleAddCardName = this.handleAddCardName.bind(this);
@@ -56,9 +52,7 @@ class BoardLists extends Component {
 
   componentDidMount() {
     this.setState({
-      columns: this.props.board.lists,
-      columnCount: dummyBoardList().length,
-      cardCount: dummyBoardList().cards
+      columns: this.props.board.lists
     });
 
     this.updateWindowDimensions();
@@ -79,7 +73,7 @@ class BoardLists extends Component {
 
   handleCreateList() {
     const { board } = this.props;
-    const allowed = ["title", "lists"];
+    const { allowed } = this.state;
     const id = board._id;
     const boardData = { ...board };
 
@@ -91,12 +85,7 @@ class BoardLists extends Component {
 
     boardData.lists.push(data);
 
-    const filtered = Object.keys(boardData)
-      .filter(key => allowed.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = boardData[key];
-        return obj;
-      }, {});
+    const filtered = filterObject(boardData, allowed);
 
     this.props.makeBoardUpdate(id, filtered);
   }
@@ -109,7 +98,25 @@ class BoardLists extends Component {
     this.setState({ activeColumn: "" });
   }
 
-  handleCreateCard() {}
+  handleCreateCard(columnId) {
+    const { columns, newCardName, allowed } = this.state;
+    const { board } = this.props;
+    const id = board._id;
+
+    const sourceColumn = columns
+      .filter(column => column.position === columnId)
+      .shift();
+
+    const newCard = {
+      title: newCardName,
+      position: sourceColumn.cards.length + 1
+    };
+
+    sourceColumn.cards.push(newCard);
+    const filteredBoard = filterObject(board, allowed);
+
+    this.props.makeBoardUpdate(id, filteredBoard);
+  }
 
   handleOnChange(event) {
     this.setState({ newCardName: event.target.value });
@@ -126,19 +133,19 @@ class BoardLists extends Component {
     const adjustedCardPositions = [];
 
     const dropTargetColumns = copyColumns.filter(
-      column => column.id !== sourceId
+      column => column.position !== sourceId
     );
 
     const sourceColumn = copyColumns
-      .filter(column => column.id === sourceId)
+      .filter(column => column.position === sourceId)
       .shift();
 
     const draggingCard = sourceColumn.cards.find(
-      card => card.id === draggingCardId
+      card => card.position === draggingCardId
     );
 
     const sourceColumnCards = sourceColumn.cards.filter(card =>
-      changeCardColumn ? card.id !== draggingCardId : draggingCardId
+      changeCardColumn ? card.position !== draggingCardId : draggingCardId
     );
 
     sourceColumnCards.filter((card, index) => {
@@ -157,7 +164,7 @@ class BoardLists extends Component {
     if (changeCardColumn) {
       dropTargetColumns.filter(
         column =>
-          column.id === dropColumnId &&
+          column.position === dropColumnId &&
           column.cards.push({
             ...draggingCard,
             position: column.cards.length + 1
@@ -200,8 +207,6 @@ class BoardLists extends Component {
 
   render() {
     const {
-      columnCount,
-      cardCount,
       columns,
       showAddCardInput,
       newCardName,
@@ -209,47 +214,40 @@ class BoardLists extends Component {
       dropColumnId,
       sourceId,
       draggingCardId,
-      width,
-      height,
       dragging
     } = this.state;
-
-    const emptyColumnGrid = columns.length === 0;
-    const columnHasCards = cardCount !== 0;
 
     return (
       <DndProvider backend={Backend}>
         <BoardHeadActions />
-        <StyledListContainer width={width} height={height}>
-          {emptyColumnGrid ? (
+        <StyledListContainer>
+          <ColumnGrid
+            activeColumn={activeColumn}
+            columns={columns}
+            draggingCardId={draggingCardId}
+            dropColumnId={dropColumnId}
+            handleAddCardName={this.handleAddCardName}
+            handleCancelAddCard={this.handleCancelAddCard}
+            handleCreateCard={this.handleCreateCard}
+            handleDrag={this.handleDrag}
+            handleDrop={this.handleDrop}
+            handleOnChange={this.handleOnChange}
+            newCardName={newCardName}
+            showAddCardInput={showAddCardInput}
+            sourceId={sourceId}
+            updateDropTarget={this.updateDropTarget}
+            handleMoveCard={this.handleMoveCard}
+            handleReorderCards={this.handleReorderCards}
+            dragging={dragging}
+          />
+          <div>
             <CreateBoard
               handleChange={this.handleAddList}
               handleCreateClick={this.handleCreateList}
               buttonText="Create List"
+              placeholder="Enter new list title..."
             />
-          ) : (
-            <ColumnGrid
-              activeColumn={activeColumn}
-              columnCount={columnCount}
-              columnHasCards={columnHasCards}
-              columns={columns}
-              draggingCardId={draggingCardId}
-              dropColumnId={dropColumnId}
-              handleAddCardName={this.handleAddCardName}
-              handleCancelAddCard={this.handleCancelAddCard}
-              handleCreateCard={this.handleCreateCard}
-              handleDrag={this.handleDrag}
-              handleDrop={this.handleDrop}
-              handleOnChange={this.handleOnChange}
-              newCardName={newCardName}
-              showAddCardInput={showAddCardInput}
-              sourceId={sourceId}
-              updateDropTarget={this.updateDropTarget}
-              handleMoveCard={this.handleMoveCard}
-              handleReorderCards={this.handleReorderCards}
-              dragging={dragging}
-            />
-          )}
+          </div>
         </StyledListContainer>
       </DndProvider>
     );

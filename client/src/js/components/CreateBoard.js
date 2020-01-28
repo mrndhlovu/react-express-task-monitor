@@ -6,7 +6,8 @@ const CreateBoard = ({
   handleCreateClick,
   handleChange,
   buttonText,
-  fluid
+  fluid,
+  placeholder
 }) => {
   return (
     <Card fluid={fluid}>
@@ -14,7 +15,7 @@ const CreateBoard = ({
         <Input
           fluid
           focus
-          placeholder="Enter list title..."
+          placeholder={placeholder}
           onChange={e => handleChange(e)}
         />
       </Card.Content>

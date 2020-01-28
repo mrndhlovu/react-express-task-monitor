@@ -16,6 +16,7 @@ const NewBoardModal = ({
         handleCreateClick={handleCreateClick}
         buttonText="Create Board"
         fluid={true}
+        placeholder="Enter board name..."
       />
     </Modal>
   );

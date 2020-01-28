@@ -33,7 +33,6 @@ const StyledNewCardDropZone = styled.div`
 const Column = ({
   activeColumn,
   column,
-  columnHasCards,
   connectDropTarget,
   dropColumnId,
   isOverCurrent,
@@ -42,10 +41,10 @@ const Column = ({
   isOver,
   ...rest
 }) => {
-  const { name, id, cards } = column;
+  const { title, position, cards } = column;
 
   if (isOverCurrent) {
-    updateDropTarget(id);
+    updateDropTarget(position);
   }
 
   const styles = {
@@ -55,25 +54,25 @@ const Column = ({
   };
 
   const wrappedColumn = (
-    <div style={styles} id={`column-${id}`}>
+    <div style={styles} id={`column-${position}`}>
       <StyledSegment>
-        <StyledHeaderHeader size="tiny">{name}</StyledHeaderHeader>
+        <StyledHeaderHeader size="tiny">{title}</StyledHeaderHeader>
 
         <CardItemWrapper
           cards={cards}
           column={column}
-          dropColumnId={dropColumnId ? dropColumnId : id}
+          dropColumnId={dropColumnId ? dropColumnId : position}
           isOver={isOver}
           isOverCurrent={isOverCurrent}
-          sourceId={sourceId ? sourceId : id}
+          sourceId={sourceId ? sourceId : position}
           {...rest}
         />
 
         {isOverCurrent && <StyledNewCardDropZone />}
         <CreateCard
           cards={cards}
-          columnId={id}
-          activeColumn={activeColumn === id}
+          columnId={position}
+          activeColumn={activeColumn === position}
           {...rest}
         />
       </StyledSegment>

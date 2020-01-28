@@ -19,7 +19,7 @@ const StyledCardDiv = styled.div`
 `;
 
 const CardItem = ({ connectDragSource, card, isDragging }) => {
-  const { id, detail } = card;
+  const { id, title } = card;
   const styles = {
     backgroundColor: !isDragging ? "white" : "grey",
     borderRadius: "5px",
@@ -29,7 +29,7 @@ const CardItem = ({ connectDragSource, card, isDragging }) => {
   const wrappedCardItem = (
     <div style={styles} id={`card-${id}`}>
       <StyledCardDiv isDragging={isDragging}>
-        <Header size="small">{detail}</Header>
+        <Header size="small">{title}</Header>
       </StyledCardDiv>
     </div>
   );
