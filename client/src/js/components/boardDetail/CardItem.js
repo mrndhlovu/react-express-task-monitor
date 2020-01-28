@@ -39,14 +39,14 @@ const CardItem = ({ connectDragSource, card, isDragging }) => {
 
 const source = {
   beginDrag(props, monitor) {
-    const { card, dropColumnId, hoverIndex, sourceId } = props;
+    const { card, dropListId, hoverIndex, sourceId } = props;
 
     props.handleMoveCard(sourceId, card.position);
     const dragIndex = card.position;
 
-    // TODO handle cards reorder on the same column
+    // TODO handle cards reorder on the same list
 
-    let columnRect = document.getElementById(`column-${dropColumnId}`);
+    let columnRect = document.getElementById(`list-${dropListId}`);
 
     // Determine rectangle on screen
     const hoverBoundingRect = columnRect.getBoundingClientRect();

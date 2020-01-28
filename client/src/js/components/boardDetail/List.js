@@ -30,18 +30,18 @@ const StyledNewCardDropZone = styled.div`
   border-radius: 5px;
 `;
 
-const Column = ({
-  activeColumn,
-  column,
+const List = ({
+  activeList,
+  list,
   connectDropTarget,
-  dropColumnId,
+  dropListId,
   isOverCurrent,
   sourceId,
   updateDropTarget,
   isOver,
   ...rest
 }) => {
-  const { title, position, cards } = column;
+  const { title, position, cards } = list;
 
   if (isOverCurrent) {
     updateDropTarget(position);
@@ -54,14 +54,14 @@ const Column = ({
   };
 
   const wrappedColumn = (
-    <div style={styles} id={`column-${position}`}>
+    <div style={styles} id={`list-${position}`}>
       <StyledSegment>
         <StyledHeaderHeader size="tiny">{title}</StyledHeaderHeader>
 
         <CardItemWrapper
           cards={cards}
-          column={column}
-          dropColumnId={dropColumnId ? dropColumnId : position}
+          list={list}
+          dropListId={dropListId ? dropListId : position}
           isOver={isOver}
           isOverCurrent={isOverCurrent}
           sourceId={sourceId ? sourceId : position}
@@ -72,7 +72,7 @@ const Column = ({
         <CreateCard
           cards={cards}
           columnId={position}
-          activeColumn={activeColumn === position}
+          activeList={activeList === position}
           {...rest}
         />
       </StyledSegment>
@@ -84,7 +84,7 @@ const Column = ({
 
 const target = {
   drop(props) {
-    return props.handleDrag(props.dropColumnId);
+    return props.handleDrag(props.dropListId);
   }
 };
 
@@ -93,4 +93,4 @@ const collect = (connect, monitor) => ({
   isOverCurrent: monitor.isOver({ shallow: true })
 });
 
-export default DropTarget(Types.COLUMN, target, collect)(Column);
+export default DropTarget(Types.COLUMN, target, collect)(List);

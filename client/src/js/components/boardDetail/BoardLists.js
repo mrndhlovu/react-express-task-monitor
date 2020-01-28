@@ -5,7 +5,7 @@ import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
 import BoardHeadActions from "../home/BoardHeadActions";
-import ColumnGrid from "./ColumnGrid";
+import ListGrid from "./ListGrid";
 import CreateBoard from "../sharedComponents/CreateBoard";
 import { filterObject } from "../../utils/appUtils";
 
@@ -20,13 +20,11 @@ class BoardLists extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeColumn: "",
-      boardName: "",
+      activeList: "",
       cardPositions: "",
-      columns: "",
+      lists: "",
       draggingCardId: "",
-      dropColumnId: undefined,
-      dummyBoardList: false,
+      dropListId: undefined,
       newListName: "",
       newCardName: "",
       newSourceColumn: "",
@@ -52,7 +50,7 @@ class BoardLists extends Component {
 
   componentDidMount() {
     this.setState({
-      columns: this.props.board.lists
+      lists: this.props.board.lists
     });
 
     this.updateWindowDimensions();
@@ -91,20 +89,20 @@ class BoardLists extends Component {
   }
 
   handleAddCardName(columnId) {
-    this.setState({ showAddCardInput: true, activeColumn: columnId });
+    this.setState({ showAddCardInput: true, activeList: columnId });
   }
 
   handleCancelAddCard() {
-    this.setState({ activeColumn: "" });
+    this.setState({ activeList: "" });
   }
 
   handleCreateCard(columnId) {
-    const { columns, newCardName, allowed } = this.state;
+    const { lists, newCardName, allowed } = this.state;
     const { board } = this.props;
     const id = board._id;
 
-    const sourceColumn = columns
-      .filter(column => column.position === columnId)
+    const sourceColumn = lists
+      .filter(list => list.position === columnId)
       .shift();
 
     const newCard = {
@@ -123,21 +121,21 @@ class BoardLists extends Component {
   }
 
   handleDrag() {
-    const { columns, sourceId, dropColumnId, draggingCardId } = this.state;
+    const { lists, sourceId, dropListId, draggingCardId } = this.state;
 
-    const copyColumns = [...columns];
-    const changeCardColumn = sourceId !== dropColumnId;
+    const copyLists = [...lists];
+    const changeCardColumn = sourceId !== dropListId;
 
-    let updatedColumns;
+    let updatedLists;
     let updatedSourceColumn;
     const adjustedCardPositions = [];
 
-    const dropTargetColumns = copyColumns.filter(
-      column => column.position !== sourceId
+    const dropTargetLists = copyLists.filter(
+      list => list.position !== sourceId
     );
 
-    const sourceColumn = copyColumns
-      .filter(column => column.position === sourceId)
+    const sourceColumn = copyLists
+      .filter(list => list.position === sourceId)
       .shift();
 
     const draggingCard = sourceColumn.cards.find(
@@ -162,40 +160,40 @@ class BoardLists extends Component {
     };
 
     if (changeCardColumn) {
-      dropTargetColumns.filter(
-        column =>
-          column.position === dropColumnId &&
-          column.cards.push({
+      dropTargetLists.filter(
+        list =>
+          list.position === dropListId &&
+          list.cards.push({
             ...draggingCard,
-            position: column.cards.length + 1
+            position: list.cards.length + 1
           })
       );
 
-      updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
-      updatedColumns.sort((a, b) => a.position - b.position);
+      updatedLists = [updatedSourceColumn, ...dropTargetLists];
+      updatedLists.sort((a, b) => a.position - b.position);
     } else {
-      updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
-      updatedColumns.sort((a, b) => a.position - b.position);
+      updatedLists = [updatedSourceColumn, ...dropTargetLists];
+      updatedLists.sort((a, b) => a.position - b.position);
 
       this.setState({ changeOrder: true });
     }
 
     this.setState({
-      columns: updatedColumns,
+      lists: updatedLists,
       newSourceColumn: updatedSourceColumn,
-      dropColumnId: undefined,
+      dropListId: undefined,
       sourceId: undefined
     });
 
-    this.handleReorderCards(updatedColumns);
+    this.handleReorderCards(updatedLists);
   }
 
-  handleReorderCards(updatedColumns) {
-    // TODO  handle card reorder on same column
+  handleReorderCards(updatedLists) {
+    // TODO  handle card reorder on same list
   }
 
-  updateDropTarget(dropColumnId) {
-    this.setState({ dropColumnId });
+  updateDropTarget(dropListId) {
+    this.setState({ dropListId });
   }
 
   handleMoveCard(sourceId, draggingCardId) {
@@ -204,7 +202,7 @@ class BoardLists extends Component {
   }
 
   handleDrop() {
-    const { columns } = this.state;
+    const { lists } = this.state;
     this.setState({ dragging: false });
 
     const { dragging, allowed, changeOrder } = this.state;
@@ -218,7 +216,7 @@ class BoardLists extends Component {
     } else {
       const updatedList = {
         ...filteredBoard,
-        lists: columns
+        lists
       };
 
       !dragging && this.props.makeBoardUpdate(id, updatedList);
@@ -227,11 +225,11 @@ class BoardLists extends Component {
 
   render() {
     const {
-      columns,
+      lists,
       showAddCardInput,
       newCardName,
-      activeColumn,
-      dropColumnId,
+      activeList,
+      dropListId,
       sourceId,
       draggingCardId,
       dragging
@@ -241,11 +239,11 @@ class BoardLists extends Component {
       <DndProvider backend={Backend}>
         <BoardHeadActions />
         <StyledListContainer>
-          <ColumnGrid
-            activeColumn={activeColumn}
-            columns={columns}
+          <ListGrid
+            activeList={activeList}
+            lists={lists}
             draggingCardId={draggingCardId}
-            dropColumnId={dropColumnId}
+            dropListId={dropListId}
             handleAddCardName={this.handleAddCardName}
             handleCancelAddCard={this.handleCancelAddCard}
             handleCreateCard={this.handleCreateCard}
