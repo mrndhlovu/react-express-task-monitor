@@ -4,8 +4,8 @@ import { Container } from "semantic-ui-react";
 import { BoardsContext } from "../../utils/contextUtils";
 import BoardSummary from "./BoardSummary";
 import styled from "styled-components";
-import CreateNewBoard from "./CreateNewBoard";
-import NewBoardModal from "./NewBoardModal";
+import CreateNewBoard from "../sharedComponents/CreateNewBoard";
+import NewBoardModal from "../sharedComponents/NewBoardModal";
 
 const StyledContainer = styled.div`
   justify-self: start;

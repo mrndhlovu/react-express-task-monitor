@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Modal } from "semantic-ui-react";
-import CreateBoard from "../CreateBoard";
+import CreateBoard from "../sharedComponents/CreateBoard";
 
 const NewBoardModal = ({
   showNewBoardModal,

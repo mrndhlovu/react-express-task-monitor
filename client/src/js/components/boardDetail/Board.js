@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { BoardsContext } from "../../utils/contextUtils";
-import BoardLists from "../BoardLists";
+import BoardLists from "./BoardLists";
 
 const StyledContainer = styled.div`
   display: grid;

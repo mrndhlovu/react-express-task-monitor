@@ -4,9 +4,9 @@ import styled from "styled-components";
 import { DropTarget } from "react-dnd";
 
 import { Header, Segment } from "semantic-ui-react";
-import CreateCard from "./CreateCard";
+import CreateCard from "../sharedComponents/CreateCard";
 import CardItemWrapper from "./CardItemWrapper";
-import { Types } from "../constants/constants";
+import { Types } from "../../constants/constants";
 
 const StyledSegment = styled(Segment)`
   max-width: 300px;

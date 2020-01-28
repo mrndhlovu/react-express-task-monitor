@@ -4,10 +4,10 @@ import styled from "styled-components";
 import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
-import BoardHeadActions from "./BoardHeadActions";
+import BoardHeadActions from "../home/BoardHeadActions";
 import ColumnGrid from "./ColumnGrid";
-import CreateBoard from "./CreateBoard";
-import { filterObject } from "../utils/appUtils";
+import CreateBoard from "../sharedComponents/CreateBoard";
+import { filterObject } from "../../utils/appUtils";
 
 const StyledListContainer = styled.div`
   display: flex;

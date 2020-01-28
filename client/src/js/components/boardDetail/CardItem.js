@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { DragSource } from "react-dnd";
 
-import { Types } from "../constants/constants";
+import { Types } from "../../constants/constants";
 
 import { Header } from "semantic-ui-react";
 

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 
 import { getAuth } from "../actions/AuthActions";
-import NavHeader from "../components/NavHeader";
+import NavHeader from "../components/navBar/NavHeader";
 
 const Container = styled.div`
   padding-left: 10px;

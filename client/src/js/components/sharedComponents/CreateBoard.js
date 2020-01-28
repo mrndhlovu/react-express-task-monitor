@@ -10,7 +10,7 @@ const CreateBoard = ({
   placeholder
 }) => {
   return (
-    <Card fluid={fluid}>
+    <Card fluid={fluid} color="grey">
       <Card.Content>
         <Input
           fluid
