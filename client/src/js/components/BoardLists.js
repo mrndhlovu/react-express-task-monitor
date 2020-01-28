@@ -1,23 +1,23 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+
 import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
+import { dummyBoardList } from "../constants/constants";
+import BoardHeadActions from "./BoardHeadActions";
 import ColumnGrid from "./ColumnGrid";
 import CreateBoard from "./CreateBoard";
-import BoardHeadActions from "./BoardHeadActions";
-import { dummyBoardList } from "../constants/constants";
 
 const StyledListContainer = styled.div`
   display: flex;
-
   width: ${props => props.width && props.width + props.height};
   height: ${props => props.height && props.height};
   overflow-y: auto;
   overflow-x: hidden;
 `;
 
-class BoardColumns extends Component {
+class BoardLists extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +30,7 @@ class BoardColumns extends Component {
       draggingCardId: "",
       dropColumnId: undefined,
       dummyBoardList: false,
-      newBoardName: "",
+      newListName: "",
       newCardName: "",
       newColumns: "",
       newSourceColumn: "",
@@ -40,23 +40,23 @@ class BoardColumns extends Component {
       width: 0,
       height: 0
     };
-    this.handleAddBoardName = this.handleAddBoardName.bind(this);
+    this.handleAddList = this.handleAddList.bind(this);
     this.handleAddCardName = this.handleAddCardName.bind(this);
-    this.handleMoveCard = this.handleMoveCard.bind(this);
     this.handleCancelAddCard = this.handleCancelAddCard.bind(this);
-    this.handleReorderCards = this.handleReorderCards.bind(this);
-    this.handleCreateBoard = this.handleCreateBoard.bind(this);
+    this.handleCreateList = this.handleCreateList.bind(this);
     this.handleCreateCard = this.handleCreateCard.bind(this);
     this.handleDrag = this.handleDrag.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
+    this.handleMoveCard = this.handleMoveCard.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleReorderCards = this.handleReorderCards.bind(this);
     this.updateDropTarget = this.updateDropTarget.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
     this.setState({
-      columns: dummyBoardList(),
+      columns: this.props.board.lists,
       columnCount: dummyBoardList().length,
       cardCount: dummyBoardList().cards
     });
@@ -73,19 +73,32 @@ class BoardColumns extends Component {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
-  handleAddBoardName(event) {
-    this.setState({ newBoardName: event.target.value });
+  handleAddList(event) {
+    this.setState({ newListName: event.target.value });
   }
 
-  handleCreateBoard() {
-    const { newBoardName, columns } = this.state;
-    const newColumn = {
-      name: newBoardName,
-      id: 4
+  handleCreateList() {
+    const { board } = this.props;
+    const allowed = ["title", "lists"];
+    const id = board._id;
+    const boardData = { ...board };
+
+    const data = {
+      title: this.state.newListName,
+      cards: [],
+      position: boardData.lists.length + 1
     };
 
-    columns.push(newColumn);
-    this.setState({ columns, columnCount: 2 });
+    boardData.lists.push(data);
+
+    const filtered = Object.keys(boardData)
+      .filter(key => allowed.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = boardData[key];
+        return obj;
+      }, {});
+
+    this.props.makeBoardUpdate(id, filtered);
   }
 
   handleAddCardName(columnId) {
@@ -210,8 +223,9 @@ class BoardColumns extends Component {
         <StyledListContainer width={width} height={height}>
           {emptyColumnGrid ? (
             <CreateBoard
-              handleAddBoardName={this.handleAddBoardName}
-              handleCreateBoard={this.handleCreateBoard}
+              handleChange={this.handleAddList}
+              handleCreateClick={this.handleCreateList}
+              buttonText="Create List"
             />
           ) : (
             <ColumnGrid
@@ -242,4 +256,4 @@ class BoardColumns extends Component {
   }
 }
 
-export default BoardColumns;
+export default BoardLists;

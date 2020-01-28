@@ -1,5 +1,12 @@
 import _ from "lodash";
 
+export const INITIAL_STATE = {
+  data: {},
+  dataReceived: false,
+  hasError: false,
+  isLoading: false
+};
+
 export const Types = {
   COLUMN: "column",
   CARD: "card"

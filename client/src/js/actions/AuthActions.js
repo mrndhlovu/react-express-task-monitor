@@ -9,7 +9,6 @@ export const getAuth = () => {
     dispatch(makeRequest(INITIALIZE_AUTH));
     userInfo().then(
       response => {
-        console.log("response: ", response.data);
         dispatch(createMessage({ successMsg: "request successful" }));
       },
       error => {

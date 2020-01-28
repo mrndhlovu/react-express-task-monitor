@@ -2,9 +2,13 @@
 import { combineReducers } from "redux";
 
 import authReducer from "./authReducer";
-import alertsReducer from "./alertsReducer";
+import boardsReducer from "./boardReducer";
+import boardDetailsReducer from "./boardDetailsReducer";
+import newBoardReducer from "./newBoardReducer";
 
 export default combineReducers({
   authReducer,
-  alert: alertsReducer
+  boards: boardsReducer,
+  boardDetails: boardDetailsReducer,
+  newBoard: newBoardReducer
 });

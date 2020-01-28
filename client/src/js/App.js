@@ -1,13 +1,14 @@
 import React, { Component } from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
-import { BrowserRouter } from "react-router-dom";
 
 import store from "./store";
 import BaseRouter from "./Routes";
 import Alerts from "./utils/Alerts";
 import "../App.css";
+
 import AppContainer from "./containers/AppContainer";
 
 const alertStyle = {
@@ -19,14 +20,14 @@ class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppContainer>
-          <BrowserRouter>
+        <BrowserRouter>
+          <AppContainer>
             <AlertProvider template={AlertTemplate} {...alertStyle}>
               <Alerts />
               <BaseRouter />
             </AlertProvider>
-          </BrowserRouter>
-        </AppContainer>
+          </AppContainer>
+        </BrowserRouter>
       </Provider>
     );
   }

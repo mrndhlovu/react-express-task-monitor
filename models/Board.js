@@ -5,19 +5,11 @@ const BoardSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  position: {
-    type: Number,
-    required: true
-  },
   date: {
     type: Date,
     default: Date.now()
   },
-  description: {
-    type: String,
-    required: true
-  },
-  cards: {
+  lists: {
     type: Array,
     required: true,
     default: [Object]

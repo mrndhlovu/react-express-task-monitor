@@ -9,13 +9,17 @@ import {
   REQUEST_BOARD_LIST,
   REQUEST_UPDATE_BOARD,
   FAIL_UPDATE_BOARD_REQUEST,
-  RECEIVE_UPDATE_BOARD
+  RECEIVE_UPDATE_BOARD,
+  FAIL_NEW_BOARD_REQUEST,
+  RECEIVE_NEW_BOARD,
+  REQUEST_NEW_BOARD
 } from "./ActionTypes";
 
 import {
   requestBoardList,
   requestBoardDetail,
-  requestBoardUpdate
+  requestBoardUpdate,
+  requestNewBoard
 } from "../apis/apiRequests";
 
 import { makeRequest, requestFail, requestSuccess } from "./index";
@@ -23,7 +27,7 @@ import { makeRequest, requestFail, requestSuccess } from "./index";
 export const getBoardList = () => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_BOARD_LIST));
-    dispatch(requestBoardList()).then(
+    requestBoardList().then(
       response => {
         dispatch(requestSuccess(RECEIVE_BOARD_LIST, response.data));
       },
@@ -37,7 +41,7 @@ export const getBoardList = () => {
 export const getBoardDetail = id => {
   return dispatch => {
     dispatch(makeRequest(REQUEST_BOARD_DETAIL));
-    dispatch(requestBoardDetail(id)).then(
+    requestBoardDetail(id).then(
       response => {
         dispatch(requestSuccess(RECEIVE_BOARD_DETAIL, response.data));
       },
@@ -48,14 +52,32 @@ export const getBoardDetail = id => {
   };
 };
 
-export const getBoardUpdate = () => {
+export const makeNewBoard = newBoard => {
+  return dispatch => {
+    dispatch(makeRequest(REQUEST_NEW_BOARD));
+    requestNewBoard(newBoard).then(
+      response => {
+        console.log("response: ", response);
+        dispatch(requestSuccess(RECEIVE_NEW_BOARD, response.data));
+      },
+      error => {
+        dispatch(requestFail(FAIL_NEW_BOARD_REQUEST, error.message));
+      }
+    );
+  };
+};
+
+export const makeBoardUpdate = (id, board) => {
+  console.log("board: ", id, board);
   return dispatch => {
     dispatch(makeRequest(REQUEST_UPDATE_BOARD));
-    dispatch(requestBoardUpdate()).then(
+    requestBoardUpdate(id, board).then(
       response => {
+        console.log("response: ", response);
         dispatch(requestSuccess(RECEIVE_UPDATE_BOARD, response.data));
       },
       error => {
+        console.log("error: ", error);
         dispatch(requestFail(FAIL_UPDATE_BOARD_REQUEST, error.message));
       }
     );

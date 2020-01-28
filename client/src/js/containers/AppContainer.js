@@ -4,8 +4,9 @@ import styled from "styled-components";
 
 import { getAuth } from "../actions/AuthActions";
 import NavHeader from "../components/NavHeader";
+import HomePage from "../components/home/HomePage";
 
-const StyledAppContainer = styled.div`
+const Container = styled.div`
   padding-left: 10px;
   background-color: ${props =>
     props.backgroundColor && `${props.backgroundColor}`};
@@ -20,10 +21,10 @@ class AppContainer extends Component {
   render() {
     const backgroundColor = "grey";
     return (
-      <StyledAppContainer backgroundColor={backgroundColor}>
+      <Container backgroundColor={backgroundColor}>
         <NavHeader />
         {this.props.children}
-      </StyledAppContainer>
+      </Container>
     );
   }
 }
