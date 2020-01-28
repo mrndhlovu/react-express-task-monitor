@@ -21,7 +21,6 @@ class BoardLists extends Component {
     super(props);
     this.state = {
       activeList: "",
-      cardPositions: "",
       lists: "",
       draggingCardId: "",
       dropListId: undefined,
