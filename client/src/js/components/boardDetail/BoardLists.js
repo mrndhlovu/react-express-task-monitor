@@ -72,44 +72,42 @@ class BoardLists extends Component {
     const { board } = this.props;
     const { allowed } = this.state;
     const id = board._id;
-    const boardData = { ...board };
+    const copyBoard = { ...board };
 
     const data = {
       title: this.state.newListName,
       cards: [],
-      position: boardData.lists.length + 1
+      position: copyBoard.lists.length + 1
     };
 
-    boardData.lists.push(data);
+    copyBoard.lists.push(data);
 
-    const filtered = filterObject(boardData, allowed);
+    const filtered = filterObject(copyBoard, allowed);
 
     this.props.makeBoardUpdate(id, filtered);
   }
 
-  handleAddCardName(columnId) {
-    this.setState({ showAddCardInput: true, activeList: columnId });
+  handleAddCardName(listId) {
+    this.setState({ showAddCardInput: true, activeList: listId });
   }
 
   handleCancelAddCard() {
     this.setState({ activeList: "" });
   }
 
-  handleCreateCard(columnId) {
+  handleCreateCard(listId) {
     const { lists, newCardName, allowed } = this.state;
     const { board } = this.props;
     const id = board._id;
 
-    const sourceColumn = lists
-      .filter(list => list.position === columnId)
-      .shift();
+    const sourceList = lists.filter(list => list.position === listId).shift();
 
     const newCard = {
       title: newCardName,
-      position: sourceColumn.cards.length + 1
+      position: sourceList.cards.length + 1
     };
 
-    sourceColumn.cards.push(newCard);
+    sourceList.cards.push(newCard);
     const filteredBoard = filterObject(board, allowed);
 
     this.props.makeBoardUpdate(id, filteredBoard);
@@ -123,29 +121,29 @@ class BoardLists extends Component {
     const { lists, sourceId, dropListId, draggingCardId } = this.state;
 
     const copyLists = [...lists];
-    const changeCardColumn = sourceId !== dropListId;
+    const changeCardList = sourceId !== dropListId;
 
     let updatedLists;
-    let updatedSourceColumn;
+    let updatedSourceList;
     const adjustedCardPositions = [];
 
     const dropTargetLists = copyLists.filter(
       list => list.position !== sourceId
     );
 
-    const sourceColumn = copyLists
+    const sourceList = copyLists
       .filter(list => list.position === sourceId)
       .shift();
 
-    const draggingCard = sourceColumn.cards.find(
+    const draggingCard = sourceList.cards.find(
       card => card.position === draggingCardId
     );
 
-    const sourceColumnCards = sourceColumn.cards.filter(card =>
-      changeCardColumn ? card.position !== draggingCardId : draggingCardId
+    const sourceListCards = sourceList.cards.filter(card =>
+      changeCardList ? card.position !== draggingCardId : draggingCardId
     );
 
-    sourceColumnCards.filter((card, index) => {
+    sourceListCards.filter((card, index) => {
       const newCard = {
         ...card,
         position: index + 1
@@ -153,12 +151,12 @@ class BoardLists extends Component {
       return adjustedCardPositions.push(newCard);
     });
 
-    updatedSourceColumn = {
-      ...sourceColumn,
+    updatedSourceList = {
+      ...sourceList,
       cards: adjustedCardPositions
     };
 
-    if (changeCardColumn) {
+    if (changeCardList) {
       dropTargetLists.filter(
         list =>
           list.position === dropListId &&
@@ -168,10 +166,10 @@ class BoardLists extends Component {
           })
       );
 
-      updatedLists = [updatedSourceColumn, ...dropTargetLists];
+      updatedLists = [updatedSourceList, ...dropTargetLists];
       updatedLists.sort((a, b) => a.position - b.position);
     } else {
-      updatedLists = [updatedSourceColumn, ...dropTargetLists];
+      updatedLists = [updatedSourceList, ...dropTargetLists];
       updatedLists.sort((a, b) => a.position - b.position);
 
       this.setState({ changeOrder: true });
@@ -179,7 +177,7 @@ class BoardLists extends Component {
 
     this.setState({
       lists: updatedLists,
-      newSourceColumn: updatedSourceColumn,
+      newSourceColumn: updatedSourceList,
       dropListId: undefined,
       sourceId: undefined
     });
