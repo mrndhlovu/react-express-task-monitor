@@ -93,4 +93,4 @@ const collect = (connect, monitor) => ({
   isOverCurrent: monitor.isOver({ shallow: true })
 });
 
-export default DropTarget(Types.COLUMN, target, collect)(List);
+export default DropTarget(Types.LIST, target, collect)(List);

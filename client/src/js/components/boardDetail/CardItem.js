@@ -46,10 +46,10 @@ const source = {
 
     // TODO handle cards reorder on the same list
 
-    let columnRect = document.getElementById(`list-${dropListId}`);
+    let listRect = document.getElementById(`list-${dropListId}`);
 
     // Determine rectangle on screen
-    const hoverBoundingRect = columnRect.getBoundingClientRect();
+    const hoverBoundingRect = listRect.getBoundingClientRect();
 
     // TODO Get vertical middle
     const hoverMiddleY = (hoverBoundingRect.x - hoverBoundingRect.y) / 2;
@@ -85,4 +85,4 @@ const collect = (connect, monitor) => ({
   isDragging: monitor.isDragging()
 });
 
-export default DragSource(Types.COLUMN, source, collect)(CardItem);
+export default DragSource(Types.LIST, source, collect)(CardItem);
