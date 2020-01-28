@@ -18,7 +18,7 @@ class BoardContainer extends Component {
   render() {
     return (
       <BoardsContext.Provider value={this.props}>
-        <Board />
+        {this.props.board.dataReceived && <Board />}
       </BoardsContext.Provider>
     );
   }

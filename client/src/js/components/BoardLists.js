@@ -29,12 +29,12 @@ class BoardLists extends Component {
       dummyBoardList: false,
       newListName: "",
       newCardName: "",
-      newColumns: "",
       newSourceColumn: "",
       showAddCardInput: false,
       sourceId: undefined,
       dragging: false,
-      allowed: ["title", "lists"]
+      allowed: ["title", "lists"],
+      changeOrder: false
     };
     this.handleAddList = this.handleAddList.bind(this);
     this.handleAddCardName = this.handleAddCardName.bind(this);
@@ -177,18 +177,20 @@ class BoardLists extends Component {
       updatedColumns = [updatedSourceColumn, ...dropTargetColumns];
       updatedColumns.sort((a, b) => a.position - b.position);
 
-      this.handleReorderCards(sourceId, draggingCardId);
+      this.setState({ changeOrder: true });
     }
 
     this.setState({
-      newColumns: updatedColumns,
+      columns: updatedColumns,
       newSourceColumn: updatedSourceColumn,
       dropColumnId: undefined,
       sourceId: undefined
     });
+
+    this.handleReorderCards(updatedColumns);
   }
 
-  handleReorderCards(sourceId, draggingCardId, newPosition) {
+  handleReorderCards(updatedColumns) {
     // TODO  handle card reorder on same column
   }
 
@@ -202,7 +204,25 @@ class BoardLists extends Component {
   }
 
   handleDrop() {
-    this.setState({ columns: this.state.newColumns, dragging: false });
+    const { columns } = this.state;
+    this.setState({ dragging: false });
+
+    const { dragging, allowed, changeOrder } = this.state;
+
+    const { board } = this.props;
+    const id = board._id;
+
+    const filteredBoard = filterObject(board, allowed);
+
+    if (changeOrder) {
+    } else {
+      const updatedList = {
+        ...filteredBoard,
+        lists: columns
+      };
+
+      !dragging && this.props.makeBoardUpdate(id, updatedList);
+    }
   }
 
   render() {

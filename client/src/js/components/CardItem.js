@@ -19,7 +19,7 @@ const StyledCardDiv = styled.div`
 `;
 
 const CardItem = ({ connectDragSource, card, isDragging }) => {
-  const { id, title } = card;
+  const { position, title } = card;
   const styles = {
     backgroundColor: !isDragging ? "white" : "grey",
     borderRadius: "5px",
@@ -27,7 +27,7 @@ const CardItem = ({ connectDragSource, card, isDragging }) => {
   };
 
   const wrappedCardItem = (
-    <div style={styles} id={`card-${id}`}>
+    <div style={styles} id={`card-${position}`}>
       <StyledCardDiv isDragging={isDragging}>
         <Header size="small">{title}</Header>
       </StyledCardDiv>
@@ -41,13 +41,12 @@ const source = {
   beginDrag(props, monitor) {
     const { card, dropColumnId, hoverIndex, sourceId } = props;
 
-    props.handleMoveCard(sourceId, card.id);
+    props.handleMoveCard(sourceId, card.position);
     const dragIndex = card.position;
 
     // TODO handle cards reorder on the same column
 
     let columnRect = document.getElementById(`column-${dropColumnId}`);
-    console.log("dropColumnId: ", dropColumnId);
 
     // Determine rectangle on screen
     const hoverBoundingRect = columnRect.getBoundingClientRect();

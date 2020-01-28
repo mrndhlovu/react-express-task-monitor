@@ -14,7 +14,7 @@ const HomeSideBar = () => {
   return (
     <StyledContainer>
       <Segment>
-        <Button as={Link} to="/" fluid content="Boards" color="white" />
+        <Button as={Link} to="/" fluid content="Boards" />
       </Segment>
     </StyledContainer>
   );

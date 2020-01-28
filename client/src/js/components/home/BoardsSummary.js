@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 
 import { Container } from "semantic-ui-react";
 import { BoardsContext } from "../../utils/contextUtils";
@@ -13,7 +13,7 @@ const StyledContainer = styled.div`
   width: 100%;
 `;
 
-const BoardsSummary = ({}) => {
+const BoardsSummary = () => {
   const { boards, history, makeNewBoard } = useContext(BoardsContext);
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);

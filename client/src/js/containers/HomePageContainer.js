@@ -9,7 +9,8 @@ import { BoardsContext } from "../utils/contextUtils";
 
 const mapStateToProps = state => {
   return {
-    boards: getBoards(state)
+    boards: getBoards(state),
+    newBoard: getNewBoard(state)
   };
 };
 

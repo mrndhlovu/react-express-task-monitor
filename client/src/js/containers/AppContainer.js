@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import { getAuth } from "../actions/AuthActions";
 import NavHeader from "../components/NavHeader";
-import HomePage from "../components/home/HomePage";
 
 const Container = styled.div`
   padding-left: 10px;

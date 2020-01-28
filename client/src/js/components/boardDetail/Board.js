@@ -13,9 +13,11 @@ const Board = () => {
 
   return (
     <StyledContainer>
-      {board.dataReceived && (
-        <BoardLists board={board.data} makeBoardUpdate={makeBoardUpdate} />
-      )}
+      <BoardLists
+        board={board.data}
+        makeBoardUpdate={makeBoardUpdate}
+        dataReceived={board.dataReceived}
+      />
     </StyledContainer>
   );
 };

@@ -9,7 +9,7 @@ import BoardContainer from "./containers/BoardContainer";
 export default function Routes() {
   return (
     <Switch>
-      <Route exact path="/" exact={true} component={HomePageContainer} />
+      <Route exact path="/" component={HomePageContainer} />
       <Route path="/board/:id" exact={true} component={BoardContainer} />
     </Switch>
   );
