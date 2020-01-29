@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
 
-router.get("/list", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const boards = await Board.find();
     res.send(boards);
@@ -28,8 +28,8 @@ router.delete("/id/:boardId", async (req, res) => {
   }
 });
 
-router.patch("/id/:boardId", async (req, res) => {
-  const { title, cards, position, description } = req.body;
+router.patch("/id/:boardId/update", async (req, res) => {
+  const { title, lists } = req.body;
 
   try {
     const updatedBoard = await Board.updateOne(
@@ -37,9 +37,7 @@ router.patch("/id/:boardId", async (req, res) => {
       {
         $set: {
           title,
-          cards,
-          position,
-          description
+          lists
         }
       }
     );
@@ -50,13 +48,11 @@ router.patch("/id/:boardId", async (req, res) => {
 });
 
 router.post("/api/create", async (req, res) => {
-  const { title, cards, position, description } = req.body;
+  const { title, lists } = req.body;
 
   const board = new Board({
     title,
-    cards,
-    position,
-    description
+    lists
   });
 
   try {

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 import {
   Container,
@@ -21,15 +22,20 @@ class NavHeader extends Component {
 
   render() {
     const { userAbbr, isLoading, results, value } = this.state;
+    const { history } = this.props;
 
     return (
-      <Menu fixed="top" compact={true}>
+      <Menu fluid>
         <Container fluid>
           <Menu.Item as="a">
             <StyledDiv>
-              <Button icon="home" size="tiny" />
+              <Button
+                icon="home"
+                size="tiny"
+                onClick={() => history.push("/")}
+              />
             </StyledDiv>
-            <Button size="tiny">
+            <Button size="tiny" onClick={() => history.push("/boards")}>
               <Icon name="columns" />
               Boards
             </Button>
@@ -38,7 +44,6 @@ class NavHeader extends Component {
               onSearchChange={() => console.log("e.target.value")}
               results={results}
               value={value}
-              {...this.props}
             />
           </Menu.Item>
           <Menu.Item>
@@ -78,4 +83,4 @@ class NavHeader extends Component {
   }
 }
 
-export default NavHeader;
+export default withRouter(NavHeader);
