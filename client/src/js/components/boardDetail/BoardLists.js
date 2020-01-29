@@ -18,18 +18,18 @@ const StyledListContainer = styled.div`
 
 const INITIAL_STATE = {
   activeList: "",
-  lists: "",
+  allowed: ["title", "lists"],
+  dragging: false,
   draggingCardId: "",
   dropListColumnId: undefined,
-  newListName: "",
+  hoverIndex: "",
+  lists: "",
   newCardName: "",
+  newListName: "",
   newSourceColumn: "",
-  showAddCardInput: false,
-  sourceId: undefined,
-  dragging: false,
-  allowed: ["title", "lists"],
   reorder: false,
-  hoverIndex: ""
+  showAddCardInput: false,
+  sourceId: undefined
 };
 
 class BoardLists extends Component {
@@ -37,16 +37,15 @@ class BoardLists extends Component {
     super(props);
     this.state = INITIAL_STATE;
 
-    this.handleAddList = this.handleAddList.bind(this);
     this.handleAddCardName = this.handleAddCardName.bind(this);
-    this.handleCancelAddCard = this.handleCancelAddCard.bind(this);
-    this.handleCreateList = this.handleCreateList.bind(this);
-    this.handleCreateCard = this.handleCreateCard.bind(this);
-    this.handleChangeCardList = this.handleChangeCardList.bind(this);
-    this.handleDrop = this.handleDrop.bind(this);
-    this.handleStartDrag = this.handleStartDrag.bind(this);
-    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleAddList = this.handleAddList.bind(this);
     this.handleCardsReorder = this.handleCardsReorder.bind(this);
+    this.handleChangeCardList = this.handleChangeCardList.bind(this);
+    this.handleCreateCard = this.handleCreateCard.bind(this);
+    this.handleCreateList = this.handleCreateList.bind(this);
+    this.handleDrop = this.handleDrop.bind(this);
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handleStartDrag = this.handleStartDrag.bind(this);
     this.updateDropTargetId = this.updateDropTargetId.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
@@ -93,10 +92,6 @@ class BoardLists extends Component {
 
   handleAddCardName(listId) {
     this.setState({ showAddCardInput: true, activeList: listId });
-  }
-
-  handleCancelAddCard() {
-    this.setState({ activeList: "" });
   }
 
   handleCreateCard(listId) {
@@ -263,7 +258,7 @@ class BoardLists extends Component {
             dragging={dragging}
             draggingCardId={draggingCardId}
             handleAddCardName={this.handleAddCardName}
-            handleCancelAddCard={this.handleCancelAddCard}
+            handleCancelAddCard={() => this.setState({ activeList: "" })}
             handleCreateCard={this.handleCreateCard}
             handleChangeCardList={this.handleChangeCardList}
             handleDrop={this.handleDrop}
