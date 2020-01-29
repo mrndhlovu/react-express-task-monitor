@@ -36,18 +36,18 @@ const CreateCard = ({
   handleAddCardName,
   handleCreateCard,
   handleCancelAddCard,
-  columnId,
-  activeColumn,
+  listId,
+  activeList,
   handleOnChange
 }) => {
   return (
     <Card>
-      {!activeColumn ? (
+      {!activeList ? (
         <StyledButton
           as="a"
           fluid
           basic
-          onClick={() => handleAddCardName(columnId)}
+          onClick={() => handleAddCardName(listId)}
         >
           <Icon name="add" />
           Add a card...
@@ -65,7 +65,7 @@ const CreateCard = ({
             color="green"
             size="tiny"
             content="Add Card"
-            onClick={() => handleCreateCard(columnId)}
+            onClick={() => handleCreateCard(listId)}
           />
           <Icon name="close" onClick={() => handleCancelAddCard()} />
         </StyledCardContent>

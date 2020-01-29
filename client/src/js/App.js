@@ -1,20 +1,12 @@
 import React, { Component } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
-import { Provider as AlertProvider } from "react-alert";
-import AlertTemplate from "react-alert-template-basic";
 
 import store from "./store";
 import BaseRouter from "./Routes";
-import Alerts from "./utils/Alerts";
 import "../App.css";
 
 import AppContainer from "./containers/AppContainer";
-
-const alertStyle = {
-  timeout: 3000,
-  position: "top center"
-};
 
 class App extends Component {
   render() {
@@ -22,10 +14,7 @@ class App extends Component {
       <Provider store={store}>
         <BrowserRouter>
           <AppContainer>
-            <AlertProvider template={AlertTemplate} {...alertStyle}>
-              <Alerts />
-              <BaseRouter />
-            </AlertProvider>
+            <BaseRouter />
           </AppContainer>
         </BrowserRouter>
       </Provider>

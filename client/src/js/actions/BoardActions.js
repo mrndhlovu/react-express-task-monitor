@@ -57,7 +57,7 @@ export const makeNewBoard = newBoard => {
     dispatch(makeRequest(REQUEST_NEW_BOARD));
     requestNewBoard(newBoard).then(
       response => {
-        console.log("response: ", response);
+        console.log("response: ", response.status);
         dispatch(requestSuccess(RECEIVE_NEW_BOARD, response.data));
       },
       error => {
@@ -72,7 +72,7 @@ export const makeBoardUpdate = (id, board) => {
     dispatch(makeRequest(REQUEST_UPDATE_BOARD));
     requestBoardUpdate(id, board).then(
       response => {
-        console.log("response: ", response);
+        console.log("response: ", response.status);
         dispatch(requestSuccess(RECEIVE_UPDATE_BOARD, response.data));
       },
       error => {

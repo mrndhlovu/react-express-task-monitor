@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { DragSource } from "react-dnd";
+import { DragSource, DropTarget } from "react-dnd";
+import flow from "lodash/flow";
 
 import { Types } from "../../constants/constants";
 
@@ -15,68 +16,52 @@ const StyledCardDiv = styled.div`
   padding: 8px 0px 6px 10px;
   position: relative;
   text-decoration: none;
-  visibility: ${props => props.isDragging && "hidden"};
+  opacity: ${props => props.isDragging && 0};
 `;
 
-const CardItem = ({ connectDragSource, card, isDragging }) => {
-  const { position, title } = card;
+const CardItem = ({
+  card,
+  connectDragSource,
+  connectDropTarget,
+  isDragging
+}) => {
   const styles = {
-    backgroundColor: !isDragging ? "white" : "grey",
+    backgroundColor: !isDragging && "#fff",
     borderRadius: "5px",
-    boxShadow: "0 1px 0 rgba(15, 30, 66, 0.35)"
+    boxShadow: !isDragging && "0 1px 0 rgba(15, 30, 66, 0.35)"
   };
 
   const wrappedCardItem = (
-    <div style={styles} id={`card-${position}`}>
+    <div style={styles}>
       <StyledCardDiv isDragging={isDragging}>
-        <Header size="small">{title}</Header>
+        <Header size="small">{card.title}</Header>
       </StyledCardDiv>
     </div>
   );
 
-  return connectDragSource(wrappedCardItem);
+  return connectDragSource(connectDropTarget(wrappedCardItem));
 };
 
 const source = {
-  beginDrag(props, monitor) {
-    const { card, dropListId, hoverIndex, sourceId } = props;
+  beginDrag(props) {
+    const { card, sourceId } = props;
 
-    props.handleMoveCard(sourceId, card.position);
-    const dragIndex = card.position;
-
-    // TODO handle cards reorder on the same list
-
-    let listRect = document.getElementById(`list-${dropListId}`);
-
-    // Determine rectangle on screen
-    const hoverBoundingRect = listRect.getBoundingClientRect();
-
-    // TODO Get vertical middle
-    const hoverMiddleY = (hoverBoundingRect.x - hoverBoundingRect.y) / 2;
-
-    // TODO Determine mouse position
-    const clientOffset = monitor.getClientOffset();
-
-    // TODO Get pixels to the top
-    const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-    if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-      return;
-    }
-    // Dragging upwards
-    if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-      return;
-    }
-    // Time to actually perform the action
-    props.handleReorderCards(hoverIndex, dragIndex);
+    props.handleStartDrag(sourceId, card.position);
+    props.updateDropTargetId(sourceId);
 
     return {};
   },
   endDrag(props, monitor) {
-    if (!monitor.didDrop()) {
-      return;
-    }
+    if (!monitor.didDrop()) return;
     return props.handleDrop();
+  }
+};
+
+const target = {
+  hover(props) {
+    const { card, draggingCardId, isOverCurrent } = props;
+    if (!isOverCurrent) return;
+    return props.handleCardsReorder(card.position, draggingCardId);
   }
 };
 
@@ -85,4 +70,12 @@ const collect = (connect, monitor) => ({
   isDragging: monitor.isDragging()
 });
 
-export default DragSource(Types.LIST, source, collect)(CardItem);
+const sortCollect = (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver({ shallow: true })
+});
+
+export default flow(
+  DragSource(Types.LIST, source, collect),
+  DropTarget(Types.LIST, target, sortCollect)
+)(CardItem);

@@ -19,33 +19,15 @@ const StyledHeaderHeader = styled(Header)`
   padding-top: 5px !important;
 `;
 
-const StyledNewCardDropZone = styled.div`
-  background-color: #c4c4c4 !important;
-  margin: 10px 10px !important;
-  min-height: 25px;
-  position: relative;
-  text-decoration: none;
-  z-index: 0;
-  padding: 5px 0px 3px 10px;
-  border-radius: 5px;
-`;
-
 const List = ({
   activeList,
   list,
   connectDropTarget,
-  dropListId,
-  isOverCurrent,
   sourceId,
-  updateDropTarget,
   isOver,
   ...rest
 }) => {
   const { title, position, cards } = list;
-
-  if (isOverCurrent) {
-    updateDropTarget(position);
-  }
 
   const styles = {
     display: "inline-block",
@@ -58,20 +40,11 @@ const List = ({
       <StyledSegment>
         <StyledHeaderHeader size="tiny">{title}</StyledHeaderHeader>
 
-        <CardItemWrapper
-          cards={cards}
-          list={list}
-          dropListId={dropListId ? dropListId : position}
-          isOver={isOver}
-          isOverCurrent={isOverCurrent}
-          sourceId={sourceId ? sourceId : position}
-          {...rest}
-        />
+        <CardItemWrapper cards={cards} sourceId={position} {...rest} />
 
-        {isOverCurrent && <StyledNewCardDropZone />}
         <CreateCard
           cards={cards}
-          columnId={position}
+          listId={position}
           activeList={activeList === position}
           {...rest}
         />
@@ -84,7 +57,12 @@ const List = ({
 
 const target = {
   drop(props) {
-    return props.handleDrag(props.dropListId);
+    return props.handleChangeCardList();
+  },
+  hover(props) {
+    const { list } = props;
+
+    return props.updateDropTargetId(list.position);
   }
 };
 

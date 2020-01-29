@@ -16,34 +16,38 @@ const StyledListContainer = styled.div`
   vertical-align: top;
 `;
 
+const INITIAL_STATE = {
+  activeList: "",
+  lists: "",
+  draggingCardId: "",
+  dropListColumnId: undefined,
+  newListName: "",
+  newCardName: "",
+  newSourceColumn: "",
+  showAddCardInput: false,
+  sourceId: undefined,
+  dragging: false,
+  allowed: ["title", "lists"],
+  reorder: false,
+  hoverIndex: ""
+};
+
 class BoardLists extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      activeList: "",
-      lists: "",
-      draggingCardId: "",
-      dropListId: undefined,
-      newListName: "",
-      newCardName: "",
-      newSourceColumn: "",
-      showAddCardInput: false,
-      sourceId: undefined,
-      dragging: false,
-      allowed: ["title", "lists"],
-      changeOrder: false
-    };
+    this.state = INITIAL_STATE;
+
     this.handleAddList = this.handleAddList.bind(this);
     this.handleAddCardName = this.handleAddCardName.bind(this);
     this.handleCancelAddCard = this.handleCancelAddCard.bind(this);
     this.handleCreateList = this.handleCreateList.bind(this);
     this.handleCreateCard = this.handleCreateCard.bind(this);
-    this.handleDrag = this.handleDrag.bind(this);
+    this.handleChangeCardList = this.handleChangeCardList.bind(this);
     this.handleDrop = this.handleDrop.bind(this);
-    this.handleMoveCard = this.handleMoveCard.bind(this);
+    this.handleStartDrag = this.handleStartDrag.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
-    this.handleReorderCards = this.handleReorderCards.bind(this);
-    this.updateDropTarget = this.updateDropTarget.bind(this);
+    this.handleCardsReorder = this.handleCardsReorder.bind(this);
+    this.updateDropTargetId = this.updateDropTargetId.bind(this);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
@@ -117,49 +121,49 @@ class BoardLists extends Component {
     this.setState({ newCardName: event.target.value });
   }
 
-  handleDrag() {
-    const { lists, sourceId, dropListId, draggingCardId } = this.state;
+  handleChangeCardList() {
+    const { lists, sourceId, dropListColumnId, draggingCardId } = this.state;
 
     const copyLists = [...lists];
-    const changeCardList = sourceId !== dropListId;
-
+    const changeCardList = sourceId !== dropListColumnId;
     let updatedLists;
     let updatedSourceList;
-    const adjustedCardPositions = [];
-
-    const dropTargetLists = copyLists.filter(
-      list => list.position !== sourceId
-    );
-
-    const sourceList = copyLists
-      .filter(list => list.position === sourceId)
-      .shift();
-
-    const draggingCard = sourceList.cards.find(
-      card => card.position === draggingCardId
-    );
-
-    const sourceListCards = sourceList.cards.filter(card =>
-      changeCardList ? card.position !== draggingCardId : draggingCardId
-    );
-
-    sourceListCards.filter((card, index) => {
-      const newCard = {
-        ...card,
-        position: index + 1
-      };
-      return adjustedCardPositions.push(newCard);
-    });
-
-    updatedSourceList = {
-      ...sourceList,
-      cards: adjustedCardPositions
-    };
 
     if (changeCardList) {
+      const adjustedCardPositions = [];
+
+      const dropTargetLists = copyLists.filter(
+        list => list.position !== sourceId
+      );
+
+      const sourceList = copyLists
+        .filter(list => list.position === sourceId)
+        .shift();
+
+      const draggingCard = sourceList.cards.find(
+        card => card.position === draggingCardId
+      );
+
+      const sourceListCards = sourceList.cards.filter(card =>
+        changeCardList ? card.position !== draggingCardId : draggingCardId
+      );
+
+      sourceListCards.filter((card, index) => {
+        const newCard = {
+          ...card,
+          position: index + 1
+        };
+        return adjustedCardPositions.push(newCard);
+      });
+
+      updatedSourceList = {
+        ...sourceList,
+        cards: adjustedCardPositions
+      };
+
       dropTargetLists.filter(
         list =>
-          list.position === dropListId &&
+          list.position === dropListColumnId &&
           list.cards.push({
             ...draggingCard,
             position: list.cards.length + 1
@@ -168,68 +172,86 @@ class BoardLists extends Component {
 
       updatedLists = [updatedSourceList, ...dropTargetLists];
       updatedLists.sort((a, b) => a.position - b.position);
-    } else {
-      updatedLists = [updatedSourceList, ...dropTargetLists];
-      updatedLists.sort((a, b) => a.position - b.position);
-
-      this.setState({ changeOrder: true });
+      this.setState({
+        lists: updatedLists,
+        newSourceColumn: updatedSourceList,
+        dropListColumnId: undefined,
+        sourceId: undefined
+      });
     }
-
-    this.setState({
-      lists: updatedLists,
-      newSourceColumn: updatedSourceList,
-      dropListId: undefined,
-      sourceId: undefined
-    });
-
-    this.handleReorderCards(updatedLists);
   }
 
-  handleReorderCards(updatedLists) {
-    // TODO  handle card reorder on same list
+  handleCardsReorder(hoverIndex, draggingCardId) {
+    const { lists, sourceId, dropListColumnId } = this.state;
+
+    const changeCardsOrder = sourceId === dropListColumnId;
+
+    if (changeCardsOrder) {
+      const sourceList = lists
+        .filter(list => list.position === sourceId)
+        .shift();
+
+      const otherLists = lists.filter(list => list.position !== sourceId);
+
+      const cards = sourceList.cards;
+      let adjustedCardPositions = [];
+
+      cards.filter(card => {
+        const newCard = {
+          ...card,
+          position:
+            card.position === draggingCardId
+              ? hoverIndex
+              : card.position === hoverIndex
+              ? draggingCardId
+              : card.position
+        };
+        return adjustedCardPositions.push(newCard);
+      });
+
+      adjustedCardPositions.sort((a, b) => a.position - b.position);
+
+      const updatedLists = { ...sourceList, cards: adjustedCardPositions };
+
+      otherLists.push(updatedLists);
+
+      otherLists.sort((a, b) => a.position - b.position);
+
+      this.setState({ lists: otherLists, draggingCardId });
+    }
   }
 
-  updateDropTarget(dropListId) {
-    this.setState({ dropListId });
+  updateDropTargetId(dropTargetId) {
+    this.setState({ dropListColumnId: dropTargetId });
   }
 
-  handleMoveCard(sourceId, draggingCardId) {
+  handleStartDrag(sourceId, draggingCardId) {
     this.setState({ sourceId, draggingCardId, dragging: true });
-    this.updateDropTarget(sourceId);
   }
 
   handleDrop() {
-    const { lists } = this.state;
-    this.setState({ dragging: false });
-
-    const { dragging, allowed, changeOrder } = this.state;
-
+    const { allowed, lists } = this.state;
     const { board } = this.props;
     const id = board._id;
 
     const filteredBoard = filterObject(board, allowed);
 
-    if (changeOrder) {
-    } else {
-      const updatedList = {
-        ...filteredBoard,
-        lists
-      };
-
-      !dragging && this.props.makeBoardUpdate(id, updatedList);
-    }
+    const updatedList = {
+      ...filteredBoard,
+      lists
+    };
+    this.props.makeBoardUpdate(id, updatedList);
   }
 
   render() {
     const {
-      lists,
-      showAddCardInput,
-      newCardName,
       activeList,
-      dropListId,
-      sourceId,
+      dragging,
       draggingCardId,
-      dragging
+      lists,
+      newCardName,
+      showAddCardInput,
+      sourceId
     } = this.state;
 
     return (
@@ -238,22 +260,21 @@ class BoardLists extends Component {
         <StyledListContainer>
           <ListGrid
             activeList={activeList}
-            lists={lists}
+            dragging={dragging}
             draggingCardId={draggingCardId}
-            dropListId={dropListId}
             handleAddCardName={this.handleAddCardName}
             handleCancelAddCard={this.handleCancelAddCard}
             handleCreateCard={this.handleCreateCard}
-            handleDrag={this.handleDrag}
+            handleChangeCardList={this.handleChangeCardList}
             handleDrop={this.handleDrop}
+            handleStartDrag={this.handleStartDrag}
             handleOnChange={this.handleOnChange}
+            handleCardsReorder={this.handleCardsReorder}
+            lists={lists}
             newCardName={newCardName}
             showAddCardInput={showAddCardInput}
             sourceId={sourceId}
-            updateDropTarget={this.updateDropTarget}
-            handleMoveCard={this.handleMoveCard}
-            handleReorderCards={this.handleReorderCards}
-            dragging={dragging}
+            updateDropTargetId={this.updateDropTargetId}
           />
           <div>
             <CreateBoard
