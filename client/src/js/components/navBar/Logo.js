@@ -9,11 +9,9 @@ const StyledDiv = styled.div`
   justify-self: center;
 `;
 
-const color = "light-blue";
-
 const Logo = () => (
   <StyledDiv>
-    <Header color={color} size="small" icon="columns" content="Trello Clone" />
+    <Header size="small" icon="columns" content="Trello Clone" />
   </StyledDiv>
 );
 
