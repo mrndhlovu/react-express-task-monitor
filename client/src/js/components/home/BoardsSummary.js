@@ -40,20 +40,18 @@ const BoardsSummary = () => {
 
   return (
     <StyledContainer>
-      {boards.dataReceived && (
-        <Container>
-          {data.map(key => (
-            <BoardSummary
-              key={key._id}
-              id={key._id}
-              header={key.title}
-              history={history}
-            />
-          ))}
-        </Container>
-      )}
+      <Container>
+        {data.map(key => (
+          <BoardSummary
+            key={key._id}
+            id={key._id}
+            header={key.title}
+            history={history}
+          />
+        ))}
 
-      <CreateNewBoard showNewBoardModal={showNewBoardModal} />
+        <CreateNewBoard showNewBoardModal={showNewBoardModal} />
+      </Container>
       {createBoard && (
         <NewBoardModal
           showNewBoardModal={showNewBoardModal}

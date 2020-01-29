@@ -6,9 +6,7 @@ import { getAuth } from "../actions/AuthActions";
 import NavHeader from "../components/navBar/NavHeader";
 
 const Container = styled.div`
-  padding-left: 10px;
-  background-color: ${props =>
-    props.backgroundColor && `${props.backgroundColor}`};
+  background-color: ${props => props.bgColor};
   height: 100vh;
 `;
 
@@ -18,9 +16,9 @@ class AppContainer extends Component {
   }
 
   render() {
-    const backgroundColor = "grey";
+    const bgColor = "#828c90";
     return (
-      <Container backgroundColor={backgroundColor}>
+      <Container bgColor={bgColor}>
         <NavHeader />
         {this.props.children}
       </Container>

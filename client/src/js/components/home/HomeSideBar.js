@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledContainer = styled.div`
-  justify-self: start;
+  justify-self: center;
+
   padding-right: 10px;
   width: 100%;
 `;
