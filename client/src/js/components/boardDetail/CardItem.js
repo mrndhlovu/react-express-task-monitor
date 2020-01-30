@@ -12,7 +12,7 @@ const StyledCardDiv = styled.div`
   background-color: #fff !important;
   cursor: pointer;
   margin: 10px 5px !important;
-  padding: 8px 0px 6px 10px;
+  padding: 10px 10px;
   position: relative;
   text-decoration: none;
   opacity: ${props => props.isDragging && 0};
