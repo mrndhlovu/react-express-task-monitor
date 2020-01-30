@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
-import BoardHeadActions from "../home/BoardHeadActions";
+import BoardHeader from "../home/BoardHeader";
 import ListGrid from "./ListGrid";
 import CreateBoard from "../sharedComponents/CreateBoard";
 import { filterObject } from "../../utils/appUtils";
@@ -29,7 +29,8 @@ const INITIAL_STATE = {
   newSourceColumn: "",
   reorder: false,
   showAddCardInput: false,
-  sourceId: undefined
+  sourceId: undefined,
+  showInputField: false
 };
 
 class BoardLists extends Component {
@@ -246,12 +247,15 @@ class BoardLists extends Component {
       lists,
       newCardName,
       showAddCardInput,
-      sourceId
+      sourceId,
+      showInputField
     } = this.state;
+
+    const { board } = this.props;
 
     return (
       <DndProvider backend={Backend}>
-        <BoardHeadActions />
+        <BoardHeader boardTitle={board.title} />
         <StyledListContainer>
           <ListGrid
             activeList={activeList}
@@ -271,14 +275,18 @@ class BoardLists extends Component {
             sourceId={sourceId}
             updateDropTargetId={this.updateDropTargetId}
           />
-          <div>
-            <CreateBoard
-              handleChange={this.handleAddList}
-              handleCreateClick={this.handleCreateList}
-              buttonText="Create List"
-              placeholder="Enter new list title..."
-            />
-          </div>
+
+          <CreateBoard
+            handleAddList={() =>
+              this.setState({ showInputField: !showInputField })
+            }
+            showInputField={showInputField}
+            handleChange={this.handleAddList}
+            handleCreateClick={this.handleCreateList}
+            buttonText="Create List"
+            placeholder="Enter new list title..."
+            ctaText="Add another list"
+          />
         </StyledListContainer>
       </DndProvider>
     );

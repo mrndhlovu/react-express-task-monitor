@@ -1,16 +1,15 @@
 import React from "react";
+import styled from "styled-components";
 
 import { Container } from "semantic-ui-react";
 
-import styled from "styled-components";
 import BoardsSummary from "./BoardsSummary";
 import HomeSideBar from "./HomeSideBar";
 
 const StyledContainer = styled(Container)`
   height: 100vh;
-  background-color: grey;
-  padding-top: 20px;
-  boarder-radius: 10px !important;
+  padding-top: 10px;
+  padding-left: 5px;
 `;
 
 const StyledWrapper = styled.div`

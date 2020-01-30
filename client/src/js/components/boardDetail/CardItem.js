@@ -10,13 +10,16 @@ import { Header } from "semantic-ui-react";
 
 const StyledCardDiv = styled.div`
   background-color: #fff !important;
-  border-radius: inherit;
   cursor: pointer;
   margin: 10px 5px !important;
   padding: 8px 0px 6px 10px;
   position: relative;
   text-decoration: none;
   opacity: ${props => props.isDragging && 0};
+`;
+
+const StyledHeader = styled(Header)`
+  font-size: 12px !important;
 `;
 
 const CardItem = ({
@@ -27,14 +30,16 @@ const CardItem = ({
 }) => {
   const styles = {
     backgroundColor: !isDragging && "#fff",
-    borderRadius: "5px",
-    boxShadow: !isDragging && "0 1px 0 rgba(15, 30, 66, 0.35)"
+    borderRadius: "2px",
+    boxShadow: !isDragging && "0 1px 0 rgba(15, 30, 66, 0.35)",
+    minHeight: "20px",
+    zIndex: 0
   };
 
   const wrappedCardItem = (
     <div style={styles}>
       <StyledCardDiv isDragging={isDragging}>
-        <Header size="small">{card.title}</Header>
+        <StyledHeader content={card.title} />
       </StyledCardDiv>
     </div>
   );

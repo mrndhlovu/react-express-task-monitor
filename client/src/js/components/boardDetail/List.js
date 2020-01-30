@@ -3,20 +3,26 @@ import styled from "styled-components";
 
 import { DropTarget } from "react-dnd";
 
-import { Header, Segment } from "semantic-ui-react";
+import { Header, Segment, Icon } from "semantic-ui-react";
 import CreateCard from "../sharedComponents/CreateCard";
 import CardItemWrapper from "./CardItemWrapper";
 import { Types } from "../../constants/constants";
 
 const StyledSegment = styled(Segment)`
-  max-width: 300px;
+  max-width: 272px;
   min-height: 100px;
   background-color: #ebecf0 !important;
   margin-right: 10px !important;
 `;
 
-const StyledHeaderHeader = styled(Header)`
-  padding-top: 5px !important;
+const StyledHeader = styled(Header)`
+  font-size: 13px !important;
+`;
+
+const HeaderWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 90% 10%;
+  padding-bottom: 10px;
 `;
 
 const List = ({
@@ -25,6 +31,7 @@ const List = ({
   connectDropTarget,
   sourceId,
   isOver,
+  showListActions,
   ...rest
 }) => {
   const { title, position, cards } = list;
@@ -38,8 +45,19 @@ const List = ({
   const wrappedColumn = (
     <div style={styles} id={`list-${position}`}>
       <StyledSegment>
-        <StyledHeaderHeader size="tiny">{title}</StyledHeaderHeader>
-
+        <HeaderWrapper>
+          <div>
+            <StyledHeader content={title} />
+          </div>
+          <div>
+            <Icon
+              link
+              name="ellipsis horizontal"
+              color="grey"
+              onClick={() => showListActions()}
+            />
+          </div>
+        </HeaderWrapper>
         <CardItemWrapper cards={cards} sourceId={position} {...rest} />
 
         <CreateCard
