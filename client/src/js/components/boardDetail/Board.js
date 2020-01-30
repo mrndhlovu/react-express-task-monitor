@@ -6,6 +6,7 @@ import BoardLists from "./BoardLists";
 
 const StyledContainer = styled.div`
   display: grid;
+  padding-left: 5px;
 `;
 
 const Board = () => {

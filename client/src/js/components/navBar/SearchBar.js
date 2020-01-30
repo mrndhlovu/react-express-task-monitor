@@ -11,6 +11,7 @@ const StyledDiv = styled.div`
 
 const StyledSearch = styled(Input)`
   border-radius: 5px !important;
+  background-color: #ffffff3d !important;
 `;
 
 const SearchBar = ({ results, value }) => {

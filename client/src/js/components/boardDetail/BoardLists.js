@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Backend from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 
-import BoardHeadActions from "../home/BoardHeadActions";
+import BoardHeader from "../home/BoardHeader";
 import ListGrid from "./ListGrid";
 import CreateBoard from "../sharedComponents/CreateBoard";
 import { filterObject } from "../../utils/appUtils";
@@ -249,9 +249,11 @@ class BoardLists extends Component {
       sourceId
     } = this.state;
 
+    const { board } = this.props;
+
     return (
       <DndProvider backend={Backend}>
-        <BoardHeadActions />
+        <BoardHeader boardTitle={board.title} />
         <StyledListContainer>
           <ListGrid
             activeList={activeList}

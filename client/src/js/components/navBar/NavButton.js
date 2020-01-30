@@ -1,9 +1,16 @@
 import React from "react";
+
 import { Button } from "semantic-ui-react";
+import styled from "styled-components";
+
+const StyledButton = styled(Button)`
+  background-color: #ffffff3d !important;
+`;
 
 const NavButton = ({ redirect, buttonText, iconName }) => {
   return (
-    <Button
+    <StyledButton
+      color="transparent"
       size="tiny"
       onClick={redirect}
       icon={iconName}
