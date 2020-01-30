@@ -14,11 +14,15 @@ const ButtonWrapper = styled.div`
   justify-self: start;
 `;
 
+const StyledHeader = styled(Header)`
+  font-size: 13px !important;
+`;
+
 export default function LeftBoardButtons({ boardTitle }) {
   return (
     <StyledDiv>
       <ButtonWrapper>
-        <Header content={boardTitle} />
+        <StyledHeader content={boardTitle} />
       </ButtonWrapper>
       <div>
         <NavButton iconName="star" />

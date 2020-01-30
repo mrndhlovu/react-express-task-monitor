@@ -9,8 +9,8 @@ import RightNavButtons from "./RightNavButtons";
 const NavWrapper = styled.div`
   display: grid;
   grid-template-columns: 10% 10% 70% 10%;
-  min-height: 50px;
-  padding: 5px 5px;
+  min-height: 40px;
+  padding: 5px 0 1px 5px;
   background: rgba(0, 0, 0, 0.15);
 `;
 

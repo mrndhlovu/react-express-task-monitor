@@ -15,7 +15,6 @@ const BoardHeader = ({ boardTitle }) => {
   return (
     <StyledHeader>
       <LeftBoardButtons boardTitle={boardTitle} />
-
       <RightBoardButtons />
     </StyledHeader>
   );
