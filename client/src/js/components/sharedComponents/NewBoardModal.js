@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Modal, Card, Button, Icon, TextArea, Input } from "semantic-ui-react";
+import { Modal, Card, Button, Icon, Input } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
   display: grid;

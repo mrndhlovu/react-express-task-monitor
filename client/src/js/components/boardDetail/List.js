@@ -1,92 +1,106 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import flow from "lodash/flow";
 
-import { DropTarget } from "react-dnd";
+import { DragSource, DropTarget } from "react-dnd";
 
-import { Header, Segment, Icon } from "semantic-ui-react";
-import CreateCard from "../sharedComponents/CreateCard";
-import CardItemWrapper from "./CardItemWrapper";
+import { Segment } from "semantic-ui-react";
+
 import { Types } from "../../constants/constants";
-
-const StyledSegment = styled(Segment)`
-  max-width: 272px;
-  min-height: 100px;
-  background-color: #ebecf0 !important;
-  margin-right: 10px !important;
-`;
-
-const StyledHeader = styled(Header)`
-  font-size: 13px !important;
-`;
-
-const HeaderWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 90% 10%;
-  padding-bottom: 10px;
-`;
+import CardItemWrapper from "./CardItemWrapper";
+import CreateCard from "../sharedComponents/CreateCard";
+import { BoardListContext } from "../../utils/contextUtils";
+import ListHeader from "./ListHeader";
 
 const List = ({
-  activeList,
-  list,
+  connectDragSource,
   connectDropTarget,
-  sourceId,
-  isOver,
-  showListActions,
+  list,
+  isDragging,
+  isOverCurrent,
   ...rest
 }) => {
+  const { showListActions, activeList, ...otherProps } = useContext(
+    BoardListContext
+  );
+
   const { title, position, cards } = list;
 
   const styles = {
-    display: "inline-block",
+    minWidth: "272px",
     verticalAlign: "top",
-    boxSizing: "border-box"
+    visibility: isDragging && "hidden",
+    marginRight: "10px"
   };
 
-  const wrappedColumn = (
-    <div style={styles} id={`list-${position}`}>
-      <StyledSegment>
-        <HeaderWrapper>
-          <div>
-            <StyledHeader content={title} />
-          </div>
-          <div>
-            <Icon
-              link
-              name="ellipsis horizontal"
-              color="grey"
-              onClick={() => showListActions()}
-            />
-          </div>
-        </HeaderWrapper>
-        <CardItemWrapper cards={cards} sourceId={position} {...rest} />
+  const wrappedList = (
+    <div style={styles}>
+      <Segment>
+        <ListHeader title={title} showListActions={showListActions} />
+        <CardItemWrapper
+          cards={cards}
+          sourceListId={position}
+          hoverIndex={position}
+          {...rest}
+          {...otherProps}
+        />
 
         <CreateCard
-          cards={cards}
           listId={position}
           activeList={activeList === position}
           {...rest}
         />
-      </StyledSegment>
+      </Segment>
     </div>
   );
 
-  return connectDropTarget(wrappedColumn);
+  return connectDragSource(connectDropTarget(wrappedList));
 };
 
 const target = {
   drop(props) {
+    const { draggingList, sourceId, list } = props;
+    if (draggingList) return props.reOrderList(sourceId, list.position);
     return props.handleChangeCardList();
   },
   hover(props) {
+    const { list, draggingList } = props;
+
+    props.updateDropTargetId(list.position);
+
+    if (!draggingList) return;
+
+    return {};
+  }
+};
+
+const source = {
+  beginDrag(props) {
     const { list } = props;
 
-    return props.updateDropTargetId(list.position);
+    props.updateDragOption();
+    props.updateSourceId(list.position);
+
+    return {};
+  },
+  endDrag(props) {
+    props.updateDragOption();
+
+    return props.handleDrop();
   }
 };
 
 const collect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+});
+
+const sortCollect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOverCurrent: monitor.isOver({ shallow: true })
 });
 
-export default DropTarget(Types.LIST, target, collect)(List);
+export default flow(
+  DragSource(Types.LIST, source, collect),
+  DropTarget(Types.LIST, target, sortCollect)
+)(List);

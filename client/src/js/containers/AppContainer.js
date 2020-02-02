@@ -8,6 +8,7 @@ import NavHeader from "../components/navBar/NavHeader";
 const Container = styled.div`
   background-color: ${props => props.bgColor};
   height: 100vh;
+  padding-left: 5px;
 `;
 
 class AppContainer extends Component {
