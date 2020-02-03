@@ -1,92 +1,115 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
-import { DropTarget } from "react-dnd";
+import flow from "lodash/flow";
 
-import { Header, Segment, Icon } from "semantic-ui-react";
-import CreateCard from "../sharedComponents/CreateCard";
-import CardItemWrapper from "./CardItemWrapper";
+import { DragSource, DropTarget } from "react-dnd";
+
+import { Segment } from "semantic-ui-react";
+
 import { Types } from "../../constants/constants";
+import CardsWrapper from "./CardsWrapper";
+import CreateCard from "../sharedComponents/CreateCard";
+import { BoardListContext } from "../../utils/contextUtils";
+import ListHeader from "./ListHeader";
 
-const StyledSegment = styled(Segment)`
-  max-width: 272px;
-  min-height: 100px;
+const StyledWrapper = styled(Segment)`
   background-color: #ebecf0 !important;
-  margin-right: 10px !important;
-`;
-
-const StyledHeader = styled(Header)`
-  font-size: 13px !important;
-`;
-
-const HeaderWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 90% 10%;
-  padding-bottom: 10px;
 `;
 
 const List = ({
-  activeList,
-  list,
+  connectDragSource,
   connectDropTarget,
-  sourceId,
-  isOver,
-  showListActions,
+  list,
+  isDragging,
+  isOverCurrent,
   ...rest
 }) => {
+  const { showListActions, activeList, ...otherProps } = useContext(
+    BoardListContext
+  );
+
   const { title, position, cards } = list;
 
   const styles = {
-    display: "inline-block",
+    minWidth: "272px",
     verticalAlign: "top",
-    boxSizing: "border-box"
+    visibility: isDragging && "hidden",
+    marginRight: "10px",
+    position: "relative",
+    whiteSpace: "nowrap"
   };
 
-  const wrappedColumn = (
-    <div style={styles} id={`list-${position}`}>
-      <StyledSegment>
-        <HeaderWrapper>
-          <div>
-            <StyledHeader content={title} />
-          </div>
-          <div>
-            <Icon
-              link
-              name="ellipsis horizontal"
-              color="grey"
-              onClick={() => showListActions()}
-            />
-          </div>
-        </HeaderWrapper>
-        <CardItemWrapper cards={cards} sourceId={position} {...rest} />
+  const wrappedList = (
+    <div style={styles}>
+      <StyledWrapper>
+        <ListHeader title={title} showListActions={showListActions} />
+        <CardsWrapper
+          cards={cards}
+          sourceListId={position}
+          hoverIndex={position}
+          {...rest}
+          {...otherProps}
+        />
 
         <CreateCard
-          cards={cards}
           listId={position}
           activeList={activeList === position}
-          {...rest}
+          {...otherProps}
         />
-      </StyledSegment>
+      </StyledWrapper>
     </div>
   );
 
-  return connectDropTarget(wrappedColumn);
+  return connectDragSource(connectDropTarget(wrappedList));
 };
 
 const target = {
   drop(props) {
+    const { draggingList, sourceId, list, reorderCards } = props;
+    if (draggingList) return props.reOrderList(sourceId, list.position);
+    if (reorderCards) return props.handleCardsReorder();
+
     return props.handleChangeCardList();
   },
-  hover(props) {
+  hover(props, monitor) {
     const { list } = props;
 
-    return props.updateDropTargetId(list.position);
+    if (!monitor.isOver({ shallow: false })) return;
+
+    props.updateDropTargetId(list.position);
+
+    return {};
+  }
+};
+
+const source = {
+  beginDrag(props) {
+    const { list } = props;
+
+    props.updateDragOption();
+    props.updateSourceId(list.position);
+
+    return {};
+  },
+  endDrag(props) {
+    props.updateDragOption();
+
+    return props.handleDrop();
   }
 };
 
 const collect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+});
+
+const sortCollect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
   isOverCurrent: monitor.isOver({ shallow: true })
 });
 
-export default DropTarget(Types.LIST, target, collect)(List);
+export default flow(
+  DragSource(Types.LIST, source, collect),
+  DropTarget(Types.LIST, target, sortCollect)
+)(List);

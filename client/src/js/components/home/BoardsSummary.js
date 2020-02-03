@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import { Container } from "semantic-ui-react";
-import { BoardsContext } from "../../utils/contextUtils";
+import { BoardContext } from "../../utils/contextUtils";
 import BoardSummary from "./BoardSummary";
 import styled from "styled-components";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
@@ -14,7 +14,7 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { boards, history, makeNewBoard } = useContext(BoardsContext);
+  const { boards, history, makeNewBoard } = useContext(BoardContext);
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
 

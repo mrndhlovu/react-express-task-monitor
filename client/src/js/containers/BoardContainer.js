@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 
-import { BoardsContext } from "../utils/contextUtils";
+import { BoardContext } from "../utils/contextUtils";
 import { getBoardDetail, makeBoardUpdate } from "../actions/BoardActions";
 import { getBoardDetails } from "../selectors/appSelectors";
 import Board from "../components/boardDetail/Board";
+
+const StyledContainer = styled.div`
+  display: grid;
+`;
 
 const mapStateToProps = state => ({
   board: getBoardDetails(state)
@@ -17,9 +22,11 @@ class BoardContainer extends Component {
   }
   render() {
     return (
-      <BoardsContext.Provider value={this.props}>
-        {this.props.board.dataReceived && <Board />}
-      </BoardsContext.Provider>
+      <BoardContext.Provider value={this.props}>
+        <StyledContainer>
+          {this.props.board.dataReceived && <Board />}
+        </StyledContainer>
+      </BoardContext.Provider>
     );
   }
 }

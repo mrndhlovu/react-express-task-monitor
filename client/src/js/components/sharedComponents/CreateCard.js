@@ -37,6 +37,7 @@ const StyledButton = styled.div`
 const StyleDiv = styled.div``;
 
 const StyledContainer = styled.div`
+  padding-top: 10px;
   min-width: 243px;
 `;
 

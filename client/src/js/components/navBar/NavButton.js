@@ -10,7 +10,6 @@ const StyledButton = styled(Button)`
 const NavButton = ({ redirect, buttonText, iconName }) => {
   return (
     <StyledButton
-      color="transparent"
       size="tiny"
       onClick={redirect}
       icon={iconName}

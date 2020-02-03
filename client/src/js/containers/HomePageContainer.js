@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { getBoardList, makeNewBoard } from "../actions/BoardActions";
 import { getBoards, getNewBoard } from "../selectors/appSelectors";
 import HomePage from "../components/home/HomePage";
-import { BoardsContext } from "../utils/contextUtils";
+import { BoardContext } from "../utils/contextUtils";
 
 const mapStateToProps = state => {
   return {
@@ -20,9 +20,9 @@ class HomePageContainer extends Component {
   }
   render() {
     return (
-      <BoardsContext.Provider value={this.props}>
+      <BoardContext.Provider value={this.props}>
         <HomePage />
-      </BoardsContext.Provider>
+      </BoardContext.Provider>
     );
   }
 }

@@ -1,25 +1,19 @@
-import React, { useContext } from "react";
-import styled from "styled-components";
+import React from "react";
 
-import { BoardsContext } from "../../utils/contextUtils";
+import Backend from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
+
 import BoardLists from "./BoardLists";
-
-const StyledContainer = styled.div`
-  display: grid;
-  padding-left: 5px;
-`;
+import BoardHeader from "../home/BoardHeader";
 
 const Board = () => {
-  const { board, makeBoardUpdate } = useContext(BoardsContext);
-
   return (
-    <StyledContainer>
-      <BoardLists
-        board={board.data}
-        makeBoardUpdate={makeBoardUpdate}
-        dataReceived={board.dataReceived}
-      />
-    </StyledContainer>
+    <>
+      <BoardHeader />
+      <DndProvider backend={Backend}>
+        <BoardLists />
+      </DndProvider>
+    </>
   );
 };
 
