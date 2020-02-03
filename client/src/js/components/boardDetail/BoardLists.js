@@ -30,6 +30,7 @@ const BoardLists = () => {
   const [showInputField, setShowInputField] = useState(false);
   const [sourceId, setSourceId] = useState(undefined);
   const [draggingList, setDraggingList] = useState(false);
+  const [reorderCards, setReorderCards] = useState(false);
 
   function handleAddList(event) {
     setNewListName(event.target.value);
@@ -68,7 +69,7 @@ const BoardLists = () => {
     sourceList.cards.push(newCard);
     const filteredBoard = filterObject(board.data, allowed);
 
-    makeBoardUpdate(id, filteredBoard);
+    // makeBoardUpdate(id, filteredBoard);
   }
 
   function handleOnChange(event) {
@@ -76,103 +77,93 @@ const BoardLists = () => {
   }
 
   function handleChangeCardList() {
-    const changeCardList = sourceId !== dropTargetId;
-    console.log("sourceId: ", sourceId, dropTargetId);
+    const adjustedCardPositions = [];
+    let newList;
+    let updatedSourceList;
 
-    if (changeCardList) {
-      console.log("changeCardList: ", changeCardList);
-      const adjustedCardPositions = [];
-      let newList;
-      let updatedSourceList;
+    const dropTargetLists = lists.filter(list => list.position !== sourceId);
 
-      const dropTargetLists = lists.filter(list => list.position !== sourceId);
+    const sourceList = lists.filter(list => list.position === sourceId).shift();
 
-      const sourceList = lists
-        .filter(list => list.position === sourceId)
-        .shift();
+    const draggingCard = sourceList.cards.find(
+      card => card.position === draggingCardId
+    );
 
-      const draggingCard = sourceList.cards.find(
-        card => card.position === draggingCardId
+    sourceList.cards
+      .filter(card => card.position !== draggingCardId)
+      .forEach((obj, index) =>
+        adjustedCardPositions.push({ ...obj, position: index + 1 })
       );
 
-      sourceList.cards
-        .filter(card => card.position !== draggingCardId)
-        .forEach((obj, index) =>
-          adjustedCardPositions.push({ ...obj, position: index + 1 })
-        );
+    updatedSourceList = {
+      ...sourceList,
+      cards: adjustedCardPositions
+    };
 
-      updatedSourceList = {
-        ...sourceList,
-        cards: adjustedCardPositions
-      };
+    dropTargetLists.find(
+      list =>
+        list.position === dropTargetId &&
+        list.cards.push({
+          ...draggingCard,
+          position: list.cards.length + 1
+        })
+    );
 
-      dropTargetLists.find(
-        list =>
-          list.position === dropTargetId &&
-          list.cards.push({
-            ...draggingCard,
-            position: list.cards.length + 1
-          })
-      );
+    newList = [updatedSourceList, ...dropTargetLists].sort(
+      (a, b) => a.position - b.position
+    );
 
-      newList = [updatedSourceList, ...dropTargetLists].sort(
-        (a, b) => a.position - b.position
-      );
-
-      setLists(newList);
-      setDropTargetColumnId(undefined);
-      setSourceId(undefined);
-    }
+    setLists(newList);
   }
 
-  function handleCardsReorder(hoverIndex, draggingCardId) {
-    const changeCardsOrder = sourceId === dropTargetId;
+  function updateHoverIndex(index) {
+    setHoverIndex(index);
+  }
 
-    if (changeCardsOrder) {
-      console.log("changeCardsOrder: ", changeCardsOrder);
-      const sourceList = lists
-        .filter(list => list.position === sourceId)
-        .shift();
+  function handleCardsReorder() {
+    const sourceList = lists.filter(list => list.position === sourceId).shift();
 
-      const newList = lists.filter(list => list.position !== sourceId);
+    const newList = lists.filter(list => list.position !== sourceId);
 
-      let adjustedCardPositions = [];
+    let adjustedCardPositions = [];
 
-      sourceList.cards.filter(card => {
-        const newCard = {
-          ...card,
-          position:
-            card.position === draggingCardId
-              ? hoverIndex
-              : card.position === hoverIndex
-              ? draggingCardId
-              : card.position
-        };
-        return adjustedCardPositions.push(newCard);
-      });
+    sourceList.cards.filter(card => {
+      const newCard = {
+        ...card,
+        position:
+          card.position === draggingCardId
+            ? hoverIndex
+            : card.position === hoverIndex
+            ? draggingCardId
+            : card.position
+      };
+      return adjustedCardPositions.push(newCard);
+    });
 
-      adjustedCardPositions.sort((a, b) => a.position - b.position);
+    adjustedCardPositions.sort((a, b) => a.position - b.position);
 
-      const updatedSourceList = { ...sourceList, cards: adjustedCardPositions };
+    const updatedSourceList = { ...sourceList, cards: adjustedCardPositions };
 
-      newList.push(updatedSourceList);
-      newList.sort((a, b) => a.position - b.position);
+    newList.push(updatedSourceList);
+    newList.sort((a, b) => a.position - b.position);
 
-      setLists(newList);
-      setDraggingCardId(draggingCardId);
-    }
+    setLists(newList);
+    setDraggingCardId(draggingCardId);
   }
 
   function updateDropTargetId(id) {
     setDropTargetColumnId(id);
+    updateHoverIndex(id);
+    if (dropTargetId === sourceId) setReorderCards(true);
+    else setReorderCards(false);
   }
 
   function updateSourceId(id) {
     setSourceId(id);
   }
 
-  function handleStartDrag(id, draggingCardId) {
-    setDraggingCardId(draggingCardId);
+  function handleStartDrag(id, cardId) {
+    setDraggingCardId(cardId);
     setDragging(true);
     updateSourceId(id);
     updateDropTargetId(id);
@@ -187,6 +178,11 @@ const BoardLists = () => {
     };
     // makeBoardUpdate(id, updatedList);
     console.log("updatedList: ", updatedList);
+
+    setDropTargetColumnId(undefined);
+    setDraggingCardId(undefined);
+    setSourceId(undefined);
+    setReorderCards(false);
   }
 
   function handleCancelAddCard() {
@@ -198,34 +194,27 @@ const BoardLists = () => {
   }
 
   function reOrderList() {
-    const changeListOrder = sourceId !== dropTargetId;
+    let updatedList = [];
 
-    if (changeListOrder && draggingList) {
-      console.log("changeListOrder: ", changeListOrder);
-      let updatedList = [];
+    const dropTargetList = lists
+      .filter(list => list.position === dropTargetId)
+      .map(obj => ({ ...obj, position: sourceId }))
+      .shift();
 
-      const dropTargetList = lists
-        .filter(list => list.position === dropTargetId)
-        .map(obj => ({ ...obj, position: sourceId }))
-        .shift();
+    const draggingList = lists
+      .filter(list => list.position === sourceId)
+      .map(obj => ({ ...obj, position: dropTargetId }))
+      .shift();
 
-      const draggingList = lists
-        .filter(list => list.position === sourceId)
-        .map(obj => ({ ...obj, position: dropTargetId }))
-        .shift();
+    let newList = lists.filter(
+      list => list.position !== sourceId && list.position !== dropTargetId
+    );
 
-      let newList = lists.filter(
-        list => list.position !== sourceId && list.position !== dropTargetId
-      );
+    updatedList.push(draggingList, dropTargetList, ...newList);
 
-      updatedList.push(draggingList, dropTargetList, ...newList);
+    updatedList.sort((a, b) => a.position - b.position);
 
-      updatedList.sort((a, b) => a.position - b.position);
-
-      setLists(updatedList);
-      setDropTargetColumnId(undefined);
-      setSourceId(undefined);
-    }
+    setLists(updatedList);
   }
 
   const context = {
@@ -234,10 +223,10 @@ const BoardLists = () => {
     draggingCardId,
     handleAddCardName,
     handleCancelAddCard,
-    handleCardsReorder,
     handleCreateCard,
     handleOnChange,
     handleStartDrag,
+    updateHoverIndex,
     lists,
     newCardName,
     showAddCardInput
@@ -255,6 +244,8 @@ const BoardLists = () => {
           updateDragOption={updateDragOption}
           updateDropTargetId={updateDropTargetId}
           updateSourceId={updateSourceId}
+          reorderCards={reorderCards}
+          handleCardsReorder={handleCardsReorder}
         />
 
         <CreateBoard

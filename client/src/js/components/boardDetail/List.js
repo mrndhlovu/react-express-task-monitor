@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import styled from "styled-components";
+
 import flow from "lodash/flow";
 
 import { DragSource, DropTarget } from "react-dnd";
@@ -59,16 +59,16 @@ const List = ({
 
 const target = {
   drop(props) {
-    const { draggingList, sourceId, list } = props;
+    const { draggingList, sourceId, list, reorderCards } = props;
     if (draggingList) return props.reOrderList(sourceId, list.position);
+    if (reorderCards) return props.handleCardsReorder();
+
     return props.handleChangeCardList();
   },
   hover(props) {
     const { list, draggingList } = props;
 
     props.updateDropTargetId(list.position);
-
-    if (!draggingList) return;
 
     return {};
   }

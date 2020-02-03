@@ -61,11 +61,10 @@ const source = {
 
 const target = {
   hover(props) {
-    const { card, draggingCardId, isOverCurrent } = props;
+    const { card, isOverCurrent } = props;
 
-    props.updateDropTargetId(card.position);
     if (isOverCurrent) return;
-    return props.handleCardsReorder(card.position, draggingCardId);
+    return props.updateDropTargetId(card.position);
   }
 };
 
