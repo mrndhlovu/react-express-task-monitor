@@ -1,84 +1,78 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
-import { DragSource, DropTarget } from "react-dnd";
-import flow from "lodash/flow";
-
-import { Types } from "../../constants/constants";
-
-import { Header } from "semantic-ui-react";
+import { Dropdown } from "semantic-ui-react";
+import { BoardListContext } from "../../utils/contextUtils";
 
 const StyledCardDiv = styled.div`
   cursor: pointer;
   margin: 10px 5px !important;
   padding: 10px 10px;
   position: relative;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 90% 10%;
+  align-items: center;
+  color: #42526e;
 `;
 
-const StyledHeader = styled(Header)`
+const StyledHeader = styled.div``;
+
+const Span = styled.span`
   font-size: 12px !important;
+  font-weight: 600;
 `;
 
-const CardItem = ({
-  card,
-  connectDragSource,
-  connectDropTarget,
-  isDragging
-}) => {
-  const styles = {
-    backgroundColor: !isDragging && "#fff",
-    borderRadius: "4px",
-    boxShadow: !isDragging && "0 1px 0 rgba(15, 30, 66, 0.35)",
-    minHeight: "20px",
-    visibility: isDragging && "hidden",
-    zIndex: 0
-  };
+const EditIconWrapper = styled.div`
+  justify-self: end;
+  font-size: 13px;
+  opacity: ${props => (props.showEditButton ? 1 : 0)};
+  margin-left: 8px;
+`;
 
-  const wrappedCardItem = (
-    <div style={styles}>
-      <StyledCardDiv>
-        <StyledHeader content={card.title} />
-      </StyledCardDiv>
-    </div>
+const CardItem = ({ card, sourceListId }) => {
+  const [showEditButton, setShowEditButton] = useState(false);
+  const { updateBoard, getSourceList, getFilteredBoard } = useContext(
+    BoardListContext
   );
 
-  return connectDragSource(connectDropTarget(wrappedCardItem));
-};
+  function handleDeleteCard() {
+    const newBoardLists = getFilteredBoard(sourceListId);
+    const sourceList = getSourceList(sourceListId).shift();
 
-const source = {
-  beginDrag(props) {
-    const { card, sourceListId } = props;
+    const newFilteredList = {
+      ...sourceList,
+      cards: sourceList.cards.filter(key => key.position !== card.position)
+    };
 
-    props.handleStartDrag(sourceListId, card.position);
+    newBoardLists.lists.push(newFilteredList);
+    newBoardLists.lists.sort((a, b) => a.position - b.position);
 
-    return {};
-  },
-  endDrag(props, monitor) {
-    if (!monitor.didDrop()) return;
-    return props.handleDrop();
+    updateBoard(newBoardLists);
   }
+
+  return (
+    <StyledCardDiv
+      edit={showEditButton}
+      onMouseEnter={() => setShowEditButton(!showEditButton)}
+      onMouseLeave={() => setShowEditButton(!showEditButton)}
+    >
+      <StyledHeader>
+        <Span>{card.title}</Span>
+      </StyledHeader>
+
+      <EditIconWrapper showEditButton={showEditButton}>
+        <Dropdown icon="pencil alternate" floating>
+          <Dropdown.Menu>
+            <Dropdown.Item>Move</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleDeleteCard()}>
+              Delete
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
+      </EditIconWrapper>
+    </StyledCardDiv>
+  );
 };
 
-const target = {
-  hover(props) {
-    const { card, isOverCurrent } = props;
-
-    if (isOverCurrent) return;
-    return props.updateDropTargetId(card.position);
-  }
-};
-
-const collect = (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
-});
-
-const sortCollect = (connect, monitor) => ({
-  isOverCard: monitor.isOver({ shallow: true }),
-  connectDropTarget: connect.dropTarget()
-});
-
-export default flow(
-  DragSource(Types.LIST, source, collect),
-  DropTarget(Types.LIST, target, sortCollect)
-)(CardItem);
+export default CardItem;

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { filterObject } from "../../utils/appUtils";
@@ -17,8 +17,9 @@ const BoardLists = () => {
   const { board, makeBoardUpdate } = useContext(BoardContext);
   const id = board.data._id;
   const allowed = ["title", "lists"];
+  const filteredBoard = filterObject(board.data, allowed);
 
-  const [lists, setLists] = useState(board.data.lists);
+  const [lists, setLists] = useState(filteredBoard.lists);
   const [activeList, setActiveList] = useState("");
   const [dragging, setDragging] = useState(false);
   const [draggingCardId, setDraggingCardId] = useState("");
@@ -58,6 +59,17 @@ const BoardLists = () => {
     setActiveList(listId);
   }
 
+  function getFilteredBoard(filterId) {
+    return {
+      ...filteredBoard,
+      lists: [...filteredBoard.lists.filter(list => list.position !== filterId)]
+    };
+  }
+
+  function updateBoard(data) {
+    return makeBoardUpdate(id, data);
+  }
+
   function handleCreateCard(listId) {
     const sourceList = lists.filter(list => list.position === listId).shift();
 
@@ -69,7 +81,7 @@ const BoardLists = () => {
     sourceList.cards.push(newCard);
     const filteredBoard = filterObject(board.data, allowed);
 
-    // makeBoardUpdate(id, filteredBoard);
+    makeBoardUpdate(id, filteredBoard);
   }
 
   function handleOnChange(event) {
@@ -83,7 +95,7 @@ const BoardLists = () => {
 
     const dropTargetLists = lists.filter(list => list.position !== sourceId);
 
-    const sourceList = lists.filter(list => list.position === sourceId).shift();
+    const sourceList = getSourceList(sourceId).shift();
 
     const draggingCard = sourceList.cards.find(
       card => card.position === draggingCardId
@@ -121,7 +133,7 @@ const BoardLists = () => {
   }
 
   function handleCardsReorder() {
-    const sourceList = lists.filter(list => list.position === sourceId).shift();
+    const sourceList = getSourceList(sourceId).shift();
 
     const newList = lists.filter(list => list.position !== sourceId);
 
@@ -169,22 +181,6 @@ const BoardLists = () => {
     updateDropTargetId(id);
   }
 
-  function handleDrop() {
-    const filteredBoard = filterObject(board.data, allowed);
-
-    const updatedList = {
-      ...filteredBoard,
-      lists
-    };
-    // makeBoardUpdate(id, updatedList);
-    console.log("updatedList: ", updatedList);
-
-    setDropTargetColumnId(undefined);
-    setDraggingCardId(undefined);
-    setSourceId(undefined);
-    setReorderCards(false);
-  }
-
   function handleCancelAddCard() {
     setActiveList("");
   }
@@ -217,19 +213,39 @@ const BoardLists = () => {
     setLists(updatedList);
   }
 
+  function handleDrop() {
+    const updatedList = {
+      ...filteredBoard,
+      lists
+    };
+    makeBoardUpdate(id, updatedList);
+
+    setDropTargetColumnId(undefined);
+    setDraggingCardId(undefined);
+    setSourceId(undefined);
+    setReorderCards(false);
+  }
+
+  const getSourceList = id => lists.filter(list => list.position === id);
+
   const context = {
     activeList,
+    boardId: id,
     dragging,
     draggingCardId,
+    filteredBoard,
+    getFilteredBoard,
+    getSourceList,
     handleAddCardName,
     handleCancelAddCard,
     handleCreateCard,
     handleOnChange,
     handleStartDrag,
-    updateHoverIndex,
     lists,
     newCardName,
-    showAddCardInput
+    showAddCardInput,
+    updateHoverIndex,
+    updateBoard
   };
 
   return (

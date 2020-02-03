@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import styled from "styled-components";
 
 import flow from "lodash/flow";
 
@@ -7,10 +8,14 @@ import { DragSource, DropTarget } from "react-dnd";
 import { Segment } from "semantic-ui-react";
 
 import { Types } from "../../constants/constants";
-import CardItemWrapper from "./CardItemWrapper";
+import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
 import { BoardListContext } from "../../utils/contextUtils";
 import ListHeader from "./ListHeader";
+
+const StyledWrapper = styled(Segment)`
+  background-color: #ebecf0 !important;
+`;
 
 const List = ({
   connectDragSource,
@@ -30,14 +35,16 @@ const List = ({
     minWidth: "272px",
     verticalAlign: "top",
     visibility: isDragging && "hidden",
-    marginRight: "10px"
+    marginRight: "10px",
+    position: "relative",
+    whiteSpace: "nowrap"
   };
 
   const wrappedList = (
     <div style={styles}>
-      <Segment>
+      <StyledWrapper>
         <ListHeader title={title} showListActions={showListActions} />
-        <CardItemWrapper
+        <CardsWrapper
           cards={cards}
           sourceListId={position}
           hoverIndex={position}
@@ -48,9 +55,9 @@ const List = ({
         <CreateCard
           listId={position}
           activeList={activeList === position}
-          {...rest}
+          {...otherProps}
         />
-      </Segment>
+      </StyledWrapper>
     </div>
   );
 
@@ -65,8 +72,10 @@ const target = {
 
     return props.handleChangeCardList();
   },
-  hover(props) {
-    const { list, draggingList } = props;
+  hover(props, monitor) {
+    const { list } = props;
+
+    if (!monitor.isOver({ shallow: false })) return;
 
     props.updateDropTargetId(list.position);
 

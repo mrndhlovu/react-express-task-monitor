@@ -10,23 +10,27 @@ const StyledHeader = styled(Header)`
 const HeaderWrapper = styled.div`
   display: grid;
   grid-template-columns: 90% 10%;
-  cursor: "pointer";
+  padding-bottom: 10px;
+`;
+
+const StyledDiv = styled.div`
+  cursor: pointer;
 `;
 
 const ListHeader = ({ title, showListActions }) => {
   return (
     <HeaderWrapper>
-      <div>
+      <StyledDiv>
         <StyledHeader content={title} />
-      </div>
-      <div>
+      </StyledDiv>
+      <StyledDiv>
         <Icon
           link
           name="ellipsis horizontal"
           color="grey"
           onClick={() => showListActions()}
         />
-      </div>
+      </StyledDiv>
     </HeaderWrapper>
   );
 };
