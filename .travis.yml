@@ -6,7 +6,6 @@ cache: yarn
 install:
   - yarn install
   - cd client && yarn install
-  - cd ..
 
 script:
   - yarn run build
