@@ -9,7 +9,7 @@ const StyledCard = styled.div`
 
 const BoardSummary = ({ header, id, history }) => {
   return (
-    <Card color="grey" onClick={() => history.push(`/board/${id}`)}>
+    <Card color="grey" onClick={() => history.push(`/boards/id/${id}`)}>
       <Card.Content>
         <Card.Header content={header} />
         <StyledCard />
