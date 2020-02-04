@@ -1,5 +1,5 @@
 const express = require("express");
-
+const path = require("path");
 const app = express();
 const dotenv = require("dotenv");
 
@@ -23,6 +23,7 @@ mongoose.connect(
 app.use(express.json());
 app.use(cors());
 
+app.use(express.static(path.join(__dirname, "client/public")));
 app.get("/", (req, res) => {
   res.send("We are on the Home page");
 });
