@@ -23,7 +23,7 @@ mongoose.connect(
 app.use(express.json());
 app.use(cors());
 
-app.use(express.static(path.join(__dirname, "client/public")));
+app.use(express.static(path.join(__dirname, "client/build")));
 app.get("/", (req, res) => {
   res.send("We are on the Home page");
 });
