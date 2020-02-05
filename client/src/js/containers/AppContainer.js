@@ -1,8 +1,6 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React from "react";
 import styled from "styled-components";
 
-import { getAuth } from "../actions/AuthActions";
 import NavHeader from "../components/navBar/NavHeader";
 
 const Container = styled.div`
@@ -11,20 +9,15 @@ const Container = styled.div`
   padding-left: 5px;
 `;
 
-class AppContainer extends Component {
-  componentDidMount() {
-    this.props.getAuth();
-  }
+const bgColor = "#828c90";
 
-  render() {
-    const bgColor = "#828c90";
-    return (
-      <Container bgColor={bgColor}>
-        <NavHeader />
-        {this.props.children}
-      </Container>
-    );
-  }
-}
+const AppContainer = ({ children }) => {
+  return (
+    <Container bgColor={bgColor}>
+      <NavHeader />
+      {children}
+    </Container>
+  );
+};
 
-export default connect(null, { getAuth })(AppContainer);
+export default AppContainer;

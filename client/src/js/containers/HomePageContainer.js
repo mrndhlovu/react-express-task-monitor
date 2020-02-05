@@ -1,32 +1,32 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router-dom";
 
-import { connect } from "react-redux";
-
-import { getBoardList, makeNewBoard } from "../actions/BoardActions";
-import { getBoards, getNewBoard } from "../selectors/appSelectors";
-import HomePage from "../components/home/HomePage";
 import { BoardContext } from "../utils/contextUtils";
+import { requestBoardList, requestNewBoard } from "../apis/apiRequests";
+import { useFetch } from "../utils/hookUtils";
+import HomePage from "../components/home/HomePage";
 
-const mapStateToProps = state => {
-  return {
-    boards: getBoards(state),
-    newBoard: getNewBoard(state)
+const HomePageContainer = ({ history }) => {
+  const [data, loading] = useFetch(requestBoardList);
+  const [boards, setBoards] = useState({});
+
+  const makeNewBoard = update => {
+    requestNewBoard(update).then(res => redirect(res.data._id));
   };
+
+  function redirect(id) {
+    history.push(`/boards/id/${id}`);
+  }
+
+  useEffect(() => {
+    setBoards(data);
+  }, [data]);
+
+  return (
+    <BoardContext.Provider value={{ boards, loading, makeNewBoard }}>
+      <HomePage />
+    </BoardContext.Provider>
+  );
 };
 
-class HomePageContainer extends Component {
-  componentDidMount() {
-    this.props.getBoardList();
-  }
-  render() {
-    return (
-      <BoardContext.Provider value={this.props}>
-        <HomePage />
-      </BoardContext.Provider>
-    );
-  }
-}
-
-export default connect(mapStateToProps, { getBoardList, makeNewBoard })(
-  HomePageContainer
-);
+export default withRouter(HomePageContainer);

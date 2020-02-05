@@ -1,7 +1,6 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, memo } from "react";
 import styled from "styled-components";
 
-import { filterObject } from "../../utils/appUtils";
 import CreateBoard from "../sharedComponents/CreateBoard";
 import ListGrid from "./ListGrid";
 import { BoardContext, BoardListContext } from "../../utils/contextUtils";
@@ -14,44 +13,38 @@ const StyledListContainer = styled.div`
 `;
 
 const BoardLists = () => {
-  const { board, makeBoardUpdate } = useContext(BoardContext);
-  const id = board.data._id;
-  const allowed = ["title", "lists"];
-  const filteredBoard = filterObject(board.data, allowed);
+  const { board, makeBoardUpdate, id } = useContext(BoardContext);
 
-  const [lists, setLists] = useState(filteredBoard.lists);
   const [activeList, setActiveList] = useState("");
   const [dragging, setDragging] = useState(false);
   const [draggingCardId, setDraggingCardId] = useState("");
+  const [draggingList, setDraggingList] = useState(false);
   const [dropTargetId, setDropTargetColumnId] = useState(undefined);
   const [hoverIndex, setHoverIndex] = useState("");
+  const [lists, setLists] = useState(board.lists);
   const [newCardName, setNewCardName] = useState("");
   const [newListName, setNewListName] = useState("");
+  const [reorderCards, setReorderCards] = useState(false);
   const [showAddCardInput, setShowAddCardInput] = useState(false);
   const [showInputField, setShowInputField] = useState(false);
   const [sourceId, setSourceId] = useState(undefined);
-  const [draggingList, setDraggingList] = useState(false);
-  const [reorderCards, setReorderCards] = useState(false);
+  const [update, setUpdate] = useState("");
 
   function handleAddList(event) {
     setNewListName(event.target.value);
   }
 
   function handleCreateList() {
-    const copyBoard = { ...board.data };
-
-    const data = {
+    const newList = {
       title: newListName,
-
       cards: [],
-      position: copyBoard.lists.length + 1
+      position: board.lists.length + 1
     };
 
-    copyBoard.lists.push(data);
+    board.lists.push(newList);
 
-    const filtered = filterObject(copyBoard, allowed);
-
-    makeBoardUpdate(id, filtered);
+    makeBoardUpdate(board);
+    setShowInputField(!showInputField);
   }
 
   function handleAddCardName(listId) {
@@ -61,13 +54,19 @@ const BoardLists = () => {
 
   function getFilteredBoard(filterId) {
     return {
-      ...filteredBoard,
-      lists: [...filteredBoard.lists.filter(list => list.position !== filterId)]
+      ...board,
+      lists: [...board.lists.filter(list => list.position !== filterId)]
     };
   }
 
   function updateBoard(data) {
-    return makeBoardUpdate(id, data);
+    setLists(data.lists);
+    return makeBoardUpdate(data);
+  }
+
+  function updateList(data) {
+    setUpdate(data);
+    setLists(data);
   }
 
   function handleCreateCard(listId) {
@@ -79,9 +78,9 @@ const BoardLists = () => {
     };
 
     sourceList.cards.push(newCard);
-    const filteredBoard = filterObject(board.data, allowed);
 
-    makeBoardUpdate(id, filteredBoard);
+    makeBoardUpdate(board);
+    setActiveList("");
   }
 
   function handleOnChange(event) {
@@ -89,12 +88,11 @@ const BoardLists = () => {
   }
 
   function handleChangeCardList() {
-    const adjustedCardPositions = [];
+    const newCards = [];
     let newList;
     let updatedSourceList;
 
     const dropTargetLists = lists.filter(list => list.position !== sourceId);
-
     const sourceList = getSourceList(sourceId).shift();
 
     const draggingCard = sourceList.cards.find(
@@ -103,13 +101,11 @@ const BoardLists = () => {
 
     sourceList.cards
       .filter(card => card.position !== draggingCardId)
-      .forEach((obj, index) =>
-        adjustedCardPositions.push({ ...obj, position: index + 1 })
-      );
+      .forEach((obj, index) => newCards.push({ ...obj, position: index + 1 }));
 
     updatedSourceList = {
       ...sourceList,
-      cards: adjustedCardPositions
+      cards: newCards
     };
 
     dropTargetLists.find(
@@ -125,7 +121,7 @@ const BoardLists = () => {
       (a, b) => a.position - b.position
     );
 
-    setLists(newList);
+    updateList(newList);
   }
 
   function updateHoverIndex(index) {
@@ -159,7 +155,7 @@ const BoardLists = () => {
     newList.push(updatedSourceList);
     newList.sort((a, b) => a.position - b.position);
 
-    setLists(newList);
+    updateList(newList);
     setDraggingCardId(draggingCardId);
   }
 
@@ -210,15 +206,15 @@ const BoardLists = () => {
 
     updatedList.sort((a, b) => a.position - b.position);
 
-    setLists(updatedList);
+    updateList(updatedList);
   }
 
   function handleDrop() {
     const updatedList = {
-      ...filteredBoard,
-      lists
+      ...board,
+      lists: update
     };
-    makeBoardUpdate(id, updatedList);
+    makeBoardUpdate(updatedList);
 
     setDropTargetColumnId(undefined);
     setDraggingCardId(undefined);
@@ -233,7 +229,7 @@ const BoardLists = () => {
     boardId: id,
     dragging,
     draggingCardId,
-    filteredBoard,
+    board,
     getFilteredBoard,
     getSourceList,
     handleAddCardName,
@@ -278,4 +274,4 @@ const BoardLists = () => {
   );
 };
 
-export default BoardLists;
+export default memo(BoardLists);

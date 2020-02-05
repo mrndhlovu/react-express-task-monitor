@@ -42,6 +42,7 @@ const source = {
   },
   endDrag(props, monitor) {
     if (!monitor.didDrop()) return;
+
     return props.handleDrop();
   }
 };

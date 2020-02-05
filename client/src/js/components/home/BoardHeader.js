@@ -16,7 +16,7 @@ const BoardHeader = () => {
   const { board } = useContext(BoardContext);
   return (
     <StyledHeader>
-      <LeftBoardButtons boardTitle={board.data.title} />
+      <LeftBoardButtons boardTitle={board.title} />
       <RightBoardButtons />
     </StyledHeader>
   );

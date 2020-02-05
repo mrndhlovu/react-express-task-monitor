@@ -1,36 +1,46 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import styled from "styled-components";
 
 import { BoardContext } from "../utils/contextUtils";
-import { getBoardDetail, makeBoardUpdate } from "../actions/BoardActions";
-import { getBoardDetails } from "../selectors/appSelectors";
 import Board from "../components/boardDetail/Board";
+import { useFetch } from "../utils/hookUtils";
+import { requestBoardDetail, requestBoardUpdate } from "../apis/apiRequests";
+import { filterObject } from "../utils/appUtils";
+import { withRouter } from "react-router-dom";
 
 const StyledContainer = styled.div`
   display: grid;
 `;
 
-const mapStateToProps = state => ({
-  board: getBoardDetails(state)
-});
+const BoardContainer = ({ match, history }) => {
+  const allowed = ["title", "lists"];
+  const { id } = match.params;
+  const [data, loading] = useFetch(
+    useCallback(() => requestBoardDetail(id)),
+    []
+  );
+  const [board, setBoard] = useState({});
 
-class BoardContainer extends Component {
-  componentDidMount() {
-    const { id } = this.props.match.params;
-    this.props.getBoardDetail(id);
-  }
-  render() {
-    return (
-      <BoardContext.Provider value={this.props}>
-        <StyledContainer>
-          {this.props.board.dataReceived && <Board />}
-        </StyledContainer>
-      </BoardContext.Provider>
+  const makeBoardUpdate = update => {
+    const requestBody = filterObject(update, allowed);
+    setBoard(requestBody);
+
+    requestBoardUpdate(id, requestBody).then(res =>
+      history.push(`/boards/id/${id}`)
     );
-  }
-}
+  };
 
-export default connect(mapStateToProps, { getBoardDetail, makeBoardUpdate })(
-  BoardContainer
-);
+  useEffect(() => {
+    setBoard(data);
+  }, [data, board]);
+
+  return (
+    <BoardContext.Provider value={{ board, makeBoardUpdate, id }}>
+      <StyledContainer>
+        {!loading && Object.keys(board).length > 0 ? <Board /> : "Loading..."}
+      </StyledContainer>
+    </BoardContext.Provider>
+  );
+};
+
+export default withRouter(memo(BoardContainer));
