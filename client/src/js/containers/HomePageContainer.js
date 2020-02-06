@@ -2,21 +2,17 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
 import { BoardContext } from "../utils/contextUtils";
-import { requestBoardList, requestNewBoard } from "../apis/apiRequests";
+import { requestNewBoard } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 
 const HomePageContainer = ({ history }) => {
-  const [data, loading] = useFetch(requestBoardList);
+  const [data, loading] = useFetch();
   const [boards, setBoards] = useState({});
 
   const makeNewBoard = update => {
-    requestNewBoard(update).then(res => redirect(res.data._id));
+    requestNewBoard(update).then(res => history.push(`/boards/id/${res._id}`));
   };
-
-  function redirect(id) {
-    history.push(`/boards/id/${id}`);
-  }
 
   useEffect(() => {
     setBoards(data);

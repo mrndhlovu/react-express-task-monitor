@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, memo } from "react";
+import React, { useContext, useState, memo } from "react";
 import styled from "styled-components";
 
 import CreateBoard from "../sharedComponents/CreateBoard";

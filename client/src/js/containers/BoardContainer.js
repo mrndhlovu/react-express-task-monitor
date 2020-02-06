@@ -1,12 +1,12 @@
-import React, { useEffect, useState, useCallback, memo } from "react";
+import React, { useEffect, useState, memo } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 import { BoardContext } from "../utils/contextUtils";
-import Board from "../components/boardDetail/Board";
-import { useFetch } from "../utils/hookUtils";
-import { requestBoardDetail, requestBoardUpdate } from "../apis/apiRequests";
 import { filterObject } from "../utils/appUtils";
-import { withRouter } from "react-router-dom";
+import { requestBoardUpdate } from "../apis/apiRequests";
+import { useFetch } from "../utils/hookUtils";
+import Board from "../components/boardDetail/Board";
 
 const StyledContainer = styled.div`
   display: grid;
@@ -15,11 +15,8 @@ const StyledContainer = styled.div`
 const BoardContainer = ({ match, history }) => {
   const allowed = ["title", "lists"];
   const { id } = match.params;
-  const [data, loading] = useFetch(
-    useCallback(() => requestBoardDetail(id)),
-    []
-  );
-  const [board, setBoard] = useState({});
+  const [data, loading] = useFetch(id);
+  const [board, setBoard] = useState(undefined);
 
   const makeBoardUpdate = update => {
     const requestBody = filterObject(update, allowed);
@@ -31,14 +28,14 @@ const BoardContainer = ({ match, history }) => {
   };
 
   useEffect(() => {
+    if (loading && data.length === 0) return;
+    console.log("data: ", data);
     setBoard(data);
-  }, [data, board]);
+  }, [data, loading]);
 
   return (
     <BoardContext.Provider value={{ board, makeBoardUpdate, id }}>
-      <StyledContainer>
-        {!loading && Object.keys(board).length > 0 ? <Board /> : "Loading..."}
-      </StyledContainer>
+      <StyledContainer>{board ? <Board /> : "Loading..."}</StyledContainer>
     </BoardContext.Provider>
   );
 };
