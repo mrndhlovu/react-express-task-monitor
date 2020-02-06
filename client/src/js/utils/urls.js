@@ -1,6 +1,6 @@
 "use es6";
 
-const getBaseUrl = () => "/react-boiler-plate";
+const getBaseUrl = () => "/";
 
 export const getRootUrl = () => getBaseUrl();
 

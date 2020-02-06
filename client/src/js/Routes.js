@@ -10,7 +10,7 @@ export default function Routes() {
   return (
     <Switch>
       <Route exact path="/" component={HomePageContainer} />
-      <Route path="/boards/id/:id" exact={true} component={BoardContainer} />
+      <Route path="/boards/id/:id" component={BoardContainer} />
     </Switch>
   );
 }

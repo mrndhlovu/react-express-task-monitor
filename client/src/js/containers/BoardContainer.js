@@ -29,7 +29,7 @@ const BoardContainer = ({ match, history }) => {
 
   useEffect(() => {
     if (loading && data.length === 0) return;
-    console.log("data: ", data);
+
     setBoard(data);
   }, [data, loading]);
 
