@@ -6,6 +6,7 @@ import { Header } from "semantic-ui-react";
 import Summary from "./Summary";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import { BoardContext } from "../../utils/contextUtils";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const Section = styled.div`
   display: grid;
@@ -26,7 +27,7 @@ const BoardSection = ({
     <>
       <Header icon={`${icon} outline`} as="h5" content={header} />
       <Section>
-        {!loading &&
+        {!loading ? (
           boards.map(
             board =>
               board.section.includes(section) && (
@@ -38,7 +39,10 @@ const BoardSection = ({
                   starred={board.section.includes("starred")}
                 />
               )
-          )}
+          )
+        ) : (
+          <UILoadingSpinner />
+        )}
 
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
       </Section>
