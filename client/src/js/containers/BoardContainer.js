@@ -8,6 +8,7 @@ import { filterObject } from "../utils/appUtils";
 import { requestBoardUpdate } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
+import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const StyledContainer = styled.div`
   display: grid;
@@ -35,7 +36,9 @@ const BoardContainer = ({ match, history }) => {
 
   return (
     <BoardContext.Provider value={{ board, makeBoardUpdate, id }}>
-      <StyledContainer>{board ? <Board /> : "Loading..."}</StyledContainer>
+      <StyledContainer>
+        {board ? <Board /> : <UILoadingSpinner />}
+      </StyledContainer>
     </BoardContext.Provider>
   );
 };
