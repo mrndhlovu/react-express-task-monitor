@@ -10,12 +10,12 @@ import { requestBoardUpdate } from "../../apis/apiRequests";
 const Board = () => {
   const { board, id } = useContext(BoardContext);
 
-  const now = new Date();
-  const previous = new Date(board.date);
-  const elapsed = now - previous;
-  const justCreated = elapsed / 1000 < 200;
-
   useEffect(() => {
+    const now = new Date();
+    const previous = new Date(board.date);
+    const elapsed = now - previous;
+    const justCreated = elapsed / 1000 < 200;
+
     const newBoard = filterObject(board, allowed);
     const updateSection =
       (newBoard.section.includes("default") ||
