@@ -20,7 +20,7 @@ const BoardSection = ({
   section,
   showNewBoardModal
 }) => {
-  const { boards, loading } = useContext(BoardContext);
+  const { boards, loading, handleBoardStarClick } = useContext(BoardContext);
 
   return (
     <>
@@ -28,9 +28,15 @@ const BoardSection = ({
       <Section>
         {!loading &&
           boards.map(
-            key =>
-              key.section.includes(section) && (
-                <Summary key={key._id} id={key._id} header={key.title} />
+            board =>
+              board.section.includes(section) && (
+                <Summary
+                  key={board._id}
+                  id={board._id}
+                  header={board.title}
+                  handleBoardStarClick={handleBoardStarClick}
+                  starred={board.section.includes("starred")}
+                />
               )
           )}
 

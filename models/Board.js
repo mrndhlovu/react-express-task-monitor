@@ -18,6 +18,10 @@ const BoardSchema = mongoose.Schema({
     type: Array,
     required: true,
     default: ["default"]
+  },
+  lastViewed: {
+    type: Date,
+    default: Date.now()
   }
 });
 
