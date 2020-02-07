@@ -29,7 +29,7 @@ const BoardSection = ({
         {!loading &&
           boards.map(
             key =>
-              key.section === section && (
+              key.section.includes(section) && (
                 <Summary key={key._id} id={key._id} header={key.title} />
               )
           )}

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import Backend from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 
 import store from "./store";
 import BaseRouter from "./Routes";
@@ -13,9 +15,11 @@ class App extends Component {
     return (
       <Provider store={store}>
         <HashRouter>
-          <AppContainer>
-            <BaseRouter />
-          </AppContainer>
+          <DndProvider backend={Backend}>
+            <AppContainer>
+              <BaseRouter />
+            </AppContainer>
+          </DndProvider>
         </HashRouter>
       </Provider>
     );

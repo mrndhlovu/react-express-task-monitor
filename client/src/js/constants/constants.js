@@ -9,3 +9,5 @@ export const Types = {
   LIST: "list",
   CARD: "card"
 };
+
+export const allowed = ["title", "lists", "section"];

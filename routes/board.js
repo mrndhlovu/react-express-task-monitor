@@ -29,7 +29,7 @@ router.delete("/id/:boardId", async (req, res) => {
 });
 
 router.patch("/id/:boardId/update", async (req, res) => {
-  const { title, lists } = req.body;
+  const { title, lists, section } = req.body;
 
   try {
     const updatedBoard = await Board.updateOne(
@@ -37,7 +37,8 @@ router.patch("/id/:boardId/update", async (req, res) => {
       {
         $set: {
           title,
-          lists
+          lists,
+          section
         }
       }
     );

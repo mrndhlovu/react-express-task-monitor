@@ -2,6 +2,7 @@ import React, { useEffect, useState, memo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
+import { allowed } from "../constants/constants";
 import { BoardContext } from "../utils/contextUtils";
 import { filterObject } from "../utils/appUtils";
 import { requestBoardUpdate } from "../apis/apiRequests";
@@ -13,7 +14,6 @@ const StyledContainer = styled.div`
 `;
 
 const BoardContainer = ({ match, history }) => {
-  const allowed = ["title", "lists"];
   const { id } = match.params;
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(undefined);
