@@ -1,0 +1,8 @@
+body {
+  font-family: "Roboto", sans-serif, "Montserrat", sans-serif;
+  font-size: small;
+}
+
+.ui.tiny.modal {
+  width: 300px !important;
+}
