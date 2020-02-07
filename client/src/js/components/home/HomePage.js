@@ -8,7 +8,7 @@ import HomeSideBar from "./HomeSideBar";
 
 const StyledContainer = styled(Container)`
   height: 100vh;
-  padding-top: 10px;
+  margin-top: 40px;
   padding-left: 5px;
 `;
 

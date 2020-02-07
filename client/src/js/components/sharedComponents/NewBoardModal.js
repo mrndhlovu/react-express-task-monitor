@@ -8,6 +8,11 @@ const StyledDiv = styled.div`
 
   background-color: #838c91;
   padding: 9px 9px;
+  max-width: 300px;
+
+  &:.ui.tiny.modal {
+    width: 300px !important;
+  }
 `;
 
 const StyledCardContent = styled(Card.Content)`
@@ -21,7 +26,7 @@ const StyledTextArea = styled(Input)`
 `;
 
 const TextAreaWrapper = styled.div`
-  min-width: 243px;
+  width: 100%;
   padding-bottom: 10px;
 `;
 
@@ -32,7 +37,12 @@ const NewBoardModal = ({
   handleCreateClick
 }) => {
   return (
-    <Modal dimmer centered={false} size="tiny" open={createBoard}>
+    <Modal
+      className="board-modal"
+      centered={false}
+      size="tiny"
+      open={createBoard}
+    >
       <StyledDiv>
         <TextAreaWrapper>
           <StyledCardContent extra>

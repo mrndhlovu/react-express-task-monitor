@@ -11,7 +11,9 @@ const HomePageContainer = ({ history }) => {
   const [boards, setBoards] = useState({});
 
   const makeNewBoard = update => {
-    requestNewBoard(update).then(res => history.push(`/boards/id/${res._id}`));
+    requestNewBoard(update).then(res =>
+      history.push(`/boards/id/${res.data._id}`)
+    );
   };
 
   useEffect(() => {

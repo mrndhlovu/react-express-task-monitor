@@ -1,21 +1,44 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Card } from "semantic-ui-react";
-
 const StyledCard = styled.div`
-  min-height: 50px;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  background-color: #dce3eb;
+  cursor: pointer;
+  border-radius: 5px;
+  height: 111px;
+  opacity: 5;
+
+  &:hover {
+    background-color: #dce3db;
+  }
+`;
+
+const Card = styled.div`
+  max-width: 242px;
+  max-height: 100px;
+`;
+
+const Wrapper = styled.div`
+  max-width: 250px;
+  height: 100%;
+`;
+
+const Header = styled.h5`
+  color: #8f99a9;
 `;
 
 const CreateNewBoard = ({ showNewBoardModal }) => {
   return (
-    <Card color="grey" onClick={() => showNewBoardModal()}>
-      <Card.Content>
+    <Wrapper>
+      <Card color="grey" onClick={() => showNewBoardModal()}>
         <StyledCard>
-          <Card.Header content="Create new board" />
+          <Header>Create new board</Header>
         </StyledCard>
-      </Card.Content>
-    </Card>
+      </Card>
+    </Wrapper>
   );
 };
 

@@ -1,20 +1,18 @@
 import React, { useContext, useState } from "react";
-
-import { Container } from "semantic-ui-react";
-import { BoardContext } from "../../utils/contextUtils";
-import Summary from "./Summary";
 import styled from "styled-components";
-import CreateNewBoard from "../sharedComponents/CreateNewBoard";
+
+import { BoardContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
+import BoardSection from "./BoardSection";
 
 const StyledContainer = styled.div`
   justify-self: start;
-  padding-left: 50px;
+  padding-left: 10px;
   width: 100%;
 `;
 
 const BoardsSummary = () => {
-  const { boards, makeNewBoard, loading } = useContext(BoardContext);
+  const { makeNewBoard } = useContext(BoardContext);
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
 
@@ -28,8 +26,7 @@ const BoardsSummary = () => {
 
   const handleCreateClick = () => {
     const body = {
-      title: newBoardName,
-      list: []
+      title: newBoardName
     };
 
     makeNewBoard(body);
@@ -38,15 +35,16 @@ const BoardsSummary = () => {
 
   return (
     <StyledContainer>
-      <Container>
-        {loading
-          ? "Loading..."
-          : boards.map(key => (
-              <Summary key={key._id} id={key._id} header={key.title} />
-            ))}
+      <BoardSection icon="star" header="Starred Boards" section="starred" />
+      <BoardSection icon="clock" header="Recently Viewed" section="recent" />
+      <BoardSection
+        icon="user"
+        header="Personal Boards"
+        section="default"
+        showNewBoardModal={showNewBoardModal}
+        isDefault={true}
+      />
 
-        <CreateNewBoard showNewBoardModal={showNewBoardModal} />
-      </Container>
       {createBoard && (
         <NewBoardModal
           showNewBoardModal={showNewBoardModal}

@@ -13,6 +13,11 @@ const BoardSchema = mongoose.Schema({
     type: Array,
     required: true,
     default: [Object]
+  },
+  section: {
+    type: String,
+    required: true,
+    default: "default"
   }
 });
 
