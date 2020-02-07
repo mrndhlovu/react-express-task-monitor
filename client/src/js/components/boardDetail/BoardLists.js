@@ -10,6 +10,7 @@ const StyledListContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   vertical-align: top;
+  height: 100vh;
 `;
 
 const BoardLists = () => {

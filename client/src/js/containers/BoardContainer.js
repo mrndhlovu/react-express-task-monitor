@@ -22,10 +22,14 @@ const BoardContainer = ({ match, history }) => {
   const makeBoardUpdate = update => {
     const requestBody = filterObject(update, allowed);
     setBoard(requestBody);
-
     requestBoardUpdate(id, requestBody).then(res =>
       history.push(`/boards/id/${id}`)
     );
+  };
+
+  const handleColorPick = color => {
+    const newBoard = { ...data, color };
+    makeBoardUpdate(newBoard);
   };
 
   useEffect(() => {
@@ -35,7 +39,9 @@ const BoardContainer = ({ match, history }) => {
   }, [data, loading]);
 
   return (
-    <BoardContext.Provider value={{ board, makeBoardUpdate, id }}>
+    <BoardContext.Provider
+      value={{ board, makeBoardUpdate, id, handleColorPick }}
+    >
       <StyledContainer>
         {board ? <Board /> : <UILoadingSpinner />}
       </StyledContainer>

@@ -18,7 +18,6 @@ const StyledCard = styled.div`
 
 const Card = styled.div`
   max-width: 242px;
-  max-height: 100px;
 `;
 
 const Wrapper = styled.div`

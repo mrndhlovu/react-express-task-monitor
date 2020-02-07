@@ -49,17 +49,18 @@ router.delete("/id/:boardId", async (req, res) => {
 });
 
 router.patch("/id/:boardId/update", async (req, res) => {
-  const { title, lists, section } = req.body;
+  const { title, lists, section, color } = req.body;
   const now = new Date();
   try {
     const updatedBoard = await Board.updateOne(
       { _id: req.params.boardId },
       {
         $set: {
-          title,
+          color,
+          lastViewed: now,
           lists,
           section,
-          lastViewed: now
+          title
         }
       }
     );

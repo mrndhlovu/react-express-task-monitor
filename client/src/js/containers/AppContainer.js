@@ -4,16 +4,14 @@ import styled from "styled-components";
 import NavHeader from "../components/navBar/NavHeader";
 
 const Container = styled.div`
-  background-color: ${props => props.bgColor};
   height: 100vh;
   padding-left: 5px;
+  background-color: #acb4bb;
 `;
-
-const bgColor = "#828c90";
 
 const AppContainer = ({ children }) => {
   return (
-    <Container bgColor={bgColor}>
+    <Container>
       <NavHeader />
       {children}
     </Container>

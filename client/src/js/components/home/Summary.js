@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Card, Icon } from "semantic-ui-react";
+import { Icon, Header } from "semantic-ui-react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -9,13 +9,14 @@ const StyledCard = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  cursor: pointer;
+  padding: 13px 0 0 13px;
 `;
 
 const StarWrapper = styled.div`
   display: grid;
   justify-items: end;
-  margin: 0 5px 5px 0;
+  margin-right: 10px;
+  position: relative;
 `;
 
 const Wrapper = styled.div`
@@ -23,22 +24,37 @@ const Wrapper = styled.div`
   padding-bottom: 10px;
 `;
 
-const Summary = ({ header, id, history, handleBoardStarClick, starred }) => (
+const Card = styled.div`
+  max-width: 242px;
+  height: 111px;
+  background-color: ${props => props.color};
+  border-radius: 5px;
+  height: 111px;
+  opacity: 5;
+  cursor: pointer;
+`;
+
+const Summary = ({
+  header,
+  id,
+  history,
+  handleBoardStarClick,
+  starred,
+  color
+}) => (
   <Wrapper>
-    <Card color="grey">
-      <Card.Content>
-        <HeaderWrapper onClick={() => history.push(`/boards/id/${id}`)}>
-          <Card.Header content={header} />
-          <StyledCard />
-        </HeaderWrapper>
-        <StarWrapper>
-          <Icon
-            name="star outline"
-            onClick={() => handleBoardStarClick(id)}
-            color={starred ? "yellow" : "grey"}
-          />
-        </StarWrapper>
-      </Card.Content>
+    <Card color={color}>
+      <HeaderWrapper onClick={() => history.push(`/boards/id/${id}`)}>
+        <Header as="h5" content={header} />
+        <StyledCard />
+      </HeaderWrapper>
+      <StarWrapper>
+        <Icon
+          name="star outline"
+          onClick={() => handleBoardStarClick(id)}
+          color={starred ? "yellow" : "grey"}
+        />
+      </StarWrapper>
     </Card>
   </Wrapper>
 );

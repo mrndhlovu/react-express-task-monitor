@@ -22,6 +22,10 @@ const BoardSchema = mongoose.Schema({
   lastViewed: {
     type: Date,
     default: Date.now()
+  },
+  color: {
+    type: String,
+    default: "#dce3eb"
   }
 });
 

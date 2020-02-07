@@ -12,12 +12,12 @@ const StyledHeader = styled.div`
   grid-template-columns: 1fr 1fr;
 `;
 
-const BoardHeader = () => {
+const BoardHeader = ({ handleShowMenuClick }) => {
   const { board } = useContext(BoardContext);
   return (
     <StyledHeader>
       <LeftBoardButtons boardTitle={board.title} />
-      <RightBoardButtons />
+      <RightBoardButtons handleShowMenuClick={handleShowMenuClick} />
     </StyledHeader>
   );
 };

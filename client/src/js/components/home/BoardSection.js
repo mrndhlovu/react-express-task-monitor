@@ -37,6 +37,7 @@ const BoardSection = ({
                   header={board.title}
                   handleBoardStarClick={handleBoardStarClick}
                   starred={board.section.includes("starred")}
+                  color={board.color}
                 />
               )
           )
