@@ -8,7 +8,7 @@ const Container = styled.div`
   justify-items: center;
   min-height: 100vh;
   width: 100%;
-  opacity: 0.5;
+  opacity: 0.4;
 `;
 
 const UILoadingSpinner = () => {
