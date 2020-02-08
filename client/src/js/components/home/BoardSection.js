@@ -10,8 +10,15 @@ import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const Section = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 250px);
+  grid-template-columns: repeat(
+    auto-fill,
+    ${props => (props.mobile ? "50%" : "242px")}
+  );
   vertical-align: top;
+`;
+
+const StyledHeader = styled(Header)`
+  font-size: 16px !important;
 `;
 
 const BoardSection = ({
@@ -21,12 +28,14 @@ const BoardSection = ({
   section,
   showNewBoardModal
 }) => {
-  const { boards, loading, handleBoardStarClick } = useContext(BoardContext);
+  const { boards, loading, handleBoardStarClick, mobile } = useContext(
+    BoardContext
+  );
 
   return (
     <>
-      <Header icon={`${icon} outline`} as="h5" content={header} />
-      <Section>
+      <StyledHeader icon={`${icon} outline`} content={header} />
+      <Section mobile={mobile}>
         {!loading ? (
           boards.map(
             board =>

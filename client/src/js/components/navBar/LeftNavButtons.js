@@ -2,12 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 import NavButton from "./NavButton";
+import SearchBar from "./SearchBar";
 
 const StyledDiv = styled.div`
-  display: inline-block;
+  display: flex;
+  padding-left: 3px;
 `;
 
-const LeftNavButtons = ({ history }) => {
+const LeftNavButtons = ({ history, isLoading, results, value }) => {
   return (
     <StyledDiv>
       <NavButton iconName="home" redirect={() => history.push("/")} />
@@ -18,6 +20,8 @@ const LeftNavButtons = ({ history }) => {
         iconName="columns"
         buttonText="Boards"
       />
+
+      <SearchBar isLoading={isLoading} results={results} value={value} />
     </StyledDiv>
   );
 };

@@ -1,20 +1,39 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import NavHeader from "../components/navBar/NavHeader";
+import SearchPage from "../components/search/SearchPage";
+import { DimensionContext } from "../utils/contextUtils";
+import { useDimensions } from "../utils/hookUtils";
 
 const Container = styled.div`
   height: 100vh;
-  padding-left: 5px;
   background-color: #acb4bb;
 `;
 
 const AppContainer = ({ children }) => {
+  const [search, setSearch] = useState(false);
+  const [color, setColor] = useState(null);
+  const { device, dimensions } = useDimensions();
+
+  const handleSearchClick = e => {
+    setSearch(e.target.value);
+  };
+
+  const getBoardBgColor = bgColor => {
+    setColor(bgColor);
+  };
+
   return (
-    <Container>
-      <NavHeader />
-      {children}
-    </Container>
+    <DimensionContext.Provider
+      value={{ dimensions, device, search, handleSearchClick, getBoardBgColor }}
+    >
+      <Container>
+        <NavHeader color={color} />
+        {search && <SearchPage />}
+        {children}
+      </Container>
+    </DimensionContext.Provider>
   );
 };
 

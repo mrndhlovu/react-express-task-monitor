@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { Icon, Header } from "semantic-ui-react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import { DimensionContext } from "../../utils/contextUtils";
 
 const StyledCard = styled.div`
   min-height: 50px;
@@ -25,8 +26,6 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
-  max-width: 242px;
-  height: 111px;
   background-color: ${props => props.color};
   border-radius: 5px;
   height: 111px;
@@ -41,22 +40,26 @@ const Summary = ({
   handleBoardStarClick,
   starred,
   color
-}) => (
-  <Wrapper>
-    <Card color={color}>
-      <HeaderWrapper onClick={() => history.push(`/boards/id/${id}`)}>
-        <Header as="h5" content={header} />
-        <StyledCard />
-      </HeaderWrapper>
-      <StarWrapper>
-        <Icon
-          name="star outline"
-          onClick={() => handleBoardStarClick(id)}
-          color={starred ? "yellow" : "grey"}
-        />
-      </StarWrapper>
-    </Card>
-  </Wrapper>
-);
+}) => {
+  const { mobile } = useContext(DimensionContext).device;
+
+  return (
+    <Wrapper>
+      <Card color={color} mobile={mobile}>
+        <HeaderWrapper onClick={() => history.push(`/boards/id/${id}`)}>
+          <Header as="h5" content={header} />
+          <StyledCard />
+        </HeaderWrapper>
+        <StarWrapper>
+          <Icon
+            name="star outline"
+            onClick={() => handleBoardStarClick(id)}
+            color={starred ? "yellow" : "grey"}
+          />
+        </StarWrapper>
+      </Card>
+    </Wrapper>
+  );
+};
 
 export default withRouter(Summary);

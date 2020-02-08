@@ -1,9 +1,9 @@
-import React, { useEffect, useState, memo } from "react";
+import React, { useEffect, useState, memo, useContext } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { allowed } from "../constants/constants";
-import { BoardContext } from "../utils/contextUtils";
+import { BoardContext, DimensionContext } from "../utils/contextUtils";
 import { filterObject } from "../utils/appUtils";
 import { requestBoardUpdate } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
@@ -18,10 +18,12 @@ const BoardContainer = ({ match, history }) => {
   const { id } = match.params;
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(undefined);
+  const { getBoardBgColor } = useContext(DimensionContext);
 
   const makeBoardUpdate = update => {
     const requestBody = filterObject(update, allowed);
     setBoard(requestBody);
+    getBoardBgColor(update.color);
     requestBoardUpdate(id, requestBody).then(res =>
       history.push(`/boards/id/${id}`)
     );
@@ -34,9 +36,9 @@ const BoardContainer = ({ match, history }) => {
 
   useEffect(() => {
     if (loading && data.length === 0) return;
-
-    setBoard(data);
-  }, [data, loading]);
+    getBoardBgColor(board && board.color);
+    setBoard(board ? board : data);
+  }, [data, loading, getBoardBgColor, board]);
 
   return (
     <BoardContext.Provider

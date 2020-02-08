@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { DimensionContext } from "../../utils/contextUtils";
 
 const StyledCard = styled.div`
   display: grid;
@@ -16,13 +17,12 @@ const StyledCard = styled.div`
   }
 `;
 
-const Card = styled.div`
-  max-width: 242px;
-`;
+const Card = styled.div``;
 
 const Wrapper = styled.div`
-  max-width: 250px;
+  max-width:   max-width: ${props => (props.mobile ? "50%" : "242px")};
   height: 100%;
+  margin-right: 10px;
 `;
 
 const Header = styled.h5`
@@ -30,9 +30,11 @@ const Header = styled.h5`
 `;
 
 const CreateNewBoard = ({ showNewBoardModal }) => {
+  const { mobile } = useContext(DimensionContext).device;
+
   return (
-    <Wrapper>
-      <Card color="grey" onClick={() => showNewBoardModal()}>
+    <Wrapper mobile={mobile}>
+      <Card mobile={mobile} color="grey" onClick={() => showNewBoardModal()}>
         <StyledCard>
           <Header>Create new board</Header>
         </StyledCard>
