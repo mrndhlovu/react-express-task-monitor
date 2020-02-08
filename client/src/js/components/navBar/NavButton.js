@@ -8,16 +8,17 @@ const StyledButton = styled(Button)`
   background-color: #ffffff3d !important;
 `;
 
-const NavButton = ({ redirect, buttonText, iconName }) => {
+const NavButton = ({ redirect, buttonText, iconName, forceText }) => {
   const { mobile } = useContext(DimensionContext).device;
-  return mobile ? (
+
+  return mobile && !forceText ? (
     <StyledButton size="tiny" onClick={redirect} icon={iconName} />
   ) : (
     <StyledButton
       size="tiny"
       onClick={redirect}
+      content={buttonText}
       icon={iconName}
-      content={!mobile && buttonText}
     />
   );
 };

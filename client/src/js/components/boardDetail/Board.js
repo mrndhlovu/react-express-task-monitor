@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
 import BoardLists from "./BoardLists";
-import BoardHeader from "../home/BoardHeader";
+import BoardHeader from "./BoardHeader";
 import { BoardContext } from "../../utils/contextUtils";
 import RightBoardMenu from "./RightBoardMenu";
 import { Sidebar } from "semantic-ui-react";
@@ -10,7 +10,6 @@ import BackGroundColors from "./BackGroundColors";
 
 const BoardWrapper = styled.div`
   background-color: ${props => props.bgColor};
-  padding-left: 10px;
 `;
 
 const Board = () => {

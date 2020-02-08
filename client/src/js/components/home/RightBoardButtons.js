@@ -4,18 +4,19 @@ import styled from "styled-components";
 import NavButton from "../navBar/NavButton";
 
 const StyledDiv = styled.div`
-  justify-self: end;
-  padding-right: 7px;
+  padding-right: 4px;
+  justify-self: ${props => (props.mobile ? "center" : "end")};
 `;
 
-const RightBoardButtons = ({ handleShowMenuClick }) => {
+const RightBoardButtons = ({ handleShowMenuClick, mobile }) => {
   return (
-    <StyledDiv>
-      <NavButton buttonText="Butler" />
+    <StyledDiv mobile={mobile}>
+      <NavButton buttonText="Butler" forceText={true} />
       <NavButton
         iconName="ellipsis horizontal"
         buttonText="Show Menu"
         redirect={() => handleShowMenuClick()}
+        forceText={true}
       />
     </StyledDiv>
   );
