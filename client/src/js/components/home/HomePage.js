@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { Container } from "semantic-ui-react";
 
 import BoardsSummary from "./BoardsSummary";
 import HomeSideBar from "./HomeSideBar";
+import { DimensionContext } from "../../utils/contextUtils";
 
 const StyledContainer = styled(Container)`
   height: 100vh;
@@ -14,16 +15,19 @@ const StyledContainer = styled(Container)`
 
 const StyledWrapper = styled.div`
   display: grid;
-  grid-template-columns: 20% 80%;
+  grid-template-columns: ${props => (props.mobile ? "100%" : "20% 80%")};
 `;
 
-const HomePage = () => (
-  <StyledContainer>
-    <StyledWrapper>
-      <HomeSideBar />
-      <BoardsSummary />
-    </StyledWrapper>
-  </StyledContainer>
-);
+const HomePage = () => {
+  const { mobile } = useContext(DimensionContext).device;
+  return (
+    <StyledContainer>
+      <StyledWrapper mobile={mobile}>
+        {!mobile && <HomeSideBar />}
+        <BoardsSummary />
+      </StyledWrapper>
+    </StyledContainer>
+  );
+};
 
 export default HomePage;

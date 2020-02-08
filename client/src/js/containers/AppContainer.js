@@ -14,7 +14,6 @@ const Container = styled.div`
 const AppContainer = ({ children }) => {
   const [search, setSearch] = useState(false);
   const { device, dimensions } = useDimensions();
-  console.log("device: ", device);
 
   const handleSearchClick = e => {
     setSearch(e.target.value);

@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
-import { BoardContext } from "../utils/contextUtils";
+import { BoardContext, DimensionContext } from "../utils/contextUtils";
 import { requestNewBoard, requestBoardUpdate } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 
 const HomePageContainer = ({ history }) => {
+  const { mobile } = useContext(DimensionContext).device;
   const [data, loading] = useFetch();
   const [boards, setBoards] = useState({});
 
@@ -34,7 +35,7 @@ const HomePageContainer = ({ history }) => {
 
   return (
     <BoardContext.Provider
-      value={{ boards, loading, makeNewBoard, handleBoardStarClick }}
+      value={{ boards, loading, makeNewBoard, handleBoardStarClick, mobile }}
     >
       <HomePage />
     </BoardContext.Provider>

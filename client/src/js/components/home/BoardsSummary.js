@@ -7,12 +7,13 @@ import BoardSection from "./BoardSection";
 
 const StyledContainer = styled.div`
   justify-self: start;
-  padding-left: 40px;
+  padding-left: ${props => !props.mobile && "40px"};
   width: 100%;
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard } = useContext(BoardContext);
+  const { makeNewBoard, mobile } = useContext(BoardContext);
+
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
 
@@ -34,7 +35,7 @@ const BoardsSummary = () => {
   };
 
   return (
-    <StyledContainer>
+    <StyledContainer mobile={mobile}>
       <BoardSection icon="star" header="Starred Boards" section="starred" />
       <BoardSection icon="clock" header="Recently Viewed" section="recent" />
       <BoardSection
