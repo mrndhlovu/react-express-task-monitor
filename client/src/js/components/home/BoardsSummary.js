@@ -7,7 +7,7 @@ import BoardSection from "./BoardSection";
 
 const StyledContainer = styled.div`
   justify-self: start;
-  padding-left: 10px;
+  padding-left: 40px;
   width: 100%;
 `;
 

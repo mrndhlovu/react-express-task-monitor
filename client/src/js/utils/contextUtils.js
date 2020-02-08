@@ -1,4 +1,5 @@
-import React from "react";
+import { createContext } from "react";
 
-export const BoardContext = React.createContext("");
-export const BoardListContext = React.createContext("");
+export const BoardContext = createContext("");
+export const BoardListContext = createContext("");
+export const DimensionContext = createContext(null);

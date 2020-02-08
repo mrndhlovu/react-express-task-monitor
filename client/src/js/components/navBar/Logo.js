@@ -4,14 +4,13 @@ import styled from "styled-components";
 import { Header } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
-  display: inline-block;
+  display: grid;
   align-self: center;
-  justify-self: center;
 `;
 
 const Logo = () => (
   <StyledDiv>
-    <Header size="small" icon="columns" content="Trello Clone" />
+    <Header as="h1" size="small" color="violet" content="Mo-Neat" />
   </StyledDiv>
 );
 

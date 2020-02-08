@@ -1,33 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { Input } from "semantic-ui-react";
-
-const StyledDiv = styled.div`
-  display: inline-block;
-  justify-self: center;
-  align-self: center;
-`;
+import NavButton from "./NavButton";
+import { DimensionContext } from "../../utils/contextUtils";
 
 const StyledSearch = styled(Input)`
   border-radius: 5px !important;
   background-color: #ffffff3d !important;
 `;
 
-const SearchBar = ({ results, value }) => {
-  return (
-    <div>
-      <StyledDiv>
-        <StyledSearch
-          icon="search"
-          size="tiny"
-          onChange={e => console.log(e.target.value)}
-          results={results}
-          value={value}
-          placeholder="Search"
-        />
-      </StyledDiv>
-    </div>
+const SearchBar = ({ results, value, handleSearchClick }) => {
+  const { mobile } = useContext(DimensionContext).device;
+
+  return mobile ? (
+    <NavButton iconName="search" onClick={() => handleSearchClick} />
+  ) : (
+    <StyledSearch placeholder="Search..." icon="search" />
   );
 };
 

@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useContext } from "react";
+import styled from "styled-components";
 
 import { Button } from "semantic-ui-react";
-import styled from "styled-components";
+import { DimensionContext } from "../../utils/contextUtils";
 
 const StyledButton = styled(Button)`
   background-color: #ffffff3d !important;
 `;
 
 const NavButton = ({ redirect, buttonText, iconName }) => {
-  return (
+  const { mobile } = useContext(DimensionContext).device;
+  return mobile ? (
+    <StyledButton size="tiny" onClick={redirect} icon={iconName} />
+  ) : (
     <StyledButton
       size="tiny"
       onClick={redirect}
       icon={iconName}
-      content={buttonText}
+      content={!mobile && buttonText}
     />
   );
 };
