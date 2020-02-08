@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import { Icon, Header } from "semantic-ui-react";
 import styled from "styled-components";
@@ -43,19 +43,26 @@ const Summary = ({
 }) => {
   const { mobile } = useContext(DimensionContext).device;
 
+  const [showStar, setShowStar] = useState(false);
+
   return (
-    <Wrapper>
+    <Wrapper
+      onMouseLeave={() => setShowStar(!showStar)}
+      onMouseEnter={() => setShowStar(!showStar)}
+    >
       <Card color={color} mobile={mobile}>
         <HeaderWrapper onClick={() => history.push(`/boards/id/${id}`)}>
           <Header as="h5" content={header} />
           <StyledCard />
         </HeaderWrapper>
         <StarWrapper>
-          <Icon
-            name="star outline"
-            onClick={() => handleBoardStarClick(id)}
-            color={starred ? "yellow" : "grey"}
-          />
+          {(starred || showStar) && (
+            <Icon
+              name="star outline"
+              onClick={() => handleBoardStarClick(id)}
+              color={starred && "yellow"}
+            />
+          )}
         </StarWrapper>
       </Card>
     </Wrapper>

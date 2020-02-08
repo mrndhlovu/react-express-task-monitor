@@ -34,7 +34,7 @@ const BoardSection = ({
 
   return (
     <>
-      <StyledHeader icon={`${icon} outline`} content={header} />
+      <StyledHeader icon={`${icon} outline`} content={mobile && header} />
       <Section mobile={mobile}>
         {!loading ? (
           boards.map(
