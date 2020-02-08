@@ -1,15 +1,16 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import BoardLists from "./BoardLists";
-import BoardHeader from "./BoardHeader";
 import { BoardContext } from "../../utils/contextUtils";
-import RightBoardMenu from "./RightBoardMenu";
 import { Sidebar } from "semantic-ui-react";
 import BackGroundColors from "./BackGroundColors";
+import BoardHeader from "./BoardHeader";
+import BoardLists from "./BoardLists";
+import RightBoardMenu from "./RightBoardMenu";
 
 const BoardWrapper = styled.div`
   background-color: ${props => props.bgColor};
+  padding-left: 7px;
 `;
 
 const Board = () => {
@@ -27,7 +28,7 @@ const Board = () => {
 
   return (
     <Sidebar.Pushable>
-      <BoardWrapper bgColor={board.color}>
+      <BoardWrapper className="board" bgColor={board.color}>
         <BoardHeader handleShowMenuClick={handleShowMenuClick} />
         {showSideBar && (
           <RightBoardMenu

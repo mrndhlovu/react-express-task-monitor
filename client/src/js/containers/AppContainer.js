@@ -13,18 +13,23 @@ const Container = styled.div`
 
 const AppContainer = ({ children }) => {
   const [search, setSearch] = useState(false);
+  const [color, setColor] = useState(null);
   const { device, dimensions } = useDimensions();
 
   const handleSearchClick = e => {
     setSearch(e.target.value);
   };
 
+  const getBoardBgColor = bgColor => {
+    setColor(bgColor);
+  };
+
   return (
     <DimensionContext.Provider
-      value={{ dimensions, device, search, handleSearchClick }}
+      value={{ dimensions, device, search, handleSearchClick, getBoardBgColor }}
     >
       <Container>
-        <NavHeader />
+        <NavHeader color={color} />
         {search && <SearchPage />}
         {children}
       </Container>

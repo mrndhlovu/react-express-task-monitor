@@ -9,15 +9,13 @@ import RightNavButtons from "./RightNavButtons";
 const NavWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-
-  min-height: 40px;
-  padding: 5px 0 4px 5px;
-  background: rgba(0, 0, 0, 0.15);
+  padding: 8px 0 4px 5px;
+  background-color: ${props => props.color || "#026aa7"};
 `;
 
-const NavHeader = ({ history }) => {
+const NavHeader = ({ history, color }) => {
   return (
-    <NavWrapper>
+    <NavWrapper color={color}>
       <LeftNavButtons history={history} />
       <Logo />
       <RightNavButtons />

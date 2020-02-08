@@ -8,3 +8,5 @@ export const filterObject = (data, allowed) => {
 
   return filtered;
 };
+
+export const getLocation = () => window.location;

@@ -31,7 +31,6 @@ const BoardTitle = styled(Header)`
 const BoardHeader = ({ handleShowMenuClick }) => {
   const { board } = useContext(BoardContext);
   const { mobile, tablet } = useContext(DimensionContext).device;
-  console.log("tablet: ", tablet);
 
   return (
     <HeaderContainer mobile={mobile} tablet={tablet}>

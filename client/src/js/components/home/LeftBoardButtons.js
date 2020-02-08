@@ -11,7 +11,7 @@ const StyledDiv = styled.div`
 export default function LeftBoardButtons({ mobile }) {
   return (
     <StyledDiv mobile={mobile}>
-      <NavButton iconName="star" />
+      <NavButton iconName="star outline" />
       <NavButton buttonText="Personal" forceText={true} />
       <NavButton iconName="lock" buttonText="private" forceText={true} />
       <NavButton buttonText="Invite" forceText={true} />

@@ -10,7 +10,7 @@ const StyledDiv = styled.div`
 
 const Logo = () => (
   <StyledDiv>
-    <Header as="h1" size="small" color="violet" content="Mo-Neat" />
+    <Header size="small" content="Mo-Neat" />
   </StyledDiv>
 );
 
