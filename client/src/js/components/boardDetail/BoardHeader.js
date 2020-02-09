@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import RightBoardButtons from "../home/RightBoardButtons";
-import LeftBoardButtons from "../home/LeftBoardButtons";
+import LeftBoardButtons from "./LeftBoardButtons";
 import { BoardContext, DimensionContext } from "../../utils/contextUtils";
 import { Header } from "semantic-ui-react";
 
@@ -37,7 +37,11 @@ const BoardHeader = ({ handleShowMenuClick }) => {
       <TitleWrapper mobile={mobile} tablet={tablet}>
         <BoardTitle content={board.title} />
       </TitleWrapper>
-      <LeftBoardButtons mobile={mobile} />
+      <LeftBoardButtons
+        mobile={mobile}
+        color={board.section.includes("starred")}
+        id={board._id}
+      />
       <RightBoardButtons
         handleShowMenuClick={handleShowMenuClick}
         mobile={mobile}

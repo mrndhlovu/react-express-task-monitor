@@ -14,6 +14,8 @@ const StyledContainer = styled.div`
   display: grid;
 `;
 
+const DEFAULT_OPTIONS = { private: false, public: false, team: false };
+
 const BoardContainer = ({ match, history }) => {
   const { id } = match.params;
   const [data, loading] = useFetch(id);
@@ -29,9 +31,27 @@ const BoardContainer = ({ match, history }) => {
     );
   };
 
+  const changeBoardVisibility = option => {
+    const newBoard = {
+      ...data,
+      visibility: { ...DEFAULT_OPTIONS, [option]: true }
+    };
+
+    makeBoardUpdate(newBoard);
+  };
+
   const handleColorPick = color => {
     const newBoard = { ...data, color };
     makeBoardUpdate(newBoard);
+  };
+
+  const handleBoardStarClick = id => {
+    if (board.section.includes("starred"))
+      board.section.splice(data.section.indexOf("starred"));
+    else board.section.push("starred");
+
+    requestBoardUpdate(id, board);
+    history.push(`/boards/id/${id}`);
   };
 
   useEffect(() => {
@@ -42,7 +62,14 @@ const BoardContainer = ({ match, history }) => {
 
   return (
     <BoardContext.Provider
-      value={{ board, makeBoardUpdate, id, handleColorPick }}
+      value={{
+        board,
+        makeBoardUpdate,
+        id,
+        handleColorPick,
+        handleBoardStarClick,
+        changeBoardVisibility
+      }}
     >
       <StyledContainer>
         {board ? <Board /> : <UILoadingSpinner />}

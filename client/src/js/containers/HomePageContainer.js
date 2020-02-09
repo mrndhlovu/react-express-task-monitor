@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
-import { BoardContext, DimensionContext } from "../utils/contextUtils";
+import { DimensionContext, BoardListContext } from "../utils/contextUtils";
 import { requestNewBoard, requestBoardUpdate } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
@@ -20,11 +20,10 @@ const HomePageContainer = ({ history }) => {
   const handleBoardStarClick = id => {
     const newBoard = data.find(board => board._id === id);
 
-    if (newBoard.section.includes("starred")) {
+    if (newBoard.section.includes("starred"))
       newBoard.section.splice(newBoard.section.indexOf("starred"));
-    } else {
-      newBoard.section.push("starred");
-    }
+    else newBoard.section.push("starred");
+
     requestBoardUpdate(id, newBoard);
     history.push("/");
   };
@@ -34,11 +33,17 @@ const HomePageContainer = ({ history }) => {
   }, [data]);
 
   return (
-    <BoardContext.Provider
-      value={{ boards, loading, makeNewBoard, handleBoardStarClick, mobile }}
+    <BoardListContext.Provider
+      value={{
+        boards,
+        handleBoardStarClick,
+        loading,
+        makeNewBoard,
+        mobile
+      }}
     >
       <HomePage />
-    </BoardContext.Provider>
+    </BoardListContext.Provider>
   );
 };
 

@@ -26,6 +26,11 @@ const BoardSchema = mongoose.Schema({
   color: {
     type: String,
     default: "#dce3eb"
+  },
+  visibility: {
+    type: Object,
+    required: true,
+    default: { private: true, public: false, team: false }
   }
 });
 

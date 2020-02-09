@@ -5,7 +5,7 @@ import { Header } from "semantic-ui-react";
 
 import Summary from "./Summary";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
-import { BoardContext } from "../../utils/contextUtils";
+import { BoardListContext } from "../../utils/contextUtils";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const Section = styled.div`
@@ -29,12 +29,12 @@ const BoardSection = ({
   showNewBoardModal
 }) => {
   const { boards, loading, handleBoardStarClick, mobile } = useContext(
-    BoardContext
+    BoardListContext
   );
 
   return (
     <>
-      <StyledHeader icon={`${icon} outline`} content={header} />
+      <StyledHeader icon={`${icon} outline`} content={mobile && header} />
       <Section mobile={mobile}>
         {!loading ? (
           boards.map(
