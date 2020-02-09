@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import RightBoardButtons from "../home/RightBoardButtons";
-import LeftBoardButtons from "../home/LeftBoardButtons";
+import LeftBoardButtons from "./LeftBoardButtons";
 import { BoardContext, DimensionContext } from "../../utils/contextUtils";
 import { Header } from "semantic-ui-react";
 

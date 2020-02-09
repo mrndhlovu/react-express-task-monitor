@@ -49,7 +49,7 @@ router.delete("/id/:boardId", async (req, res) => {
 });
 
 router.patch("/id/:boardId/update", async (req, res) => {
-  const { title, lists, section, color } = req.body;
+  const { title, lists, section, color, visibility } = req.body;
   const now = new Date();
   try {
     const updatedBoard = await Board.updateOne(
@@ -60,7 +60,8 @@ router.patch("/id/:boardId/update", async (req, res) => {
           lastViewed: now,
           lists,
           section,
-          title
+          title,
+          visibility
         }
       }
     );

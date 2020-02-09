@@ -10,7 +10,21 @@ export const Types = {
   CARD: "card"
 };
 
-export const allowed = ["title", "lists", "section", "color"];
+export const allowed = ["title", "lists", "section", "color", "visibility"];
+
+export const visibilityOptions = [
+  {
+    option: "Private",
+    icon: "lock",
+    description: "Only board members can see this board."
+  },
+  {
+    option: "Public",
+    icon: "world",
+    description: "All members can see this board."
+  },
+  { option: "Team", icon: "users", description: "Anyone can see this board" }
+];
 
 export const bgColors = [
   "#0079be",

@@ -34,7 +34,13 @@ const HomePageContainer = ({ history }) => {
 
   return (
     <BoardListContext.Provider
-      value={{ boards, loading, makeNewBoard, handleBoardStarClick, mobile }}
+      value={{
+        boards,
+        handleBoardStarClick,
+        loading,
+        makeNewBoard,
+        mobile
+      }}
     >
       <HomePage />
     </BoardListContext.Provider>

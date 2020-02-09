@@ -14,6 +14,8 @@ const StyledContainer = styled.div`
   display: grid;
 `;
 
+const DEFAULT_OPTIONS = { private: false, public: false, team: false };
+
 const BoardContainer = ({ match, history }) => {
   const { id } = match.params;
   const [data, loading] = useFetch(id);
@@ -27,6 +29,15 @@ const BoardContainer = ({ match, history }) => {
     requestBoardUpdate(id, requestBody).then(res =>
       history.push(`/boards/id/${id}`)
     );
+  };
+
+  const changeBoardVisibility = option => {
+    const newBoard = {
+      ...data,
+      visibility: { ...DEFAULT_OPTIONS, [option]: true }
+    };
+
+    makeBoardUpdate(newBoard);
   };
 
   const handleColorPick = color => {
@@ -56,7 +67,8 @@ const BoardContainer = ({ match, history }) => {
         makeBoardUpdate,
         id,
         handleColorPick,
-        handleBoardStarClick
+        handleBoardStarClick,
+        changeBoardVisibility
       }}
     >
       <StyledContainer>

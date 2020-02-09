@@ -22,7 +22,9 @@ const NavButton = ({
     <StyledButton
       size="tiny"
       onClick={redirect}
-      icon={iconName && <Icon name={iconName} color={color} />}
+      icon={
+        iconName && <Icon name={iconName} color={color ? color : "black"} />
+      }
       color={buttonColor}
     />
   ) : (
@@ -30,7 +32,9 @@ const NavButton = ({
       size="tiny"
       onClick={redirect}
       content={buttonText}
-      icon={iconName && <Icon name={iconName} color={color} />}
+      icon={
+        iconName && <Icon name={iconName} color={color ? color : "black"} />
+      }
       color={buttonColor}
     />
   );
