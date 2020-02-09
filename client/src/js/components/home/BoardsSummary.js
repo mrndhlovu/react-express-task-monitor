@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import { BoardContext } from "../../utils/contextUtils";
+import { BoardListContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
 import BoardSection from "./BoardSection";
 
@@ -12,7 +12,7 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard, mobile } = useContext(BoardContext);
+  const { makeNewBoard, mobile } = useContext(BoardListContext);
 
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
