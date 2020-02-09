@@ -34,6 +34,15 @@ const BoardContainer = ({ match, history }) => {
     makeBoardUpdate(newBoard);
   };
 
+  const handleBoardStarClick = id => {
+    if (board.section.includes("starred"))
+      board.section.splice(data.section.indexOf("starred"));
+    else board.section.push("starred");
+
+    requestBoardUpdate(id, board);
+    history.push(`/boards/id/${id}`);
+  };
+
   useEffect(() => {
     if (loading && data.length === 0) return;
     getBoardBgColor(board && board.color);
@@ -42,7 +51,13 @@ const BoardContainer = ({ match, history }) => {
 
   return (
     <BoardContext.Provider
-      value={{ board, makeBoardUpdate, id, handleColorPick }}
+      value={{
+        board,
+        makeBoardUpdate,
+        id,
+        handleColorPick,
+        handleBoardStarClick
+      }}
     >
       <StyledContainer>
         {board ? <Board /> : <UILoadingSpinner />}

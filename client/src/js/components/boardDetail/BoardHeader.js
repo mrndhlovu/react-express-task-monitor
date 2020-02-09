@@ -37,7 +37,11 @@ const BoardHeader = ({ handleShowMenuClick }) => {
       <TitleWrapper mobile={mobile} tablet={tablet}>
         <BoardTitle content={board.title} />
       </TitleWrapper>
-      <LeftBoardButtons mobile={mobile} />
+      <LeftBoardButtons
+        mobile={mobile}
+        color={board.section.includes("starred")}
+        id={board._id}
+      />
       <RightBoardButtons
         handleShowMenuClick={handleShowMenuClick}
         mobile={mobile}
