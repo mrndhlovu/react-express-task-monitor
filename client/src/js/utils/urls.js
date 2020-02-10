@@ -5,7 +5,7 @@ export const getRootUrl = () =>
     ? "https://moneat.herokuapp.com"
     : process.env.REACT_APP_DEV_API_URL;
 
-export const BOARDS_EP = `${getRootUrl()}`;
+export const BOARDS_EP = `${getRootUrl()}/boards`;
 
 export const authQueryParams = {
   headers: {
