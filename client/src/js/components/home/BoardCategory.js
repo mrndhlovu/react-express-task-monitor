@@ -11,7 +11,7 @@ const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    ${props => (props.mobile ? "50%" : "242px")}
+    ${props => (props.mobile ? "50%" : "25%")}
   );
   vertical-align: top;
 `;
