@@ -6,7 +6,7 @@ import { Sidebar } from "semantic-ui-react";
 import BackGroundColors from "./BackGroundColors";
 import BoardHeader from "./BoardHeader";
 import BoardLists from "./BoardLists";
-import RightBoardMenu from "./RightBoardMenu";
+import BoardMenu from "./BoardMenu";
 
 const BoardWrapper = styled.div`
   background-color: ${props => props.bgColor};
@@ -14,7 +14,9 @@ const BoardWrapper = styled.div`
 `;
 
 const Board = () => {
-  const { board, handleColorPick } = useContext(BoardContext);
+  const { board, handleColorPick, handleDeleteBoard } = useContext(
+    BoardContext
+  );
   const [showSideBar, setShowSideBar] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -30,21 +32,19 @@ const Board = () => {
     <Sidebar.Pushable>
       <BoardWrapper className="board" bgColor={board.color}>
         <BoardHeader handleShowMenuClick={handleShowMenuClick} />
-        {showSideBar && (
-          <RightBoardMenu
-            showSideBar={showSideBar}
-            handleShowMenuClick={handleShowMenuClick}
-            handleChangeColorClick={handleChangeColorClick}
-          />
-        )}
-        {showColorPicker && (
-          <BackGroundColors
-            showColorPicker={showColorPicker}
-            handleChangeColorClick={handleChangeColorClick}
-            handleColorPick={handleColorPick}
-          />
-        )}
         <BoardLists />
+
+        <BoardMenu
+          showSideBar={showSideBar}
+          handleShowMenuClick={handleShowMenuClick}
+          handleChangeColorClick={handleChangeColorClick}
+          handleDeleteBoard={handleDeleteBoard}
+        />
+        <BackGroundColors
+          showColorPicker={showColorPicker}
+          handleChangeColorClick={handleChangeColorClick}
+          handleColorPick={handleColorPick}
+        />
       </BoardWrapper>
     </Sidebar.Pushable>
   );

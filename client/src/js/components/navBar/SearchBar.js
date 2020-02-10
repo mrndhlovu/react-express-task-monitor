@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { Input } from "semantic-ui-react";
-import NavButton from "./NavButton";
+import NavButton from "../sharedComponents/NavButton";
 import { DimensionContext } from "../../utils/contextUtils";
 
 const StyledSearch = styled(Input)`

@@ -6,7 +6,7 @@ import { withRouter } from "react-router-dom";
 import { DimensionContext } from "../../utils/contextUtils";
 
 const StyledCard = styled.div`
-  min-height: 50px;
+  min-height: 40px;
 `;
 
 const HeaderWrapper = styled.div`
@@ -39,10 +39,11 @@ const Summary = ({
   history,
   handleBoardStarClick,
   starred,
-  color
+  color,
+  starRef,
+  starredRef
 }) => {
   const { mobile } = useContext(DimensionContext).device;
-
   const [showStar, setShowStar] = useState(false);
 
   return (
@@ -58,9 +59,11 @@ const Summary = ({
         <StarWrapper>
           {(starred || showStar) && (
             <Icon
+              id={id}
               name="star outline"
-              onClick={() => handleBoardStarClick(id)}
-              color={starred && "yellow"}
+              onClick={() => handleBoardStarClick()}
+              color={starred ? "yellow" : "black"}
+              ref={showStar ? starRef : starredRef}
             />
           )}
         </StarWrapper>

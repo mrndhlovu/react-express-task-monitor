@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import NavButton from "./NavButton";
+import NavButton from "../sharedComponents/NavButton";
 import SearchBar from "./SearchBar";
 
 const StyledDiv = styled.div`

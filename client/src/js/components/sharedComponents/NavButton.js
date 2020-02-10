@@ -14,7 +14,9 @@ const NavButton = ({
   iconName,
   forceText,
   color,
-  buttonColor
+  buttonColor,
+  buttonRef,
+  id
 }) => {
   const { mobile } = useContext(DimensionContext).device;
 
@@ -29,6 +31,9 @@ const NavButton = ({
     />
   ) : (
     <StyledButton
+      id={id}
+      ref={buttonRef}
+      className="ui"
       size="tiny"
       onClick={redirect}
       content={buttonText}

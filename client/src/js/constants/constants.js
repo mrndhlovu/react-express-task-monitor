@@ -10,9 +10,16 @@ export const Types = {
   CARD: "card"
 };
 
-export const allowed = ["title", "lists", "section", "color", "visibility"];
+export const allowed = [
+  "title",
+  "lists",
+  "color",
+  "permission",
+  "category",
+  "accessLevel"
+];
 
-export const visibilityOptions = [
+export const ACCESS_LEVELS = [
   {
     option: "Private",
     icon: "lock",

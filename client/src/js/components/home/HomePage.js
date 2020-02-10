@@ -11,6 +11,7 @@ const StyledContainer = styled(Container)`
   height: 100vh;
   margin-top: 40px;
   padding-left: 5px;
+  font-family: roboto, sans-serif;
 `;
 
 const StyledWrapper = styled.div`

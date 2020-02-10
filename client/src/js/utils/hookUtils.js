@@ -11,6 +11,7 @@ export const useFetch = id => {
         setData(res.data);
         setLoading(false);
       });
+
     fetchData();
   }, [id]);
 

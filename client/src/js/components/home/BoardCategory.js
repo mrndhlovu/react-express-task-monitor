@@ -6,9 +6,8 @@ import { Header } from "semantic-ui-react";
 import Summary from "./Summary";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import { BoardListContext } from "../../utils/contextUtils";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const Section = styled.div`
+const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
@@ -21,43 +20,48 @@ const StyledHeader = styled(Header)`
   font-size: 16px !important;
 `;
 
-const BoardSection = ({
+const BoardCategory = ({
   header,
   icon,
   isDefault,
-  section,
+  category,
   showNewBoardModal
 }) => {
-  const { boards, loading, handleBoardStarClick, mobile } = useContext(
-    BoardListContext
-  );
+  const {
+    boards,
+
+    loading,
+    handleBoardStarClick,
+    mobile,
+    starRef,
+    starredRef
+  } = useContext(BoardListContext);
 
   return (
     <>
       <StyledHeader icon={`${icon} outline`} content={mobile && header} />
-      <Section mobile={mobile}>
-        {!loading ? (
+      <Category mobile={mobile}>
+        {!loading &&
           boards.map(
             board =>
-              board.section.includes(section) && (
+              board.category.includes(category) && (
                 <Summary
-                  key={board._id}
-                  id={board._id}
-                  header={board.title}
-                  handleBoardStarClick={handleBoardStarClick}
-                  starred={board.section.includes("starred")}
                   color={board.color}
+                  handleBoardStarClick={handleBoardStarClick}
+                  header={board.title}
+                  id={board._id}
+                  key={board._id}
+                  starred={board.category.includes("starred")}
+                  starredRef={starredRef}
+                  starRef={starRef}
                 />
               )
-          )
-        ) : (
-          <UILoadingSpinner />
-        )}
+          )}
 
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
-      </Section>
+      </Category>
     </>
   );
 };
 
-export default BoardSection;
+export default BoardCategory;

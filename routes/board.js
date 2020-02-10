@@ -24,18 +24,16 @@ router.get("/id/:boardId", async (req, res) => {
 
     const viewedRecently = (lastViewed - created) / msPerMinute < 20;
 
-    const updateSection =
-      (board.section.includes("default") ||
-        !board.section.includes("starred")) &&
+    const updateCategory =
+      (board.category.includes("default") ||
+        !board.category.includes("starred")) &&
       !justCreated;
 
-    if (updateSection) board.section.push("recent");
-    if (!viewedRecently && board.section.includes("recent"))
-      board.section.splice(board.section.indexOf("recent"), 1);
+    if (updateCategory) board.category.push("recent");
 
     res.send(board);
   } catch (error) {
-    res.status(400).send({ message: error });
+    res.status(400).send({ message: error.message });
   }
 });
 
@@ -49,7 +47,7 @@ router.delete("/id/:boardId", async (req, res) => {
 });
 
 router.patch("/id/:boardId/update", async (req, res) => {
-  const { title, lists, section, color, visibility } = req.body;
+  const { title, lists, category, color, accessLevel } = req.body;
   const now = new Date();
   try {
     const updatedBoard = await Board.updateOne(
@@ -59,9 +57,9 @@ router.patch("/id/:boardId/update", async (req, res) => {
           color,
           lastViewed: now,
           lists,
-          section,
+          category,
           title,
-          visibility
+          accessLevel
         }
       }
     );
@@ -72,11 +70,10 @@ router.patch("/id/:boardId/update", async (req, res) => {
 });
 
 router.post("/api/create", async (req, res) => {
-  const { title, lists } = req.body;
+  const { title } = req.body;
 
   const board = new Board({
-    title,
-    lists
+    title
   });
 
   try {

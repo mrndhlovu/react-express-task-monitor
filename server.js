@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const dotenv = require("dotenv");
+var mysql = require("mysql");
 
 const mongoose = require("mongoose");
 const CONNECTION_URI = process.env.MONGODB_URI;
@@ -24,12 +25,9 @@ app.use(express.json());
 app.use(cors());
 
 app.use(express.static(path.join(__dirname, "client/build")));
-app.get("/", (req, res) => {
-  res.send("We are on the Home page");
-});
 
 // Route Middleware
-app.use("/boards", boardRoutes);
+app.use("/", boardRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -1,10 +1,11 @@
 "use es6";
 
-const getBaseUrl = () => "/";
+export const getRootUrl = () =>
+  process.env.NODE_ENV === "production"
+    ? "https://moneat.herokuapp.com/"
+    : process.env.REACT_APP_DEV_API_URL;
 
-export const getRootUrl = () => getBaseUrl();
-
-export const BOARDS_EP = "http://localhost:5000/boards";
+export const BOARDS_EP = `${getRootUrl()}`;
 
 export const authQueryParams = {
   headers: {

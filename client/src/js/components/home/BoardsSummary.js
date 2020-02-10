@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { BoardListContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
-import BoardSection from "./BoardSection";
+import BoardCategory from "./BoardCategory";
 
 const StyledContainer = styled.div`
   justify-self: start;
@@ -36,24 +36,22 @@ const BoardsSummary = () => {
 
   return (
     <StyledContainer mobile={mobile}>
-      <BoardSection icon="star" header="Starred Boards" section="starred" />
-      <BoardSection icon="clock" header="Recently Viewed" section="recent" />
-      <BoardSection
+      <BoardCategory icon="star" header="Starred Boards" category="starred" />
+      <BoardCategory icon="clock" header="Recently Viewed" category="recent" />
+      <BoardCategory
         icon="user"
         header="Personal Boards"
-        section="default"
+        category="default"
         showNewBoardModal={showNewBoardModal}
         isDefault={true}
       />
 
-      {createBoard && (
-        <NewBoardModal
-          showNewBoardModal={showNewBoardModal}
-          createBoard={createBoard}
-          handleChange={handleChange}
-          handleCreateClick={handleCreateClick}
-        />
-      )}
+      <NewBoardModal
+        showNewBoardModal={showNewBoardModal}
+        createBoard={createBoard}
+        handleChange={handleChange}
+        handleCreateClick={handleCreateClick}
+      />
     </StyledContainer>
   );
 };

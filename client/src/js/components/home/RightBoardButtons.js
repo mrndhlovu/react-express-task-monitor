@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import NavButton from "../navBar/NavButton";
+import NavButton from "../sharedComponents/NavButton";
 
 const StyledDiv = styled.div`
   padding-right: 4px;

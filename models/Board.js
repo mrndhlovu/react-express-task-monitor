@@ -14,20 +14,20 @@ const BoardSchema = mongoose.Schema({
     required: true,
     default: [Object]
   },
-  section: {
+  category: {
     type: Array,
     required: true,
     default: ["default"]
   },
   lastViewed: {
     type: Date,
-    default: Date.now()
+    default: null
   },
   color: {
     type: String,
     default: "#dce3eb"
   },
-  visibility: {
+  accessLevel: {
     type: Object,
     required: true,
     default: { private: true, public: false, team: false }

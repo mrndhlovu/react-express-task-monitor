@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { withRouter } from "react-router-dom";
 
 import { DimensionContext, BoardListContext } from "../utils/contextUtils";
@@ -10,6 +10,8 @@ const HomePageContainer = ({ history }) => {
   const { mobile } = useContext(DimensionContext).device;
   const [data, loading] = useFetch();
   const [boards, setBoards] = useState({});
+  const starredRef = useRef();
+  const starRef = useRef();
 
   const makeNewBoard = update => {
     requestNewBoard(update).then(res =>
@@ -17,12 +19,15 @@ const HomePageContainer = ({ history }) => {
     );
   };
 
-  const handleBoardStarClick = id => {
+  const handleBoardStarClick = () => {
+    const { id } = starRef.current
+      ? starRef.current.props
+      : starredRef.current.props;
     const newBoard = data.find(board => board._id === id);
 
-    if (newBoard.section.includes("starred"))
-      newBoard.section.splice(newBoard.section.indexOf("starred"));
-    else newBoard.section.push("starred");
+    if (newBoard.category.includes("starred"))
+      newBoard.category.splice(newBoard.category.indexOf("starred"));
+    else newBoard.category.push("starred");
 
     requestBoardUpdate(id, newBoard);
     history.push("/");
@@ -39,7 +44,9 @@ const HomePageContainer = ({ history }) => {
         handleBoardStarClick,
         loading,
         makeNewBoard,
-        mobile
+        mobile,
+        starRef,
+        starredRef
       }}
     >
       <HomePage />

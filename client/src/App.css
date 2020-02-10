@@ -1,8 +1,17 @@
-body {
-  font-family: "Roboto", sans-serif, "Montserrat", sans-serif;
-  font-size: small;
+.ui,
+#root {
+  font-family: Roboto, sans-serif !important;
 }
 
 .ui.tiny.modal {
   width: 300px !important;
+}
+
+body {
+  position: relative;
+  overflow-y: auto;
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }

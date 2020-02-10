@@ -1,11 +1,11 @@
-import React, { useEffect, useState, memo, useContext } from "react";
+import React, { useEffect, useState, memo, useContext, useRef } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { allowed } from "../constants/constants";
 import { BoardContext, DimensionContext } from "../utils/contextUtils";
 import { filterObject } from "../utils/appUtils";
-import { requestBoardUpdate } from "../apis/apiRequests";
+import { requestBoardUpdate, requestBoardDelete } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
@@ -21,6 +21,8 @@ const BoardContainer = ({ match, history }) => {
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(undefined);
   const { getBoardBgColor } = useContext(DimensionContext);
+  const starredRef = useRef();
+  const starRef = useRef();
 
   const makeBoardUpdate = update => {
     const requestBody = filterObject(update, allowed);
@@ -31,13 +33,18 @@ const BoardContainer = ({ match, history }) => {
     );
   };
 
-  const changeBoardVisibility = option => {
+  const changeBoardAccessLevel = option => {
     const newBoard = {
       ...data,
-      visibility: { ...DEFAULT_OPTIONS, [option]: true }
+      accessLevel: { ...DEFAULT_OPTIONS, [option]: true }
     };
 
     makeBoardUpdate(newBoard);
+  };
+
+  const handleDeleteBoard = () => {
+    requestBoardDelete(id);
+    history.push("/");
   };
 
   const handleColorPick = color => {
@@ -45,10 +52,14 @@ const BoardContainer = ({ match, history }) => {
     makeBoardUpdate(newBoard);
   };
 
-  const handleBoardStarClick = id => {
-    if (board.section.includes("starred"))
-      board.section.splice(data.section.indexOf("starred"));
-    else board.section.push("starred");
+  const handleBoardStarClick = () => {
+    const { id } = starRef.current
+      ? starRef.current.props
+      : starredRef.current.props;
+
+    if (board.category.includes("starred"))
+      board.category.splice(data.category.indexOf("starred"));
+    else board.category.push("starred");
 
     requestBoardUpdate(id, board);
     history.push(`/boards/id/${id}`);
@@ -64,11 +75,14 @@ const BoardContainer = ({ match, history }) => {
     <BoardContext.Provider
       value={{
         board,
-        makeBoardUpdate,
-        id,
-        handleColorPick,
+        changeBoardAccessLevel,
         handleBoardStarClick,
-        changeBoardVisibility
+        handleDeleteBoard,
+        handleColorPick,
+        id,
+        makeBoardUpdate,
+        starredRef,
+        starRef
       }}
     >
       <StyledContainer>

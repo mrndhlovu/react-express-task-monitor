@@ -8,10 +8,11 @@ const Wrapper = styled.div`
   width: 800px;
 `;
 
-const RightBoardMenu = ({
+const BoardMenu = ({
   handleChangeColorClick,
   handleShowMenuClick,
-  showSideBar
+  showSideBar,
+  handleDeleteBoard
 }) => {
   return (
     <Wrapper>
@@ -32,10 +33,12 @@ const RightBoardMenu = ({
           Change Background
         </Menu.Item>
         <Menu.Item as="a">Search Cards</Menu.Item>
-        <Menu.Item as="a"></Menu.Item>
+        <Menu.Item as="a" onClick={() => handleDeleteBoard()}>
+          Delete board
+        </Menu.Item>
       </Sidebar>
     </Wrapper>
   );
 };
 
-export default RightBoardMenu;
+export default BoardMenu;

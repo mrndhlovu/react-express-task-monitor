@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import NavButton from "./NavButton";
+import NavButton from "../sharedComponents/NavButton";
 import { Label } from "semantic-ui-react";
 import { DimensionContext } from "../../utils/contextUtils";
 

@@ -8,6 +8,8 @@ export const requestBoardList = () => axios.get(BOARDS_EP);
 
 export const requestBoardDetail = id => axios.get(`${BOARDS_EP}/id/${id}`);
 
+export const requestBoardDelete = id => axios.delete(`${BOARDS_EP}/id/${id}`);
+
 export const requestBoardUpdate = (id, body) =>
   axios.patch(`${BOARDS_EP}/id/${id}/update`, body, authQueryParams);
 

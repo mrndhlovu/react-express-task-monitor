@@ -9,6 +9,7 @@ import { useDimensions } from "../utils/hookUtils";
 const Container = styled.div`
   height: 100vh;
   background-color: #acb4bb;
+  font-family: roboto, sans-serif;
 `;
 
 const AppContainer = ({ children }) => {
