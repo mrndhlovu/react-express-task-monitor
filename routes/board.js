@@ -47,14 +47,14 @@ router.delete("/id/:boardId", async (req, res) => {
 });
 
 router.patch("/id/:boardId/update", async (req, res) => {
-  const { title, lists, category, color, accessLevel } = req.body;
+  const { title, lists, category, styleProperties, accessLevel } = req.body;
   const now = new Date();
   try {
     const updatedBoard = await Board.updateOne(
       { _id: req.params.boardId },
       {
         $set: {
-          color,
+          styleProperties,
           lastViewed: now,
           lists,
           category,

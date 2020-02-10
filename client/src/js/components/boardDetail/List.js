@@ -14,7 +14,7 @@ import { BoardListContext } from "../../utils/contextUtils";
 import ListHeader from "./ListHeader";
 
 const StyledWrapper = styled(Segment)`
-  background-color: #ebecf0;
+  background-color: #ebecf0 !important;
   border-radius: 3px;
   box-sizing: border-box;
   display: flex;
@@ -50,7 +50,11 @@ const List = ({
   const wrappedList = (
     <div style={styles}>
       <StyledWrapper>
-        <ListHeader title={title} showListActions={showListActions} />
+        <ListHeader
+          className="ui"
+          title={title}
+          showListActions={showListActions}
+        />
         <CardsWrapper
           cards={cards}
           sourceListId={position}

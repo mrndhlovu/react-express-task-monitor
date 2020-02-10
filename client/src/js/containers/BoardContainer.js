@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -14,9 +14,9 @@ const StyledContainer = styled.div`
   display: grid;
 `;
 
-const DEFAULT_OPTIONS = { private: false, public: false, team: false };
-
 const BoardContainer = ({ match, history }) => {
+  const DEFAULT_OPTIONS = { private: false, public: false, team: false };
+
   const { id } = match.params;
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(undefined);
@@ -26,8 +26,10 @@ const BoardContainer = ({ match, history }) => {
 
   const makeBoardUpdate = update => {
     const requestBody = filterObject(update, allowed);
+
     setBoard(requestBody);
-    getBoardBgColor(update.color);
+    getBoardBgColor(update.styleProperties.color);
+
     requestBoardUpdate(id, requestBody).then(res =>
       history.push(`/boards/id/${id}`)
     );
@@ -48,7 +50,11 @@ const BoardContainer = ({ match, history }) => {
   };
 
   const handleColorPick = color => {
-    const newBoard = { ...data, color };
+    const newBoard = {
+      ...data,
+      styleProperties: { ...data.styleProperties, color }
+    };
+
     makeBoardUpdate(newBoard);
   };
 
@@ -67,7 +73,7 @@ const BoardContainer = ({ match, history }) => {
 
   useEffect(() => {
     if (loading && data.length === 0) return;
-    getBoardBgColor(board && board.color);
+    getBoardBgColor(board && board.styleProperties.color);
     setBoard(board ? board : data);
   }, [data, loading, getBoardBgColor, board]);
 
@@ -77,8 +83,8 @@ const BoardContainer = ({ match, history }) => {
         board,
         changeBoardAccessLevel,
         handleBoardStarClick,
-        handleDeleteBoard,
         handleColorPick,
+        handleDeleteBoard,
         id,
         makeBoardUpdate,
         starredRef,
@@ -92,4 +98,4 @@ const BoardContainer = ({ match, history }) => {
   );
 };
 
-export default withRouter(memo(BoardContainer));
+export default withRouter(BoardContainer);

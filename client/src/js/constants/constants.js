@@ -13,7 +13,7 @@ export const Types = {
 export const allowed = [
   "title",
   "lists",
-  "color",
+  "styleProperties",
   "permission",
   "category",
   "accessLevel"

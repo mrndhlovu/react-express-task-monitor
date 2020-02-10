@@ -21,7 +21,8 @@ const WrappedCard = ({
     minHeight: "20px",
     visibility: isDragging && "hidden",
     display: isDragging && isOverCard && "none",
-    zIndex: 0
+    zIndex: 0,
+    marginBottom: "10px"
   };
 
   const wrappedCardItem = (

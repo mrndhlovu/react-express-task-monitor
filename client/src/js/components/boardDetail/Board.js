@@ -17,6 +17,7 @@ const Board = () => {
   const { board, handleColorPick, handleDeleteBoard } = useContext(
     BoardContext
   );
+
   const [showSideBar, setShowSideBar] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
 
@@ -30,7 +31,7 @@ const Board = () => {
 
   return (
     <Sidebar.Pushable>
-      <BoardWrapper className="board" bgColor={board.color}>
+      <BoardWrapper className="board" bgColor={board.styleProperties.color}>
         <BoardHeader handleShowMenuClick={handleShowMenuClick} />
         <BoardLists />
 

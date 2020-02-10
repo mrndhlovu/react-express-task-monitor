@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
-import { Dropdown } from "semantic-ui-react";
 import { BoardListContext } from "../../utils/contextUtils";
+import EditCardMenu from "./EditCardMenu";
 
 const StyledCardDiv = styled.div`
   cursor: pointer;
   margin: 10px 5px !important;
-  padding: 10px 10px;
+  padding: 0 10px;
   position: relative;
   border-radius: 4px;
   display: grid;
@@ -21,13 +21,6 @@ const StyledHeader = styled.div``;
 const Span = styled.span`
   font-size: 12px !important;
   font-weight: 600;
-`;
-
-const EditIconWrapper = styled.div`
-  justify-self: end;
-  font-size: 13px;
-  opacity: ${props => (props.showEditButton ? 1 : 0)};
-  margin-left: 8px;
 `;
 
 const CardItem = ({ card, sourceListId }) => {
@@ -60,17 +53,10 @@ const CardItem = ({ card, sourceListId }) => {
       <StyledHeader>
         <Span>{card.title}</Span>
       </StyledHeader>
-
-      <EditIconWrapper showEditButton={showEditButton}>
-        <Dropdown icon="pencil alternate" floating>
-          <Dropdown.Menu>
-            <Dropdown.Item>Move</Dropdown.Item>
-            <Dropdown.Item onClick={() => handleDeleteCard()}>
-              Delete
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </EditIconWrapper>
+      <EditCardMenu
+        handleDeleteCard={handleDeleteCard}
+        showEditButton={showEditButton}
+      />
     </StyledCardDiv>
   );
 };

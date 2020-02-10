@@ -11,7 +11,7 @@ const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    ${props => (props.mobile ? "50%" : "25%")}
+    ${props => (props.mobile ? "50%" : props.tablet ? "33.33333%" : "25%")}
   );
   vertical-align: top;
 `;
@@ -29,7 +29,7 @@ const BoardCategory = ({
 }) => {
   const {
     boards,
-
+    tablet,
     loading,
     handleBoardStarClick,
     mobile,
@@ -40,13 +40,13 @@ const BoardCategory = ({
   return (
     <>
       <StyledHeader icon={`${icon} outline`} content={mobile && header} />
-      <Category mobile={mobile}>
+      <Category mobile={mobile} tablet={tablet}>
         {!loading &&
           boards.map(
             board =>
               board.category.includes(category) && (
                 <Summary
-                  color={board.color}
+                  color={board.styleProperties.color}
                   handleBoardStarClick={handleBoardStarClick}
                   header={board.title}
                   id={board._id}

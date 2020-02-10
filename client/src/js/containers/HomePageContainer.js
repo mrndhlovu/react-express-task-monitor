@@ -7,7 +7,7 @@ import { useFetch } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 
 const HomePageContainer = ({ history }) => {
-  const { mobile } = useContext(DimensionContext).device;
+  const { mobile, tablet } = useContext(DimensionContext).device;
   const [data, loading] = useFetch();
   const [boards, setBoards] = useState({});
   const starredRef = useRef();
@@ -46,7 +46,8 @@ const HomePageContainer = ({ history }) => {
         makeNewBoard,
         mobile,
         starRef,
-        starredRef
+        starredRef,
+        tablet
       }}
     >
       <HomePage />
