@@ -9,7 +9,7 @@ import { DEFAULT_NAV_COLOR } from "../constants/constants";
 
 const HomePageContainer = ({ history }) => {
   const { mobile, tablet } = useContext(DimensionContext).device;
-  const { getBoardBgColor } = useContext(DimensionContext);
+  const { getNavBgColor } = useContext(DimensionContext);
 
   const [data, loading] = useFetch();
   const [boards, setBoards] = useState({});
@@ -46,8 +46,8 @@ const HomePageContainer = ({ history }) => {
   useEffect(() => {
     setBoards(data);
     setIsLoading(loading);
-    getBoardBgColor(DEFAULT_NAV_COLOR);
-  }, [data, loading, getBoardBgColor]);
+    getNavBgColor(DEFAULT_NAV_COLOR);
+  }, [data, loading, getNavBgColor]);
 
   return (
     <BoardListContext.Provider

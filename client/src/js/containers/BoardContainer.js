@@ -16,7 +16,7 @@ const StyledContainer = styled.div`
 
 const BoardContainer = ({ match, history }) => {
   const PERMISSIONS = { private: false, public: false, team: false };
-  const { getBoardBgColor } = useContext(DimensionContext);
+  const { getNavBgColor } = useContext(DimensionContext);
 
   const { id } = match.params;
   const [data, loading] = useFetch(id);
@@ -32,7 +32,7 @@ const BoardContainer = ({ match, history }) => {
     requestBoardUpdate(id, requestBody).then(res => {
       try {
         setBoard(requestBody);
-        getBoardBgColor(requestBody.styleProperties.color);
+        getNavBgColor(requestBody.styleProperties.color);
 
         setIsLoading(false);
         return history.push(`/boards/id/${id}`);
@@ -80,10 +80,10 @@ const BoardContainer = ({ match, history }) => {
 
   useEffect(() => {
     if (loading && data.length === 0) return;
-    getBoardBgColor(board && board.styleProperties.color);
+    getNavBgColor(board && board.styleProperties.color);
     setBoard(board ? board : data);
     setIsLoading(false);
-  }, [data, loading, getBoardBgColor, board, isLoading]);
+  }, [data, loading, getNavBgColor, board, isLoading]);
 
   return (
     <BoardContext.Provider

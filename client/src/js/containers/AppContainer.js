@@ -21,13 +21,13 @@ const AppContainer = ({ children }) => {
     setSearch(e.target.value);
   };
 
-  const getBoardBgColor = bgColor => {
+  const getNavBgColor = bgColor => {
     setColor(bgColor);
   };
 
   return (
     <DimensionContext.Provider
-      value={{ dimensions, device, search, handleSearchClick, getBoardBgColor }}
+      value={{ dimensions, device, search, handleSearchClick, getNavBgColor }}
     >
       <Container>
         <NavHeader color={color} />
