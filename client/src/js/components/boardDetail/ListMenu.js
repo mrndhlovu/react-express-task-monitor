@@ -48,12 +48,15 @@ const ListMenu = ({ listPosition }) => {
 
     switch (key) {
       case "menu-item-1":
+        // TODO add move list option
         console.log("should move list: ", key);
         break;
       case "menu-item-2":
+        // TODO add copy list option
         console.log("should copy list: ", key);
         break;
       case "menu-item-3":
+        // TODO add move all cards to list option
         console.log("should move all cards to this list: ", key);
         break;
       case "menu-item-4":
