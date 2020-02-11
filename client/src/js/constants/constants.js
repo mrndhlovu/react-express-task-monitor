@@ -44,3 +44,5 @@ export const bgColors = [
   "#32aecc",
   "#828c90"
 ];
+
+export const DEFAULT_NAV_COLOR = "#026aa7";

@@ -8,7 +8,7 @@ import { useDimensions } from "../utils/hookUtils";
 
 const Container = styled.div`
   height: 100vh;
-  background-color: #acb4bb;
+  background-color: transparent;
   font-family: roboto, sans-serif;
 `;
 

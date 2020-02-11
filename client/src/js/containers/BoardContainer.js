@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef, memo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -15,30 +15,37 @@ const StyledContainer = styled.div`
 `;
 
 const BoardContainer = ({ match, history }) => {
-  const DEFAULT_OPTIONS = { private: false, public: false, team: false };
+  const PERMISSIONS = { private: false, public: false, team: false };
+  const { getBoardBgColor } = useContext(DimensionContext);
 
   const { id } = match.params;
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(undefined);
-  const { getBoardBgColor } = useContext(DimensionContext);
+  const [isLoading, setIsLoading] = useState(true);
   const starredRef = useRef();
   const starRef = useRef();
 
   const makeBoardUpdate = update => {
     const requestBody = filterObject(update, allowed);
+    setIsLoading(true);
 
-    setBoard(requestBody);
-    getBoardBgColor(update.styleProperties.color);
+    requestBoardUpdate(id, requestBody).then(res => {
+      try {
+        setBoard(requestBody);
+        getBoardBgColor(requestBody.styleProperties.color);
 
-    requestBoardUpdate(id, requestBody).then(res =>
-      history.push(`/boards/id/${id}`)
-    );
+        setIsLoading(false);
+        return history.push(`/boards/id/${id}`);
+      } catch (error) {
+        setIsLoading(false);
+      }
+    });
   };
 
   const changeBoardAccessLevel = option => {
     const newBoard = {
       ...data,
-      accessLevel: { ...DEFAULT_OPTIONS, [option]: true }
+      accessLevel: { ...PERMISSIONS, [option]: true }
     };
 
     makeBoardUpdate(newBoard);
@@ -75,7 +82,8 @@ const BoardContainer = ({ match, history }) => {
     if (loading && data.length === 0) return;
     getBoardBgColor(board && board.styleProperties.color);
     setBoard(board ? board : data);
-  }, [data, loading, getBoardBgColor, board]);
+    setIsLoading(false);
+  }, [data, loading, getBoardBgColor, board, isLoading]);
 
   return (
     <BoardContext.Provider
@@ -92,10 +100,10 @@ const BoardContainer = ({ match, history }) => {
       }}
     >
       <StyledContainer>
-        {board ? <Board /> : <UILoadingSpinner />}
+        {isLoading ? <UILoadingSpinner /> : <Board />}
       </StyledContainer>
     </BoardContext.Provider>
   );
 };
 
-export default withRouter(BoardContainer);
+export default withRouter(memo(BoardContainer));

@@ -10,7 +10,7 @@ const NavWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 8px 0 4px 5px;
-  background-color: ${props => props.color || "#026aa7"};
+  background-color: ${props => props.color};
 `;
 
 const NavHeader = ({ history, color }) => {

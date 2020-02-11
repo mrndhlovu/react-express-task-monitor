@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { BoardListContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
 import BoardCategory from "./BoardCategory";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const StyledContainer = styled.div`
   justify-self: start;
@@ -12,7 +13,7 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard, mobile } = useContext(BoardListContext);
+  const { makeNewBoard, mobile, loading } = useContext(BoardListContext);
 
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
@@ -36,15 +37,29 @@ const BoardsSummary = () => {
 
   return (
     <StyledContainer mobile={mobile}>
-      <BoardCategory icon="star" header="Starred Boards" category="starred" />
-      <BoardCategory icon="clock" header="Recently Viewed" category="recent" />
-      <BoardCategory
-        icon="user"
-        header="Personal Boards"
-        category="default"
-        showNewBoardModal={showNewBoardModal}
-        isDefault={true}
-      />
+      {!loading ? (
+        <>
+          <BoardCategory
+            icon="star"
+            header="Starred Boards"
+            category="starred"
+          />
+          <BoardCategory
+            icon="clock"
+            header="Recently Viewed"
+            category="recent"
+          />
+          <BoardCategory
+            icon="user"
+            header="Personal Boards"
+            category="default"
+            showNewBoardModal={showNewBoardModal}
+            isDefault={true}
+          />
+        </>
+      ) : (
+        <UILoadingSpinner />
+      )}
 
       <NewBoardModal
         showNewBoardModal={showNewBoardModal}
