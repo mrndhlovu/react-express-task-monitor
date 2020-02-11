@@ -5,18 +5,28 @@ import { DimensionContext, BoardListContext } from "../utils/contextUtils";
 import { requestNewBoard, requestBoardUpdate } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
+import { DEFAULT_NAV_COLOR } from "../constants/constants";
 
 const HomePageContainer = ({ history }) => {
   const { mobile, tablet } = useContext(DimensionContext).device;
+  const { getBoardBgColor } = useContext(DimensionContext);
+
   const [data, loading] = useFetch();
   const [boards, setBoards] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
   const starredRef = useRef();
   const starRef = useRef();
 
   const makeNewBoard = update => {
-    requestNewBoard(update).then(res =>
-      history.push(`/boards/id/${res.data._id}`)
-    );
+    requestNewBoard(update).then(res => {
+      try {
+        setIsLoading(false);
+        return history.push(`/boards/id/${res.data._id}`);
+      } catch (error) {
+        return setIsLoading(false);
+      }
+    });
   };
 
   const handleBoardStarClick = () => {
@@ -35,14 +45,16 @@ const HomePageContainer = ({ history }) => {
 
   useEffect(() => {
     setBoards(data);
-  }, [data]);
+    setIsLoading(loading);
+    getBoardBgColor(DEFAULT_NAV_COLOR);
+  }, [data, loading, getBoardBgColor]);
 
   return (
     <BoardListContext.Provider
       value={{
         boards,
         handleBoardStarClick,
-        loading,
+        loading: isLoading,
         makeNewBoard,
         mobile,
         starRef,

@@ -1,11 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Header, Icon } from "semantic-ui-react";
-
-const StyledHeader = styled(Header)`
-  font-size: 13px !important;
-`;
+import { Icon } from "semantic-ui-react";
+import EditableHeader from "../sharedComponents/EditableHeader";
 
 const HeaderWrapper = styled.div`
   display: grid;
@@ -17,11 +14,15 @@ const StyledDiv = styled.div`
   cursor: pointer;
 `;
 
-const ListHeader = ({ title, showListActions }) => {
+const ListHeader = ({ title, showListActions, position }) => {
   return (
     <HeaderWrapper>
       <StyledDiv>
-        <StyledHeader content={title} />
+        <EditableHeader
+          type="listHeader"
+          title={title}
+          listPosition={position}
+        />
       </StyledDiv>
       <StyledDiv>
         <Icon

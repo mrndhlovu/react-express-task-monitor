@@ -54,6 +54,7 @@ const List = ({
           className="ui"
           title={title}
           showListActions={showListActions}
+          position={position}
         />
         <CardsWrapper
           cards={cards}

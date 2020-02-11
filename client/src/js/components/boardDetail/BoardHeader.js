@@ -4,7 +4,7 @@ import styled from "styled-components";
 import RightBoardButtons from "../home/RightBoardButtons";
 import LeftBoardButtons from "./LeftBoardButtons";
 import { BoardContext, DimensionContext } from "../../utils/contextUtils";
-import { Header } from "semantic-ui-react";
+import EditableHeader from "../sharedComponents/EditableHeader";
 
 const HeaderContainer = styled.div`
   display: grid;
@@ -24,10 +24,6 @@ const TitleWrapper = styled.div`
   padding-left: 5px;
 `;
 
-const BoardTitle = styled(Header)`
-  font-size: 13px !important;
-`;
-
 const BoardHeader = ({ handleShowMenuClick }) => {
   const { board } = useContext(BoardContext);
   const { mobile, tablet } = useContext(DimensionContext).device;
@@ -35,7 +31,7 @@ const BoardHeader = ({ handleShowMenuClick }) => {
   return (
     <HeaderContainer mobile={mobile} tablet={tablet}>
       <TitleWrapper mobile={mobile} tablet={tablet}>
-        <BoardTitle content={board.title} />
+        <EditableHeader type="boardTitle" title={board.title} />
       </TitleWrapper>
       <LeftBoardButtons
         mobile={mobile}
