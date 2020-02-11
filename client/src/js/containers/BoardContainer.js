@@ -1,10 +1,8 @@
-import React, { useEffect, useState, useContext, useRef, memo } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { allowed } from "../constants/constants";
 import { BoardContext, DimensionContext } from "../utils/contextUtils";
-import { filterObject } from "../utils/appUtils";
 import { requestBoardUpdate, requestBoardDelete } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
@@ -20,30 +18,16 @@ const BoardContainer = ({ match, history }) => {
 
   const { id } = match.params;
   const [data, loading] = useFetch(id);
-  const [board, setBoard] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(true);
-  const starredRef = useRef();
-  const starRef = useRef();
+  const [board, setBoard] = useState(null);
+  const [boardUpdate, setBoardUpdate] = useState(null);
+  let newBoard;
 
-  const makeBoardUpdate = update => {
-    const requestBody = filterObject(update, allowed);
-    setIsLoading(true);
-
-    requestBoardUpdate(id, requestBody).then(res => {
-      try {
-        setBoard(requestBody);
-        getNavBgColor(requestBody.styleProperties.color);
-
-        setIsLoading(false);
-        return history.push(`/boards/id/${id}`);
-      } catch (error) {
-        setIsLoading(false);
-      }
-    });
+  const makeBoardUpdate = updates => {
+    setBoardUpdate(updates);
   };
 
   const changeBoardAccessLevel = option => {
-    const newBoard = {
+    newBoard = {
       ...data,
       accessLevel: { ...PERMISSIONS, [option]: true }
     };
@@ -57,7 +41,7 @@ const BoardContainer = ({ match, history }) => {
   };
 
   const handleColorPick = color => {
-    const newBoard = {
+    newBoard = {
       ...data,
       styleProperties: { ...data.styleProperties, color }
     };
@@ -66,24 +50,35 @@ const BoardContainer = ({ match, history }) => {
   };
 
   const handleBoardStarClick = () => {
-    const { id } = starRef.current
-      ? starRef.current.props
-      : starredRef.current.props;
-
     if (board.category.includes("starred"))
       board.category.splice(data.category.indexOf("starred"));
     else board.category.push("starred");
-
-    requestBoardUpdate(id, board);
-    history.push(`/boards/id/${id}`);
+    makeBoardUpdate(board);
   };
 
   useEffect(() => {
+    const requestUpdated = async () => {
+      await requestBoardUpdate(id, boardUpdate).then(() => {
+        try {
+          getNavBgColor(boardUpdate.styleProperties.color);
+        } catch (error) {}
+      });
+    };
+
+    if (boardUpdate) requestUpdated();
+    setBoard(boardUpdate);
+    setBoardUpdate(null);
+  }, [getNavBgColor, id, boardUpdate]);
+
+  useEffect(() => {
     if (loading && data.length === 0) return;
-    getNavBgColor(board && board.styleProperties.color);
-    setBoard(board ? board : data);
-    setIsLoading(false);
-  }, [data, loading, getNavBgColor, board, isLoading]);
+
+    if (board && !boardUpdate) {
+      getNavBgColor(board.styleProperties.color);
+      setBoard(board);
+    }
+    if (!board && !boardUpdate) setBoard(data);
+  }, [board, loading, getNavBgColor, data, boardUpdate]);
 
   return (
     <BoardContext.Provider
@@ -94,16 +89,14 @@ const BoardContainer = ({ match, history }) => {
         handleColorPick,
         handleDeleteBoard,
         id,
-        makeBoardUpdate,
-        starredRef,
-        starRef
+        makeBoardUpdate
       }}
     >
       <StyledContainer>
-        {isLoading ? <UILoadingSpinner /> : <Board />}
+        {loading ? <UILoadingSpinner /> : <Board />}
       </StyledContainer>
     </BoardContext.Provider>
   );
 };
 
-export default withRouter(memo(BoardContainer));
+export default withRouter(BoardContainer);

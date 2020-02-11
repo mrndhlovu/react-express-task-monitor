@@ -3,7 +3,7 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Divider } from "semantic-ui-react";
 import styled from "styled-components";
 import { listMenuOptions } from "../../constants/constants";
-import { BoardContext } from "../../utils/contextUtils";
+import { BoardContext, BoardListContext } from "../../utils/contextUtils";
 
 const Wrapper = styled.div`
   display: grid;
@@ -40,6 +40,9 @@ const DropdownItem = styled.li`
 
 const ListMenu = ({ listPosition }) => {
   const { makeBoardUpdate, board } = useContext(BoardContext);
+  const sourceId = listPosition;
+
+  const { getSourceList } = useContext(BoardListContext);
 
   const [newBoard, setNewBoard] = useState(null);
 
@@ -56,16 +59,38 @@ const ListMenu = ({ listPosition }) => {
         console.log("should copy list: ", key);
         break;
       case "menu-item-3":
-        // TODO add move all cards to list option
-        console.log("should move all cards to this list: ", key);
+        const sourceListCards = getSourceList(sourceId).shift().cards;
+        board.lists.map(
+          list =>
+            list.position !== sourceId &&
+            list.cards.length > 0 &&
+            list.cards.map(card =>
+              sourceListCards.push({
+                ...card,
+                position: sourceListCards.length + 1
+              })
+            )
+        );
+
+        const updateBoard = {
+          ...board,
+          lists: [
+            ...board.lists.map(list =>
+              list.position !== sourceId
+                ? { ...list, cards: [] }
+                : { ...list, cards: [...sourceListCards] }
+            )
+          ]
+        };
+
+        setNewBoard(updateBoard);
+
         break;
       case "menu-item-4":
         setNewBoard({ ...board, lists });
         break;
       case "menu-item-5":
-        board.lists.map(
-          list => list.position !== listPosition && lists.push(list)
-        );
+        board.lists.map(list => list.position !== sourceId && lists.push(list));
         setNewBoard({ ...board, lists });
         break;
       default:
