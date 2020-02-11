@@ -45,4 +45,12 @@ export const bgColors = [
   "#828c90"
 ];
 
+export const listMenuOptions = [
+  { key: 1, value: "Move List" },
+  { key: 2, value: "Copy List" },
+  { key: 3, value: "Move All Cards in This List" },
+  { key: 4, value: "Delete All Lists" },
+  { key: 5, value: "Delete List" }
+];
+
 export const DEFAULT_NAV_COLOR = "#026aa7";

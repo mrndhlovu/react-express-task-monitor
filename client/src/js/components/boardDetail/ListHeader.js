@@ -1,8 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Icon } from "semantic-ui-react";
+import { Dropdown } from "semantic-ui-react";
 import EditableHeader from "../sharedComponents/EditableHeader";
+import ListMenu from "./ListMenu";
 
 const HeaderWrapper = styled.div`
   display: grid;
@@ -14,7 +15,11 @@ const StyledDiv = styled.div`
   cursor: pointer;
 `;
 
-const ListHeader = ({ title, showListActions, position }) => {
+const StyledButton = styled(Dropdown)`
+  background-color: #ffffff3d !important;
+`;
+
+const ListHeader = ({ title, position }) => {
   return (
     <HeaderWrapper>
       <StyledDiv>
@@ -25,12 +30,17 @@ const ListHeader = ({ title, showListActions, position }) => {
         />
       </StyledDiv>
       <StyledDiv>
-        <Icon
-          link
-          name="ellipsis horizontal"
-          color="grey"
-          onClick={() => showListActions()}
-        />
+        <StyledButton
+          icon="ellipsis horizontal"
+          floating
+          button
+          className="icon"
+          size="tiny"
+        >
+          <Dropdown.Menu>
+            <ListMenu listPosition={position} />
+          </Dropdown.Menu>
+        </StyledButton>
       </StyledDiv>
     </HeaderWrapper>
   );
