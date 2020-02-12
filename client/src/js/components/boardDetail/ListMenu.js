@@ -38,7 +38,11 @@ const DropdownItem = styled.li`
   }
 `;
 
-const ListMenu = ({ listPosition }) => {
+const ListMenu = ({
+  listPosition,
+  handleShowCopyListClick,
+  handleShowMoveListClick
+}) => {
   const { makeBoardUpdate, board } = useContext(BoardContext);
   const sourceId = listPosition;
 
@@ -51,12 +55,10 @@ const ListMenu = ({ listPosition }) => {
 
     switch (key) {
       case "menu-item-1":
-        // TODO add move list option
-        console.log("should move list: ", key);
+        handleShowMoveListClick();
         break;
       case "menu-item-2":
-        // TODO add copy list option
-        console.log("should copy list: ", key);
+        handleShowCopyListClick();
         break;
       case "menu-item-3":
         const sourceListCards = getSourceList(sourceId).shift().cards;

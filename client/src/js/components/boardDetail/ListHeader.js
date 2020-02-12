@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Dropdown } from "semantic-ui-react";
 import EditableHeader from "../sharedComponents/EditableHeader";
 import ListMenu from "./ListMenu";
+import CopyListDialog from "./CopyListDialog";
+import MoveListDialog from "./MoveListDialog";
 
 const HeaderWrapper = styled.div`
   display: grid;
@@ -15,11 +17,15 @@ const StyledDiv = styled.div`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Dropdown)`
+const StyledDropdown = styled(Dropdown)`
   background-color: #ffffff3d !important;
 `;
 
 const ListHeader = ({ title, position }) => {
+  const [hideMoveListOption, setHideMoveListOption] = useState(true);
+  const [hideCopyList, setHideCopyList] = useState(false);
+  const [hideListMenu, setHideListMenu] = useState(true);
+
   return (
     <HeaderWrapper>
       <StyledDiv>
@@ -29,19 +35,42 @@ const ListHeader = ({ title, position }) => {
           listPosition={position}
         />
       </StyledDiv>
+
       <StyledDiv>
-        <StyledButton
+        <StyledDropdown
           icon="ellipsis horizontal"
+          onClick={() => setHideListMenu(!hideListMenu)}
           floating
           button
           className="icon"
           size="tiny"
         >
           <Dropdown.Menu>
-            <ListMenu listPosition={position} />
+            <ListMenu
+              listPosition={position}
+              handleShowCopyListClick={() => setHideCopyList(!hideCopyList)}
+              handleShowMoveListClick={() =>
+                setHideMoveListOption(!hideMoveListOption)
+              }
+            />
           </Dropdown.Menu>
-        </StyledButton>
+        </StyledDropdown>
       </StyledDiv>
+      {hideCopyList && (
+        <CopyListDialog
+          title={title}
+          close={() => setHideCopyList(!hideCopyList)}
+          listPosition={position}
+        />
+      )}
+
+      {!hideMoveListOption && (
+        <MoveListDialog
+          title={title}
+          close={() => setHideMoveListOption(!hideMoveListOption)}
+          listPosition={position}
+        />
+      )}
     </HeaderWrapper>
   );
 };
