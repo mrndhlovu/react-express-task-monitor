@@ -38,7 +38,7 @@ const DropdownItem = styled.li`
   }
 `;
 
-const ListMenu = ({ listPosition }) => {
+const ListMenu = ({ listPosition, handleShowCopyListClick }) => {
   const { makeBoardUpdate, board } = useContext(BoardContext);
   const sourceId = listPosition;
 
@@ -56,7 +56,7 @@ const ListMenu = ({ listPosition }) => {
         break;
       case "menu-item-2":
         // TODO add copy list option
-        console.log("should copy list: ", key);
+        handleShowCopyListClick();
         break;
       case "menu-item-3":
         const sourceListCards = getSourceList(sourceId).shift().cards;

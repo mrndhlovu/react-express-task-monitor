@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Dropdown } from "semantic-ui-react";
 import EditableHeader from "../sharedComponents/EditableHeader";
 import ListMenu from "./ListMenu";
+import CopyListDialog from "./CopyListDialog";
 
 const HeaderWrapper = styled.div`
   display: grid;
@@ -15,11 +16,14 @@ const StyledDiv = styled.div`
   cursor: pointer;
 `;
 
-const StyledButton = styled(Dropdown)`
+const StyledDropdown = styled(Dropdown)`
   background-color: #ffffff3d !important;
 `;
 
 const ListHeader = ({ title, position }) => {
+  const [hideCopyList, setHideCopyList] = useState(false);
+  const [hideListMenu, setHideListMenu] = useState(true);
+
   return (
     <HeaderWrapper>
       <StyledDiv>
@@ -29,19 +33,33 @@ const ListHeader = ({ title, position }) => {
           listPosition={position}
         />
       </StyledDiv>
+
       <StyledDiv>
-        <StyledButton
+        <StyledDropdown
           icon="ellipsis horizontal"
+          onClick={() => setHideListMenu(!hideListMenu)}
           floating
           button
           className="icon"
           size="tiny"
+          open={!hideListMenu}
+          closeOnChange={false}
         >
           <Dropdown.Menu>
-            <ListMenu listPosition={position} />
+            <ListMenu
+              listPosition={position}
+              handleShowCopyListClick={() => setHideCopyList(!hideCopyList)}
+            />
           </Dropdown.Menu>
-        </StyledButton>
+        </StyledDropdown>
       </StyledDiv>
+      {hideCopyList && (
+        <CopyListDialog
+          title={title}
+          close={() => setHideCopyList(!hideCopyList)}
+          listPosition={position}
+        />
+      )}
     </HeaderWrapper>
   );
 };
