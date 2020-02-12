@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 
 import { Header, Input } from "semantic-ui-react";
@@ -26,16 +26,16 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
 
   const [editable, setEditable] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
+  const [newBoard, setNewBoard] = useState(null);
 
   const handleChange = e => {
     setNewTitle(e.target.value);
   };
 
   const handleUpdate = () => {
-    let newBoard;
     switch (type) {
       case "boardTitle":
-        newBoard = { ...board, title: newTitle };
+        setNewBoard({ ...board, title: newTitle });
         break;
 
       case "cardTitle":
@@ -55,7 +55,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
           )
         );
 
-        newBoard = { ...board, lists: updatedList };
+        setNewBoard({ ...board, lists: updatedList });
         break;
 
       case "listHeader":
@@ -65,16 +65,20 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
             list.position === listPosition ? { ...list, title: newTitle } : list
           )
         );
-        newBoard = { ...board, lists: newList };
+        setNewBoard({ ...board, lists: newList });
         break;
 
       default:
         break;
     }
 
-    makeBoardUpdate(newBoard);
     setEditable(!editable);
   };
+
+  useEffect(() => {
+    if (!newBoard) return;
+    makeBoardUpdate(newBoard);
+  }, [newBoard, makeBoardUpdate]);
 
   return (
     <StyledDiv>

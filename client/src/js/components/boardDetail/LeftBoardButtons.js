@@ -23,13 +23,9 @@ const Description = styled.div`
 `;
 
 export default function LeftBoardButtons({ mobile, isStarred }) {
-  const {
-    handleBoardStarClick,
-    changeBoardAccessLevel,
-    board,
-    starRef,
-    starredRef
-  } = useContext(BoardContext);
+  const { handleBoardStarClick, changeBoardAccessLevel, board } = useContext(
+    BoardContext
+  );
   const { accessLevel } = board;
   let permission;
 
@@ -44,7 +40,6 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
         iconName="star outline"
         color={isStarred && "yellow"}
         redirect={() => handleBoardStarClick()}
-        buttonRef={!isStarred ? starRef : starredRef}
         id={board._id}
       />
       <NavButton buttonText="Personal" forceText={true} />

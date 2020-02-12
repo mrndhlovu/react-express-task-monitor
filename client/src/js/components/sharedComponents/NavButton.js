@@ -9,14 +9,13 @@ const StyledButton = styled(Button)`
 `;
 
 const NavButton = ({
-  redirect,
-  buttonText,
-  iconName,
-  forceText,
-  color,
   buttonColor,
-  buttonRef,
-  id
+  buttonText,
+  color,
+  forceText,
+  iconName,
+  id,
+  redirect
 }) => {
   const { mobile } = useContext(DimensionContext).device;
 
@@ -32,7 +31,6 @@ const NavButton = ({
   ) : (
     <StyledButton
       id={id}
-      ref={buttonRef}
       className="ui"
       size="tiny"
       onClick={redirect}

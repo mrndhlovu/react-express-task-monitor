@@ -1,4 +1,4 @@
-import React, { useContext, useState, memo } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
 import CreateBoard from "../sharedComponents/CreateBoard";
@@ -15,6 +15,7 @@ const StyledListContainer = styled.div`
 
 const BoardLists = () => {
   const { board, makeBoardUpdate, id } = useContext(BoardContext);
+  const { lists } = board;
 
   const [activeList, setActiveList] = useState("");
   const [dragging, setDragging] = useState(false);
@@ -22,7 +23,6 @@ const BoardLists = () => {
   const [draggingList, setDraggingList] = useState(false);
   const [dropTargetId, setDropTargetColumnId] = useState(undefined);
   const [hoverIndex, setHoverIndex] = useState("");
-  const [lists, setLists] = useState(board.lists);
   const [newCardName, setNewCardName] = useState("");
   const [newListName, setNewListName] = useState("");
   const [reorderCards, setReorderCards] = useState(false);
@@ -39,10 +39,10 @@ const BoardLists = () => {
     const newList = {
       title: newListName,
       cards: [],
-      position: board.lists.length + 1
+      position: lists.length + 1
     };
 
-    board.lists.push(newList);
+    lists.push(newList);
 
     makeBoardUpdate(board);
     setShowInputField(!showInputField);
@@ -56,18 +56,12 @@ const BoardLists = () => {
   function getFilteredBoard(filterId) {
     return {
       ...board,
-      lists: [...board.lists.filter(list => list.position !== filterId)]
+      lists: [...lists.filter(list => list.position !== filterId)]
     };
   }
 
   function updateBoard(data) {
-    setLists(data.lists);
     return makeBoardUpdate(data);
-  }
-
-  function updateList(data) {
-    setUpdate(data);
-    setLists(data);
   }
 
   function handleCreateCard(listId) {
@@ -122,7 +116,7 @@ const BoardLists = () => {
       (a, b) => a.position - b.position
     );
 
-    updateList(newList);
+    setUpdate(newList);
   }
 
   function updateHoverIndex(index) {
@@ -156,7 +150,7 @@ const BoardLists = () => {
     newList.push(updatedSourceList);
     newList.sort((a, b) => a.position - b.position);
 
-    updateList(newList);
+    setUpdate(newList);
     setDraggingCardId(draggingCardId);
   }
 
@@ -207,7 +201,7 @@ const BoardLists = () => {
 
     updatedList.sort((a, b) => a.position - b.position);
 
-    updateList(updatedList);
+    setUpdate(updatedList);
   }
 
   function handleDrop() {
@@ -238,7 +232,7 @@ const BoardLists = () => {
     handleCreateCard,
     handleOnChange,
     handleStartDrag,
-    lists,
+    lists: lists,
     newCardName,
     showAddCardInput,
     updateHoverIndex,
@@ -275,4 +269,4 @@ const BoardLists = () => {
   );
 };
 
-export default memo(BoardLists);
+export default BoardLists;
