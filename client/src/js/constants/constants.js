@@ -33,6 +33,8 @@ export const ACCESS_LEVELS = [
   { option: "Team", icon: "users", description: "Anyone can see this board" }
 ];
 
+export const PERMISSIONS = { private: false, public: false, team: false };
+
 export const bgColors = [
   "#0079be",
   "#d29034",

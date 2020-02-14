@@ -31,7 +31,7 @@ const Board = () => {
 
   return (
     <Sidebar.Pushable>
-      <BoardWrapper className="board" bgColor={board.styleProperties.color}>
+      <BoardWrapper bgColor={board.styleProperties.color}>
         <BoardHeader handleShowMenuClick={handleShowMenuClick} />
         <BoardLists />
 

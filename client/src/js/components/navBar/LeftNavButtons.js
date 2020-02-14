@@ -1,10 +1,11 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment, useContext } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 import NavButton from "../sharedComponents/NavButton";
 import SearchBar from "./SearchBar";
 import { Divider, Dropdown, Icon } from "semantic-ui-react";
-import { useFetch } from "../../utils/hookUtils";
+import { AppContext } from "../../utils/contextUtils";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -19,14 +20,9 @@ const StyledSpan = styled.span`
   color: ${props => props.color};
 `;
 
-const LeftNavButtons = ({ history, isLoading, results, value }) => {
+const LeftNavButtons = ({ history, results, value }) => {
   const [showBoardList, setShowBoardList] = useState(false);
-  const [data, loading] = useFetch();
-  const [boards, setBoards] = useState({});
-
-  useEffect(() => {
-    setBoards(data);
-  }, [data]);
+  const { boards, isLoading } = useContext(AppContext);
 
   return (
     <StyledDiv>
@@ -38,12 +34,13 @@ const LeftNavButtons = ({ history, isLoading, results, value }) => {
         floating
         labeled
         button
+        loading={isLoading}
         className="icon"
         size="tiny"
         onClick={() => setShowBoardList(!showBoardList)}
       >
         <Dropdown.Menu>
-          {!loading &&
+          {boards &&
             boards.map(board => (
               <Fragment key={board._id}>
                 <Dropdown.Item
@@ -66,4 +63,4 @@ const LeftNavButtons = ({ history, isLoading, results, value }) => {
   );
 };
 
-export default LeftNavButtons;
+export default withRouter(LeftNavButtons);

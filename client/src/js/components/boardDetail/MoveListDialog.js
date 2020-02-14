@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
 import CreateInput from "../sharedComponents/CreateInput";
-import { BoardListContext, BoardContext } from "../../utils/contextUtils";
+import { AppContext, BoardContext } from "../../utils/contextUtils";
 
 const StyledDiv = styled.div`
   display: grid;
@@ -14,7 +14,7 @@ const StyledDiv = styled.div`
 `;
 
 const MoveListDialog = ({ close, listPosition }) => {
-  const { board, getSourceList } = useContext(BoardListContext);
+  const { board, getSourceList } = useContext(AppContext);
   const { makeBoardUpdate } = useContext(BoardContext);
   const sourceId = listPosition;
   const { lists } = board;

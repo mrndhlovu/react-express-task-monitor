@@ -2,14 +2,14 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import NavButton from "../sharedComponents/NavButton";
 import { Label } from "semantic-ui-react";
-import { DimensionContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 
 const StyledDiv = styled.div`
   margin-right: 10px;
 `;
 
 const RightNavButtons = () => {
-  const { mobile } = useContext(DimensionContext).device;
+  const { mobile } = useContext(AppContext).device;
   return (
     <StyledDiv>
       <NavButton iconName="add" />

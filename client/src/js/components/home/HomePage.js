@@ -5,7 +5,7 @@ import { Container } from "semantic-ui-react";
 
 import BoardsSummary from "./BoardsSummary";
 import HomeSideBar from "./HomeSideBar";
-import { DimensionContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 
 const StyledContainer = styled(Container)`
   height: 100vh;
@@ -20,7 +20,7 @@ const StyledWrapper = styled.div`
 `;
 
 const HomePage = () => {
-  const { mobile } = useContext(DimensionContext).device;
+  const { mobile } = useContext(AppContext).device;
   return (
     <StyledContainer>
       <StyledWrapper mobile={mobile}>

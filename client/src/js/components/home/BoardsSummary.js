@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import { BoardListContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
 import BoardCategory from "./BoardCategory";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
@@ -13,7 +13,7 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard, mobile, loading } = useContext(BoardListContext);
+  const { makeNewBoard, mobile, loading } = useContext(AppContext);
 
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);

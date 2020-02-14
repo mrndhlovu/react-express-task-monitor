@@ -3,7 +3,7 @@ import React, { useContext, useState } from "react";
 import { Icon, Header } from "semantic-ui-react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-import { DimensionContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 
 const StyledCard = styled.div`
   min-height: 40px;
@@ -39,11 +39,9 @@ const Summary = ({
   history,
   handleBoardStarClick,
   starred,
-  color,
-  starRef,
-  starredRef
+  color
 }) => {
-  const { mobile } = useContext(DimensionContext).device;
+  const { mobile } = useContext(AppContext).device;
   const [showStar, setShowStar] = useState(false);
 
   return (
@@ -61,9 +59,8 @@ const Summary = ({
             <Icon
               id={id}
               name="star outline"
-              onClick={() => handleBoardStarClick()}
+              onClick={() => handleBoardStarClick(id)}
               color={starred ? "yellow" : "black"}
-              ref={showStar ? starRef : starredRef}
             />
           )}
         </StarWrapper>

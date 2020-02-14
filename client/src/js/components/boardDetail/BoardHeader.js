@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import RightBoardButtons from "../home/RightBoardButtons";
 import LeftBoardButtons from "./LeftBoardButtons";
-import { BoardContext, DimensionContext } from "../../utils/contextUtils";
+import { BoardContext, AppContext } from "../../utils/contextUtils";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
 const HeaderContainer = styled.div`
@@ -26,7 +26,7 @@ const TitleWrapper = styled.div`
 
 const BoardHeader = ({ handleShowMenuClick }) => {
   const { board } = useContext(BoardContext);
-  const { mobile, tablet } = useContext(DimensionContext).device;
+  const { mobile, tablet } = useContext(AppContext).device;
 
   return (
     <HeaderContainer mobile={mobile} tablet={tablet}>

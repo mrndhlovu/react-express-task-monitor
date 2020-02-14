@@ -5,7 +5,7 @@ import { Header } from "semantic-ui-react";
 
 import Summary from "./Summary";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
-import { BoardListContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 
 const Category = styled.div`
   display: grid;
@@ -27,15 +27,9 @@ const BoardCategory = ({
   category,
   showNewBoardModal
 }) => {
-  const {
-    boards,
-    tablet,
-    loading,
-    handleBoardStarClick,
-    mobile,
-    starRef,
-    starredRef
-  } = useContext(BoardListContext);
+  const { tablet, loading, handleBoardStarClick, mobile, boards } = useContext(
+    AppContext
+  );
 
   return (
     <>
@@ -49,11 +43,9 @@ const BoardCategory = ({
                   color={board.styleProperties.color}
                   handleBoardStarClick={handleBoardStarClick}
                   header={board.title}
-                  id={board._id}
                   key={board._id}
                   starred={board.category.includes("starred")}
-                  starredRef={starredRef}
-                  starRef={starRef}
+                  id={board._id}
                 />
               )
           )}

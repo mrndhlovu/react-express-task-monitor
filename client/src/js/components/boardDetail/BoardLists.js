@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import CreateBoard from "../sharedComponents/CreateBoard";
 import ListGrid from "./ListGrid";
-import { BoardContext, BoardListContext } from "../../utils/contextUtils";
+import { BoardContext, AppContext } from "../../utils/contextUtils";
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -240,7 +240,7 @@ const BoardLists = () => {
   };
 
   return (
-    <BoardListContext.Provider value={context}>
+    <AppContext.Provider value={context}>
       <StyledListContainer>
         <ListGrid
           draggingList={draggingList}
@@ -265,7 +265,7 @@ const BoardLists = () => {
           handleCreateClick={handleCreateList}
         />
       </StyledListContainer>
-    </BoardListContext.Provider>
+    </AppContext.Provider>
   );
 };
 

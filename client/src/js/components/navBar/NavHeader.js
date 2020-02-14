@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
 
 import LeftNavButtons from "./LeftNavButtons";
 import Logo from "./Logo";
+import { AppContext } from "../../utils/contextUtils";
 import RightNavButtons from "./RightNavButtons";
 
 const NavWrapper = styled.div`
@@ -13,14 +13,12 @@ const NavWrapper = styled.div`
   background-color: ${props => props.color};
 `;
 
-const NavHeader = ({ history, color }) => {
-  return (
-    <NavWrapper color={color}>
-      <LeftNavButtons history={history} />
-      <Logo />
-      <RightNavButtons />
-    </NavWrapper>
-  );
-};
+const NavHeader = () => (
+  <NavWrapper color={useContext(AppContext).color}>
+    <LeftNavButtons />
+    <Logo />
+    <RightNavButtons />
+  </NavWrapper>
+);
 
-export default withRouter(NavHeader);
+export default NavHeader;

@@ -44,8 +44,6 @@ const ListHeader = ({ title, position }) => {
           button
           className="icon"
           size="tiny"
-          open={!hideListMenu}
-          closeOnChange={false}
         >
           <Dropdown.Menu>
             <ListMenu

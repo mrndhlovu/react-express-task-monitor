@@ -2,21 +2,21 @@ import React, { useEffect, useState, useContext } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { BoardContext, DimensionContext } from "../utils/contextUtils";
+import { BoardContext, AppContext } from "../utils/contextUtils";
 import { requestBoardUpdate, requestBoardDelete } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import { PERMISSIONS } from "../constants/constants";
 
 const StyledContainer = styled.div`
   display: grid;
 `;
 
 const BoardContainer = ({ match, history }) => {
-  const PERMISSIONS = { private: false, public: false, team: false };
-  const { getNavBgColor } = useContext(DimensionContext);
-
+  const { getBoardDetail } = useContext(AppContext);
   const { id } = match.params;
+
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(null);
   const [boardUpdate, setBoardUpdate] = useState(null);
@@ -60,7 +60,7 @@ const BoardContainer = ({ match, history }) => {
     const requestUpdated = async () => {
       await requestBoardUpdate(id, boardUpdate).then(() => {
         try {
-          getNavBgColor(boardUpdate.styleProperties.color);
+          getBoardDetail(boardUpdate);
         } catch (error) {}
       });
     };
@@ -68,17 +68,17 @@ const BoardContainer = ({ match, history }) => {
     if (boardUpdate) requestUpdated();
     setBoard(boardUpdate);
     setBoardUpdate(null);
-  }, [getNavBgColor, id, boardUpdate]);
+  }, [getBoardDetail, id, boardUpdate]);
 
   useEffect(() => {
-    if (loading && data.length === 0) return;
+    if (loading && !data) return;
 
     if (board && !boardUpdate) {
-      getNavBgColor(board.styleProperties.color);
+      getBoardDetail(board);
       setBoard(board);
     }
     if (!board && !boardUpdate) setBoard(data);
-  }, [board, loading, getNavBgColor, data, boardUpdate]);
+  }, [board, loading, getBoardDetail, data, boardUpdate]);
 
   return (
     <BoardContext.Provider

@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { Button, Icon } from "semantic-ui-react";
-import { DimensionContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 
 const StyledButton = styled(Button)`
   background-color: #ffffff3d !important;
@@ -17,7 +17,7 @@ const NavButton = ({
   id,
   redirect
 }) => {
-  const { mobile } = useContext(DimensionContext).device;
+  const { mobile } = useContext(AppContext).device;
 
   return mobile && !forceText ? (
     <StyledButton

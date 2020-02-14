@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { requestBoardDetail, requestBoardList } from "../apis/apiRequests";
 
 export const useFetch = id => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

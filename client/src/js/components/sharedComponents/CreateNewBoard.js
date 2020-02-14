@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { DimensionContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 
 const StyledCard = styled.div`
   display: grid;
@@ -30,7 +30,7 @@ const Header = styled.h5`
 `;
 
 const CreateNewBoard = ({ showNewBoardModal }) => {
-  const { mobile } = useContext(DimensionContext).device;
+  const { mobile } = useContext(AppContext).device;
 
   return (
     <Wrapper mobile={mobile}>

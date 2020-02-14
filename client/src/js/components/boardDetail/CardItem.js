@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
-import { BoardListContext } from "../../utils/contextUtils";
+import { AppContext } from "../../utils/contextUtils";
 import EditCardMenu from "./EditCardMenu";
 
 const StyledCardDiv = styled.div`
@@ -26,7 +26,7 @@ const Span = styled.span`
 const CardItem = ({ card, sourceListId }) => {
   const [showEditButton, setShowEditButton] = useState(false);
   const { updateBoard, getSourceList, getFilteredBoard } = useContext(
-    BoardListContext
+    AppContext
   );
 
   function handleDeleteCard() {
