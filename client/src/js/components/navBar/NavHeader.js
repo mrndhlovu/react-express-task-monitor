@@ -5,6 +5,7 @@ import LeftNavButtons from "./LeftNavButtons";
 import Logo from "./Logo";
 import { AppContext } from "../../utils/contextUtils";
 import RightNavButtons from "./RightNavButtons";
+import { DEFAULT_NAV_COLOR } from "../../constants/constants";
 
 const NavWrapper = styled.div`
   display: flex;
@@ -13,12 +14,15 @@ const NavWrapper = styled.div`
   background-color: ${props => props.color};
 `;
 
-const NavHeader = () => (
-  <NavWrapper color={useContext(AppContext).color}>
-    <LeftNavButtons />
-    <Logo />
-    <RightNavButtons />
-  </NavWrapper>
-);
+const NavHeader = () => {
+  const { color } = useContext(AppContext);
+  return (
+    <NavWrapper color={color === DEFAULT_NAV_COLOR ? color : "transparent"}>
+      <LeftNavButtons />
+      <Logo />
+      <RightNavButtons />
+    </NavWrapper>
+  );
+};
 
 export default NavHeader;

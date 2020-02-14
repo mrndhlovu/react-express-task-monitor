@@ -12,7 +12,7 @@ import SearchPage from "../components/search/SearchPage";
 
 const Container = styled.div`
   height: 100vh;
-  background-color: transparent;
+  background-color: ${props => props.color};
 `;
 
 const AppContainer = ({ children, history }) => {
@@ -56,7 +56,7 @@ const AppContainer = ({ children, history }) => {
 
   useEffect(() => {
     if (!data) return;
-    setColor(DEFAULT_NAV_COLOR);
+    setColor();
     setBoards(data);
     setIsLoading(loading);
   }, [data, loading]);
@@ -76,7 +76,7 @@ const AppContainer = ({ children, history }) => {
         search
       }}
     >
-      <Container>
+      <Container color={color === DEFAULT_NAV_COLOR ? "#fff" : color}>
         <NavHeader />
         {children}
         {search && <SearchPage />}
