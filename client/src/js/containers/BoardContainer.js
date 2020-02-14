@@ -57,6 +57,7 @@ const BoardContainer = ({ match, history }) => {
   };
 
   useEffect(() => {
+    if (!boardUpdate) return;
     const requestUpdated = async () => {
       await requestBoardUpdate(id, boardUpdate).then(() => {
         try {
@@ -72,7 +73,6 @@ const BoardContainer = ({ match, history }) => {
 
   useEffect(() => {
     if (loading && !data) return;
-
     if (board && !boardUpdate) {
       getBoardDetail(board);
       setBoard(board);

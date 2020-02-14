@@ -10,7 +10,12 @@ export default function Routes() {
   return (
     <Switch>
       <Route exact path="/" component={HomePageContainer} />
-      <Route path="/boards/id/:id" component={BoardContainer} />
+      <Route
+        path="/boards/id/:id"
+        render={props => (
+          <BoardContainer key={props.match.params.id} {...props} />
+        )}
+      />
     </Switch>
   );
 }

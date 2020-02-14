@@ -56,7 +56,7 @@ const AppContainer = ({ children, history }) => {
 
   useEffect(() => {
     if (!data) return;
-    setColor();
+    setColor(DEFAULT_NAV_COLOR);
     setBoards(data);
     setIsLoading(loading);
   }, [data, loading]);
