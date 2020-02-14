@@ -25,7 +25,7 @@ const BoardSchema = mongoose.Schema({
   },
   styleProperties: {
     type: Object,
-    default: { color: "#dce3eb" }
+    default: { color: "#828c90" }
   },
   accessLevel: {
     type: Object,
