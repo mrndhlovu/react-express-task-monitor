@@ -24,6 +24,7 @@ const StyledHeader = styled(Header)`
 
 const SubHeading = styled.div`
 margin-left: 30%;
+width: 100%
 
 &:before {
     content: 'in list ';

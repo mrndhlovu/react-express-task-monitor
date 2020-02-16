@@ -15,10 +15,17 @@ const CardContent = styled.div`
   top: 14%;
   left: 2%;
 `;
-const CardDetailModal = ({ title, listPosition, cardPosition }) => {
-  const { hideCardDetail, handleCardClick, sourceId, sourceTitle } = useContext(
-    BoardListsContext
-  );
+const CardDetailModal = ({ listPosition }) => {
+  const {
+    hideCardDetail,
+    handleCardClick,
+    sourceId,
+    sourceTitle,
+    board,
+    makeBoardUpdate,
+    getSourceList,
+    activeCard
+  } = useContext(BoardListsContext);
 
   return (
     <Modal
@@ -30,14 +37,20 @@ const CardDetailModal = ({ title, listPosition, cardPosition }) => {
       onClose={() => handleCardClick()}
     >
       <ModalHeader
-        title={title}
+        title={activeCard.title}
         listPosition={listPosition}
-        cardPosition={cardPosition}
+        cardPosition={activeCard.position}
         sourceId={sourceId}
         sourceTitle={sourceTitle}
       />
       <CardContent>
-        <CardModalDescription />
+        <CardModalDescription
+          board={board}
+          makeBoardUpdate={makeBoardUpdate}
+          listPosition={listPosition}
+          getSourceList={getSourceList}
+          activeCard={activeCard}
+        />
         <CardModalSidebar />
       </CardContent>
     </Modal>

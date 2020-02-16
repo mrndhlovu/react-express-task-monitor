@@ -209,9 +209,11 @@ const BoardLists = () => {
   }
 
   const handleCardClick = (card, sourceId, listTitle) => {
-    setActiveCard(card);
-    setSourceId(sourceId);
-    setSourceTitle(listTitle);
+    if (sourceId) {
+      setActiveCard(card);
+      setSourceId(sourceId);
+      setSourceTitle(listTitle);
+    }
     setHideCardDetail(!hideCardDetail);
   };
 
@@ -231,26 +233,28 @@ const BoardLists = () => {
   const getSourceList = id => lists.filter(list => list.position === id);
 
   const context = {
+    activeCard,
     activeList,
+    board,
     boardId: id,
     dragging,
     draggingCardId,
-    board,
     getFilteredBoard,
     getSourceList,
     handleAddCardName,
     handleCancelAddCard,
+    handleCardClick,
     handleCreateCard,
     handleOnChange,
     handleStartDrag,
+    hideCardDetail,
     lists: lists,
+    makeBoardUpdate,
     newCardName,
     showAddCardInput,
-    updateHoverIndex,
+    sourceTitle,
     updateBoard,
-    handleCardClick,
-    hideCardDetail,
-    sourceTitle
+    updateHoverIndex
   };
 
   return (
@@ -279,11 +283,7 @@ const BoardLists = () => {
           handleCreateClick={handleCreateList}
         />
 
-        <CardDetailModal
-          listPosition={sourceId}
-          title={activeCard && activeCard.title}
-          cardPosition={activeCard && activeCard.position}
-        />
+        <CardDetailModal listPosition={sourceId} />
       </StyledListContainer>
     </BoardListsContext.Provider>
   );
