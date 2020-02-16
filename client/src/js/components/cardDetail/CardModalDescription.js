@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { Header, Icon, TextArea, Form } from "semantic-ui-react";
+import { Header, Icon, TextArea, Form, Button } from "semantic-ui-react";
 
 import ActivitiesHeader from "./ActivitiesHeader";
 import CardComment from "./CardComment";
@@ -32,8 +32,13 @@ const Container = styled.div`
   margin: 10px;
 `;
 
+const ButtonsWrapper = styled.div`
+  margin-top: 10px;
+`;
+
 const CardModalDescription = () => {
   const [hideActivities, setHideActivities] = useState(true);
+  const [hideSaveButton, setHideSaveButton] = useState(true);
 
   return (
     <Container>
@@ -47,7 +52,19 @@ const CardModalDescription = () => {
       />
       <Description>
         <Form>
-          <StyledTextArea placeholder="Tell us more" />
+          <StyledTextArea
+            placeholder="Add more detailed description"
+            onFocus={() => setHideSaveButton(!hideSaveButton)}
+          />
+          {!hideSaveButton && (
+            <ButtonsWrapper>
+              <Button content="Save" positive size="tiny" />
+              <Icon
+                onClick={() => setHideSaveButton(!hideSaveButton)}
+                name="close"
+              />
+            </ButtonsWrapper>
+          )}
         </Form>
       </Description>
       <ActivitiesHeader
