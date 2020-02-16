@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 import CreateBoard from "../sharedComponents/CreateBoard";
 import ListGrid from "./ListGrid";
-import { BoardContext, AppContext } from "../../utils/contextUtils";
+import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
+import CardDetailModal from "../cardDetail/CardDetailModal";
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -30,6 +31,9 @@ const BoardLists = () => {
   const [showInputField, setShowInputField] = useState(false);
   const [sourceId, setSourceId] = useState(undefined);
   const [update, setUpdate] = useState("");
+  const [hideCardDetail, setHideCardDetail] = useState(true);
+  const [activeCard, setActiveCard] = useState(false);
+  const [sourceTitle, setSourceTitle] = useState("");
 
   function handleAddList(event) {
     setNewListName(event.target.value);
@@ -204,6 +208,13 @@ const BoardLists = () => {
     setUpdate(updatedList);
   }
 
+  const handleCardClick = (card, sourceId, listTitle) => {
+    setActiveCard(card);
+    setSourceId(sourceId);
+    setSourceTitle(listTitle);
+    setHideCardDetail(!hideCardDetail);
+  };
+
   function handleDrop() {
     const updatedList = {
       ...board,
@@ -236,11 +247,14 @@ const BoardLists = () => {
     newCardName,
     showAddCardInput,
     updateHoverIndex,
-    updateBoard
+    updateBoard,
+    handleCardClick,
+    hideCardDetail,
+    sourceTitle
   };
 
   return (
-    <AppContext.Provider value={context}>
+    <BoardListsContext.Provider value={context}>
       <StyledListContainer>
         <ListGrid
           draggingList={draggingList}
@@ -264,8 +278,14 @@ const BoardLists = () => {
           handleChange={handleAddList}
           handleCreateClick={handleCreateList}
         />
+
+        <CardDetailModal
+          listPosition={sourceId}
+          title={activeCard && activeCard.title}
+          cardPosition={activeCard && activeCard.position}
+        />
       </StyledListContainer>
-    </AppContext.Provider>
+    </BoardListsContext.Provider>
   );
 };
 

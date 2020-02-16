@@ -1,13 +1,12 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
-import { AppContext } from "../../utils/contextUtils";
+import { BoardListsContext } from "../../utils/contextUtils";
 import EditCardMenu from "./EditCardMenu";
 
 const StyledCardDiv = styled.div`
   cursor: pointer;
-  margin: 10px 5px !important;
-  padding: 0 10px;
+  padding: 5px 10px;
   position: relative;
   border-radius: 4px;
   display: grid;
@@ -16,19 +15,22 @@ const StyledCardDiv = styled.div`
   color: #42526e;
 `;
 
-const StyledHeader = styled.div``;
+const StyledHeader = styled.div`
 
-const Span = styled.span`
-  font-size: 12px !important;
-  font-weight: 600;
+&:after{
+  content: '${props => props.title}';
+}
+
 `;
 
-const CardItem = ({ card, sourceListId }) => {
+const CardItem = ({ card, sourceListId, sourceTitle }) => {
   const [showEditButton, setShowEditButton] = useState(false);
-  const { updateBoard, getSourceList, getFilteredBoard } = useContext(
-    AppContext
-  );
-
+  const {
+    updateBoard,
+    getSourceList,
+    getFilteredBoard,
+    handleCardClick
+  } = useContext(BoardListsContext);
   function handleDeleteCard() {
     const newBoardLists = getFilteredBoard(sourceListId);
     const sourceList = getSourceList(sourceListId).shift();
@@ -49,10 +51,9 @@ const CardItem = ({ card, sourceListId }) => {
       edit={showEditButton}
       onMouseEnter={() => setShowEditButton(!showEditButton)}
       onMouseLeave={() => setShowEditButton(!showEditButton)}
+      onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
-      <StyledHeader>
-        <Span>{card.title}</Span>
-      </StyledHeader>
+      <StyledHeader title={card.title} />
       <EditCardMenu
         handleDeleteCard={handleDeleteCard}
         showEditButton={showEditButton}

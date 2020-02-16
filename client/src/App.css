@@ -1,8 +1,23 @@
 .ui,
 #root {
   font-family: Roboto, sans-serif !important;
+  letter-spacing: 0.4px;
 }
 
 .ui.tiny.modal {
   width: 300px !important;
+  color: #b8ccf0 !important;
+}
+
+.card-detail-container {
+  width: 55% !important;
+  height: 75% !important;
+
+  background-color: #f4f5f7 !important;
+}
+
+.ui.modal > .close {
+  top: 1.5% !important ;
+  right: 0.5rem !important;
+  color: #767676 !important;
 }

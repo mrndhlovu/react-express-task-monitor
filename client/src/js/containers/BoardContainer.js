@@ -20,6 +20,7 @@ const BoardContainer = ({ match, history }) => {
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(null);
   const [boardUpdate, setBoardUpdate] = useState(null);
+
   let newBoard;
 
   const makeBoardUpdate = updates => {

@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import NavButton from "../sharedComponents/NavButton";
-import { Label } from "semantic-ui-react";
+
 import { AppContext } from "../../utils/contextUtils";
+import NavButton from "../sharedComponents/NavButton";
+import UserLabel from "../sharedComponents/UserLabel";
 
 const StyledDiv = styled.div`
   margin-right: 10px;
@@ -18,15 +19,7 @@ const RightNavButtons = () => {
 
       <NavButton iconName="bell" />
 
-      <Label
-        as="a"
-        circular
-        size="large"
-        color="purple"
-        onClick={() => console.log("m")}
-      >
-        M
-      </Label>
+      <UserLabel />
     </StyledDiv>
   );
 };
