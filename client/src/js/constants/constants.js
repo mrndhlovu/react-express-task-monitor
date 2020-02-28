@@ -69,3 +69,13 @@ export const CARD_ACTIONS = [
   { key: 1, value: "Move", icon: "move" },
   { key: 2, value: "Copy", icon: "copy outline" }
 ];
+
+export const NEW_CARD_TEMPLATE = {
+  title: "",
+  position: "",
+  attachments: {
+    images: [],
+    documents: []
+  },
+  cardCover: ""
+};

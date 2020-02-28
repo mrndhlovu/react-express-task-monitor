@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BOARDS_EP, authQueryParams } from "../utils/urls";
+import { BOARDS_EP, UPLOAD_EP, authQueryParams } from "../utils/urls";
 
 export const requestNewBoard = board =>
   axios.post(`${BOARDS_EP}/api/create`, board);
@@ -12,5 +12,7 @@ export const requestBoardDelete = id => axios.delete(`${BOARDS_EP}/id/${id}`);
 
 export const requestBoardUpdate = (id, body) =>
   axios.patch(`${BOARDS_EP}/id/${id}/update`, body, authQueryParams);
+
+export const requestUpload = body => axios.post(`${UPLOAD_EP}/image`, body);
 
 export const userInfo = () => axios.get(BOARDS_EP);

@@ -6,6 +6,7 @@ export const getRootUrl = () =>
     : process.env.REACT_APP_DEV_API_URL;
 
 export const BOARDS_EP = `${getRootUrl()}/boards`;
+export const UPLOAD_EP = `${getRootUrl()}/upload`;
 
 export const authQueryParams = {
   headers: {

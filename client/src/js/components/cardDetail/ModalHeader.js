@@ -42,7 +42,7 @@ const ModalHeader = ({ title, sourceTitle }) => {
     <Container>
       <CardHeader>
         <StyledHeader content={title} icon="window maximize outline" />
-        {sourceTitle && <SubHeading sourceTitle={` ${sourceTitle}`} />}
+        <SubHeading sourceTitle={` ${sourceTitle}`} />
       </CardHeader>
     </Container>
   );

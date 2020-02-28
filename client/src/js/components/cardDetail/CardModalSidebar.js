@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Button, Header, Divider } from "semantic-ui-react";
-import { ADD_TO_CARD_OPTIONS, CARD_ACTIONS } from "../../constants/constants";
-
-const StyledButton = styled(Button)`
-  padding-bottom: 15px;
-  background-color: #091e420a;
-  text-align: left !important;
-`;
+import { Header, Divider } from "semantic-ui-react";
+import AddAttachment from "./AddAttachment";
+import AddCardCheckList from "./AddCardCheckList";
+import AddCardDueDate from "./AddCardDueDate";
+import AddCardLabel from "./AddCardLabel";
+import AddCardMembers from "./AddCardMembers";
+import CopyCardAction from "./CopyCardAction";
+import MoveCardAction from "./MoveCardAction";
 
 const StyledHeader = styled(Header)`
   font-size: 14px !important;
@@ -19,28 +19,19 @@ const Container = styled.div`
   margin: 10px;
 `;
 
-const ButtonWrapper = styled.div`
-  margin-bottom: 10px;
-`;
-
-const CardModalSidebar = () => {
+const CardModalSidebar = ({ addCardAttachment }) => {
   return (
     <Container>
       <StyledHeader content="ADD TO CARD" />
-      {ADD_TO_CARD_OPTIONS.map(option => (
-        <ButtonWrapper key={option.key}>
-          <StyledButton icon={`${option.icon}`} fluid content={option.value} />
-        </ButtonWrapper>
-      ))}
-
+      <AddCardMembers />
+      <AddCardLabel />
+      <AddCardCheckList />
+      <AddCardDueDate />
+      <AddAttachment addCardAttachment={addCardAttachment} />
       <Divider />
-
       <StyledHeader content="ACTIONS" />
-      {CARD_ACTIONS.map(option => (
-        <ButtonWrapper key={option.key}>
-          <StyledButton icon={`${option.icon}`} fluid content={option.value} />
-        </ButtonWrapper>
-      ))}
+      <MoveCardAction />
+      <CopyCardAction />
     </Container>
   );
 };

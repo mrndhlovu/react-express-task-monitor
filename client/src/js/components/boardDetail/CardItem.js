@@ -5,10 +5,8 @@ import { BoardListsContext } from "../../utils/contextUtils";
 import EditCardMenu from "./EditCardMenu";
 
 const StyledCardDiv = styled.div`
-  cursor: pointer;
   padding: 5px 10px;
   position: relative;
-  border-radius: 4px;
   display: grid;
   grid-template-columns: 90% 10%;
   align-items: center;
@@ -16,11 +14,22 @@ const StyledCardDiv = styled.div`
 `;
 
 const StyledHeader = styled.div`
+font-weight: 700;
+font-size: 18px;
 
 &:after{
   content: '${props => props.title}';
 }
+`;
 
+const ImageContainer = styled.div`
+  background-image: url(${props => props.cardImage});
+  background-repeat: no-repeat;
+  border-radius: 4px;
+  cursor: pointer;
+  background-size: 100% 100%;
+  min-height: ${props => props.cardImage && "200px"};
+  height: 100%;
 `;
 
 const CardItem = ({ card, sourceListId, sourceTitle }) => {
@@ -47,18 +56,20 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
   }
 
   return (
-    <StyledCardDiv
-      edit={showEditButton}
+    <ImageContainer
+      cardImage={card.cardCover}
       onMouseEnter={() => setShowEditButton(!showEditButton)}
       onMouseLeave={() => setShowEditButton(!showEditButton)}
       onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
-      <StyledHeader title={card.title} />
-      <EditCardMenu
-        handleDeleteCard={handleDeleteCard}
-        showEditButton={showEditButton}
-      />
-    </StyledCardDiv>
+      <StyledCardDiv edit={showEditButton}>
+        <StyledHeader title={card.title} />
+        <EditCardMenu
+          handleDeleteCard={handleDeleteCard}
+          showEditButton={showEditButton}
+        />
+      </StyledCardDiv>
+    </ImageContainer>
   );
 };
 

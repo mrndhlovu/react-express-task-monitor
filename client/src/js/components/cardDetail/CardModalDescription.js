@@ -4,10 +4,6 @@ import { debounce } from "lodash";
 
 import { Header, Icon, TextArea, Form, Button } from "semantic-ui-react";
 
-import ActivitiesHeader from "./ActivitiesHeader";
-import CardComment from "./CardComment";
-import ModalActivities from "./ModalActivities";
-
 const IconWrapper = styled.i`
   font-size: 19px;
 `;
@@ -54,7 +50,6 @@ const CardModalDescription = ({
   listPosition,
   activeCard
 }) => {
-  const [hideActivities, setHideActivities] = useState(true);
   const [hideSaveButton, setHideSaveButton] = useState(true);
   const [description, setDescription] = useState(activeCard.description);
   const [editing, setEditing] = useState(false);
@@ -94,8 +89,6 @@ const CardModalDescription = ({
 
   useEffect(() => {
     if (!updated) return;
-
-    setDescription(description);
     setEditing(false);
   }, [updated, activeCard, description]);
 
@@ -152,11 +145,6 @@ const CardModalDescription = ({
           </DescriptionContent>
         )}
       </Description>
-      <ActivitiesHeader
-        handleShowDetails={() => setHideActivities(!hideActivities)}
-      />
-      <CardComment />
-      {!hideActivities && <ModalActivities />}
     </Container>
   );
 };

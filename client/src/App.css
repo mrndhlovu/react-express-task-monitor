@@ -21,3 +21,8 @@
   right: 0.5rem !important;
   color: #767676 !important;
 }
+
+.upload {
+  opacity: 0;
+  z-index: -1;
+}

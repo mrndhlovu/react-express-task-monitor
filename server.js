@@ -1,23 +1,19 @@
+const cors = require("cors");
 const express = require("express");
-const path = require("path");
-const app = express();
-const dotenv = require("dotenv");
-var mysql = require("mysql");
-
 const mongoose = require("mongoose");
-const CONNECTION_URI = process.env.MONGODB_URI;
+const path = require("path");
+const log = require("./utils.js/console-alert");
+const { CONNECTION_URI, LOCAL_MONGO_DB, PORT } = require("./utils.js/config");
 
 const boardRoutes = require("./routes/board");
+const uploadRoutes = require("./routes/awsUpload");
 
-const cors = require("cors");
+const app = express();
 
-dotenv.config();
-
-// Connect to DB
 mongoose.connect(
-  CONNECTION_URI || process.env.DB_URL,
+  CONNECTION_URI || LOCAL_MONGO_DB,
   { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log("Connected to DB")
+  () => log.success("Connected to local DB")
 );
 
 // Middleware
@@ -26,12 +22,8 @@ app.use(cors());
 
 app.use(express.static(path.join(__dirname, "client/build")));
 
-app.get("/", (req, res) => {
-  res.send("We are on the Home page");
-});
-
 // Route Middleware
 app.use("/boards", boardRoutes);
+app.use("/upload", uploadRoutes);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => log.success(`Server running on port ${PORT}`));

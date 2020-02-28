@@ -5,6 +5,7 @@ import CreateBoard from "../sharedComponents/CreateBoard";
 import ListGrid from "./ListGrid";
 import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
 import CardDetailModal from "../cardDetail/CardDetailModal";
+import { NEW_CARD_TEMPLATE } from "../../constants/constants";
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -72,6 +73,7 @@ const BoardLists = () => {
     const sourceList = lists.filter(list => list.position === listId).shift();
 
     const newCard = {
+      ...NEW_CARD_TEMPLATE,
       title: newCardName,
       position: sourceList.cards.length + 1
     };
