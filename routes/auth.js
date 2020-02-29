@@ -29,6 +29,9 @@ router.get("/user/:userId", async (req, res) => {
 });
 
 router.patch("/user/:userId", async (req, res) => {
+  try {
+  } catch (error) {}
+
   await User.findById(req.params.userId)
     .then(user => {
       if (!user) return res.status(404).send();

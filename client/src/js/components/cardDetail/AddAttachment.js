@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
+import { isURL } from "validator";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import AttachmentOption from "./AttachmentOption";
 import { Divider, Input, Button, Message } from "semantic-ui-react";
@@ -60,7 +60,9 @@ const AddAttachment = ({ addCardAttachment }) => {
   };
 
   const handleAttachUrl = () => {
-    const url = validURL(attachment);
+    const url = isURL(attachment);
+
+    console.log("url: ", url);
     if (!url) return setError(!error);
   };
 

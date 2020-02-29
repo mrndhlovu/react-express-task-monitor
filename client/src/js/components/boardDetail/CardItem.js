@@ -2,34 +2,26 @@ import React, { useState, useContext } from "react";
 import styled from "styled-components";
 
 import { BoardListsContext } from "../../utils/contextUtils";
-import EditCardMenu from "./EditCardMenu";
+import EditCardPenIcon from "./EditCardPenIcon";
+import CardCover from "./CardCover";
 
-const StyledCardDiv = styled.div`
+const CardTitle = styled.div`
+  color: #172b4d;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
   padding: 5px 10px;
-  position: relative;
-  display: grid;
-  grid-template-columns: 90% 10%;
-  align-items: center;
-  color: #42526e;
+  &:after {
+    content: '${props => props.title}';
+  }
 `;
 
-const StyledHeader = styled.div`
-font-weight: 700;
-font-size: 18px;
-
-&:after{
-  content: '${props => props.title}';
-}
-`;
-
-const ImageContainer = styled.div`
-  background-image: url(${props => props.cardImage});
-  background-repeat: no-repeat;
-  border-radius: 4px;
+const Container = styled.div`
   cursor: pointer;
-  background-size: 100% 100%;
-  min-height: ${props => props.cardImage && "200px"};
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 244px;
+  position: relative;
 `;
 
 const CardItem = ({ card, sourceListId, sourceTitle }) => {
@@ -40,10 +32,10 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
     getFilteredBoard,
     handleCardClick
   } = useContext(BoardListsContext);
-  function handleDeleteCard() {
+
+  const handleDeleteCard = () => {
     const newBoardLists = getFilteredBoard(sourceListId);
     const sourceList = getSourceList(sourceListId).shift();
-
     const newFilteredList = {
       ...sourceList,
       cards: sourceList.cards.filter(key => key.position !== card.position)
@@ -53,23 +45,21 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
     newBoardLists.lists.sort((a, b) => a.position - b.position);
 
     updateBoard(newBoardLists);
-  }
+  };
 
   return (
-    <ImageContainer
-      cardImage={card.cardCover}
+    <Container
       onMouseEnter={() => setShowEditButton(!showEditButton)}
       onMouseLeave={() => setShowEditButton(!showEditButton)}
       onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
-      <StyledCardDiv edit={showEditButton}>
-        <StyledHeader title={card.title} />
-        <EditCardMenu
-          handleDeleteCard={handleDeleteCard}
-          showEditButton={showEditButton}
-        />
-      </StyledCardDiv>
-    </ImageContainer>
+      <CardCover card={card} />
+      <CardTitle edit={showEditButton} title={card.title} />
+      <EditCardPenIcon
+        handleDeleteCard={handleDeleteCard}
+        showEditButton={showEditButton}
+      />
+    </Container>
   );
 };
 
