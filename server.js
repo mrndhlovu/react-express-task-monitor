@@ -1,20 +1,15 @@
+const { PORT } = require("./utils.js/config");
 const cors = require("cors");
 const express = require("express");
-const mongoose = require("mongoose");
-const path = require("path");
 const log = require("./utils.js/console-alert");
-const { CONNECTION_URI, LOCAL_MONGO_DB, PORT } = require("./utils.js/config");
+const path = require("path");
+require("./utils.js/mongooseDB");
 
 const boardRoutes = require("./routes/board");
 const uploadRoutes = require("./routes/awsUpload");
+const authRoutes = require("./routes/auth");
 
 const app = express();
-
-mongoose.connect(
-  CONNECTION_URI || LOCAL_MONGO_DB,
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => log.success("Connected to local DB")
-);
 
 // Middleware
 app.use(express.json());
@@ -25,5 +20,6 @@ app.use(express.static(path.join(__dirname, "client/build")));
 // Route Middleware
 app.use("/boards", boardRoutes);
 app.use("/upload", uploadRoutes);
+app.use("/auth", authRoutes);
 
 app.listen(PORT, () => log.success(`Server running on port ${PORT}`));

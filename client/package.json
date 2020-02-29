@@ -27,6 +27,7 @@
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.81.2",
     "styled-components": "^4.4.1",
+    "validator": "^12.2.0",
     "yarn": "^1.21.1"
   },
   "scripts": {

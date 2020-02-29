@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
+const validate = require("validator");
 
 const UserSchema = mongoose.Schema({
   "first-name": {
     type: String,
-    required: true
+    required: true,
+    trim: true,
+    minlength: 4
   },
   "last-name": {
-    type: Date,
-    default: Date.now()
+    type: String,
+    trim: true
   },
   "date-joined": {
     type: Date,
@@ -16,6 +19,25 @@ const UserSchema = mongoose.Schema({
   "last-active": {
     type: Date,
     default: Date.now()
+  },
+  email: {
+    type: String,
+    lowercase: true,
+    trim: true,
+    required: true,
+    validate(value) {
+      if (!validate.isEmail(value)) throw new Error("Email is invalid");
+    }
+  },
+  password: {
+    type: String,
+    trim: true,
+    required: true,
+    minlength: 7,
+    validate(value) {
+      if (value.toLowerCase().includes("password"))
+        throw new Error(`Password should not be 'password'`);
+    }
   }
 });
 

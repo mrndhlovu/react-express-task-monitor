@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const BoardSchema = mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   date: {
     type: Date,
