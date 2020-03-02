@@ -25,3 +25,6 @@ export const requestDeleteCard = (body, id) =>
 
 export const requestCardCoverUpdate = (body, id) =>
   axios.patch(`${CARDS_EP}/cover/${id}`, { ...body });
+
+export const requestDeleteAttachment = (body, id) =>
+  axios.patch(`${CARDS_EP}/delete-attachment/${id}`, { ...body });

@@ -81,7 +81,7 @@ const Attachments = ({
                   />
                   <AttachmentLink
                     content="Delete"
-                    onClick={() => handleDeleteAttachment()}
+                    onClick={() => handleDeleteAttachment(image.imgUrl)}
                   />
                   <AttachmentLink
                     content={

@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
 const Card = require("../models/Card");
+const validate = require("validator");
 
 const updateBoardLists = (id, newLists) =>
   Board.findByIdAndUpdate(
@@ -90,6 +91,50 @@ router.patch("/cover/:boardId", async (req, res) => {
     res.send(newBoard);
   } catch (error) {
     res.status(400).send({ message: "Failed to update card cover" });
+  }
+});
+
+router.patch("/delete-attachment/:boardId", async (req, res) => {
+  const { cardId, listId, deleteId } = req.body;
+  const { boardId } = req.params;
+
+  try {
+    const board = await Board.findById({ _id: boardId });
+
+    const patchedList = {
+      ...board,
+      lists: [
+        ...board.lists.map(list =>
+          list.position === listId
+            ? {
+                ...list,
+                cards: list.cards.map(card =>
+                  card.position === cardId
+                    ? {
+                        ...card,
+                        attachments: {
+                          ...card.attachments,
+                          images: [
+                            ...card.attachments.images.filter(
+                              image =>
+                                image.imgUrl.localeCompare(deleteId) !== 0
+                            )
+                          ]
+                        }
+                      }
+                    : { ...card }
+                )
+              }
+            : { ...list }
+        )
+      ]
+    };
+
+    const newBoard = await updateBoardLists(boardId, patchedList.lists);
+
+    res.send(newBoard);
+  } catch (error) {
+    res.status(400).send({ message: "Failed to delete attachment card" });
   }
 });
 

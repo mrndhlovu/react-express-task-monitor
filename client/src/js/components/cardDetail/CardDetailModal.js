@@ -6,7 +6,10 @@ import { Modal, Button } from "semantic-ui-react";
 
 import { BoardListsContext } from "../../utils/contextUtils";
 import { checkDuplicate } from "../../utils/appUtils";
-import { requestCardCoverUpdate } from "../../apis/apiRequests";
+import {
+  requestCardCoverUpdate,
+  requestDeleteAttachment
+} from "../../apis/apiRequests";
 import Attachments from "./Attachments";
 import CardActivities from "./CardActivities";
 import CardComments from "./CardComments";
@@ -49,6 +52,7 @@ const CardDetailModal = ({ listPosition, match }) => {
   const [removeCover, setRemoveCover] = useState(false);
   const [newCover, setNewCover] = useState(null);
   const [activeCover, setActiveCardCover] = useState(null);
+  const [deleteAttachment, setDeleteAttachment] = useState(null);
 
   const addCardAttachment = attachment => {
     setNewAttachment(attachment);
@@ -156,6 +160,44 @@ const CardDetailModal = ({ listPosition, match }) => {
     setActiveCardCover(activeCard.cardCover);
   }, [activeCard, newCover]);
 
+  const handleDeleteAttachment = imgUrl => {
+    setDeleteAttachment(imgUrl);
+    setIsLoading(true);
+  };
+
+  useEffect(() => {
+    if (!deleteAttachment) return;
+
+    const removeAttachment = async () => {
+      const body = {
+        cardId: activeCard.position,
+        listId: listPosition,
+        deleteId: deleteAttachment
+      };
+
+      await requestDeleteAttachment(body, id).then(res => {
+        makeBoardUpdate(res.data);
+        setIsLoading(false);
+        if (activeCover.localeCompare(deleteAttachment) === 0) {
+          setIsLoading(false);
+          setNewCover(null);
+          setRemoveCover(true);
+        }
+
+        setDeleteAttachment(null);
+      });
+    };
+    removeAttachment();
+  }, [
+    activeCover,
+    deleteAttachment,
+    activeCard,
+    id,
+    listPosition,
+    makeBoardUpdate,
+    newCover
+  ]);
+
   return (
     <Modal
       className="card-detail-container"
@@ -202,6 +244,7 @@ const CardDetailModal = ({ listPosition, match }) => {
             isLoading={isLoading}
             handleMakeCover={handleMakeCover}
             handleRemoveCover={handleRemoveCover}
+            handleDeleteAttachment={handleDeleteAttachment}
           />
           <CardActivities
             handleShowDetails={() => setHideActivities(!hideActivities)}
