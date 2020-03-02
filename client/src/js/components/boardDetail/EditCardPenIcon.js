@@ -20,9 +20,7 @@ const EditCardPenIcon = ({ handleDeleteCard, showEditButton }) => {
       <Dropdown floating icon="pencil alternate">
         <Dropdown.Menu>
           <Dropdown.Item>Move</Dropdown.Item>
-          <Dropdown.Item onClick={() => handleDeleteCard()}>
-            Delete
-          </Dropdown.Item>
+          <Dropdown.Item onClick={handleDeleteCard}>Delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </EditIconWrapper>

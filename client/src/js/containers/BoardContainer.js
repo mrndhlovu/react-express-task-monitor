@@ -20,11 +20,13 @@ const BoardContainer = ({ match, history }) => {
   const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(null);
   const [boardUpdate, setBoardUpdate] = useState(null);
+  const [makeRequest, setMakeRequest] = useState(false);
 
   let newBoard;
 
-  const makeBoardUpdate = updates => {
+  const makeBoardUpdate = (updates, request) => {
     setBoardUpdate(updates);
+    setMakeRequest(request);
   };
 
   const changeBoardAccessLevel = option => {
@@ -67,10 +69,10 @@ const BoardContainer = ({ match, history }) => {
       });
     };
 
-    if (boardUpdate) requestUpdated();
+    if (boardUpdate && makeRequest) requestUpdated();
     setBoard(boardUpdate);
     setBoardUpdate(null);
-  }, [getBoardDetail, id, boardUpdate]);
+  }, [getBoardDetail, id, boardUpdate, makeRequest]);
 
   useEffect(() => {
     if (loading && !data) return;

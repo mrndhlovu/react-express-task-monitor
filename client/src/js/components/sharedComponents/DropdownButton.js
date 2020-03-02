@@ -20,33 +20,31 @@ const HeaderWrapper = styled(Dropdown.Header)`
 const DropdownButton = ({ buttonText, children, icon, header }) => {
   const [open, setOpen] = useState(false);
   return (
-    <>
-      <StyledDropdown
-        button
-        className="icon"
-        compact
-        floating
-        fluid
-        icon={icon}
-        labeled
-        text={buttonText}
-        open={open}
-        onClick={() => setOpen(!open)}
-      >
-        <Dropdown.Menu onClick={e => e.stopPropagation()}>
-          <HeaderWrapper>
-            <div>
-              <Header size="tiny" content={header} />
-            </div>
-            <div>
-              <Icon link name="close" onClick={() => setOpen(!open)} />
-            </div>
-          </HeaderWrapper>
-          <Divider />
-          {children}
-        </Dropdown.Menu>
-      </StyledDropdown>
-    </>
+    <StyledDropdown
+      button
+      className="icon"
+      compact
+      floating
+      fluid
+      icon={icon}
+      labeled
+      text={buttonText}
+      open={open}
+      onClick={() => setOpen(!open)}
+    >
+      <Dropdown.Menu onClick={e => e.stopPropagation()}>
+        <HeaderWrapper>
+          <div>
+            <Header size="tiny" content={header} />
+          </div>
+          <div>
+            <Icon link name="close" onClick={() => setOpen(!open)} />
+          </div>
+        </HeaderWrapper>
+        <Divider />
+        {children}
+      </Dropdown.Menu>
+    </StyledDropdown>
   );
 };
 

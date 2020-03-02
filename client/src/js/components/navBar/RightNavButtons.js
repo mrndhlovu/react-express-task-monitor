@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { AppContext } from "../../utils/contextUtils";
 import NavButton from "../sharedComponents/NavButton";
-import UserLabel from "../sharedComponents/UserLabel";
+import UserAvatar from "../sharedComponents/UserAvatar";
 
 const StyledDiv = styled.div`
   margin-right: 10px;
@@ -19,7 +19,7 @@ const RightNavButtons = () => {
 
       <NavButton iconName="bell" />
 
-      <UserLabel />
+      <UserAvatar />
     </StyledDiv>
   );
 };

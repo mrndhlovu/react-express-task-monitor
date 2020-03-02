@@ -15,8 +15,6 @@ const Container = styled.div`
   }
 `;
 
-const AttachmentOption = ({ children }) => {
-  return <Container>{children}</Container>;
-};
+const AttachmentOption = ({ children }) => <Container>{children}</Container>;
 
 export default AttachmentOption;

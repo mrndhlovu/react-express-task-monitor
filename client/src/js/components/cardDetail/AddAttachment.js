@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { isURL } from "validator";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import AttachmentOption from "./AttachmentOption";
+
 import { Divider, Input, Button, Message } from "semantic-ui-react";
+import { isURL } from "validator";
 import { requestUpload } from "../../apis/apiRequests";
-import { validURL } from "../../utils/appUtils";
+import AttachmentOption from "./AttachmentOption";
+import DropdownButton from "../sharedComponents/DropdownButton";
 
 const Container = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const StyledSmall = styled.small`
   padding-left: 3px;
 `;
 
-const AddAttachment = ({ addCardAttachment }) => {
+const AddAttachment = ({ addCardAttachment, handleLoadingAttachment }) => {
   const [attachment, setAttachment] = useState(null);
   const [error, setError] = useState(false);
   const [message, setMessage] = useState(null);
@@ -40,15 +40,17 @@ const AddAttachment = ({ addCardAttachment }) => {
   const handleUpload = e => {
     const file = e.target.files[0];
     const data = new FormData();
-
     data.append("image", file);
 
     const upload = async () => {
+      handleLoadingAttachment(true);
       await requestUpload(data)
         .then(response => {
-          const { imgUrl, success, message } = response.data;
+          const { imgUrl, uploadDate, success, message } = response.data;
           if (!success) return setMessage(message);
-          addCardAttachment(imgUrl);
+          const uploadData = { imgUrl, uploadDate, name: file.name };
+          addCardAttachment(uploadData);
+          handleLoadingAttachment(false);
         })
         .catch(error => setMessage(error.message));
     };
@@ -66,7 +68,6 @@ const AddAttachment = ({ addCardAttachment }) => {
     if (!url) return setError(!error);
   };
 
-  useEffect(() => {}, [attachment]);
   return (
     <DropdownButton icon="attach" buttonText="Attachment" header="Attach From">
       <Container>

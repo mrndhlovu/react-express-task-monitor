@@ -77,5 +77,7 @@ export const NEW_CARD_TEMPLATE = {
     images: [],
     documents: []
   },
-  cardCover: ""
+  cardCover: "",
+  comments: [],
+  activities: []
 };

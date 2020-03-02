@@ -1,9 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, memo } from "react";
 import styled from "styled-components";
 
 import { BoardListsContext } from "../../utils/contextUtils";
 import EditCardPenIcon from "./EditCardPenIcon";
 import CardCover from "./CardCover";
+import { requestDeleteCard } from "../../apis/apiRequests";
+import { withRouter } from "react-router-dom";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -24,28 +26,22 @@ const Container = styled.div`
   position: relative;
 `;
 
-const CardItem = ({ card, sourceListId, sourceTitle }) => {
+const CardItem = ({ card, sourceListId, sourceTitle, match }) => {
+  const { id } = match.params;
+  const { makeBoardUpdate, handleCardClick } = useContext(BoardListsContext);
+
   const [showEditButton, setShowEditButton] = useState(false);
-  const {
-    updateBoard,
-    getSourceList,
-    getFilteredBoard,
-    handleCardClick
-  } = useContext(BoardListsContext);
+  const [deleting, setDeleting] = useState(false);
 
-  const handleDeleteCard = () => {
-    const newBoardLists = getFilteredBoard(sourceListId);
-    const sourceList = getSourceList(sourceListId).shift();
-    const newFilteredList = {
-      ...sourceList,
-      cards: sourceList.cards.filter(key => key.position !== card.position)
-    };
-
-    newBoardLists.lists.push(newFilteredList);
-    newBoardLists.lists.sort((a, b) => a.position - b.position);
-
-    updateBoard(newBoardLists);
-  };
+  useEffect(() => {
+    if (!deleting) return;
+    const deleteCard = async () =>
+      await requestDeleteCard(
+        { cardId: card.position, listId: sourceListId },
+        id
+      );
+    deleteCard().then(res => makeBoardUpdate(res.data) && setDeleting(false));
+  }, [card, deleting, id, sourceListId, makeBoardUpdate]);
 
   return (
     <Container
@@ -56,11 +52,11 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
       <CardCover card={card} />
       <CardTitle edit={showEditButton} title={card.title} />
       <EditCardPenIcon
-        handleDeleteCard={handleDeleteCard}
+        handleDeleteCard={() => setDeleting(true)}
         showEditButton={showEditButton}
       />
     </Container>
   );
 };
 
-export default CardItem;
+export default withRouter(memo(CardItem));

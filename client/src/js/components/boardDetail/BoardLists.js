@@ -49,7 +49,7 @@ const BoardLists = () => {
 
     lists.push(newList);
 
-    makeBoardUpdate(board);
+    updateBoard(board);
     setShowInputField(!showInputField);
   }
 
@@ -65,9 +65,10 @@ const BoardLists = () => {
     };
   }
 
-  function updateBoard(data) {
-    return makeBoardUpdate(data);
-  }
+  const updateBoard = data => {
+    setUpdate(data.lists);
+    makeBoardUpdate(data, true);
+  };
 
   function handleCreateCard(listId) {
     const sourceList = lists.filter(list => list.position === listId).shift();
@@ -80,7 +81,7 @@ const BoardLists = () => {
 
     sourceList.cards.push(newCard);
 
-    makeBoardUpdate(board);
+    updateBoard(board);
     setActiveList("");
   }
 
@@ -178,10 +179,6 @@ const BoardLists = () => {
     updateDropTargetId(id);
   }
 
-  function handleCancelAddCard() {
-    setActiveList("");
-  }
-
   function updateDragOption() {
     setDraggingList(!draggingList);
   }
@@ -224,7 +221,7 @@ const BoardLists = () => {
       ...board,
       lists: update
     };
-    makeBoardUpdate(updatedList);
+    updateBoard(updatedList);
 
     setDropTargetColumnId(undefined);
     setDraggingCardId(undefined);
@@ -239,12 +236,12 @@ const BoardLists = () => {
     activeList,
     board,
     boardId: id,
+    closeAddCardOption: () => setActiveList(""),
     dragging,
     draggingCardId,
     getFilteredBoard,
     getSourceList,
     handleAddCardName,
-    handleCancelAddCard,
     handleCardClick,
     handleCreateCard,
     handleOnChange,

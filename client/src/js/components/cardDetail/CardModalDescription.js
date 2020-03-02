@@ -3,10 +3,8 @@ import styled from "styled-components";
 import { debounce } from "lodash";
 
 import { Header, Icon, TextArea, Form, Button } from "semantic-ui-react";
-
-const IconWrapper = styled.i`
-  font-size: 19px;
-`;
+import CardDetailHeader from "../sharedComponents/CardDetailHeader";
+import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 
 const StyledHeader = styled(Header)`
   font-size: 16px !important;
@@ -18,15 +16,6 @@ const Description = styled.div`
 
 const StyledTextArea = styled(TextArea)`
   background-color: #091e420a !important;
-`;
-
-const Span = styled.span`
-  letter-spacing: 1px;
-`;
-
-const Container = styled.div`
-  letter-spacing: 1px;
-  margin: 10px;
 `;
 
 const ButtonsWrapper = styled.div`
@@ -93,15 +82,17 @@ const CardModalDescription = ({
   }, [updated, activeCard, description]);
 
   return (
-    <Container>
+    <CardDetailSegment>
       <StyledHeader>
         <DescriptionHeader>
           <div>
-            <IconWrapper>
-              <Icon flipped="vertically" name="align left" />
-            </IconWrapper>
-            <Span>Description</Span>
+            <CardDetailHeader
+              description="Description"
+              icon="align left"
+              flipped="vertically"
+            />
           </div>
+
           <div>
             <Button
               onClick={() => setEditing(!editing)}
@@ -145,7 +136,7 @@ const CardModalDescription = ({
           </DescriptionContent>
         )}
       </Description>
-    </Container>
+    </CardDetailSegment>
   );
 };
 

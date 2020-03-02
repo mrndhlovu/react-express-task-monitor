@@ -11,15 +11,6 @@ export const filterObject = (data, allowed) => {
 
 export const getLocation = () => window.location;
 
-export const validURL = str => {
-  var pattern = new RegExp(
-    "^(https?:\\/\\/)?" +
-      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-      "((\\d{1,3}\\.){3}\\d{1,3}))" +
-      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
-      "(\\?[;&a-z\\d%_.~+=-]*)?" +
-      "(\\#[-a-z\\d_]*)?$",
-    "i"
-  );
-  return !!pattern.test(str);
-};
+export const checkDuplicate = (collection, item) => collection.includes(item);
+
+export const resetForm = id => document.getElementById(id).reset();

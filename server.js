@@ -6,6 +6,7 @@ const path = require("path");
 require("./utils.js/mongooseDB");
 
 const boardRoutes = require("./routes/board");
+const cardRoutes = require("./routes/cards");
 const uploadRoutes = require("./routes/awsUpload");
 const authRoutes = require("./routes/auth");
 
@@ -19,6 +20,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 
 // Route Middleware
 app.use("/boards", boardRoutes);
+app.use("/cards", cardRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/auth", authRoutes);
 

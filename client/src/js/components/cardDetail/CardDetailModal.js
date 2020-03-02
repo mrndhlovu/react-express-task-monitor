@@ -3,14 +3,15 @@ import styled from "styled-components";
 
 import { Modal } from "semantic-ui-react";
 
-import ModalHeader from "./ModalHeader";
 import { BoardListsContext } from "../../utils/contextUtils";
+import { checkDuplicate } from "../../utils/appUtils";
+import Attachments from "./Attachments";
+import CardActivities from "./CardActivities";
+import CardComments from "./CardComments";
 import CardModalDescription from "./CardModalDescription";
 import CardModalSidebar from "./CardModalSidebar";
-import Attachments from "./Attachments";
-import ActivitiesHeader from "./ActivitiesHeader";
-import CardComment from "./CardComment";
-import ModalActivities from "./ModalActivities";
+import ModalHeader from "./ModalHeader";
+import ModalImageCover from "./ModalImageCover";
 
 const CardContent = styled.div`
   position: relative;
@@ -18,7 +19,9 @@ const CardContent = styled.div`
   grid-template-columns: 65% 30%;
   top: 14%;
   left: 2%;
+  height: auto;
 `;
+
 const CardDetailModal = ({ listPosition }) => {
   const {
     hideCardDetail,
@@ -33,6 +36,7 @@ const CardDetailModal = ({ listPosition }) => {
 
   const [newAttachment, setNewAttachment] = useState(null);
   const [hideActivities, setHideActivities] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const addCardAttachment = attachment => {
     setNewAttachment(attachment);
@@ -40,28 +44,33 @@ const CardDetailModal = ({ listPosition }) => {
 
   useEffect(() => {
     if (!newAttachment) return;
-    else if (!activeCard.attachments.images.includes(newAttachment)) {
+    const duplicate = checkDuplicate(
+      activeCard.attachments.images,
+      newAttachment.imgUrl
+    );
+    let newBoard;
+
+    if (!duplicate) {
       activeCard.attachments.images.push(newAttachment);
 
-      if (!activeCard.cardCover) {
-        const newBoard = {
-          ...board,
-          lists: board.lists.map(list =>
-            list.position === listPosition
-              ? {
-                  ...list,
-                  cards: list.cards.map(card =>
-                    card.position === activeCard.position
-                      ? { ...card, cardCover: newAttachment }
-                      : { ...card }
-                  )
-                }
-              : { ...list }
-          )
-        };
-        makeBoardUpdate(newBoard);
-        setNewAttachment(null);
-      }
+      newBoard = {
+        ...board,
+        lists: board.lists.map(list =>
+          list.position === listPosition
+            ? {
+                ...list,
+                cards: list.cards.map(card =>
+                  card.position === activeCard.position
+                    ? { ...card, cardCover: newAttachment.imgUrl }
+                    : { ...card }
+                )
+              }
+            : { ...list }
+        )
+      };
+
+      makeBoardUpdate(newBoard, true);
+      setNewAttachment(null);
     }
   }, [
     newAttachment,
@@ -72,15 +81,24 @@ const CardDetailModal = ({ listPosition }) => {
     makeBoardUpdate
   ]);
 
+  const handleLoadingAttachment = loading => {
+    setIsLoading(loading);
+  };
+
   return (
     <Modal
       className="card-detail-container"
       closeOnDocumentClick={true}
       centered={false}
       open={!hideCardDetail}
-      closeIcon
       onClose={() => handleCardClick()}
+      closeIcon={!activeCard.cardCover}
     >
+      <ModalImageCover
+        cardCover={activeCard.cardCover}
+        handleCardClick={handleCardClick}
+      />
+
       <ModalHeader
         title={activeCard.title}
         cardPosition={activeCard.position}
@@ -88,7 +106,6 @@ const CardDetailModal = ({ listPosition }) => {
         sourceTitle={sourceTitle}
         cardCover={activeCard.cardCover}
       />
-
       <CardContent>
         <div>
           <CardModalDescription
@@ -98,17 +115,18 @@ const CardDetailModal = ({ listPosition }) => {
             getSourceList={getSourceList}
             activeCard={activeCard}
           />
-          <Attachments />
-          <ActivitiesHeader
+          <Attachments card={activeCard} isLoading={isLoading} />
+          <CardActivities
             handleShowDetails={() => setHideActivities(!hideActivities)}
+            hideActivities={hideActivities}
           />
 
-          {!hideActivities && <ModalActivities />}
-          <CardComment />
+          <CardComments />
         </div>
         <CardModalSidebar
           addCardAttachment={addCardAttachment}
           handleUploadAttachment={handleUploadAttachment}
+          handleLoadingAttachment={handleLoadingAttachment}
         />
       </CardContent>
     </Modal>
