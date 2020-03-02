@@ -17,6 +17,7 @@ const StyledHeader = styled(Header)`
 
 const Container = styled.div`
   margin: 10px;
+  overflow: hidden;
 `;
 
 const CardModalSidebar = ({ ...props }) => {
@@ -28,7 +29,6 @@ const CardModalSidebar = ({ ...props }) => {
       <AddCardCheckList />
       <AddCardDueDate />
       <AddAttachment {...props} />
-      <Divider />
       <StyledHeader content="ACTIONS" />
       <MoveCardAction />
       <CopyCardAction />

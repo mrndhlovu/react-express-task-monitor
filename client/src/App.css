@@ -26,3 +26,7 @@
   opacity: 0;
   z-index: -1;
 }
+.ui.fluid.dropdown,
+.sidebar-dropdown-button {
+  width: 80% !important;
+}

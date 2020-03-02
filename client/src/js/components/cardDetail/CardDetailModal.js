@@ -16,7 +16,7 @@ import ModalImageCover from "./ModalImageCover";
 const CardContent = styled.div`
   position: relative;
   display: grid;
-  grid-template-columns: 65% 30%;
+  grid-template-columns: 75% 25%;
   top: 9%;
   left: 2%;
   height: 70%;
@@ -24,6 +24,7 @@ const CardContent = styled.div`
 
 const LeftSideContent = styled.div`
   overflow-y: scroll;
+  padding-right: 5px;
 `;
 
 const CardDetailModal = ({ listPosition }) => {

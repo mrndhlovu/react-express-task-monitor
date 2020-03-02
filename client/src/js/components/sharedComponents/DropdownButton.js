@@ -32,7 +32,10 @@ const DropdownButton = ({ buttonText, children, icon, header }) => {
       open={open}
       onClick={() => setOpen(!open)}
     >
-      <Dropdown.Menu onClick={e => e.stopPropagation()}>
+      <Dropdown.Menu
+        className="sidebar-dropdown-button"
+        onClick={e => e.stopPropagation()}
+      >
         <HeaderWrapper>
           <div>
             <Header size="tiny" content={header} />
