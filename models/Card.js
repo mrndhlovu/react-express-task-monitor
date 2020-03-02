@@ -41,6 +41,16 @@ const CardSchema = mongoose.Schema({
     type: Array,
     default: [],
     required: true
+  },
+  labels: {
+    type: Array,
+    default: [],
+    required: true
+  },
+  checklist: {
+    type: Array,
+    default: [],
+    required: true
   }
 });
 
