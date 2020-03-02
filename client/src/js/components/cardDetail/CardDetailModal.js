@@ -17,9 +17,13 @@ const CardContent = styled.div`
   position: relative;
   display: grid;
   grid-template-columns: 65% 30%;
-  top: 14%;
+  top: 9%;
   left: 2%;
-  height: auto;
+  height: 70%;
+`;
+
+const LeftSideContent = styled.div`
+  overflow-y: scroll;
 `;
 
 const CardDetailModal = ({ listPosition }) => {
@@ -107,7 +111,7 @@ const CardDetailModal = ({ listPosition }) => {
         cardCover={activeCard.cardCover}
       />
       <CardContent>
-        <div>
+        <LeftSideContent>
           <CardModalDescription
             board={board}
             makeBoardUpdate={makeBoardUpdate}
@@ -122,7 +126,7 @@ const CardDetailModal = ({ listPosition }) => {
           />
 
           <CardComments />
-        </div>
+        </LeftSideContent>
         <CardModalSidebar
           addCardAttachment={addCardAttachment}
           handleUploadAttachment={handleUploadAttachment}
