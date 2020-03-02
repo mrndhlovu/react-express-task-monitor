@@ -10,10 +10,7 @@
 }
 
 .card-detail-container {
-  width: 55% !important;
-  height: 75% !important;
-
-  background-color: #f4f5f7 !important;
+  width: 40% !important;
 }
 
 .ui.modal > .close {
@@ -25,8 +22,4 @@
 .upload {
   opacity: 0;
   z-index: -1;
-}
-.ui.fluid.dropdown,
-.sidebar-dropdown-button {
-  width: 80% !important;
 }

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Divider, Input, Button, Message } from "semantic-ui-react";
 import { isURL } from "validator";
 import { requestUpload } from "../../apis/apiRequests";
-import AttachmentOption from "./AttachmentOption";
+import AttachmentOption from "../sharedComponents/AttachmentOption";
 import DropdownButton from "../sharedComponents/DropdownButton";
 
 const Container = styled.div`

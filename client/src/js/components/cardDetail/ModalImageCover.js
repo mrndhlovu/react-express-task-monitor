@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Button } from "semantic-ui-react";
+import { Button, Modal } from "semantic-ui-react";
+import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 
 const ButtonWrapper = styled.div`
   position: absolute;
@@ -9,41 +10,25 @@ const ButtonWrapper = styled.div`
   right: 5px;
 `;
 
-const CloseIconWrapper = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-`;
-
-const StyledIcon = styled(Button)`
-  border-radius: 50px !important;
-`;
-
-const CoverContainer = styled.div`
-  background-color: #7a7472;
-  background-image: url(${props => props.cover});
-  background-origin: content-box;
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
-  box-sizing: border-box;
-  cursor: pointer;
+const CoverContainer = styled(Modal.Header)`
+  background-color: #7a7472 !important;
+  background-image: url(${props => props.cover}) !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  background-size: contain !important;
+  cursor: pointer !important;
   height: 160px;
   position: relative;
-  transition: opacity 85ms;
+  transition: opacity 85ms !important;
+  transition-duration: 600ms !important;
 `;
 
-const ModalImageCover = ({ cardCover, handleCardClick }) => {
-  return (
+const ModalImageCover = ({ cardCover, isLoading }) => {
+  return isLoading ? (
+    <CardDetailSegment>Loading...</CardDetailSegment>
+  ) : (
     cardCover && (
       <CoverContainer cover={cardCover}>
-        <CloseIconWrapper>
-          <StyledIcon
-            onClick={() => handleCardClick()}
-            icon="delete"
-            size="tiny"
-          />
-        </CloseIconWrapper>
         <ButtonWrapper>
           <Button content="Cover" icon="image" size="tiny" floated="right" />
         </ButtonWrapper>

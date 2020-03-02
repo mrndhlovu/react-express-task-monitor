@@ -1,10 +1,12 @@
 import React, { useContext, useState, useEffect, memo } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
-import { Modal } from "semantic-ui-react";
+import { Modal, Button } from "semantic-ui-react";
 
 import { BoardListsContext } from "../../utils/contextUtils";
 import { checkDuplicate } from "../../utils/appUtils";
+import { requestCardCoverUpdate } from "../../apis/apiRequests";
 import Attachments from "./Attachments";
 import CardActivities from "./CardActivities";
 import CardComments from "./CardComments";
@@ -13,21 +15,22 @@ import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
 import ModalImageCover from "./ModalImageCover";
 
-const CardContent = styled.div`
-  position: relative;
-  display: grid;
-  grid-template-columns: 75% 25%;
-  top: 9%;
-  left: 2%;
-  height: 70%;
+const CardContent = styled(Modal.Content)``;
+
+const ButtonWrapper = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  z-index: 1000 !important;
 `;
 
-const LeftSideContent = styled.div`
-  overflow-y: scroll;
-  padding-right: 5px;
+const LeftSideContent = styled(Modal.Description)``;
+
+const StyledIcon = styled(Button)`
+  border-radius: 50px !important;
 `;
 
-const CardDetailModal = ({ listPosition }) => {
+const CardDetailModal = ({ listPosition, match }) => {
   const {
     hideCardDetail,
     handleCardClick,
@@ -39,9 +42,13 @@ const CardDetailModal = ({ listPosition }) => {
     handleUploadAttachment
   } = useContext(BoardListsContext);
 
+  const { id } = match.params;
   const [newAttachment, setNewAttachment] = useState(null);
   const [hideActivities, setHideActivities] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [removeCover, setRemoveCover] = useState(false);
+  const [newCover, setNewCover] = useState(null);
+  const [activeCover, setActiveCardCover] = useState(null);
 
   const addCardAttachment = attachment => {
     setNewAttachment(attachment);
@@ -75,6 +82,7 @@ const CardDetailModal = ({ listPosition }) => {
       };
 
       makeBoardUpdate(newBoard, true);
+      setNewCover(newAttachment.imgUrl);
       setNewAttachment(null);
     }
   }, [
@@ -89,6 +97,64 @@ const CardDetailModal = ({ listPosition }) => {
   const handleLoadingAttachment = loading => {
     setIsLoading(loading);
   };
+  const handleRemoveCover = () => {
+    setRemoveCover(true);
+    handleLoadingAttachment(true);
+  };
+
+  useEffect(() => {
+    if (!removeCover) return;
+
+    const removeCardCover = async () => {
+      const body = {
+        cardId: activeCard.position,
+        listId: listPosition,
+        cardCover: ""
+      };
+      await requestCardCoverUpdate(body, id).then(res => {
+        makeBoardUpdate(res.data);
+        setRemoveCover(false);
+        handleLoadingAttachment(false);
+        setActiveCardCover(null);
+      });
+    };
+    removeCardCover();
+  }, [
+    activeCard,
+    id,
+    listPosition,
+    makeBoardUpdate,
+    removeCover,
+    setRemoveCover
+  ]);
+
+  const handleMakeCover = cover => {
+    setIsLoading(true);
+    setNewCover(cover);
+  };
+
+  useEffect(() => {
+    if (!newCover) return;
+    const body = {
+      cardId: activeCard.position,
+      listId: listPosition,
+      cardCover: newCover
+    };
+    const attachCardCover = async () => {
+      await requestCardCoverUpdate(body, id).then(res => {
+        makeBoardUpdate(res.data);
+        setIsLoading(false);
+        setNewCover(null);
+        setActiveCardCover(newCover);
+      });
+    };
+    attachCardCover();
+  }, [activeCard, id, listPosition, makeBoardUpdate, setNewCover, newCover]);
+
+  useEffect(() => {
+    if (newCover) return;
+    setActiveCardCover(activeCard.cardCover);
+  }, [activeCard, newCover]);
 
   return (
     <Modal
@@ -96,14 +162,23 @@ const CardDetailModal = ({ listPosition }) => {
       closeOnDocumentClick={true}
       centered={false}
       open={!hideCardDetail}
+      closeOnRootNodeClick={false}
       onClose={() => handleCardClick()}
-      closeIcon={!activeCard.cardCover}
+      closeIcon={
+        <ButtonWrapper>
+          <StyledIcon
+            onClick={() => handleCardClick()}
+            icon="delete"
+            size="tiny"
+          />
+        </ButtonWrapper>
+      }
     >
       <ModalImageCover
-        cardCover={activeCard.cardCover}
+        cardCover={activeCover}
         handleCardClick={handleCardClick}
+        isLoading={isLoading}
       />
-
       <ModalHeader
         title={activeCard.title}
         cardPosition={activeCard.position}
@@ -111,7 +186,8 @@ const CardDetailModal = ({ listPosition }) => {
         sourceTitle={sourceTitle}
         cardCover={activeCard.cardCover}
       />
-      <CardContent>
+
+      <CardContent image>
         <LeftSideContent>
           <CardModalDescription
             board={board}
@@ -120,7 +196,13 @@ const CardDetailModal = ({ listPosition }) => {
             getSourceList={getSourceList}
             activeCard={activeCard}
           />
-          <Attachments card={activeCard} isLoading={isLoading} />
+          <Attachments
+            activeCover={activeCover}
+            card={activeCard}
+            isLoading={isLoading}
+            handleMakeCover={handleMakeCover}
+            handleRemoveCover={handleRemoveCover}
+          />
           <CardActivities
             handleShowDetails={() => setHideActivities(!hideActivities)}
             hideActivities={hideActivities}
@@ -138,4 +220,4 @@ const CardDetailModal = ({ listPosition }) => {
   );
 };
 
-export default memo(CardDetailModal);
+export default withRouter(memo(CardDetailModal));

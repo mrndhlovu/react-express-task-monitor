@@ -1,35 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Header } from "semantic-ui-react";
+import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 
 const Container = styled.div`
   position: relative;
   display: flex;
-`;
-
-const CardHeader = styled.div`
-  position: absolute;
-  top: 30px;
-  left: 3%;
-
-  &:after {
-    content: '${props => props.title}';
-  }
-`;
-
-const StyledHeader = styled(Header)`
-  font-size: 16px !important;
+  flex-direction: column;
+  background-color: #fff;
+  padding-left: 30px;
+  padding-top: 45px;
 `;
 
 const SubHeading = styled.div`
-margin-left: 30%;
-width: 100%
-
+padding-left: 35px;
 &:before {
     content: 'in list ';
   }
-
  &:after {
     text-decoration: underline;
     cursor: pointer;
@@ -40,10 +27,8 @@ width: 100%
 const ModalHeader = ({ title, sourceTitle }) => {
   return (
     <Container>
-      <CardHeader>
-        <StyledHeader content={title} icon="window maximize outline" />
-        <SubHeading sourceTitle={` ${sourceTitle}`} />
-      </CardHeader>
+      <CardDetailHeader icon="window maximize outline" description={title} />
+      <SubHeading sourceTitle={` ${sourceTitle}`} />
     </Container>
   );
 };

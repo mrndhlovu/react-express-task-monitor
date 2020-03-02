@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { BoardListsContext } from "../../utils/contextUtils";
 import EditCardPenIcon from "./EditCardPenIcon";
-import CardCover from "./CardCover";
+import CardCover from "../cardDetail/CardCover";
 import { requestDeleteCard } from "../../apis/apiRequests";
 import { withRouter } from "react-router-dom";
 

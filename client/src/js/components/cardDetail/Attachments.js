@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 import moment from "moment";
 
@@ -39,14 +39,15 @@ const AttachmentLink = styled.a`
 `;
 
 const Attachments = ({
+  activeCover,
   card,
   handleAttachmentComment,
   handleDeleteAttachment,
   handleRemoveCover,
+  handleMakeCover,
   isLoading
 }) => {
   const { images } = card.attachments;
-
   const hasAttachments = images.length > 0;
 
   return isLoading ? (
@@ -58,7 +59,7 @@ const Attachments = ({
           <CardDetailHeader icon="attach" description="Attachments" />
         </HeaderWrapper>
         <Item.Group divided>
-          {images.map((image, index) => (
+          {images.reverse().map((image, index) => (
             <Item key={index}>
               <AttachmentName>
                 <Item.Image size="tiny" src={image.imgUrl} />
@@ -83,8 +84,16 @@ const Attachments = ({
                     onClick={() => handleDeleteAttachment()}
                   />
                   <AttachmentLink
-                    content="Remove Cover"
-                    onClick={() => handleRemoveCover()}
+                    content={
+                      image.imgUrl === activeCover
+                        ? "Remove Cover"
+                        : "Make Cover"
+                    }
+                    onClick={() =>
+                      image.imgUrl === activeCover
+                        ? handleRemoveCover()
+                        : handleMakeCover(image.imgUrl)
+                    }
                   />
                 </AttachmentCtaWrapper>
               </Container>
@@ -96,4 +105,4 @@ const Attachments = ({
   );
 };
 
-export default Attachments;
+export default memo(Attachments);

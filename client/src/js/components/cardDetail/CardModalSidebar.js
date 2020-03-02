@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Header, Divider } from "semantic-ui-react";
+import { Header } from "semantic-ui-react";
 import AddAttachment from "./AddAttachment";
 import AddCardCheckList from "./AddCardCheckList";
 import AddCardDueDate from "./AddCardDueDate";
@@ -16,8 +16,7 @@ const StyledHeader = styled(Header)`
 `;
 
 const Container = styled.div`
-  margin: 10px;
-  overflow: hidden;
+  margin-left: 10px;
 `;
 
 const CardModalSidebar = ({ ...props }) => {
