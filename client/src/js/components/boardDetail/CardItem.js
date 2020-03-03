@@ -1,64 +1,62 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, memo } from "react";
 import styled from "styled-components";
 
-import { AppContext } from "../../utils/contextUtils";
-import EditCardMenu from "./EditCardMenu";
+import { BoardListsContext } from "../../utils/contextUtils";
+import EditCardPenIcon from "./EditCardPenIcon";
+import CardCover from "../cardDetail/CardCover";
+import { requestDeleteCard } from "../../apis/apiRequests";
+import { withRouter } from "react-router-dom";
 
-const StyledCardDiv = styled.div`
-  cursor: pointer;
-  margin: 10px 5px !important;
-  padding: 0 10px;
-  position: relative;
-  border-radius: 4px;
-  display: grid;
-  grid-template-columns: 90% 10%;
-  align-items: center;
-  color: #42526e;
-`;
-
-const StyledHeader = styled.div``;
-
-const Span = styled.span`
-  font-size: 12px !important;
-  font-weight: 600;
-`;
-
-const CardItem = ({ card, sourceListId }) => {
-  const [showEditButton, setShowEditButton] = useState(false);
-  const { updateBoard, getSourceList, getFilteredBoard } = useContext(
-    AppContext
-  );
-
-  function handleDeleteCard() {
-    const newBoardLists = getFilteredBoard(sourceListId);
-    const sourceList = getSourceList(sourceListId).shift();
-
-    const newFilteredList = {
-      ...sourceList,
-      cards: sourceList.cards.filter(key => key.position !== card.position)
-    };
-
-    newBoardLists.lists.push(newFilteredList);
-    newBoardLists.lists.sort((a, b) => a.position - b.position);
-
-    updateBoard(newBoardLists);
+const CardTitle = styled.div`
+  color: #172b4d;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  padding: 5px 10px;
+  &:after {
+    content: '${props => props.title}';
   }
+`;
+
+const Container = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  max-width: 244px;
+  position: relative;
+`;
+
+const CardItem = ({ card, sourceListId, sourceTitle, match }) => {
+  const { id } = match.params;
+  const { makeBoardUpdate, handleCardClick } = useContext(BoardListsContext);
+
+  const [showEditButton, setShowEditButton] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!deleting) return;
+    const deleteCard = async () =>
+      await requestDeleteCard(
+        { cardId: card.position, listId: sourceListId },
+        id
+      );
+    deleteCard().then(res => makeBoardUpdate(res.data) && setDeleting(false));
+  }, [card, deleting, id, sourceListId, makeBoardUpdate]);
 
   return (
-    <StyledCardDiv
-      edit={showEditButton}
+    <Container
       onMouseEnter={() => setShowEditButton(!showEditButton)}
       onMouseLeave={() => setShowEditButton(!showEditButton)}
+      onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
-      <StyledHeader>
-        <Span>{card.title}</Span>
-      </StyledHeader>
-      <EditCardMenu
-        handleDeleteCard={handleDeleteCard}
+      <CardCover card={card} />
+      <CardTitle edit={showEditButton} title={card.title} />
+      <EditCardPenIcon
+        handleDeleteCard={() => setDeleting(true)}
         showEditButton={showEditButton}
       />
-    </StyledCardDiv>
+    </Container>
   );
 };
 
-export default CardItem;
+export default withRouter(memo(CardItem));

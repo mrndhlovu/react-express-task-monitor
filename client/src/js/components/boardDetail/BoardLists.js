@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 import CreateBoard from "../sharedComponents/CreateBoard";
 import ListGrid from "./ListGrid";
-import { BoardContext, AppContext } from "../../utils/contextUtils";
+import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
+import CardDetailModal from "../cardDetail/CardDetailModal";
+import { NEW_CARD_TEMPLATE } from "../../constants/constants";
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -30,6 +32,9 @@ const BoardLists = () => {
   const [showInputField, setShowInputField] = useState(false);
   const [sourceId, setSourceId] = useState(undefined);
   const [update, setUpdate] = useState("");
+  const [hideCardDetail, setHideCardDetail] = useState(true);
+  const [activeCard, setActiveCard] = useState(false);
+  const [sourceTitle, setSourceTitle] = useState("");
 
   function handleAddList(event) {
     setNewListName(event.target.value);
@@ -44,7 +49,7 @@ const BoardLists = () => {
 
     lists.push(newList);
 
-    makeBoardUpdate(board);
+    updateBoard(board);
     setShowInputField(!showInputField);
   }
 
@@ -60,21 +65,23 @@ const BoardLists = () => {
     };
   }
 
-  function updateBoard(data) {
-    return makeBoardUpdate(data);
-  }
+  const updateBoard = data => {
+    setUpdate(data.lists);
+    makeBoardUpdate(data, true);
+  };
 
   function handleCreateCard(listId) {
     const sourceList = lists.filter(list => list.position === listId).shift();
 
     const newCard = {
+      ...NEW_CARD_TEMPLATE,
       title: newCardName,
       position: sourceList.cards.length + 1
     };
 
     sourceList.cards.push(newCard);
 
-    makeBoardUpdate(board);
+    updateBoard(board);
     setActiveList("");
   }
 
@@ -172,10 +179,6 @@ const BoardLists = () => {
     updateDropTargetId(id);
   }
 
-  function handleCancelAddCard() {
-    setActiveList("");
-  }
-
   function updateDragOption() {
     setDraggingList(!draggingList);
   }
@@ -204,12 +207,21 @@ const BoardLists = () => {
     setUpdate(updatedList);
   }
 
+  const handleCardClick = (card, sourceId, listTitle) => {
+    if (sourceId) {
+      setActiveCard(card);
+      setSourceId(sourceId);
+      setSourceTitle(listTitle);
+    }
+    setHideCardDetail(!hideCardDetail);
+  };
+
   function handleDrop() {
     const updatedList = {
       ...board,
       lists: update
     };
-    makeBoardUpdate(updatedList);
+    updateBoard(updatedList);
 
     setDropTargetColumnId(undefined);
     setDraggingCardId(undefined);
@@ -220,27 +232,32 @@ const BoardLists = () => {
   const getSourceList = id => lists.filter(list => list.position === id);
 
   const context = {
+    activeCard,
     activeList,
+    board,
     boardId: id,
+    closeAddCardOption: () => setActiveList(""),
     dragging,
     draggingCardId,
-    board,
     getFilteredBoard,
     getSourceList,
     handleAddCardName,
-    handleCancelAddCard,
+    handleCardClick,
     handleCreateCard,
     handleOnChange,
     handleStartDrag,
+    hideCardDetail,
     lists: lists,
+    makeBoardUpdate,
     newCardName,
     showAddCardInput,
-    updateHoverIndex,
-    updateBoard
+    sourceTitle,
+    updateBoard,
+    updateHoverIndex
   };
 
   return (
-    <AppContext.Provider value={context}>
+    <BoardListsContext.Provider value={context}>
       <StyledListContainer>
         <ListGrid
           draggingList={draggingList}
@@ -264,8 +281,10 @@ const BoardLists = () => {
           handleChange={handleAddList}
           handleCreateClick={handleCreateList}
         />
+
+        <CardDetailModal listPosition={sourceId} />
       </StyledListContainer>
-    </AppContext.Provider>
+    </BoardListsContext.Provider>
   );
 };
 

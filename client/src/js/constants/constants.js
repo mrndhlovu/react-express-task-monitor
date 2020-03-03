@@ -56,3 +56,31 @@ export const listMenuOptions = [
 ];
 
 export const DEFAULT_NAV_COLOR = "#026aa7";
+
+export const ADD_TO_CARD_OPTIONS = [
+  { key: 1, value: "Members", icon: "users" },
+  { key: 2, value: "Labels", icon: "tags" },
+  { key: 3, value: "Checklist", icon: "check square" },
+  { key: 4, value: "Due Date", icon: "clock" },
+  { key: 5, value: "Attachment", icon: "attach" }
+];
+
+export const CARD_ACTIONS = [
+  { key: 1, value: "Move", icon: "move" },
+  { key: 2, value: "Copy", icon: "copy outline" }
+];
+
+export const NEW_CARD_TEMPLATE = {
+  title: "",
+  position: "",
+  attachments: {
+    images: [],
+    documents: []
+  },
+  cardCover: "",
+  comments: [],
+  activities: []
+};
+
+export const deleteAttachmentText =
+  "Deleting an attachment is permanent. There is no undo.";

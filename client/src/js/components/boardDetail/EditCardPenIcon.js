@@ -4,25 +4,27 @@ import styled from "styled-components";
 import { Dropdown } from "semantic-ui-react";
 
 const EditIconWrapper = styled.div`
-  justify-self: end;
   font-size: 13px;
-  opacity: ${props => (props.showEditButton ? 1 : 0)};
   margin-left: 8px;
+  opacity: ${props => (props.showEditButton ? 1 : 0)};
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  transition-duration: 250ms;
+  transition-timing-function: ease-in-out;
 `;
 
-const EditCardMenu = ({ handleDeleteCard, showEditButton }) => {
+const EditCardPenIcon = ({ handleDeleteCard, showEditButton }) => {
   return (
     <EditIconWrapper showEditButton={showEditButton}>
-      <Dropdown icon="pencil alternate" floating>
+      <Dropdown floating icon="pencil alternate">
         <Dropdown.Menu>
           <Dropdown.Item>Move</Dropdown.Item>
-          <Dropdown.Item onClick={() => handleDeleteCard()}>
-            Delete
-          </Dropdown.Item>
+          <Dropdown.Item onClick={handleDeleteCard}>Delete</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
     </EditIconWrapper>
   );
 };
 
-export default EditCardMenu;
+export default EditCardPenIcon;

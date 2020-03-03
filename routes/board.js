@@ -25,9 +25,9 @@ router.get("/id/:boardId", async (req, res) => {
     const viewedRecently = (lastViewed - created) / msPerMinute < 20;
 
     const updateCategory =
-      (board.category.includes("default") ||
-        !board.category.includes("starred")) &&
-      !justCreated;
+      board.category.includes("default") ||
+      !board.category.includes("starred") ||
+      (!board.category.includes("recent") && !justCreated);
 
     if (updateCategory) board.category.push("recent");
 

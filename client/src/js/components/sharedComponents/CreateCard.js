@@ -1,7 +1,11 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 import { Button, Card, TextArea, Icon } from "semantic-ui-react";
+import { requestCreateNewCard } from "../../apis/apiRequests";
+import { BoardListsContext } from "../../utils/contextUtils";
+import { resetForm } from "../../utils/appUtils";
 
 const StyledTextArea = styled(TextArea)`
   width: 100%;
@@ -43,12 +47,34 @@ const StyledContainer = styled.div`
 
 const CreateCard = ({
   handleAddCardName,
-  handleCreateCard,
-  handleCancelAddCard,
+  closeAddCardOption,
   listId,
   activeList,
-  handleOnChange
+  match
 }) => {
+  const { makeBoardUpdate } = useContext(BoardListsContext);
+  const [newCard, setNewCard] = useState(null);
+  const [save, setSave] = useState(false);
+  const { id } = match.params;
+
+  const handleChange = event => {
+    setNewCard(event.target.value);
+  };
+
+  useEffect(() => {
+    if (!save) return;
+
+    const card = { title: newCard };
+    const createCard = async () =>
+      await requestCreateNewCard({ card, listId }, id);
+    createCard().then(res => {
+      setNewCard("");
+      makeBoardUpdate(res.data);
+    });
+    setSave(false);
+    resetForm("create-card-input");
+  }, [newCard, save, listId, makeBoardUpdate, id]);
+
   return (
     <StyledContainer>
       {!activeList ? (
@@ -62,11 +88,11 @@ const CreateCard = ({
           </StyleDiv>
         </StyledButton>
       ) : (
-        <>
+        <form id="create-card-input">
           <StyledCardContent extra>
             <StyledTextArea
-              placeholder="Enter a title for this card.."
-              onChange={e => handleOnChange(e)}
+              placeholder="Enter a title for this card..."
+              onChange={e => handleChange(e)}
             />
           </StyledCardContent>
 
@@ -75,14 +101,14 @@ const CreateCard = ({
               positive
               size="tiny"
               content="Add Card"
-              onClick={() => handleCreateCard(listId)}
+              onClick={() => setSave(true)}
             />
-            <Icon name="close" onClick={() => handleCancelAddCard()} />
+            <Icon name="close" onClick={() => closeAddCardOption()} />
           </>
-        </>
+        </form>
       )}
     </StyledContainer>
   );
 };
 
-export default CreateCard;
+export default withRouter(CreateCard);

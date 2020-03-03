@@ -10,3 +10,7 @@ export const filterObject = (data, allowed) => {
 };
 
 export const getLocation = () => window.location;
+
+export const checkDuplicate = (collection, item) => collection.includes(item);
+
+export const resetForm = id => document.getElementById(id).reset();

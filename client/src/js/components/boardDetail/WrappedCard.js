@@ -12,11 +12,12 @@ const WrappedCard = ({
   connectDropTarget,
   isDragging,
   isOverCard,
-  sourceListId
+  sourceListId,
+  listTitle
 }) => {
   const styles = {
     backgroundColor: !isDragging && "#fff",
-    borderRadius: "4px",
+    borderRadius: "2px",
     boxShadow: !isDragging && "0 1px 0 rgba(15, 30, 66, 0.35)",
     minHeight: "20px",
     visibility: isDragging && "hidden",
@@ -27,7 +28,11 @@ const WrappedCard = ({
 
   const wrappedCardItem = (
     <div style={styles}>
-      <CardItem card={card} sourceListId={sourceListId} />
+      <CardItem
+        card={card}
+        sourceListId={sourceListId}
+        sourceTitle={listTitle}
+      />
     </div>
   );
 

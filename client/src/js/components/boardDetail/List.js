@@ -10,12 +10,12 @@ import { Segment } from "semantic-ui-react";
 import { Types } from "../../constants/constants";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
-import { AppContext } from "../../utils/contextUtils";
+import { BoardListsContext } from "../../utils/contextUtils";
 import ListHeader from "./ListHeader";
 
 const StyledWrapper = styled(Segment)`
   background-color: #ebecf0 !important;
-  border-radius: 3px;
+
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -32,7 +32,9 @@ const List = ({
   isOverCurrent,
   ...rest
 }) => {
-  const { showListActions, activeList, ...otherProps } = useContext(AppContext);
+  const { showListActions, activeList, ...otherProps } = useContext(
+    BoardListsContext
+  );
 
   const { title, position, cards } = list;
 
@@ -58,6 +60,7 @@ const List = ({
           cards={cards}
           sourceListId={position}
           hoverIndex={position}
+          listTitle={title}
           {...rest}
           {...otherProps}
         />

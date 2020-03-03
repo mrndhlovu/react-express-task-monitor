@@ -78,6 +78,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
   useEffect(() => {
     if (!newBoard) return;
     makeBoardUpdate(newBoard);
+    setNewBoard(null);
   }, [newBoard, makeBoardUpdate]);
 
   return (
