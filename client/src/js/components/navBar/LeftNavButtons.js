@@ -30,12 +30,11 @@ const LeftNavButtons = ({ history, results, value }) => {
 
       <StyledButton
         text="Boards"
-        icon="columns"
-        floating
+        icon={<Icon name="columns" className="nav-button-icon" />}
         labeled
         button
         loading={isLoading}
-        className="icon"
+        className="icon nav-button-text"
         size="tiny"
         onClick={() => setShowBoardList(!showBoardList)}
       >

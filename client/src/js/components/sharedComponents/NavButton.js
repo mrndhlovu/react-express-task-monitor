@@ -1,17 +1,19 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import { Button, Icon } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 import { AppContext } from "../../utils/contextUtils";
+import NavButtonIcon from "./NavButtonIcon";
 
 const StyledButton = styled(Button)`
   background-color: #ffffff3d !important;
+  border-radius: 1px !important;
+  color: white !important;
 `;
 
 const NavButton = ({
   buttonColor,
   buttonText,
-  color,
   forceText,
   iconName,
   id,
@@ -23,9 +25,7 @@ const NavButton = ({
     <StyledButton
       size="tiny"
       onClick={redirect}
-      icon={
-        iconName && <Icon name={iconName} color={color ? color : "black"} />
-      }
+      icon={iconName && <NavButtonIcon iconName={iconName} />}
       color={buttonColor}
     />
   ) : (
@@ -35,9 +35,7 @@ const NavButton = ({
       size="tiny"
       onClick={redirect}
       content={buttonText}
-      icon={
-        iconName && <Icon name={iconName} color={color ? color : "black"} />
-      }
+      icon={iconName && <NavButtonIcon iconName={iconName} />}
       color={buttonColor}
     />
   );

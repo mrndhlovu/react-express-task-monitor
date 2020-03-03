@@ -1,16 +1,35 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Header } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
-  display: grid;
-  align-self: center;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  padding-top: 5px;
+  cursor: pointer;
 `;
 
-const Logo = () => (
-  <StyledDiv>
-    <Header size="small" content="Mo-Neat" />
+const Span = styled.span`
+  font-size: 21px;
+  font-family: "Dancing Script", cursive;
+  font-weight: 600;
+  transition-delay: 300ms;
+  transition-timing-function: ease-in-out;
+  transition-property: font;
+
+  &:hover {
+    font-weight: 500;
+  }
+`;
+
+const Logo = ({ history }) => (
+  <StyledDiv onClick={() => history.push("/")}>
+    <Span>
+      <Icon name="trello" />
+      Trello Clone
+    </Span>
   </StyledDiv>
 );
 
