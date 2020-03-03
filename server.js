@@ -1,9 +1,9 @@
-const { PORT } = require("./utils.js/config");
-const cors = require("cors");
 const express = require("express");
+const cors = require("cors");
+require("./utils.js/mongooseDB");
 const log = require("./utils.js/console-alert");
 const path = require("path");
-require("./utils.js/mongooseDB");
+const { PORT } = require("./utils.js/config");
 
 const boardRoutes = require("./routes/board");
 const cardRoutes = require("./routes/cards");
