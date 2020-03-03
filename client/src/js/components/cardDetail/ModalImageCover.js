@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Button, Modal } from "semantic-ui-react";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import { getAverageRGB } from "../../utils/appUtils";
 
 const ButtonWrapper = styled.div`
   position: absolute;

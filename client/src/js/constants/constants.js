@@ -81,3 +81,6 @@ export const NEW_CARD_TEMPLATE = {
   comments: [],
   activities: []
 };
+
+export const deleteAttachmentText =
+  "Deleting an attachment is permanent. There is no undo.";

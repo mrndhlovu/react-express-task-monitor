@@ -2,9 +2,10 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import moment from "moment";
 
-import { Item } from "semantic-ui-react";
+import { Item, Button, Dropdown } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import { deleteAttachmentText } from "../../constants/constants";
 
 const Container = styled.div``;
 
@@ -36,6 +37,10 @@ const AttachmentLink = styled.a`
   content:'${props => props.content}';
   padding: 0 5px;
   }
+`;
+
+const StyledDropdownMenu = styled(Dropdown.Menu)`
+  padding: 0 10px 10px 10px !important;
 `;
 
 const Attachments = ({
@@ -79,10 +84,22 @@ const Attachments = ({
                     content="Comment"
                     onClick={() => handleAttachmentComment()}
                   />
-                  <AttachmentLink
-                    content="Delete"
-                    onClick={() => handleDeleteAttachment(image.imgUrl)}
-                  />
+                  <AttachmentLink>
+                    <Dropdown text="Delete" multiple icon={false}>
+                      <StyledDropdownMenu>
+                        <Dropdown.Header content={deleteAttachmentText} />
+                        <Button
+                          content="Delete Attachment?"
+                          color="red"
+                          fluid
+                          icon=""
+                          size="tiny"
+                          onClick={() => handleDeleteAttachment(image.imgUrl)}
+                        />
+                      </StyledDropdownMenu>
+                    </Dropdown>
+                  </AttachmentLink>
+
                   <AttachmentLink
                     content={
                       image.imgUrl === activeCover

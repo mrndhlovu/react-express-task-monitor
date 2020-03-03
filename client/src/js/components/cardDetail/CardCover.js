@@ -6,6 +6,7 @@ const CardCover = ({ card }) => {
   return (
     card.cardCover && (
       <Image
+        id={`card-cover-${card.cardCover}`}
         src={card.cardCover}
         alt={`card-${card.title.toLowerCase()}-cover`}
       />
