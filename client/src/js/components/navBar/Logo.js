@@ -22,13 +22,16 @@ const Span = styled.span`
   &:hover {
     font-weight: 500;
   }
+
+  &:after {
+    content: "Trello Clone";
+  }
 `;
 
 const Logo = ({ history }) => (
   <StyledDiv onClick={() => history.push("/")}>
     <Span>
       <Icon name="trello" />
-      Trello Clone
     </Span>
   </StyledDiv>
 );

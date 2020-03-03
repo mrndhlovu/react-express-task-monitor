@@ -30,7 +30,7 @@ const LeftNavButtons = ({ history, results, value }) => {
 
       <StyledButton
         text="Boards"
-        icon={<Icon name="columns" className="nav-button-icon" />}
+        icon={<Icon name="trello" className="nav-button-icon" />}
         labeled
         button
         loading={isLoading}
