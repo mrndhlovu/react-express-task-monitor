@@ -9,6 +9,7 @@ import { useDimensions, useFetch } from "../utils/hookUtils";
 
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
+import { getBoard } from "../utils/appUtils";
 
 const Container = styled.div`
   height: 100vh;
@@ -29,13 +30,13 @@ const AppContainer = ({ children, history }) => {
   };
 
   const handleBoardStarClick = id => {
-    const newBoard = boards.find(board => board._id === id);
+    const board = getBoard(boards, id);
 
-    if (newBoard.category.includes("starred"))
-      newBoard.category.splice(newBoard.category.indexOf("starred"));
-    else newBoard.category.push("starred");
+    if (board.category.includes("starred"))
+      board.category.splice(board.category.indexOf("starred"));
+    else board.category.push("starred");
 
-    requestBoardUpdate(id, newBoard);
+    requestBoardUpdate(id, board);
     history.push("/");
   };
 
@@ -50,9 +51,8 @@ const AppContainer = ({ children, history }) => {
     });
   };
 
-  const getBoardDetail = boardData => {
+  const getBoardDetail = boardData =>
     setColor(boardData ? boardData.styleProperties.color : DEFAULT_NAV_COLOR);
-  };
 
   useEffect(() => {
     if (!data) return;

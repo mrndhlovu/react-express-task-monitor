@@ -5,9 +5,10 @@ import { Input } from "semantic-ui-react";
 import NavButton from "../sharedComponents/NavButton";
 import { AppContext } from "../../utils/contextUtils";
 
-const StyledSearch = styled(Input)`
-  border-radius: 5px !important;
+const StyledSearchInput = styled(Input)`
+  border-radius: 3px !important;
   background-color: #ffffff3d !important;
+  max-height: 34px;
 `;
 
 const SearchBar = ({ handleSearchClick }) => {
@@ -16,7 +17,7 @@ const SearchBar = ({ handleSearchClick }) => {
   return mobile ? (
     <NavButton iconName="search" onClick={() => handleSearchClick} />
   ) : (
-    <StyledSearch placeholder="Search..." icon="search" />
+    <StyledSearchInput placeholder="Search..." icon="search" />
   );
 };
 

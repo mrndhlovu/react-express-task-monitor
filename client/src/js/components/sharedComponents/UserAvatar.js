@@ -1,17 +1,24 @@
 import React from "react";
+import styled from "styled-components";
 
-import { Label } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
-const UserAvatar = () => (
-  <Label
-    as="a"
+const Span = styled.span`
+  font-size: 15px;
+  font-weight: 600;
+`;
+
+const StyledButton = styled(Button)`
+  padding: 9px !important;
+`;
+
+const UserAvatar = ({ abbrNameInitials = "M" }) => (
+  <StyledButton
     circular
-    size="large"
-    color="grey"
+    size="tiny"
     onClick={() => console.log("m")}
-  >
-    M
-  </Label>
+    content={<Span>{abbrNameInitials}</Span>}
+  />
 );
 
 export default UserAvatar;
