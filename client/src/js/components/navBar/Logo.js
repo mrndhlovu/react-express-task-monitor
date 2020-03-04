@@ -7,12 +7,12 @@ const StyledDiv = styled.div`
   display: flex;
   align-content: center;
   justify-content: center;
-  padding-top: 5px;
+  padding-top: 9px;
   cursor: pointer;
 `;
 
 const Span = styled.span`
-  font-size: 21px;
+  font-size: ${props => (props.mobile ? "15px" : "21px")};
   font-family: "Dancing Script", cursive;
   font-weight: 600;
   transition-delay: 300ms;
@@ -28,11 +28,9 @@ const Span = styled.span`
   }
 `;
 
-const Logo = ({ history }) => (
+const Logo = ({ history, mobile }) => (
   <StyledDiv onClick={() => history.push("/")}>
-    <Span>
-      <Icon name="trello" />
-    </Span>
+    <Span mobile={mobile}>{!mobile && <Icon name="trello" />}</Span>
   </StyledDiv>
 );
 

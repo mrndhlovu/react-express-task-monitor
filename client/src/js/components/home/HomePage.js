@@ -10,6 +10,7 @@ import { AppContext } from "../../utils/contextUtils";
 const StyledContainer = styled(Container)`
   height: 100vh;
   margin-top: 40px;
+  margin-bottom: 40px;
   padding-left: 5px;
   font-family: roboto, sans-serif;
 `;

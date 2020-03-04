@@ -1,40 +1,49 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import { Header } from "semantic-ui-react";
+import { Header, Icon } from "semantic-ui-react";
 
-import Summary from "./Summary";
-import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import { AppContext } from "../../utils/contextUtils";
+import CreateNewBoard from "../sharedComponents/CreateNewBoard";
+import Summary from "./Summary";
 
 const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    ${props => (props.mobile ? "50%" : props.tablet ? "33.33333%" : "25%")}
+    ${props => (props.mobile ? "100%" : props.tablet ? "33.33333%" : "25%")}
   );
   vertical-align: top;
 `;
 
-const StyledHeader = styled(Header)`
-  font-size: 16px !important;
+const Span = styled(Header)`
+  font-size: 14px !important;
+  font-weight: 400;
+
+  &:after {
+    content: '${props => props.text}'
+  }
+
 `;
 
 const BoardCategory = ({
+  category,
   header,
   icon,
   isDefault,
-  category,
+  isLast,
   showNewBoardModal
 }) => {
-  const { tablet, loading, handleBoardStarClick, mobile, boards } = useContext(
+  const { tablet, loading, handleBoardStarClick, device, boards } = useContext(
     AppContext
   );
 
   return (
     <>
-      <StyledHeader icon={`${icon} outline`} content={mobile && header} />
-      <Category mobile={mobile} tablet={tablet}>
+      <Span text={header}>
+        <Icon name={`outline ${icon}`} />
+      </Span>
+      <Category mobile={device.mobile} tablet={tablet} isLast={isLast}>
         {!loading &&
           boards.map(
             board =>
@@ -49,7 +58,6 @@ const BoardCategory = ({
                 />
               )
           )}
-
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
       </Category>
     </>

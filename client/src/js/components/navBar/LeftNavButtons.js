@@ -22,7 +22,7 @@ const StyledSpan = styled.span`
 
 const LeftNavButtons = ({ history, results, value }) => {
   const [showBoardList, setShowBoardList] = useState(false);
-  const { boards, isLoading } = useContext(AppContext);
+  const { boards, isLoading, device } = useContext(AppContext);
 
   return (
     <StyledDiv>
@@ -30,8 +30,10 @@ const LeftNavButtons = ({ history, results, value }) => {
 
       <StyledButton
         text="Boards"
-        icon={<Icon name="trello" className="nav-button-icon" />}
-        labeled
+        icon={
+          !device.mobile && <Icon name="trello" className="nav-button-icon" />
+        }
+        labeled={!device.mobile}
         button
         loading={isLoading}
         className="icon nav-button-text"
