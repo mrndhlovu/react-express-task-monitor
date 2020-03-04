@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import styled from "styled-components";
 
 import LeftNavButtons from "./LeftNavButtons";
@@ -17,14 +17,14 @@ const NavWrapper = styled.div`
 `;
 
 const NavHeader = ({ history }) => {
-  const { color } = useContext(AppContext);
+  const { color, device } = useContext(AppContext);
   return (
     <NavWrapper color={color === DEFAULT_NAV_COLOR ? color : "transparent"}>
       <LeftNavButtons />
-      <Logo history={history} />
+      <Logo history={history} mobile={device.mobile} />
       <RightNavButtons />
     </NavWrapper>
   );
 };
 
-export default withRouter(NavHeader);
+export default withRouter(memo(NavHeader));

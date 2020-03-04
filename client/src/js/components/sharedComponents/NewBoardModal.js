@@ -17,10 +17,10 @@ const StyledDiv = styled.div`
 `;
 
 const NewBoardModal = ({
-  showNewBoardModal,
   createBoard,
   handleChange,
-  handleCreateClick
+  handleCreateClick,
+  showNewBoardModal
 }) => {
   return (
     <Modal

@@ -13,7 +13,7 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard, mobile, loading } = useContext(AppContext);
+  const { makeNewBoard, device, loading, boards } = useContext(AppContext);
 
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
@@ -36,25 +36,30 @@ const BoardsSummary = () => {
   };
 
   return (
-    <StyledContainer mobile={mobile}>
+    <StyledContainer mobile={device.mobile}>
       {!loading ? (
         <>
-          <BoardCategory
-            icon="star"
-            header="Starred Boards"
-            category="starred"
-          />
-          <BoardCategory
-            icon="clock"
-            header="Recently Viewed"
-            category="recent"
-          />
+          {boards[0].category.includes("starred") && (
+            <BoardCategory
+              icon="star"
+              header="Starred Boards"
+              category="starred"
+            />
+          )}
+          {boards[0].category.includes("recent") && (
+            <BoardCategory
+              icon="clock"
+              header="Recently Viewed"
+              category="recent"
+            />
+          )}
           <BoardCategory
             icon="user"
             header="Personal Boards"
             category="default"
             showNewBoardModal={showNewBoardModal}
             isDefault={true}
+            isLast={true}
           />
         </>
       ) : (
