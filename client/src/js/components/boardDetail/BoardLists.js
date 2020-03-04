@@ -13,6 +13,7 @@ const StyledListContainer = styled.div`
   overflow-x: hidden;
   vertical-align: top;
   height: 100vh;
+  overflow-x: scroll;
 `;
 
 const BoardLists = () => {
