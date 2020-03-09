@@ -7,7 +7,7 @@ const StyledDiv = styled.div`
   display: flex;
   align-content: center;
   justify-content: center;
-  padding-top: 9px;
+  padding-top: 8px;
   cursor: pointer;
 `;
 
@@ -18,6 +18,7 @@ const Span = styled.span`
   transition-delay: 300ms;
   transition-timing-function: ease-in-out;
   transition-property: font;
+  color: #80b4d3;
 
   &:hover {
     font-weight: 500;

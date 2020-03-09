@@ -17,7 +17,7 @@ const BoardContainer = ({ match, history }) => {
   const { getBoardDetail } = useContext(AppContext);
   const { id } = match.params;
 
-  const [data, loading] = useFetch(id);
+  const [data, loading] = useFetch(id, history);
   const [board, setBoard] = useState(null);
   const [boardUpdate, setBoardUpdate] = useState(null);
   const [makeRequest, setMakeRequest] = useState(false);

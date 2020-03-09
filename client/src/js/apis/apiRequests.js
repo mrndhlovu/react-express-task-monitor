@@ -1,24 +1,31 @@
 import axios from "axios";
-import { BOARDS_EP, UPLOAD_EP, authQueryParams, CARDS_EP } from "../utils/urls";
+import {
+  BOARDS_EP,
+  UPLOAD_EP,
+  getAuthParams,
+  CARDS_EP,
+  AUTH_EP
+} from "../utils/urls";
 
 export const requestNewBoard = board =>
-  axios.post(`${BOARDS_EP}/api/create`, board);
+  axios.post(`${BOARDS_EP}/create`, board, getAuthParams());
 
-export const requestBoardList = () => axios.get(BOARDS_EP);
+export const requestBoardList = () => axios.get(BOARDS_EP, getAuthParams());
 
-export const requestBoardDetail = id => axios.get(`${BOARDS_EP}/id/${id}`);
+export const requestBoardDetail = id =>
+  axios.get(`${BOARDS_EP}/id/${id}`, getAuthParams());
 
-export const requestBoardDelete = id => axios.delete(`${BOARDS_EP}/id/${id}`);
+export const requestBoardDelete = id =>
+  axios.delete(`${BOARDS_EP}/id/${id}`, getAuthParams());
 
 export const requestBoardUpdate = (id, body) =>
-  axios.patch(`${BOARDS_EP}/id/${id}/update`, body, authQueryParams);
+  axios.patch(`${BOARDS_EP}/id/${id}/update`, body, getAuthParams());
 
-export const requestUpload = body => axios.post(`${UPLOAD_EP}/image`, body);
-
-export const userInfo = () => axios.get(BOARDS_EP);
+export const requestUpload = body =>
+  axios.post(`${UPLOAD_EP}/image`, body, getAuthParams());
 
 export const requestCreateNewCard = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}`, body, authQueryParams);
+  axios.patch(`${CARDS_EP}/${id}`, body, getAuthParams());
 
 export const requestDeleteCard = (body, id) =>
   axios.patch(`${CARDS_EP}/delete/${id}`, { ...body });
@@ -28,3 +35,14 @@ export const requestCardCoverUpdate = (body, id) =>
 
 export const requestDeleteAttachment = (body, id) =>
   axios.patch(`${CARDS_EP}/delete-attachment/${id}`, { ...body });
+
+export const requestAuthSignup = body => axios.post(`${AUTH_EP}/signup`, body);
+
+export const requestAuthLogin = body => axios.post(`${AUTH_EP}/login`, body);
+
+export const requestAuthLogout = token => {
+  console.log("token: ", getAuthParams(token));
+  return axios.post(`${AUTH_EP}/logout`, getAuthParams(token));
+};
+
+export const userInfo = () => axios.get(`${AUTH_EP}/users/me`, getAuthParams());

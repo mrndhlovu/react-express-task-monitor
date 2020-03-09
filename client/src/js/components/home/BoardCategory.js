@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Header, Icon } from "semantic-ui-react";
 
-import { AppContext } from "../../utils/contextUtils";
+import { AppContext, HomepageContext } from "../../utils/contextUtils";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import Summary from "./Summary";
 
@@ -34,9 +34,10 @@ const BoardCategory = ({
   isLast,
   showNewBoardModal
 }) => {
-  const { tablet, loading, handleBoardStarClick, device, boards } = useContext(
+  const { tablet, loading, handleBoardStarClick, device } = useContext(
     AppContext
   );
+  const { boards } = useContext(HomepageContext);
 
   return (
     <>

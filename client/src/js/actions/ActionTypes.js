@@ -1,7 +1,6 @@
 "use es6";
 
 export const APP_STARTED = "APP_STARTED";
-export const INITIALIZE_AUTH = "INITIALIZE_AUTH";
 export const CREATE_ALERT = "CREATE_ALERT";
 export const HAS_ERROR = "HAS_ERROR";
 
@@ -36,3 +35,11 @@ export const FAIL_CARD_DETAIL_REQUEST = "FAIL_CARD_DETAIL_REQUEST";
 export const REQUEST_NEW_BOARD = "REQUEST_NEW_BOARD";
 export const RECEIVE_NEW_BOARD = "RECEIVE_NEW_BOARD";
 export const FAIL_NEW_BOARD_REQUEST = "FAIL_NEW_BOARD_REQUEST";
+
+export const INITIALIZE_AUTH = "INITIALIZE_AUTH";
+export const AUTH_SUCCESS = "AUTH_SUCCESS";
+export const AUTH_FAIL = "AUTH_FAIL";
+
+export const REQUEST_SIGNUP = "REQUEST_SIGNUP";
+export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
+export const SIGNUP_FAIL = "SIGNUP_FAIL";

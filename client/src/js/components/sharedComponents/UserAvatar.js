@@ -1,24 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Button } from "semantic-ui-react";
-
 const Span = styled.span`
-  font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
+  text-align: center;
 `;
 
-const StyledButton = styled(Button)`
-  padding: 9px !important;
+const StyledButton = styled.div`
+  min-height: 32px;
+  min-width: 32px;
+  padding: 5px;
+  background-color: #dce3eb;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 `;
 
 const UserAvatar = ({ abbrNameInitials = "M" }) => (
-  <StyledButton
-    circular
-    size="tiny"
-    onClick={() => console.log("m")}
-    content={<Span>{abbrNameInitials}</Span>}
-  />
+  <StyledButton circular size="tiny">
+    <Span>{abbrNameInitials}</Span>
+  </StyledButton>
 );
 
 export default UserAvatar;

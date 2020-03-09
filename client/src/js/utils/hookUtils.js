@@ -1,9 +1,41 @@
 import { useEffect, useState } from "react";
-import { requestBoardDetail, requestBoardList } from "../apis/apiRequests";
+import {
+  requestBoardDetail,
+  requestBoardList,
+  userInfo
+} from "../apis/apiRequests";
+
+export const useAuth = () => {
+  const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState(null);
+  const { hash } = window.location;
+
+  useEffect(() => {
+    setLoading(true);
+    const fetchData = async () =>
+      await userInfo().then(
+        res => {
+          setAuthenticated(true);
+          setUser(res.data);
+          setLoading(false);
+        },
+        error => {
+          localStorage.removeItem("token");
+          setLoading(false);
+        }
+      );
+
+    fetchData();
+  }, [hash]);
+
+  return [authenticated, user, loading];
+};
 
 export const useFetch = id => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { hash } = window.location;
 
   useEffect(() => {
     const fetchData = async () =>
@@ -11,9 +43,8 @@ export const useFetch = id => {
         setData(res.data);
         setLoading(false);
       });
-
     fetchData();
-  }, [id]);
+  }, [id, hash]);
 
   return [data, loading];
 };

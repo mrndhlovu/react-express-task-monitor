@@ -1,10 +1,9 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import { AppContext } from "../../utils/contextUtils";
+import { AppContext, HomepageContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
 import BoardCategory from "./BoardCategory";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const StyledContainer = styled.div`
   justify-self: start;
@@ -13,7 +12,9 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard, device, loading, boards } = useContext(AppContext);
+  const { makeNewBoard, device } = useContext(AppContext);
+  const { boards } = useContext(HomepageContext);
+  const hasBoards = boards.length > 0;
 
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
@@ -37,34 +38,30 @@ const BoardsSummary = () => {
 
   return (
     <StyledContainer mobile={device.mobile}>
-      {!loading ? (
-        <>
-          {boards[0].category.includes("starred") && (
-            <BoardCategory
-              icon="star"
-              header="Starred Boards"
-              category="starred"
-            />
-          )}
-          {boards[0].category.includes("recent") && (
-            <BoardCategory
-              icon="clock"
-              header="Recently Viewed"
-              category="recent"
-            />
-          )}
+      <>
+        {hasBoards && boards[0].category.includes("starred") && (
           <BoardCategory
-            icon="user"
-            header="Personal Boards"
-            category="default"
-            showNewBoardModal={showNewBoardModal}
-            isDefault={true}
-            isLast={true}
+            icon="star"
+            header="Starred Boards"
+            category="starred"
           />
-        </>
-      ) : (
-        <UILoadingSpinner />
-      )}
+        )}
+        {hasBoards && boards[0].category.includes("recent") && (
+          <BoardCategory
+            icon="clock"
+            header="Recently Viewed"
+            category="recent"
+          />
+        )}
+        <BoardCategory
+          icon="user"
+          header="Personal Boards"
+          category="default"
+          showNewBoardModal={showNewBoardModal}
+          isDefault={true}
+          isLast={true}
+        />
+      </>
 
       <NewBoardModal
         showNewBoardModal={showNewBoardModal}

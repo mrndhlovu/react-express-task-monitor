@@ -1,28 +1,28 @@
-import React, { Component } from "react";
+import React from "react";
+import { DndProvider } from "react-dnd";
 import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Backend from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
 
 import store from "./store";
 import BaseRouter from "./Routes";
-import "../App.css";
 
 import AppContainer from "./containers/AppContainer";
+import { useAuth } from "./utils/hookUtils";
 
-class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <HashRouter>
-          <DndProvider backend={Backend}>
-            <AppContainer>
-              <BaseRouter />
-            </AppContainer>
-          </DndProvider>
-        </HashRouter>
-      </Provider>
-    );
-  }
-}
+const App = () => {
+  const [authenticated, user, loading] = useAuth();
+
+  return (
+    <Provider store={store}>
+      <HashRouter>
+        <DndProvider backend={Backend}>
+          <AppContainer auth={{ ...user, authenticated }} loading={loading}>
+            <BaseRouter />
+          </AppContainer>
+        </DndProvider>
+      </HashRouter>
+    </Provider>
+  );
+};
 export default App;

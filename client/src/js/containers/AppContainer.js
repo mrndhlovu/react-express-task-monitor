@@ -1,83 +1,57 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
 import { DEFAULT_NAV_COLOR } from "../constants/constants";
 import { AppContext } from "../utils/contextUtils";
-import { requestNewBoard, requestBoardUpdate } from "../apis/apiRequests";
-import { useDimensions, useFetch } from "../utils/hookUtils";
+import { requestNewBoard } from "../apis/apiRequests";
+import { useDimensions } from "../utils/hookUtils";
 
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
-import { getBoard } from "../utils/appUtils";
 
 const Container = styled.div`
+  position: relative;
   height: 100vh;
   background-color: ${props => props.color};
 `;
 
-const AppContainer = ({ children, history }) => {
-  const [data, loading] = useFetch();
-
-  const [boards, setBoards] = useState(null);
-  const [color, setColor] = useState(null);
+const AppContainer = ({ children, history, auth, loading }) => {
+  const [color, setColor] = useState(DEFAULT_NAV_COLOR);
   const [search, setSearch] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const { device, dimensions } = useDimensions();
 
   const handleSearchClick = e => {
     setSearch(e.target.value);
   };
 
-  const handleBoardStarClick = id => {
-    const board = getBoard(boards, id);
-
-    if (board.category.includes("starred"))
-      board.category.splice(board.category.indexOf("starred"));
-    else board.category.push("starred");
-
-    requestBoardUpdate(id, board);
-    history.push("/");
-  };
-
   const makeNewBoard = update => {
     requestNewBoard(update).then(res => {
       try {
-        setIsLoading(false);
         return history.push(`/boards/id/${res.data._id}`);
-      } catch (error) {
-        return setIsLoading(false);
-      }
+      } catch (error) {}
     });
   };
 
   const getBoardDetail = boardData =>
     setColor(boardData ? boardData.styleProperties.color : DEFAULT_NAV_COLOR);
 
-  useEffect(() => {
-    if (!data) return;
-    setColor(DEFAULT_NAV_COLOR);
-    setBoards(data);
-    setIsLoading(loading);
-  }, [data, loading]);
-
   return (
     <AppContext.Provider
       value={{
-        boards,
+        auth,
         color,
         device,
         dimensions,
         getBoardDetail,
-        handleBoardStarClick,
         handleSearchClick,
-        loading: isLoading,
+        loading,
         makeNewBoard,
         search
       }}
     >
       <Container color={color === DEFAULT_NAV_COLOR ? "#fff" : color}>
-        <NavHeader />
+        {auth.authenticated && <NavHeader />}
         {children}
         {search && <SearchPage />}
       </Container>

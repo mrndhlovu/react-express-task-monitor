@@ -1,35 +1,30 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
+const User = require("../models/User");
+const auth = require("../utils.js/middleware/authMiddleware");
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
+  const match = {};
+  if (req.query.archived) match.archived = req.query.archived === "true";
+
   try {
-    const boards = await Board.find();
-    res.send(boards);
+    await req.user
+      .populate({
+        path: "boards",
+        match
+      })
+      .execPopulate();
+    res.send(req.user.boards);
   } catch (error) {
-    res.status(400).send({ message: error });
+    res.status(400).send({ message: error.message });
   }
 });
 
-router.get("/id/:boardId", async (req, res) => {
+router.get("/id/:boardId", auth, async (req, res) => {
+  const _id = req.params.boardId;
   try {
-    const board = await Board.findById(req.params.boardId);
-
-    const now = new Date();
-    const lastViewed = new Date(board.lastViewed);
-    const created = new Date(board.date);
-    const minutesAgo = 5;
-    const msPerMinute = 60 * 1000;
-    const elapsed = now - created;
-    const justCreated = elapsed / msPerMinute < minutesAgo;
-
-    const viewedRecently = (lastViewed - created) / msPerMinute < 20;
-
-    const updateCategory =
-      board.category.includes("default") ||
-      !board.category.includes("starred") ||
-      (!board.category.includes("recent") && !justCreated);
-
-    if (updateCategory) board.category.push("recent");
+    const board = await Board.findOne({ _id, owner: req.user._id });
+    await board.populate("owner").execPopulate();
 
     res.send(board);
   } catch (error) {
@@ -37,46 +32,53 @@ router.get("/id/:boardId", async (req, res) => {
   }
 });
 
-router.delete("/id/:boardId", async (req, res) => {
+router.delete("/id/:boardId", auth, async (req, res) => {
+  const _id = req.params.boardId;
+
   try {
-    await Board.deleteOne({ _id: req.params.boardId });
+    await Board.deleteOne({ _id, owner: req.user._id });
     res.send({ message: "Board deleted" });
   } catch (error) {
     res.status(400).send({ message: error });
   }
 });
 
-router.patch("/id/:boardId/update", async (req, res) => {
-  const { title, lists, category, styleProperties, accessLevel } = req.body;
-  const now = new Date();
+router.patch("/id/:boardId", auth, async (req, res) => {
+  const _id = req.params.boardId;
+
+  const updates = Object.keys(req.body);
+  const allowedUpdates = [
+    "title",
+    "lists",
+    "category",
+    "styleProperties",
+    "accessLevel",
+    "archived"
+  ];
+  const isValidField = updates.every(update => allowedUpdates.includes(update));
+
+  if (!isValidField)
+    return res.status(400).send({ message: "Invalid update field" });
   try {
-    const updatedBoard = await Board.updateOne(
-      { _id: req.params.boardId },
-      {
-        $set: {
-          styleProperties,
-          lastViewed: now,
-          lists,
-          category,
-          title,
-          accessLevel
-        }
-      }
-    );
-    res.send(updatedBoard);
+    const board = await Board.findOne({ _id, owner: req.user._id });
+    updates.forEach(update => (board[update] = req.body[update]));
+    board.updateActivity(req.method, req.user.fname, updates);
+    board.save();
+    res.send(board);
   } catch (error) {
-    res.status(400).send({ message: error });
+    res.status(400).send({ message: error.message });
   }
 });
 
-router.post("/api/create", async (req, res) => {
-  const { title } = req.body;
-
+router.post("/create", auth, async (req, res) => {
   const board = new Board({
-    title
+    ...req.body,
+    owner: req.user._id
   });
 
   try {
+    await board.updateActivity(req.method, req.user.fname, ["newBoard"]);
+
     const savedBoard = await board.save();
     res.send(savedBoard);
   } catch (error) {

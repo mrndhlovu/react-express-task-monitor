@@ -16,3 +16,10 @@ export const checkDuplicate = (collection, item) => collection.includes(item);
 export const resetForm = id => document.getElementById(id).reset();
 
 export const getBoard = (boards, id) => boards.find(board => board._id === id);
+
+export const getUserInitials = name => {
+  const splitName = name.split(" ");
+  const initials = splitName.map(name => `${name.split("").shift()}`);
+
+  return initials;
+};

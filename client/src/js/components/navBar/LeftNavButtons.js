@@ -22,7 +22,7 @@ const StyledSpan = styled.span`
 
 const LeftNavButtons = ({ history, results, value }) => {
   const [showBoardList, setShowBoardList] = useState(false);
-  const { boards, isLoading, device } = useContext(AppContext);
+  const { isLoading, device, boards } = useContext(AppContext);
 
   return (
     <StyledDiv>
