@@ -1,8 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import CreateInput from "../sharedComponents/CreateInput";
-import { AppContext, BoardContext } from "../../utils/contextUtils";
 
 const StyledDiv = styled.div`
   display: grid;
@@ -13,9 +12,14 @@ const StyledDiv = styled.div`
   width: 100%;
 `;
 
-const CopyListDialog = ({ close, title, listPosition }) => {
-  const { board, getSourceList } = useContext(AppContext);
-  const { makeBoardUpdate } = useContext(BoardContext);
+const CopyListDialog = ({
+  board,
+  close,
+  getSourceList,
+  listPosition,
+  backendUpdate,
+  title
+}) => {
   const sourceId = listPosition;
 
   const [newListTitle, setListTitle] = useState(title);
@@ -42,7 +46,7 @@ const CopyListDialog = ({ close, title, listPosition }) => {
       ]
     };
 
-    makeBoardUpdate(newBoard);
+    backendUpdate(newBoard, true);
     return close();
   };
 

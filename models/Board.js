@@ -57,24 +57,33 @@ BoardSchema.pre("save", async function(next) {
   next();
 });
 
-BoardSchema.methods.updateActivity = async function(updated, user, actions) {
+BoardSchema.methods.updateActivity = async function(user, action) {
   const board = this;
-  if (updated) {
-    const getAction = action => {
-      switch (action) {
-        case "newBoard":
-          return `${user} created a new board: ${board.title}`;
-        case "title":
-          return `${user} changed the board title to '${board.title}'`;
-        case "lists":
-          return `${user} updated the board lists '${board.title}'`;
-        default:
-          break;
-      }
-    };
+  const BOARD_ACTIVITIES = {
+    cardHeader: "changed card header to",
+    addNewCard: "added new card",
+    addAttachment: "attached",
+    addChecklist: "added Checklist to this card"
+  };
 
-    actions.forEach(action => board.activities.push(getAction(action)));
-  }
+  const getAction = action => {
+    switch (action) {
+      case "addNewCard":
+        return `${user} ${BOARD_ACTIVITIES.addNewCard}: `;
+      case "cardHeader":
+        return `${user} ${BOARD_ACTIVITIES.cardHeader}: `;
+      case "addAttachment":
+        return `${user} ${BOARD_ACTIVITIES.addAttachment}: `;
+      case "addChecklist":
+        return `${user} ${BOARD_ACTIVITIES.addChecklist}: `;
+      default:
+        break;
+    }
+  };
+
+  const userAction = { activity: getAction(action), createdAt: Date.now() };
+
+  await board.activities.push(userAction);
 };
 
 const Board = mongoose.model("Board", BoardSchema);

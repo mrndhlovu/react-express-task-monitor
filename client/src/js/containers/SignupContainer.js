@@ -10,6 +10,8 @@ const SignupContainer = ({ history }) => {
   const { authenticated } = useContext(AppContext).auth;
   const [error, setError] = useState(null);
   const [signup, setSignup] = useState(null);
+  const [loading, setLoading] = useState(false);
+
   const [credentials, setCredentials] = useState({
     fname: null,
     password: null,
@@ -28,9 +30,9 @@ const SignupContainer = ({ history }) => {
   };
 
   const handleSignupClick = () => {
+    setLoading(true);
     requestAuthSignup(credentials)
       .then(res => {
-        setCredentials(res.data);
         localStorage.setItem("token", res.data.token);
         setSignup(true);
       })
@@ -38,11 +40,12 @@ const SignupContainer = ({ history }) => {
   };
 
   useEffect(() => {
-    if (!authenticated) return;
+    if (!authenticated && !signup) return;
     const handleRedirect = () => {
       return history.push("/");
     };
     handleRedirect();
+    setLoading(false);
   }, [signup, history, authenticated]);
 
   return (
@@ -52,6 +55,7 @@ const SignupContainer = ({ history }) => {
       history={history}
       error={error}
       clearError={clearError}
+      loading={loading}
     />
   );
 };

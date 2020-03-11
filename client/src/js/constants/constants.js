@@ -84,3 +84,16 @@ export const NEW_CARD_TEMPLATE = {
 
 export const deleteAttachmentText =
   "Deleting an attachment is permanent. There is no undo.";
+
+export const BOARD_ACTIVITIES = {
+  boardHeader: "changed board header to",
+  cardHeader: "changed card header to",
+  changedCardList: "moved card from list",
+  addNewList: "added new list",
+  addNewCard: "added new card",
+  addAttachment: "attached",
+  movedCard: "moved this card from",
+  addChecklist: "added Checklist to this card",
+  deletedCard: "deleted card",
+  deletedList: "deleted list"
+};

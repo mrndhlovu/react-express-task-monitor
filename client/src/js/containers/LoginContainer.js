@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
+import { AppContext } from "../utils/contextUtils";
 import { requestAuthLogin } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
 import LoginPage from "../components/auth/LoginPage";
-import { AppContext } from "../utils/contextUtils";
 
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
@@ -33,22 +33,26 @@ const LoginContainer = ({ history, location }) => {
     setLoading(true);
     requestAuthLogin(credentials)
       .then(res => {
+        if (res.status === 200) history.push(`${from.pathname}`);
         setCredentials(res.data);
         localStorage.setItem("token", res.data.token);
+
         setLoggedIn(true);
       })
       .catch(error => {
-        setError("Failed to Login!");
+        setError(error.response.data.message);
         setLoading(false);
       });
   };
 
   useEffect(() => {
-    if (!authenticated) return;
+    if (!authenticated && !loggedIn) return;
 
     const handleRedirect = () => {
-      return history.push(from.pathname);
+      // history.push({ pathname: "/empty" });
+      history.replace({ pathname: from.pathname });
     };
+
     handleRedirect();
     setLoading(false);
   }, [loggedIn, history, authenticated, from]);

@@ -39,7 +39,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     handleCardClick,
     sourceTitle,
     board,
-    makeBoardUpdate,
+    backendUpdate,
     getSourceList,
     activeCard,
     handleUploadAttachment
@@ -85,7 +85,7 @@ const CardDetailModal = ({ listPosition, match }) => {
         )
       };
 
-      makeBoardUpdate(newBoard, true);
+      backendUpdate(newBoard, true);
       setNewCover(newAttachment.imgUrl);
       setNewAttachment(null);
     }
@@ -95,7 +95,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     board,
     getSourceList,
     listPosition,
-    makeBoardUpdate
+    backendUpdate
   ]);
 
   const handleLoadingAttachment = loading => {
@@ -116,7 +116,7 @@ const CardDetailModal = ({ listPosition, match }) => {
         cardCover: ""
       };
       await requestCardCoverUpdate(body, id).then(res => {
-        makeBoardUpdate(res.data);
+        backendUpdate(res.data);
         setRemoveCover(false);
         handleLoadingAttachment(false);
         setActiveCardCover(null);
@@ -127,7 +127,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     activeCard,
     id,
     listPosition,
-    makeBoardUpdate,
+    backendUpdate,
     removeCover,
     setRemoveCover
   ]);
@@ -146,14 +146,14 @@ const CardDetailModal = ({ listPosition, match }) => {
     };
     const attachCardCover = async () => {
       await requestCardCoverUpdate(body, id).then(res => {
-        makeBoardUpdate(res.data);
+        backendUpdate(res.data);
         setIsLoading(false);
         setNewCover(null);
         setActiveCardCover(newCover);
       });
     };
     attachCardCover();
-  }, [activeCard, id, listPosition, makeBoardUpdate, setNewCover, newCover]);
+  }, [activeCard, id, listPosition, backendUpdate, setNewCover, newCover]);
 
   useEffect(() => {
     if (newCover) return;
@@ -176,7 +176,7 @@ const CardDetailModal = ({ listPosition, match }) => {
       };
 
       await requestDeleteAttachment(body, id).then(res => {
-        makeBoardUpdate(res.data);
+        backendUpdate(res.data);
         setIsLoading(false);
         if (activeCover.localeCompare(deleteAttachment) === 0) {
           setIsLoading(false);
@@ -194,7 +194,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     activeCard,
     id,
     listPosition,
-    makeBoardUpdate,
+    backendUpdate,
     newCover
   ]);
 
@@ -233,7 +233,7 @@ const CardDetailModal = ({ listPosition, match }) => {
         <LeftSideContent>
           <CardModalDescription
             board={board}
-            makeBoardUpdate={makeBoardUpdate}
+            backendUpdate={backendUpdate}
             listPosition={listPosition}
             getSourceList={getSourceList}
             activeCard={activeCard}

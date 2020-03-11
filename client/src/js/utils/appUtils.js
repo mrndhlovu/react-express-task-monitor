@@ -1,6 +1,16 @@
-export const filterObject = (data, allowed) => {
+export const allowedUpdates = [
+  "title",
+  "lists",
+  "category",
+  "styleProperties",
+  "accessLevel",
+  "archived",
+  "activities"
+];
+
+export const filterObject = data => {
   const filtered = Object.keys(data)
-    .filter(key => allowed.includes(key))
+    .filter(key => allowedUpdates.includes(key))
     .reduce((obj, key) => {
       obj[key] = data[key];
       return obj;
@@ -18,8 +28,45 @@ export const resetForm = id => document.getElementById(id).reset();
 export const getBoard = (boards, id) => boards.find(board => board._id === id);
 
 export const getUserInitials = name => {
-  const splitName = name.split(" ");
+  const splitName = name.toUpperCase().split(" ");
   const initials = splitName.map(name => `${name.split("").shift()}`);
-
   return initials;
+};
+
+export const getActivity = (user, action) => {
+  const BOARD_ACTIVITIES = {
+    boardHeader: "changed board header to",
+    cardHeader: "changed card header to",
+    changedCardList: "moved card from list",
+    addNewList: "added new list",
+    addNewCard: "added new card",
+    addAttachment: "attached",
+    movedCard: "moved this card to",
+    movedList: "moved this card to",
+    addChecklist: "added Checklist to this card",
+    deletedCard: "deleted card",
+    deletedList: "deleted list",
+    newBoard: "created this board"
+  };
+  const getAction = () => {
+    switch (action) {
+      case "movedCard":
+        return BOARD_ACTIVITIES.movedCard;
+      case "newBoard":
+        return BOARD_ACTIVITIES.newBoard;
+      case "newList":
+        return BOARD_ACTIVITIES.addNewList;
+      case "addCard":
+        return BOARD_ACTIVITIES.addNewCard;
+      case "deleteCard":
+        return BOARD_ACTIVITIES.deletedCard;
+      case "deleteList":
+        return BOARD_ACTIVITIES.deleteList;
+      case "moveList":
+        return BOARD_ACTIVITIES.movedList;
+      default:
+        break;
+    }
+  };
+  return `${user} ${getAction()}`;
 };

@@ -15,8 +15,15 @@ export default function Routes() {
     <Switch>
       <ProtectedRoute exact path="/" component={HomePageContainer} />
       <ProtectedRoute path="/boards/id/:id" component={BoardContainer} />
-      <Route path="/login" component={LoginContainer} />
-      <Route path="/signup" component={SignupContainer} />
+
+      <Route
+        path="/login"
+        render={props => <LoginContainer key="login" {...props} />}
+      />
+      <Route
+        path="/signup"
+        render={props => <SignupContainer key="signup" {...props} />}
+      />
       <Route path="*" component={ErrorPage} />
     </Switch>
   );

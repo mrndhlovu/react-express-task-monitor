@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Board = require("../models/Board");
 const Card = require("../models/Card");
 const validate = require("validator");
+const auth = require("../utils.js/middleware/authMiddleware");
 
 const updateBoardLists = (id, newLists) =>
   Board.findByIdAndUpdate(
@@ -14,12 +15,13 @@ const updateBoardLists = (id, newLists) =>
     }
   );
 
-router.patch("/:boardId", async (req, res) => {
-  const { boardId } = req.params;
+router.patch("/:boardId", auth, async (req, res) => {
+  const _id = req.params.boardId;
+  const { card, listId } = req.body;
 
   try {
-    const { card, listId } = req.body;
-    const board = await Board.findById(req.params.boardId);
+    const board = await Board.findOne({ _id, owner: req.user._id });
+
     const newCardPosition = board.lists[listId - 1].cards.length + 1;
 
     const newCard = new Card({
@@ -28,7 +30,9 @@ router.patch("/:boardId", async (req, res) => {
     });
     board.lists[listId - 1].cards.push(newCard);
 
-    await updateBoardLists(boardId, board.lists);
+    board.updateActivity(req.user.fname, "addNewCard", list);
+
+    await updateBoardLists(_id, board.lists);
 
     res.send(board);
   } catch (error) {

@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
-const User = require("../models/User");
 const auth = require("../utils.js/middleware/authMiddleware");
 
 router.get("/", auth, async (req, res) => {
@@ -53,7 +52,8 @@ router.patch("/id/:boardId", auth, async (req, res) => {
     "category",
     "styleProperties",
     "accessLevel",
-    "archived"
+    "archived",
+    "activities"
   ];
   const isValidField = updates.every(update => allowedUpdates.includes(update));
 
@@ -62,7 +62,6 @@ router.patch("/id/:boardId", auth, async (req, res) => {
   try {
     const board = await Board.findOne({ _id, owner: req.user._id });
     updates.forEach(update => (board[update] = req.body[update]));
-    board.updateActivity(req.method, req.user.fname, updates);
     board.save();
     res.send(board);
   } catch (error) {
@@ -77,8 +76,6 @@ router.post("/create", auth, async (req, res) => {
   });
 
   try {
-    await board.updateActivity(req.method, req.user.fname, ["newBoard"]);
-
     const savedBoard = await board.save();
     res.send(savedBoard);
   } catch (error) {

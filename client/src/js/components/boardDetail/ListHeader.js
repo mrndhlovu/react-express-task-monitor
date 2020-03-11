@@ -21,7 +21,7 @@ const StyledDropdown = styled(Dropdown)`
   background-color: #ffffff3d !important;
 `;
 
-const ListHeader = ({ title, position }) => {
+const ListHeader = ({ title, position, ...otherProps }) => {
   const [hideMoveListOption, setHideMoveListOption] = useState(true);
   const [hideCopyList, setHideCopyList] = useState(false);
   const [hideListMenu, setHideListMenu] = useState(true);
@@ -61,6 +61,7 @@ const ListHeader = ({ title, position }) => {
           title={title}
           close={() => setHideCopyList(!hideCopyList)}
           listPosition={position}
+          {...otherProps}
         />
       )}
 
@@ -69,6 +70,7 @@ const ListHeader = ({ title, position }) => {
           title={title}
           close={() => setHideMoveListOption(!hideMoveListOption)}
           listPosition={position}
+          {...otherProps}
         />
       )}
     </HeaderWrapper>

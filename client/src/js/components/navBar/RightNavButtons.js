@@ -24,7 +24,7 @@ const RightNavButtons = () => {
   const trigger = (
     <>
       {auth.data && (
-        <UserAvatar abbrNameInitials={getUserInitials(auth.data.fname)} />
+        <UserAvatar userInitials={getUserInitials(auth.data.fname)} />
       )}
     </>
   );

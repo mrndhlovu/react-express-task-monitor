@@ -43,7 +43,7 @@ const ListMenu = ({
   handleShowCopyListClick,
   handleShowMoveListClick
 }) => {
-  const { makeBoardUpdate, board } = useContext(BoardContext);
+  const { backendUpdate, board } = useContext(BoardContext);
   const sourceId = listPosition;
 
   const { getSourceList } = useContext(AppContext);
@@ -102,8 +102,8 @@ const ListMenu = ({
 
   useEffect(() => {
     if (!newBoard) return;
-    makeBoardUpdate(newBoard);
-  }, [makeBoardUpdate, newBoard]);
+    backendUpdate(newBoard);
+  }, [backendUpdate, newBoard]);
 
   return (
     <Wrapper>

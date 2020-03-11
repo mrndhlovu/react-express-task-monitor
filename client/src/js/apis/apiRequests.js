@@ -18,8 +18,9 @@ export const requestBoardDetail = id =>
 export const requestBoardDelete = id =>
   axios.delete(`${BOARDS_EP}/id/${id}`, getAuthParams());
 
-export const requestBoardUpdate = (id, body) =>
-  axios.patch(`${BOARDS_EP}/id/${id}/update`, body, getAuthParams());
+export const requestBoardUpdate = (id, body) => {
+  return axios.patch(`${BOARDS_EP}/id/${id}`, { ...body }, getAuthParams());
+};
 
 export const requestUpload = body =>
   axios.post(`${UPLOAD_EP}/image`, body, getAuthParams());
@@ -40,9 +41,7 @@ export const requestAuthSignup = body => axios.post(`${AUTH_EP}/signup`, body);
 
 export const requestAuthLogin = body => axios.post(`${AUTH_EP}/login`, body);
 
-export const requestAuthLogout = token => {
-  console.log("token: ", getAuthParams(token));
-  return axios.post(`${AUTH_EP}/logout`, getAuthParams(token));
-};
+export const requestAuthLogout = token =>
+  axios.post(`${AUTH_EP}/logout`, null, getAuthParams(token));
 
 export const userInfo = () => axios.get(`${AUTH_EP}/users/me`, getAuthParams());

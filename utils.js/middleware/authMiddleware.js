@@ -16,7 +16,7 @@ const authMiddleware = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    res.status(401).send({ error: "Auth token not provided" });
+    res.status(401).send({ error: error.message });
   }
 };
 

@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
-import { Route, Redirect, withRouter } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { AppContext } from "../../utils/contextUtils";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const ProtectedRoute = ({ component: Component, history, ...rest }) => {
+const ProtectedRoute = ({ component: Component, location, ...rest }) => {
   const { auth, loading } = useContext(AppContext);
   const { authenticated, user } = auth;
 
@@ -23,13 +23,11 @@ const ProtectedRoute = ({ component: Component, history, ...rest }) => {
             />
           );
         } else {
-          return (
-            <Component key={history.location.pathname} user={user} {...props} />
-          );
+          return <Component key={location.pathname} user={user} {...props} />;
         }
       }}
     />
   );
 };
 
-export default withRouter(ProtectedRoute);
+export default ProtectedRoute;

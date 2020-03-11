@@ -1,9 +1,9 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
-import { Form, Grid, Icon, Button, Divider, Message } from "semantic-ui-react";
+import { Form, Grid, Icon, Button, Divider } from "semantic-ui-react";
 import OtherSignupOptionButton from "./OtherSignupOptionButton";
+import MessageAlert from "./MessageAlert";
 
 const FormContainer = styled.div`
   align-items: center;
@@ -13,6 +13,7 @@ const FormContainer = styled.div`
   height: 100vh;
   justify-content: center;
   margin-top: -5%;
+  position: relative;
 `;
 
 const StyledHeader = styled.div`
@@ -33,14 +34,13 @@ const StyledFormColumn = styled(Grid.Column)`
 `;
 
 const Subheader = styled.div`
-  padding: 10px;
-  text-align: center;
-  cursor: ${props => props.footer && "pointer"};
   color: ${props => (props.footer ? "#1154cd" : "#5e6c83")};
-  font-weight: ${props => !props.footer && 700};
+  cursor: ${props => props.footer && "pointer"};
   font-family: "Poppins";
   font-size: 14px;
-
+  font-weight: ${props => !props.footer && 700};
+  padding: 10px;
+  text-align: center;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
 
@@ -50,21 +50,21 @@ const Subheader = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  border-radius: 0px !important;
   background-color: #0079bf !important;
+  border-radius: 0px !important;
   color: white !important;
-  font-weight: 100 !important;
   font-size: 15px !important;
+  font-weight: 100 !important;
 `;
 
 const StyledSegment = styled.div`
-  position: relative;
   background: #fff;
+  border-radius: 0.28571429rem;
+  border: 1px solid #22242626;
   box-shadow: 0 1px 2px 0 #22242626;
   margin: 3rem 0;
   padding: 1em 1em;
-  border-radius: 0.28571429rem;
-  border: 1px solid #22242626;
+  position: relative;
 `;
 
 const AuthFormWrapper = ({
@@ -81,31 +81,27 @@ const AuthFormWrapper = ({
   const suggestion = signup
     ? "Already have an account? Log in"
     : "Can't log in? Sign up for an account";
+
   return (
     <FormContainer>
+      <MessageAlert
+        open={error}
+        close={clearError}
+        error={true}
+        message={error}
+      />
+
       <HeaderContainer>
         <StyledHeader>
           <Icon name="trello" size="large" />
         </StyledHeader>
-
-        {error && (
-          <Message
-            size="tiny"
-            error
-            textAlign="left"
-            content={error}
-            onDismiss={() => clearError()}
-          />
-        )}
       </HeaderContainer>
 
       <StyledFormColumn>
         <Form size="large" id="authForm">
           <StyledSegment>
             <Subheader>{headText} </Subheader>
-
             {children}
-
             <StyledButton
               fluid
               loading={loading}
@@ -137,4 +133,4 @@ const AuthFormWrapper = ({
   );
 };
 
-export default withRouter(AuthFormWrapper);
+export default AuthFormWrapper;

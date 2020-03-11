@@ -32,9 +32,14 @@ const List = ({
   isOverCurrent,
   ...rest
 }) => {
-  const { showListActions, activeList, ...otherProps } = useContext(
-    BoardListsContext
-  );
+  const {
+    showListActions,
+    activeList,
+    getSourceList,
+    backendUpdate,
+    board,
+    ...otherProps
+  } = useContext(BoardListsContext);
 
   const { title, position, cards } = list;
 
@@ -55,6 +60,9 @@ const List = ({
           title={title}
           showListActions={showListActions}
           position={position}
+          getSourceList={getSourceList}
+          backendUpdate={backendUpdate}
+          board={board}
         />
         <CardsWrapper
           cards={cards}
@@ -81,9 +89,9 @@ const target = {
   drop(props) {
     const { draggingList, sourceId, list, reorderCards } = props;
     if (draggingList) return props.reOrderList(sourceId, list.position);
-    if (reorderCards) return props.handleCardsReorder();
+    if (reorderCards) return props.moveCardToNewPosition();
 
-    return props.handleChangeCardList();
+    return props.handleMoveCardToNewList();
   },
   hover(props, monitor) {
     const { list } = props;

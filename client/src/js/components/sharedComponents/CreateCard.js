@@ -4,8 +4,8 @@ import { withRouter } from "react-router-dom";
 
 import { Button, Card, TextArea, Icon } from "semantic-ui-react";
 import { requestCreateNewCard } from "../../apis/apiRequests";
-import { BoardListsContext } from "../../utils/contextUtils";
 import { resetForm } from "../../utils/appUtils";
+import { BoardContext } from "../../utils/contextUtils";
 
 const StyledTextArea = styled(TextArea)`
   width: 100%;
@@ -52,7 +52,7 @@ const CreateCard = ({
   activeList,
   match
 }) => {
-  const { makeBoardUpdate } = useContext(BoardListsContext);
+  const { saveBoardChanges } = useContext(BoardContext);
   const [newCard, setNewCard] = useState(null);
   const [save, setSave] = useState(false);
   const { id } = match.params;
@@ -66,14 +66,16 @@ const CreateCard = ({
 
     const card = { title: newCard };
     const createCard = async () =>
-      await requestCreateNewCard({ card, listId }, id);
-    createCard().then(res => {
-      setNewCard("");
-      makeBoardUpdate(res.data);
-    });
+      await requestCreateNewCard({ card, listId }, id)
+        .then(res => {
+          setNewCard("");
+          saveBoardChanges(res.data);
+        })
+        .catch(error => {});
+    createCard();
     setSave(false);
     resetForm("create-card-input");
-  }, [newCard, save, listId, makeBoardUpdate, id]);
+  }, [newCard, save, listId, saveBoardChanges, id]);
 
   return (
     <StyledContainer>

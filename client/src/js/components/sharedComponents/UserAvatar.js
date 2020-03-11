@@ -17,9 +17,9 @@ const StyledButton = styled.div`
   justify-content: space-around;
 `;
 
-const UserAvatar = ({ abbrNameInitials = "M" }) => (
+const UserAvatar = ({ userInitials = "M" }) => (
   <StyledButton circular size="tiny">
-    <Span>{abbrNameInitials}</Span>
+    <Span>{userInitials}</Span>
   </StyledButton>
 );
 

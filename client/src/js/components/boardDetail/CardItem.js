@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { BoardListsContext } from "../../utils/contextUtils";
 import EditCardPenIcon from "./EditCardPenIcon";
 import CardCover from "../cardDetail/CardCover";
-import { requestDeleteCard } from "../../apis/apiRequests";
 import { withRouter } from "react-router-dom";
 
 const CardTitle = styled.div`
@@ -26,22 +25,36 @@ const Container = styled.div`
   position: relative;
 `;
 
-const CardItem = ({ card, sourceListId, sourceTitle, match }) => {
-  const { id } = match.params;
-  const { makeBoardUpdate, handleCardClick } = useContext(BoardListsContext);
+const CardItem = ({ card, sourceListId, sourceTitle }) => {
+  const { backendUpdate, handleCardClick, updateBoard, board } = useContext(
+    BoardListsContext
+  );
 
   const [showEditButton, setShowEditButton] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (!deleting) return;
-    const deleteCard = async () =>
-      await requestDeleteCard(
-        { cardId: card.position, listId: sourceListId },
-        id
-      );
-    deleteCard().then(res => makeBoardUpdate(res.data) && setDeleting(false));
-  }, [card, deleting, id, sourceListId, makeBoardUpdate]);
+    const deleteCard = async () => {
+      const newBoard = {
+        ...board,
+        lists: board.lists.map(list =>
+          list.position === sourceListId
+            ? {
+                ...list,
+                cards: list.cards.filter(
+                  item => item.position !== card.position
+                )
+              }
+            : { ...list }
+        )
+      };
+
+      updateBoard(newBoard, "deleteCard");
+    };
+    deleteCard();
+    setDeleting(false);
+  }, [card, deleting, sourceListId, backendUpdate, board, updateBoard]);
 
   return (
     <Container

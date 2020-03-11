@@ -5,7 +5,6 @@ import CreateBoard from "../sharedComponents/CreateBoard";
 import ListGrid from "./ListGrid";
 import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
 import CardDetailModal from "../cardDetail/CardDetailModal";
-import { NEW_CARD_TEMPLATE } from "../../constants/constants";
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -17,7 +16,7 @@ const StyledListContainer = styled.div`
 `;
 
 const BoardLists = () => {
-  const { board, makeBoardUpdate, id } = useContext(BoardContext);
+  const { board, backendUpdate, id } = useContext(BoardContext);
   const { lists } = board;
 
   const [activeList, setActiveList] = useState("");
@@ -36,6 +35,7 @@ const BoardLists = () => {
   const [hideCardDetail, setHideCardDetail] = useState(true);
   const [activeCard, setActiveCard] = useState(false);
   const [sourceTitle, setSourceTitle] = useState("");
+  const [activity, setActivity] = useState(null);
 
   function handleAddList(event) {
     setNewListName(event.target.value);
@@ -50,7 +50,7 @@ const BoardLists = () => {
 
     lists.push(newList);
 
-    updateBoard(board);
+    updateBoard(board, "newList");
     setShowInputField(!showInputField);
   }
 
@@ -66,31 +66,17 @@ const BoardLists = () => {
     };
   }
 
-  const updateBoard = data => {
+  const updateBoard = (data, action) => {
     setUpdate(data.lists);
-    makeBoardUpdate(data, true);
+    backendUpdate(data, "lists", activity || action);
+    setActivity(null);
   };
-
-  function handleCreateCard(listId) {
-    const sourceList = lists.filter(list => list.position === listId).shift();
-
-    const newCard = {
-      ...NEW_CARD_TEMPLATE,
-      title: newCardName,
-      position: sourceList.cards.length + 1
-    };
-
-    sourceList.cards.push(newCard);
-
-    updateBoard(board);
-    setActiveList("");
-  }
 
   function handleOnChange(event) {
     setNewCardName(event.target.value);
   }
 
-  function handleChangeCardList() {
+  function handleMoveCardToNewList() {
     const newCards = [];
     let newList;
     let updatedSourceList;
@@ -125,13 +111,14 @@ const BoardLists = () => {
     );
 
     setUpdate(newList);
+    setActivity("movedCard");
   }
 
   function updateHoverIndex(index) {
     setHoverIndex(index);
   }
 
-  function handleCardsReorder() {
+  function moveCardToNewPosition() {
     const sourceList = getSourceList(sourceId).shift();
 
     const newList = lists.filter(list => list.position !== sourceId);
@@ -217,7 +204,7 @@ const BoardLists = () => {
     setHideCardDetail(!hideCardDetail);
   };
 
-  function handleDrop() {
+  const handleDrop = () => {
     const updatedList = {
       ...board,
       lists: update
@@ -228,7 +215,7 @@ const BoardLists = () => {
     setDraggingCardId(undefined);
     setSourceId(undefined);
     setReorderCards(false);
-  }
+  };
 
   const getSourceList = id => lists.filter(list => list.position === id);
 
@@ -244,12 +231,11 @@ const BoardLists = () => {
     getSourceList,
     handleAddCardName,
     handleCardClick,
-    handleCreateCard,
     handleOnChange,
     handleStartDrag,
     hideCardDetail,
-    lists: lists,
-    makeBoardUpdate,
+    lists,
+    backendUpdate,
     newCardName,
     showAddCardInput,
     sourceTitle,
@@ -262,7 +248,7 @@ const BoardLists = () => {
       <StyledListContainer>
         <ListGrid
           draggingList={draggingList}
-          handleChangeCardList={handleChangeCardList}
+          handleMoveCardToNewList={handleMoveCardToNewList}
           handleDrop={handleDrop}
           reOrderList={reOrderList}
           sourceId={sourceId}
@@ -270,7 +256,8 @@ const BoardLists = () => {
           updateDropTargetId={updateDropTargetId}
           updateSourceId={updateSourceId}
           reorderCards={reorderCards}
-          handleCardsReorder={handleCardsReorder}
+          moveCardToNewPosition={moveCardToNewPosition}
+          getSourceList={getSourceList}
         />
 
         <CreateBoard

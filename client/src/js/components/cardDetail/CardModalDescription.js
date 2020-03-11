@@ -35,7 +35,7 @@ const DescriptionHeader = styled.div`
 
 const CardModalDescription = ({
   board,
-  makeBoardUpdate,
+  backendUpdate,
   listPosition,
   activeCard
 }) => {
@@ -71,7 +71,7 @@ const CardModalDescription = ({
       ]
     };
 
-    description && makeBoardUpdate(newBoard);
+    description && backendUpdate(newBoard);
     setHideSaveButton(!hideSaveButton);
     setUpdated(true);
   };
