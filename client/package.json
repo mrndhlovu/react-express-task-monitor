@@ -27,7 +27,7 @@
     "semantic-ui-react": "^0.81.2",
     "styled-components": "^5.0.1",
     "validator": "^12.2.0",
-    "yarn": "^1.21.1"
+    "yarn": "^1.22.0"
   },
   "scripts": {
     "start": "react-scripts start",
