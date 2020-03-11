@@ -12,10 +12,13 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  padding-left: 6%;
+  padding-left: 9%;
 `;
 
 const AvatarContainer = styled.div``;
+const FormWrapper = styled.div`
+  margin-left: 20px;
+`;
 
 const CardComment = ({ comment, saveComment }) => {
   const [newComment, setNewComment] = useState(null);
@@ -38,17 +41,18 @@ const CardComment = ({ comment, saveComment }) => {
         <AvatarContainer>
           <UserAvatar />
         </AvatarContainer>
-        <div>
+        <FormWrapper>
           <Form>
             <Form.Field>
               <input
                 placeholder={comment ? comment : "Write a comment"}
                 onFocus={() => setFocus(true)}
+                onBlur={() => setFocus(false)}
                 onChange={e => handleChange(e)}
               />
             </Form.Field>
           </Form>
-        </div>
+        </FormWrapper>
       </Container>
       {focus && (
         <ButtonContainer>

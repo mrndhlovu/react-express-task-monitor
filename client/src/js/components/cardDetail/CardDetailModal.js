@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import { Modal, Button } from "semantic-ui-react";
 
-import { BoardListsContext } from "../../utils/contextUtils";
+import { BoardListsContext, AppContext } from "../../utils/contextUtils";
 import { checkDuplicate } from "../../utils/appUtils";
 import {
   requestCardCoverUpdate,
@@ -12,7 +12,6 @@ import {
 } from "../../apis/apiRequests";
 import Attachments from "./Attachments";
 import CardActivities from "./CardActivities";
-import CardComments from "./CardComments";
 import CardModalDescription from "./CardModalDescription";
 import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
@@ -44,6 +43,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     activeCard,
     handleUploadAttachment
   } = useContext(BoardListsContext);
+  const { auth } = useContext(AppContext);
 
   const { id } = match.params;
   const [newAttachment, setNewAttachment] = useState(null);
@@ -249,9 +249,9 @@ const CardDetailModal = ({ listPosition, match }) => {
           <CardActivities
             handleShowDetails={() => setHideActivities(!hideActivities)}
             hideActivities={hideActivities}
+            board={board}
+            user={auth.data.fname}
           />
-
-          <CardComments />
         </LeftSideContent>
         <CardModalSidebar
           addCardAttachment={addCardAttachment}
