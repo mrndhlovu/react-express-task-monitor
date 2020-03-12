@@ -25,7 +25,11 @@ const NavButton = ({
     <StyledButton
       size="tiny"
       onClick={redirect}
-      icon={iconName && <NavButtonIcon iconName={iconName} />}
+      icon={
+        iconName && (
+          <NavButtonIcon iconName={iconName} iconColor={buttonColor} />
+        )
+      }
       color={buttonColor}
     />
   ) : (
@@ -35,7 +39,11 @@ const NavButton = ({
       size="tiny"
       onClick={redirect}
       content={buttonText}
-      icon={iconName && <NavButtonIcon iconName={iconName} />}
+      icon={
+        iconName && (
+          <NavButtonIcon iconName={iconName} iconColor={buttonColor} />
+        )
+      }
       color={buttonColor}
     />
   );

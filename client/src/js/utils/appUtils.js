@@ -46,7 +46,11 @@ export const getActivity = (user, action) => {
     addChecklist: "added Checklist to this card",
     deletedCard: "deleted card",
     deletedList: "deleted list",
-    newBoard: "created this board"
+    newBoard: "created this board",
+    changeAccess: "changed board access level",
+    color: "changed board color",
+    starred: "added board to starred list",
+    removeStar: "removed board from starred list"
   };
   const getAction = () => {
     switch (action) {
@@ -64,6 +68,14 @@ export const getActivity = (user, action) => {
         return BOARD_ACTIVITIES.deleteList;
       case "moveList":
         return BOARD_ACTIVITIES.movedList;
+      case "changeAccess":
+        return BOARD_ACTIVITIES.changeAccess;
+      case "color":
+        return BOARD_ACTIVITIES.color;
+      case "starred":
+        return BOARD_ACTIVITIES.starred;
+      case "removeStar":
+        return BOARD_ACTIVITIES.removeStar;
       default:
         break;
     }

@@ -38,9 +38,8 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
     <StyledDiv mobile={mobile}>
       <NavButton
         iconName="star outline"
-        color={isStarred && "yellow"}
+        buttonColor={isStarred ? "yellow" : "grey"}
         redirect={() => handleBoardStarClick()}
-        id={board._id}
       />
       <NavButton buttonText="Personal" forceText={true} />
 

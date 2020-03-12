@@ -2,11 +2,11 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { AppContext } from "../../utils/contextUtils";
+import { Dropdown } from "semantic-ui-react";
+import { getUserInitials } from "../../utils/appUtils";
+import { requestAuthLogout } from "../../apis/apiRequests";
 import NavButton from "../sharedComponents/NavButton";
 import UserAvatar from "../sharedComponents/UserAvatar";
-import { getUserInitials } from "../../utils/appUtils";
-import { Dropdown } from "semantic-ui-react";
-import { requestAuthLogout } from "../../apis/apiRequests";
 
 const StyledDiv = styled.div`
   margin-right: 10px;

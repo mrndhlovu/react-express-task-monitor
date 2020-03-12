@@ -9,7 +9,7 @@ const CardActivities = ({ hideActivities, ...props }) => {
   return (
     <CardDetailSegment>
       <ActivitiesHeader {...props} />
-      <CardComments />
+      <CardComments {...props} />
       {!hideActivities && <Activities {...props} />}
     </CardDetailSegment>
   );

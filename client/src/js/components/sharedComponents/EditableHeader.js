@@ -14,7 +14,6 @@ const StyledDiv = styled.div`
 
 const EditHeader = styled(Input)`
   border-radius: 5px;
-  border: 1px solid blue;
   margin-bottom: 5px;
   height: 29px;
   width: 95%;

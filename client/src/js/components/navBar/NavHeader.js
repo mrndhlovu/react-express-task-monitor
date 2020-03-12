@@ -1,12 +1,12 @@
 import React, { useContext, memo } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
+import { AppContext } from "../../utils/contextUtils";
+import { DEFAULT_NAV_COLOR } from "../../constants/constants";
 import LeftNavButtons from "./LeftNavButtons";
 import Logo from "./Logo";
-import { AppContext } from "../../utils/contextUtils";
 import RightNavButtons from "./RightNavButtons";
-import { DEFAULT_NAV_COLOR } from "../../constants/constants";
-import { withRouter } from "react-router-dom";
 
 const NavWrapper = styled.div`
   display: flex;
@@ -18,6 +18,7 @@ const NavWrapper = styled.div`
 
 const NavHeader = ({ history }) => {
   const { color, device } = useContext(AppContext);
+
   return (
     <NavWrapper color={color === DEFAULT_NAV_COLOR ? color : "transparent"}>
       <LeftNavButtons />

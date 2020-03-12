@@ -14,13 +14,14 @@ const StyledContainer = styled.div`
   display: grid;
 `;
 
-const BoardContainer = ({ match, history }) => {
-  const { getBoardDetail, auth } = useContext(AppContext);
+const BoardContainer = ({ match, history, user }) => {
+  const { getBoardDetail } = useContext(AppContext);
   const { id } = match.params;
 
   const [data, loading] = useFetch(id, history);
   const [board, setBoard] = useState(null);
   const [updatedField, setUpdatedField] = useState(null);
+  const [starred, setStarred] = useState(null);
 
   let newBoard;
 
@@ -37,7 +38,7 @@ const BoardContainer = ({ match, history }) => {
       accessLevel: { ...PERMISSIONS, [option]: true }
     };
 
-    backendUpdate(newBoard, true);
+    backendUpdate(newBoard, "accessLevel", "changeAccess");
   };
 
   const handleDeleteBoard = () => {
@@ -51,21 +52,26 @@ const BoardContainer = ({ match, history }) => {
       styleProperties: { ...data.styleProperties, color }
     };
 
-    backendUpdate(newBoard, true);
+    backendUpdate(newBoard, "styleProperties", "color");
   };
 
   const handleBoardStarClick = () => {
-    if (board.category.includes("starred"))
+    if (board.category.includes("starred")) {
       board.category.splice(data.category.indexOf("starred"));
-    else board.category.push("starred");
-    backendUpdate(board, true);
+      setStarred(false);
+    } else {
+      board.category.push("starred");
+      setStarred(true);
+    }
+
+    backendUpdate(board, "category", starred ? "removeStar" : "starred");
   };
 
   useEffect(() => {
     if (!updatedField) return;
     const serverUpdate = async () => {
       const { fieldId, activity } = updatedField;
-      const { fname } = auth.data;
+      const { fname } = user.data;
       const userAction = getActivity(fname, activity);
       board.activities.push({ activity: userAction, createdAt: Date.now() });
       const update = {
@@ -81,7 +87,7 @@ const BoardContainer = ({ match, history }) => {
     };
 
     if (updatedField) serverUpdate();
-  }, [getBoardDetail, id, updatedField, board, auth]);
+  }, [getBoardDetail, id, updatedField, board, user]);
 
   useEffect(() => {
     if (loading && !data) return;

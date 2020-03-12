@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Form, Button } from "semantic-ui-react";
 import UserAvatar from "./UserAvatar";
+import { getUserInitials } from "../../utils/appUtils";
 
 const Container = styled.div`
   display: grid;
@@ -20,7 +21,7 @@ const FormWrapper = styled.div`
   margin-left: 20px;
 `;
 
-const CardComment = ({ comment, saveComment }) => {
+const CardComment = ({ comment, saveComment, user }) => {
   const [newComment, setNewComment] = useState(null);
   const [focus, setFocus] = useState(false);
 
@@ -39,7 +40,7 @@ const CardComment = ({ comment, saveComment }) => {
     <>
       <Container>
         <AvatarContainer>
-          <UserAvatar />
+          <UserAvatar userInitials={getUserInitials(user)} />
         </AvatarContainer>
         <FormWrapper>
           <Form>

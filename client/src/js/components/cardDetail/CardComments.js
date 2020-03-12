@@ -3,7 +3,7 @@ import React from "react";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CardComment from "../sharedComponents/CardComment";
 
-const CardComments = ({ comments }) => {
+const CardComments = ({ comments, ...props }) => {
   const saveComment = (comment, commentId) => {
     if (commentId) {
       console.log("update: ", comment, commentId);
@@ -13,7 +13,7 @@ const CardComments = ({ comments }) => {
   };
   return (
     <CardDetailSegment>
-      <CardComment saveComment={saveComment} />
+      <CardComment saveComment={saveComment} {...props} />
     </CardDetailSegment>
   );
 };

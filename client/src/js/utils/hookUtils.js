@@ -10,8 +10,11 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
   const { hash } = window.location;
+  const onLoginOrSignupPage = hash === "#/signup" || hash === "#/login";
 
   useEffect(() => {
+    if (onLoginOrSignupPage) return;
+
     setLoading(true);
     const fetchData = async () =>
       await userInfo().then(
@@ -27,7 +30,7 @@ export const useAuth = () => {
       );
 
     fetchData();
-  }, [hash]);
+  }, [onLoginOrSignupPage]);
 
   return [authenticated, user, loading];
 };

@@ -9,22 +9,29 @@ import SignupContainer from "./containers/SignupContainer";
 import LoginContainer from "./containers/LoginContainer";
 import ErrorPage from "./components/ErrorPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import AppContainer from "./containers/AppContainer";
 
 export default function Routes() {
   return (
-    <Switch>
-      <ProtectedRoute exact path="/" component={HomePageContainer} />
-      <ProtectedRoute path="/boards/id/:id" component={BoardContainer} />
+    <AppContainer>
+      <Switch>
+        <ProtectedRoute key="/" exact path="/" component={HomePageContainer} />
+        <ProtectedRoute
+          key="boardDetail"
+          path="/boards/id/:id"
+          component={BoardContainer}
+        />
 
-      <Route
-        path="/login"
-        render={props => <LoginContainer key="login" {...props} />}
-      />
-      <Route
-        path="/signup"
-        render={props => <SignupContainer key="signup" {...props} />}
-      />
-      <Route path="*" component={ErrorPage} />
-    </Switch>
+        <Route
+          path="/login"
+          render={props => <LoginContainer key="login" {...props} />}
+        />
+        <Route
+          path="/signup"
+          render={props => <SignupContainer key="signup" {...props} />}
+        />
+        <Route path="*" component={ErrorPage} />
+      </Switch>
+    </AppContainer>
   );
 }

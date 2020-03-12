@@ -9,13 +9,12 @@ import LoginPage from "../components/auth/LoginPage";
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
 
-  const { authenticated } = useContext(AppContext).auth;
+  const { authenticated } = useContext(AppContext);
   const [credentials, setCredentials] = useState({
     password: null,
     email: null
   });
   const [error, setError] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const onHandleChange = (e, field) => {
@@ -29,39 +28,33 @@ const LoginContainer = ({ history, location }) => {
     resetForm("authForm");
   };
 
-  const handleLoginClick = () => {
-    setLoading(true);
-    requestAuthLogin(credentials)
-      .then(res => {
-        if (res.status === 200) history.push(`${from.pathname}`);
-        setCredentials(res.data);
-        localStorage.setItem("token", res.data.token);
-
-        setLoggedIn(true);
-      })
-      .catch(error => {
-        setError(error.response.data.message);
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
-    if (!authenticated && !loggedIn) return;
+    if (!loading) return;
 
-    const handleRedirect = () => {
-      // history.push({ pathname: "/empty" });
-      history.replace({ pathname: from.pathname });
+    const login = async () => {
+      setLoading(true);
+      await requestAuthLogin(credentials)
+        .then(res => {
+          localStorage.setItem("token", res.data.token);
+          setLoading(false);
+          if (res.status === 200) return history.push(`${from.pathname}`);
+
+          history.push({ pathname: "/empty" });
+          history.replace({ pathname: from.pathname });
+        })
+        .catch(error => {
+          setError(error.response.data.message);
+          setLoading(false);
+        });
     };
-
-    handleRedirect();
-    setLoading(false);
-  }, [loggedIn, history, authenticated, from]);
+    login();
+  }, [loading, history, authenticated, from, credentials]);
 
   return (
     <LoginPage
       clearError={clearError}
       error={error}
-      handleLoginClick={handleLoginClick}
+      handleLoginClick={() => setLoading(true)}
       history={history}
       loading={loading}
       onHandleChange={onHandleChange}

@@ -17,11 +17,12 @@ const HeaderContainer = styled.div`
 
 const TitleWrapper = styled.div`
   align-self: ${props => (props.mobile ? "center" : "start")};
-  display: ${props => props.mobile && "flex"};
-  justify-content: ${props => props.mobile && "space-around"};
+  align-self: auto;
+  display: flex;
+  justify-content: start;
   padding-bottom: 10px;
-  padding-top: 6px;
   padding-left: 5px;
+  padding-top: 6px;
 `;
 
 const BoardHeader = ({ handleShowMenuClick }) => {

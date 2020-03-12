@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
+import { AppContext } from "../utils/contextUtils";
 import { requestAuthSignup } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
 import SignupPage from "../components/auth/SignupPage";
-import { AppContext } from "../utils/contextUtils";
 
 const SignupContainer = ({ history }) => {
   const { authenticated } = useContext(AppContext).auth;
@@ -35,8 +35,11 @@ const SignupContainer = ({ history }) => {
       .then(res => {
         localStorage.setItem("token", res.data.token);
         setSignup(true);
+        setLoading(false);
       })
-      .catch(error => setError("Failed to signup!"));
+      .catch(error => {
+        setError(error.response.data.message);
+      });
   };
 
   useEffect(() => {
@@ -45,7 +48,6 @@ const SignupContainer = ({ history }) => {
       return history.push("/");
     };
     handleRedirect();
-    setLoading(false);
   }, [signup, history, authenticated]);
 
   return (

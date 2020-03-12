@@ -2,11 +2,10 @@ import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
-import { DEFAULT_NAV_COLOR } from "../constants/constants";
 import { AppContext } from "../utils/contextUtils";
+import { DEFAULT_NAV_COLOR } from "../constants/constants";
 import { requestNewBoard } from "../apis/apiRequests";
-import { useDimensions } from "../utils/hookUtils";
-
+import { useDimensions, useAuth } from "../utils/hookUtils";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
 
@@ -16,7 +15,9 @@ const Container = styled.div`
   background-color: ${props => props.color};
 `;
 
-const AppContainer = ({ children, history, auth, loading }) => {
+const AppContainer = ({ children, history }) => {
+  const [authenticated, user, loading] = useAuth();
+
   const [color, setColor] = useState(DEFAULT_NAV_COLOR);
   const [search, setSearch] = useState(false);
   const { device, dimensions } = useDimensions();
@@ -39,19 +40,18 @@ const AppContainer = ({ children, history, auth, loading }) => {
   return (
     <AppContext.Provider
       value={{
-        auth,
+        auth: { authenticated, ...user, loading },
         color,
         device,
         dimensions,
         getBoardDetail,
         handleSearchClick,
-        loading,
         makeNewBoard,
         search
       }}
     >
       <Container color={color === DEFAULT_NAV_COLOR ? "#fff" : color}>
-        {auth.authenticated && <NavHeader />}
+        {authenticated && <NavHeader />}
         {children}
         {search && <SearchPage />}
       </Container>
