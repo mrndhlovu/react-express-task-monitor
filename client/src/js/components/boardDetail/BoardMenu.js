@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Sidebar, Menu } from "semantic-ui-react";
-import SideBarHeader from "../home/SideBarHeader";
+import { Menu } from "semantic-ui-react";
+import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 
 const Wrapper = styled.div`
   width: 800px;
@@ -16,16 +16,11 @@ const BoardMenu = ({
 }) => {
   return (
     <Wrapper>
-      <Sidebar
-        as={Menu}
-        animation="overlay"
-        direction="right"
-        inverted
-        vertical
-        visible={showSideBar}
-        width="wide"
+      <SideBarWrapper
+        handleClose={handleShowMenuClick}
+        inverted={true}
+        open={showSideBar}
       >
-        <SideBarHeader handleClose={handleShowMenuClick} />
         <Menu.Item color="grey" as="a">
           About This Board
         </Menu.Item>
@@ -36,7 +31,7 @@ const BoardMenu = ({
         <Menu.Item as="a" onClick={() => handleDeleteBoard()}>
           Delete board
         </Menu.Item>
-      </Sidebar>
+      </SideBarWrapper>
     </Wrapper>
   );
 };

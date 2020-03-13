@@ -1,30 +1,34 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Icon } from "semantic-ui-react";
+const MenuHeader = styled.div`
+  height: 34px;
+  position: relative;
+  color: ${props => props.inverted && "white"};
+`;
 
-const IconWrapper = styled.div`
-  justify-self: end;
-  align-self: center;
-  padding-right: 10px;
+const CloseIcon = styled.span`
+  font-weight: 700;
   cursor: pointer;
 `;
 
-const MenuHeader = styled.div`
-  color: white;
-  cursor: pointer;
+const Header = styled.span`
+  font-weight: 700;
+`;
+
+const HeadWrapper = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 10px;
+  align-items: center;
 `;
 
-const SideBarHeader = ({ handleClose, icon }) => {
+const SideBarHeader = ({ handleClose, header = "Board", inverted }) => {
   return (
-    <MenuHeader>
-      <Icon name={icon} size="large" onClick={() => handleClose()} />
-      <IconWrapper>
-        <Icon as="i" name="close" onClick={() => handleClose()} />
-      </IconWrapper>
+    <MenuHeader inverted={inverted}>
+      <HeadWrapper>
+        <CloseIcon onClick={() => handleClose()}>X</CloseIcon>
+        <Header>{header}</Header>
+      </HeadWrapper>
     </MenuHeader>
   );
 };
