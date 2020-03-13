@@ -13,7 +13,7 @@ serverConfig = server => {
       credentials: true
     })
   );
-  server.use(express.static(path.join(__dirname, "client/src/html")));
+  server.use(express.static(path.join(__dirname, "client/build")));
   server.use((err, req, res, next) => res.json(err));
 };
 
