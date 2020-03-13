@@ -9,7 +9,6 @@ import SignupPage from "../components/auth/SignupPage";
 const SignupContainer = ({ history }) => {
   const { authenticated } = useContext(AppContext).auth;
   const [error, setError] = useState(null);
-  const [signup, setSignup] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [credentials, setCredentials] = useState({
@@ -29,31 +28,26 @@ const SignupContainer = ({ history }) => {
     resetForm("authForm");
   };
 
-  const handleSignupClick = () => {
-    setLoading(true);
-    requestAuthSignup(credentials)
-      .then(res => {
-        localStorage.setItem("token", res.data.token);
-        setSignup(true);
-        setLoading(false);
-      })
-      .catch(error => {
-        setError(error.response.data.message);
-      });
-  };
-
   useEffect(() => {
-    if (!authenticated && !signup) return;
-    const handleRedirect = () => {
-      return history.push("/");
+    if (!loading) return;
+    const handleRedirect = async () => {
+      setLoading(true);
+      await requestAuthSignup(credentials)
+        .then(res => {
+          const user = { ...res.data };
+          localStorage.setItem("user", JSON.stringify(user));
+          if (res.status === 201) return history.push("/");
+        })
+        .catch(error => setError(error.response.data));
     };
     handleRedirect();
-  }, [signup, history, authenticated]);
+    setLoading(false);
+  }, [history, authenticated, loading, credentials]);
 
   return (
     <SignupPage
       onHandleChange={onHandleChange}
-      handleSignupClick={handleSignupClick}
+      handleSignupClick={() => setLoading(true)}
       history={history}
       error={error}
       clearError={clearError}

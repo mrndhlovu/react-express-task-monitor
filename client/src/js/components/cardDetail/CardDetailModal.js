@@ -246,12 +246,14 @@ const CardDetailModal = ({ listPosition, match }) => {
             handleRemoveCover={handleRemoveCover}
             handleDeleteAttachment={handleDeleteAttachment}
           />
-          <CardActivities
-            handleShowDetails={() => setHideActivities(!hideActivities)}
-            hideActivities={hideActivities}
-            board={board}
-            user={auth.data.fname}
-          />
+          {!auth.loading && (
+            <CardActivities
+              handleShowDetails={() => setHideActivities(!hideActivities)}
+              hideActivities={hideActivities}
+              board={board}
+              user={auth.data.fname}
+            />
+          )}
         </LeftSideContent>
         <CardModalSidebar
           addCardAttachment={addCardAttachment}

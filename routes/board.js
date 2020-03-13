@@ -15,7 +15,7 @@ router.get("/", auth, async (req, res) => {
       .execPopulate();
     res.send(req.user.boards);
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    res.status(400).send("Failed to retrieve user boards!");
   }
 });
 

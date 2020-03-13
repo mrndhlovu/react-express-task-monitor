@@ -14,11 +14,11 @@ const StyledContainer = styled.div`
   display: grid;
 `;
 
-const BoardContainer = ({ match, history, user }) => {
-  const { getBoardDetail } = useContext(AppContext);
+const BoardContainer = ({ match, history }) => {
+  const { getBoardDetail, auth } = useContext(AppContext);
   const { id } = match.params;
 
-  const [data, loading] = useFetch(id, history);
+  const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(null);
   const [updatedField, setUpdatedField] = useState(null);
   const [starred, setStarred] = useState(null);
@@ -71,7 +71,7 @@ const BoardContainer = ({ match, history, user }) => {
     if (!updatedField) return;
     const serverUpdate = async () => {
       const { fieldId, activity } = updatedField;
-      const { fname } = user.data;
+      const { fname } = auth.data;
       const userAction = getActivity(fname, activity);
       board.activities.push({ activity: userAction, createdAt: Date.now() });
       const update = {
@@ -87,7 +87,7 @@ const BoardContainer = ({ match, history, user }) => {
     };
 
     if (updatedField) serverUpdate();
-  }, [getBoardDetail, id, updatedField, board, user]);
+  }, [getBoardDetail, id, updatedField, board, auth]);
 
   useEffect(() => {
     if (loading && !data) return;

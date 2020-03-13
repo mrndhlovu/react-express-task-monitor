@@ -14,11 +14,14 @@ const StyledDiv = styled.div`
   align-items: center;
 `;
 
-const RightNavButtons = () => {
+const RightNavButtons = ({ history }) => {
   const { device, auth } = useContext(AppContext);
 
   const handleLogOut = async () => {
-    await requestAuthLogout(auth.token).then(res => window.location.reload());
+    await requestAuthLogout(auth.token).then(res => {
+      localStorage.removeItem("user");
+      window.location.reload();
+    });
   };
 
   const trigger = (

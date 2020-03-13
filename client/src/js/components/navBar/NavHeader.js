@@ -23,7 +23,7 @@ const NavHeader = ({ history }) => {
     <NavWrapper color={color === DEFAULT_NAV_COLOR ? color : "transparent"}>
       <LeftNavButtons />
       <Logo history={history} mobile={device.mobile} />
-      <RightNavButtons />
+      <RightNavButtons history={history} />
     </NavWrapper>
   );
 };

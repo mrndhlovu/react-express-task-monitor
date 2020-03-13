@@ -1,15 +1,24 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const auth = require("../utils.js/middleware/authMiddleware");
+const { CLIENT_URL } = require("../utils.js/config.js");
 
 router.post("/signup", async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
     const token = await user.getAuthToken();
-    res.status(201).send({ user, token });
+
+    res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
+    res.cookie("access_token", token, {
+      maxAge: 9999999,
+      httpOnly: true
+    });
+    res.append("Set-Cookie", "access_token=" + token + ";");
+
+    res.status(201).send(user);
   } catch (error) {
-    res.status(400).send({ error: error.message });
+    res.status(400).send("Signup attempt failed please try agin!");
   }
 });
 
@@ -18,15 +27,31 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findByCredentials(email, password);
     const token = await user.getAuthToken();
-    res.send({ user: user, token });
+
+    res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
+    res.cookie("access_token", token, {
+      maxAge: 9999999,
+      httpOnly: true
+    });
+    res.append("Set-Cookie", "access_token=" + token + ";");
+
+    res.send(user);
   } catch (error) {
-    res.status(400).send({ message: error.message });
+    res
+      .status(400)
+      .send(
+        "Login attempt failed please check email or password and try agin!"
+      );
   }
 });
 
 router.get("/users/me", auth, async (req, res) => {
-  const data = { data: req.user, token: req.token };
-  res.send(data);
+  try {
+    const data = { data: req.user };
+    res.send(data);
+  } catch (error) {
+    res.status(400).send("Fail to get user profile!");
+  }
 });
 
 router.post("/logout", auth, async (req, res) => {

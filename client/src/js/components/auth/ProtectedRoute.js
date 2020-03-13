@@ -1,17 +1,19 @@
 import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
+
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import { AppContext } from "../../utils/contextUtils";
 
 const ProtectedRoute = ({ component: Component, location, ...rest }) => {
-  const { authenticated, user, loading } = useContext(AppContext);
-  const TOKEN = localStorage.getItem("token");
+  const { authenticated, loading } = useContext(AppContext).auth;
+  const data = localStorage.getItem("user");
+  const AUTH_ID = data && JSON.parse(data)._id;
 
   return (
     <Route
       {...rest}
       render={props => {
-        if (!TOKEN && !authenticated) {
+        if (!authenticated && !AUTH_ID) {
           return loading ? (
             <UILoadingSpinner />
           ) : (
@@ -22,8 +24,7 @@ const ProtectedRoute = ({ component: Component, location, ...rest }) => {
               }}
             />
           );
-        } else
-          return <Component key={location.pathname} user={user} {...props} />;
+        } else return <Component key={location.pathname} {...props} />;
       }}
     />
   );

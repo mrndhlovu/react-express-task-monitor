@@ -3,6 +3,7 @@ const validate = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Board = require("../models/Board");
+const { TOKEN_SIGNATURE } = require("../utils.js/config");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -66,7 +67,7 @@ UserSchema.methods.getAuthToken = async function() {
   const user = this;
   const token = jwt.sign(
     { _id: user._id.toString(), expiresIn: 3600 },
-    "createdanewuser"
+    TOKEN_SIGNATURE
   );
   user.tokens = user.tokens.concat({ token });
   await user.save();

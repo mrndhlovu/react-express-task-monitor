@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
   requestBoardDetail,
   requestBoardList,
@@ -24,7 +25,7 @@ export const useAuth = () => {
           setLoading(false);
         },
         error => {
-          localStorage.removeItem("token");
+          localStorage.removeItem("user");
           setLoading(false);
         }
       );
@@ -46,6 +47,7 @@ export const useFetch = id => {
         setData(res.data);
         setLoading(false);
       });
+
     fetchData();
   }, [id, hash]);
 

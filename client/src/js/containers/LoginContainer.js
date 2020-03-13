@@ -15,7 +15,7 @@ const LoginContainer = ({ history, location }) => {
     email: null
   });
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(null);
 
   const onHandleChange = (e, field) => {
     const value = e.target.value;
@@ -30,24 +30,19 @@ const LoginContainer = ({ history, location }) => {
 
   useEffect(() => {
     if (!loading) return;
-
+    setLoading(true);
     const login = async () => {
-      setLoading(true);
       await requestAuthLogin(credentials)
         .then(res => {
-          localStorage.setItem("token", res.data.token);
+          const user = { ...res.data };
+          localStorage.setItem("user", JSON.stringify(user));
           setLoading(false);
           if (res.status === 200) return history.push(`${from.pathname}`);
-
-          history.push({ pathname: "/empty" });
-          history.replace({ pathname: from.pathname });
         })
-        .catch(error => {
-          setError(error.response.data.message);
-          setLoading(false);
-        });
+        .catch(error => setError(error.response.data));
     };
     login();
+    setLoading(null);
   }, [loading, history, authenticated, from, credentials]);
 
   return (
