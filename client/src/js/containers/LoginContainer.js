@@ -15,7 +15,7 @@ const LoginContainer = ({ history, location }) => {
     email: null
   });
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onHandleChange = (e, field) => {
     const value = e.target.value;
@@ -39,10 +39,10 @@ const LoginContainer = ({ history, location }) => {
           setLoading(false);
           if (res.status === 200) return history.push(`${from.pathname}`);
         })
-        .catch(error => setError(error.response.data));
+        .catch(error => setError(error.response));
     };
     login();
-    setLoading(null);
+    setLoading(false);
   }, [loading, history, authenticated, from, credentials]);
 
   return (

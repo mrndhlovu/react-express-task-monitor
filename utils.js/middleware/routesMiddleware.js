@@ -3,11 +3,11 @@ const cardRoutes = require("../../routes/cards");
 const uploadRoutes = require("../../routes/awsUpload");
 const authRoutes = require("../../routes/auth");
 
-routesConfig = server => {
-  server.use("/boards", boardRoutes);
-  server.use("/cards", cardRoutes);
-  server.use("/upload", uploadRoutes);
-  server.use("/auth", authRoutes);
+routesConfig = app => {
+  app.use("/boards", boardRoutes);
+  app.use("/cards", cardRoutes);
+  app.use("/upload", uploadRoutes);
+  app.use("/auth", authRoutes);
 };
 
 module.exports = { routesConfig };

@@ -26,6 +26,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "semantic-ui-react": "^0.81.2",
+    "socket.io-client": "^2.3.0",
     "styled-components": "^5.0.1",
     "validator": "^12.2.0",
     "yarn": "^1.22.0"

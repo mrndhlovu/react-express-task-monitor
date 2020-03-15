@@ -4,6 +4,6 @@ const log = require("./console-alert");
 
 mongoose.connect(
   CONNECTION_URI || LOCAL_MONGO_DB,
-  { useNewUrlParser: true, useUnifiedTopology: true },
+  { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
   () => log.success("Connected to DB")
 );

@@ -1,10 +1,12 @@
 import React from "react";
 import moment from "moment";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
-import { TextArea, Form, Button, Divider } from "semantic-ui-react";
+import { TextArea, Form, Divider } from "semantic-ui-react";
 import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
 import Thread from "./Thread";
+import RoomSelector from "./RoomSelector";
 
 const InputWrapper = styled.div`
   position: absolute;
@@ -15,11 +17,18 @@ const InputWrapper = styled.div`
 
 const BoardThread = styled.div``;
 
-const ChatSideBar = ({ handleChatsOpen, openChats, user, chats }) => {
+const ChatSideBar = ({
+  openChats,
+  handleChange,
+  handleSend,
+  handleClose,
+  room,
+  handleSelectRoom
+}) => {
   return (
     <SideBarWrapper
       open={openChats}
-      handleClose={handleChatsOpen}
+      handleClose={() => handleClose()}
       header="Comments"
       inverted={true}
       width="very wide"
@@ -29,19 +38,27 @@ const ChatSideBar = ({ handleChatsOpen, openChats, user, chats }) => {
         inverted={true}
         content={moment(Date.now()).format("LLL")}
       />
-      <InputWrapper>
-        <BoardThread>
-          <Thread />
-          <Thread owner={true} />
-        </BoardThread>
-        <Form>
-          <TextArea rows={2} placeholder="Tell us more" />
-        </Form>
-        <Divider />
-        <Button positive size="tiny" content="Send" />
-      </InputWrapper>
+      <RoomSelector handleSelectRoom={handleSelectRoom} room={room} />
+      {room && (
+        <InputWrapper>
+          <BoardThread>
+            <Thread />
+            <Thread owner={true} />
+          </BoardThread>
+          <Form id="chat-form">
+            <TextArea
+              onChange={e => handleChange(e)}
+              onKeyDown={e => (e.key === "Enter" ? handleSend(e) : null)}
+              placeholder="Message"
+              rows={2}
+              type="text"
+            />
+          </Form>
+          <Divider />
+        </InputWrapper>
+      )}
     </SideBarWrapper>
   );
 };
 
-export default ChatSideBar;
+export default withRouter(ChatSideBar);

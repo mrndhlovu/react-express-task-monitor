@@ -1,8 +1,14 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect, useMemo } from "react";
 import styled from "styled-components";
+import socketIOClient from "socket.io-client";
 
 import { BoardContext, AppContext } from "../../utils/contextUtils";
-import { Sidebar } from "semantic-ui-react";
+import { getRootUrl } from "../../utils/urls";
+import {
+  resetForm,
+  emptyFunction,
+  getFormattedString
+} from "../../utils/appUtils";
 import BackGroundColors from "./BackGroundColors";
 import BoardHeader from "./BoardHeader";
 import BoardLists from "./BoardLists";
@@ -17,51 +23,97 @@ const BoardWrapper = styled.div`
   overflow-x: scroll;
 `;
 
+let socket;
+
 const Board = () => {
   const { auth } = useContext(AppContext);
   const { board, handleColorPick, handleDeleteBoard } = useContext(
     BoardContext
   );
+  const name = auth.data && getFormattedString(auth.data.fname);
 
-  const [showSideBar, setShowSideBar] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [openChats, setOpenChats] = useState(true);
+  const [room, setRoom] = useState(null);
+  const [send, setSend] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
-  const [openChats, setOpenChats] = useState(false);
+  const [showSideBar, setShowSideBar] = useState(false);
 
-  function handleShowMenuClick() {
-    setShowSideBar(!showSideBar);
-  }
+  const SOCKET_ENDPOINT = `${getRootUrl()}?name=${name}&room=${room}`;
 
-  function handleChangeColorClick() {
-    setShowColorPicker(!showColorPicker);
-  }
+  socket = socketIOClient(SOCKET_ENDPOINT);
+
+  const handleChangeColorClick = () => setShowColorPicker(!showColorPicker);
+  const handleOpenChatSidebar = () => setOpenChats(true);
+  const handleSelectRoom = selection => setRoom(selection);
+  const handleShowMenuClick = () => setShowSideBar(!showSideBar);
+
+  const handleChange = e => {
+    e.preventDefault();
+    setMessage(e.target.value);
+  };
+
+  const handleSendChatMessage = e => {
+    e.preventDefault();
+    setSend(true);
+    setMessages([...messages, message]);
+    resetForm("chat-form");
+  };
+
+  const handleClose = () => {
+    setMessage(null);
+    setOpenChats(false);
+    setSend(null);
+  };
+
+  useEffect(() => {
+    if (!room) return emptyFunction();
+
+    socket.emit("join", () => console.log("Connection live"));
+    return () => {
+      socket.emit("disconnect");
+      socket.off();
+    };
+  }, [room]);
+
+  useEffect(() => {
+    if (!send) return emptyFunction;
+
+    socket.emit("sendMessage", message, () => setSend(false));
+  }, [messages, send, message]);
+
+  console.log(message, messages);
 
   return (
-    <Sidebar.Pushable>
-      <BoardWrapper bgColor={board.styleProperties.color}>
-        <BoardHeader handleShowMenuClick={handleShowMenuClick} />
+    <BoardWrapper bgColor={board.styleProperties.color}>
+      <BoardHeader handleShowMenuClick={handleShowMenuClick} />
 
-        <BoardLists handleChatsOpen={() => setOpenChats(!openChats)} />
+      <BoardLists handleChatsOpen={() => setOpenChats(!openChats)} />
 
-        <BoardMenu
-          showSideBar={showSideBar}
-          handleShowMenuClick={handleShowMenuClick}
-          handleChangeColorClick={handleChangeColorClick}
-          handleDeleteBoard={handleDeleteBoard}
+      <BoardMenu
+        showSideBar={showSideBar}
+        handleShowMenuClick={handleShowMenuClick}
+        handleChangeColorClick={handleChangeColorClick}
+        handleDeleteBoard={handleDeleteBoard}
+      />
+      <BackGroundColors
+        showColorPicker={showColorPicker}
+        handleChangeColorClick={handleChangeColorClick}
+        handleColorPick={handleColorPick}
+      />
+      {auth.data && (
+        <ChatSideBar
+          openChats={openChats}
+          handleChatsOpen={() => handleOpenChatSidebar()}
+          handleSend={handleSendChatMessage}
+          handleChange={handleChange}
+          handleClose={handleClose}
+          handleSelectRoom={handleSelectRoom}
+          room={room}
         />
-        <BackGroundColors
-          showColorPicker={showColorPicker}
-          handleChangeColorClick={handleChangeColorClick}
-          handleColorPick={handleColorPick}
-        />
-        {auth && (
-          <ChatSideBar
-            openChats={openChats}
-            handleChatsOpen={() => setOpenChats(!openChats)}
-            user={auth.data.fname}
-          />
-        )}
-      </BoardWrapper>
-    </Sidebar.Pushable>
+      )}
+    </BoardWrapper>
   );
 };
 

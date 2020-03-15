@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
@@ -22,9 +22,9 @@ const AppContainer = ({ children, history }) => {
   const [search, setSearch] = useState(false);
   const { device, dimensions } = useDimensions();
 
-  const handleSearchClick = e => {
+  const handleSearchClick = useCallback(e => {
     setSearch(e.target.value);
-  };
+  }, []);
 
   const makeNewBoard = update => {
     requestNewBoard(update).then(res => {
@@ -34,8 +34,11 @@ const AppContainer = ({ children, history }) => {
     });
   };
 
-  const getBoardDetail = boardData =>
-    setColor(boardData ? boardData.styleProperties.color : DEFAULT_NAV_COLOR);
+  const getBoardDetail = useCallback(
+    boardData =>
+      setColor(boardData ? boardData.styleProperties.color : DEFAULT_NAV_COLOR),
+    []
+  );
 
   return (
     <AppContext.Provider

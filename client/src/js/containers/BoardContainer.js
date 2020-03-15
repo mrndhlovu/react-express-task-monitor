@@ -1,63 +1,72 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useCallback } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
+import { Sidebar } from "semantic-ui-react";
+
 import { BoardContext, AppContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
-import { requestBoardUpdate, requestBoardDelete } from "../apis/apiRequests";
-import { useFetch } from "../utils/hookUtils";
+import {
+  requestBoardUpdate,
+  requestBoardDelete,
+  requestBoardDetail
+} from "../apis/apiRequests";
+
 import Board from "../components/boardDetail/Board";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
-import { getActivity } from "../utils/appUtils";
+import { getActivity, emptyFunction } from "../utils/appUtils";
 
 const StyledContainer = styled.div`
   display: grid;
 `;
 
-const BoardContainer = ({ match, history }) => {
-  const { getBoardDetail, auth } = useContext(AppContext);
+const BoardContainer = ({ match, history, auth }) => {
+  const { getBoardDetail } = useContext(AppContext);
   const { id } = match.params;
 
-  const [data, loading] = useFetch(id);
   const [board, setBoard] = useState(null);
   const [updatedField, setUpdatedField] = useState(null);
   const [starred, setStarred] = useState(null);
 
-  let newBoard;
-
-  const backendUpdate = (changes, fieldId, activity) => {
+  const backendUpdate = useCallback((changes, fieldId, activity) => {
     saveBoardChanges(changes);
     setUpdatedField({ fieldId, activity });
-  };
+  }, []);
 
   const saveBoardChanges = changes => setBoard(changes);
 
-  const changeBoardAccessLevel = option => {
-    newBoard = {
-      ...data,
-      accessLevel: { ...PERMISSIONS, [option]: true }
-    };
+  const changeBoardAccessLevel = useCallback(
+    option => {
+      const newBoard = {
+        ...board,
+        accessLevel: { ...PERMISSIONS, [option]: true }
+      };
 
-    backendUpdate(newBoard, "accessLevel", "changeAccess");
-  };
+      backendUpdate(newBoard, "accessLevel", "changeAccess");
+    },
+    [board, backendUpdate]
+  );
 
-  const handleDeleteBoard = () => {
+  const handleDeleteBoard = useCallback(() => {
     requestBoardDelete(id);
     history.push("/");
-  };
+  }, [history, id]);
 
-  const handleColorPick = color => {
-    newBoard = {
-      ...data,
-      styleProperties: { ...data.styleProperties, color }
-    };
+  const handleColorPick = useCallback(
+    color => {
+      const newBoard = {
+        ...board,
+        styleProperties: { ...board.styleProperties, color }
+      };
 
-    backendUpdate(newBoard, "styleProperties", "color");
-  };
+      backendUpdate(newBoard, "styleProperties", "color");
+    },
+    [backendUpdate, board]
+  );
 
   const handleBoardStarClick = () => {
     if (board.category.includes("starred")) {
-      board.category.splice(data.category.indexOf("starred"));
+      board.category.splice(board.category.indexOf("starred"));
       setStarred(false);
     } else {
       board.category.push("starred");
@@ -68,7 +77,7 @@ const BoardContainer = ({ match, history }) => {
   };
 
   useEffect(() => {
-    if (!updatedField) return;
+    if (!updatedField) return emptyFunction();
     const serverUpdate = async () => {
       const { fieldId, activity } = updatedField;
       const { fname } = auth.data;
@@ -90,29 +99,38 @@ const BoardContainer = ({ match, history }) => {
   }, [getBoardDetail, id, updatedField, board, auth]);
 
   useEffect(() => {
-    if (loading && !data) return;
-    if (board && !updatedField) {
-      getBoardDetail(board);
-      setBoard(board);
-    }
-    if (!board) setBoard(data);
-  }, [board, loading, getBoardDetail, data, updatedField]);
+    getBoardDetail(board);
+    if (board) return;
 
-  return (
+    const fetchData = async () =>
+      await requestBoardDetail(id)
+        .then(res => {
+          return setBoard(res.data);
+        })
+        .catch(error => history.push("/"));
+
+    fetchData();
+  }, [board, getBoardDetail, updatedField, id, history]);
+
+  return !board ? (
+    <UILoadingSpinner />
+  ) : (
     <BoardContext.Provider
       value={{
         board,
+        backendUpdate,
         changeBoardAccessLevel,
         handleBoardStarClick,
         handleColorPick,
         handleDeleteBoard,
         id,
-        backendUpdate,
         saveBoardChanges
       }}
     >
       <StyledContainer>
-        {loading ? <UILoadingSpinner /> : <Board />}
+        <Sidebar.Pushable>
+          <Board />
+        </Sidebar.Pushable>
       </StyledContainer>
     </BoardContext.Provider>
   );
