@@ -13,7 +13,11 @@ serverConfig = server => {
       credentials: true
     })
   );
-  server.use(express.static(path.join(__dirname, "client/build/index.html")));
+  server.use(express.static(path.join(__dirname, "client/build/")));
+  
+  server.get("/", (req, res) => {
+  res.send("We are on the Home page");
+});
   server.use((err, req, res, next) => res.json(err));
 };
 
