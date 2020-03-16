@@ -13,13 +13,8 @@ serverConfig = app => {
       credentials: true
     })
   );
-<<<<<<< HEAD
-  app.use(express.static(path.join(__dirname, "client/build/")));
   app.use((err, req, res, next) => res.json(err));
-=======
-  server.use((err, req, res, next) => res.json(err));
-  server.use(express.static(path.join(__dirname, "client/build/")));
->>>>>>> eac03e30b4d8a700a9402bf866ec8b0c642fe7dd
+  app.use(express.static(path.join(__dirname, "client/build/")));
 };
 
 module.exports = { serverConfig };

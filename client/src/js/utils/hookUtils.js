@@ -43,7 +43,10 @@ export const useFetch = () => {
           setData(res.data);
           setLoading(false);
         })
-        .catch(error => setLoading(false));
+        .catch(error => {
+          setLoading(false);
+          localStorage.removeItem("user");
+        });
     };
 
     fetchData();
