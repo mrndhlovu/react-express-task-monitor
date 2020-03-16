@@ -8,7 +8,7 @@ import LeftNavButtons from "./LeftNavButtons";
 import Logo from "./Logo";
 import RightNavButtons from "./RightNavButtons";
 
-const NavWrapper = styled.div`
+const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-between;
   padding: 3px 0;

@@ -12,9 +12,10 @@ const StyledDiv = styled.div`
   margin-right: 10px;
   display: flex;
   align-items: center;
+  margin-left: auto;
 `;
 
-const RightNavButtons = ({ history }) => {
+const RightNavButtons = () => {
   const { device, auth } = useContext(AppContext);
 
   const handleLogOut = async () => {
