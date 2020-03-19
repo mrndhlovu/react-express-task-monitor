@@ -9,7 +9,8 @@ import { PERMISSIONS } from "../constants/constants";
 import {
   requestBoardUpdate,
   requestBoardDelete,
-  requestBoardDetail
+  requestBoardDetail,
+  requestUserInvite
 } from "../apis/apiRequests";
 
 import Board from "../components/boardDetail/Board";
@@ -27,11 +28,16 @@ const BoardContainer = ({ match, history, auth }) => {
   const [board, setBoard] = useState(null);
   const [updatedField, setUpdatedField] = useState(null);
   const [starred, setStarred] = useState(null);
+  const [invite, setInvite] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const backendUpdate = useCallback((changes, fieldId, activity) => {
-    saveBoardChanges(changes);
-    setUpdatedField({ fieldId, activity });
-  }, []);
+  const backendUpdate = useCallback(
+    (changes, fieldId, activity) => {
+      saveBoardChanges(changes);
+      setUpdatedField({ fieldId, activity });
+    },
+    [setUpdatedField]
+  );
 
   const saveBoardChanges = changes => setBoard(changes);
 
@@ -77,10 +83,29 @@ const BoardContainer = ({ match, history, auth }) => {
   };
 
   useEffect(() => {
+    if (!invite) return emptyFunction();
+    setLoading(true);
+    const inviteUser = async () => {
+      await requestUserInvite(id, invite)
+        .then(res => {
+          setLoading(false);
+          setInvite(null);
+        })
+        .catch(error => {
+          console.log("error: ", error.response);
+        });
+    };
+
+    inviteUser();
+  }, [invite, id]);
+
+  const handleInviteClick = email => setInvite(email);
+
+  useEffect(() => {
     if (!updatedField) return emptyFunction();
     const serverUpdate = async () => {
       const { fieldId, activity } = updatedField;
-      const { fname } = auth.data;
+      const { fname } = auth.user;
       const userAction = getActivity(fname, activity);
       board.activities.push({ activity: userAction, createdAt: Date.now() });
       const update = {
@@ -123,7 +148,9 @@ const BoardContainer = ({ match, history, auth }) => {
         handleBoardStarClick,
         handleColorPick,
         handleDeleteBoard,
+        handleInviteClick,
         id,
+        loading,
         saveBoardChanges
       }}
     >

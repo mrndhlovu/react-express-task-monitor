@@ -6,14 +6,12 @@ import { AppContext } from "../../utils/contextUtils";
 
 const ProtectedRoute = ({ component: Component, location, ...rest }) => {
   const { auth } = useContext(AppContext);
-  const data = localStorage.getItem("user");
-  const AUTH_ID = data && JSON.parse(data)._id;
 
   return (
     <Route
       {...rest}
       render={props => {
-        if (!auth.authenticated && !AUTH_ID) {
+        if (!auth.authenticated && auth.loading) {
           return auth.loading ? (
             <UILoadingSpinner />
           ) : (

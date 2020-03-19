@@ -19,7 +19,7 @@ const RightNavButtons = () => {
   const { device, auth } = useContext(AppContext);
 
   const handleLogOut = async () => {
-    await requestAuthLogout(auth.token).then(res => {
+    await requestAuthLogout().then(res => {
       localStorage.removeItem("user");
       window.location.reload();
     });
@@ -27,8 +27,8 @@ const RightNavButtons = () => {
 
   const trigger = (
     <>
-      {auth.data && (
-        <UserAvatar userInitials={getUserInitials(auth.data.fname)} />
+      {auth.user && (
+        <UserAvatar userInitials={getUserInitials(auth.user.fname)} />
       )}
     </>
   );
@@ -41,7 +41,7 @@ const RightNavButtons = () => {
 
       <NavButton iconName="bell" />
 
-      {auth.data && (
+      {auth.user && (
         <Dropdown trigger={trigger} pointing="top right" icon={null}>
           <Dropdown.Menu>
             <Dropdown.Item text="Profile and Visibility" />

@@ -1,5 +1,3 @@
-"use es6";
-
 import {
   INITIALIZE_AUTH,
   AUTH_FAIL,
@@ -7,8 +5,9 @@ import {
 } from "../actions/ActionTypes";
 
 import { fetchingData, hasError, dataReceived } from "../utils/reducersUtil";
+import { INITIAL_STATE } from "../constants/constants";
 
-const authReducer = (state = {}, action) => {
+const authReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case INITIALIZE_AUTH:
       return fetchingData(state, action);

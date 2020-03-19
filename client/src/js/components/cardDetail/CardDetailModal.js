@@ -251,7 +251,7 @@ const CardDetailModal = ({ listPosition, match }) => {
               handleShowDetails={() => setHideActivities(!hideActivities)}
               hideActivities={hideActivities}
               board={board}
-              user={auth.data.fname}
+              user={auth.user.fname}
             />
           )}
         </LeftSideContent>

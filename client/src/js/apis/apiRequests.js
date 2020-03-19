@@ -39,7 +39,10 @@ export const requestAuthLogin = body =>
   axios.post(`${AUTH_EP}/login`, body, params);
 
 export const requestAuthLogout = () =>
-  axios.post(`${AUTH_EP}/logout`, null, params);
+  axios.post(`${AUTH_EP}/logoutAll`, null, params);
 
 export const userInfo = () =>
   axios.get(`${AUTH_EP}/users/me`, { withCredentials: true });
+
+export const requestUserInvite = (id, email) =>
+  axios.patch(`${BOARDS_EP}/id/${id}/invite`, { email }, params);

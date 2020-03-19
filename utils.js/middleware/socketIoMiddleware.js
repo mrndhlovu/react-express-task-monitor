@@ -10,26 +10,21 @@ const {
 socketConfig = server => {
   const io = socketIo(server);
 
-  const nsp = io.of("/chat");
-  io.on("connect", socket => {
-    const { name, room } = socket.handshake.query;
+  const nsp = io.of("chat");
+  nsp.on("connect", socket => {
+    const { name, room = "main" } = socket.handshake.query;
+    console.log("socket: ", socket.id);
 
-    socket.on("live", () => {
-      log.success(name, "We have a live connection!!");
-      socket.emit("live");
-    });
-
-    socket.on("join", callback => {
-      const { name, room } = socket.handshake.query;
+    socket.on("join", () => {
       log.success(`${name} has joined the room!!`);
 
       const { user, error } = addUser({ id: socket.id, name, room });
 
-      if (error) return callback(error);
+      if (error) return error;
 
       socket.emit("message", {
         user: user.name,
-        text: `${user.name} you have joined ${user.room} room.`
+        text: `${user.name} you are connected, now pick a room.`
       });
 
       socket.broadcast
@@ -37,15 +32,20 @@ socketConfig = server => {
         .emit("message", `${user.name} has joined the ${user.room} room.`);
 
       socket.join(user.room);
-      callback();
     });
 
     socket.on("sendMessage", (message, callback) => {
-      console.log("message: ", message);
       const user = getUser(socket.id);
       console.log("user: ", { ...user });
-      if (user)
-        io.to(user.room).emit("message", { user: user.name, text: message });
+
+      if (!user) return callback({ error: "User not found" });
+      const newMessage = { user: user.name, text: message, time: Date.now() };
+      io.to(user.room).emit("message", newMessage);
+      socket.emit("message", newMessage);
+      io.to(user.room).emit("roomData", {
+        room: user.room,
+        users: getUsersInRoom(user, room)
+      });
 
       callback();
     });
@@ -55,10 +55,16 @@ socketConfig = server => {
     });
 
     socket.on("disconnect", () => {
-      const { name, room } = socket.handshake.query;
-
-      log.warning(name, "disconnect: Connection is disabled!!");
-      io.emit("join", "Someone has left the room!!");
+      const user = removeUser(socket.id);
+      if (user) {
+        io.to(user.room).emit("message", `${user.name} has left.`);
+        io.to(user.room).emit("roomData", {
+          room: user.room,
+          users: getUsersInRoom(user, room)
+        });
+        io.emit("roomData", `${user.room} has left.`);
+        log.warning(`${user.name}, has left!!`);
+      }
     });
   });
 };

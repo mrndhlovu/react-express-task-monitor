@@ -17,9 +17,14 @@ const updateBoardLists = (id, newLists) =>
 router.patch("/:boardId", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { card, listId } = req.body;
-
+  let board;
   try {
-    const board = await Board.findOne({ _id, owner: req.user._id });
+    board = await Board.findOne({ _id, owner: req.user._id });
+
+    if (!board) {
+      board = await Board.findOne({ _id });
+      board.validateBoardMember(req.user._id);
+    }
 
     const newCardPosition = board.lists[listId - 1].cards.length + 1;
 

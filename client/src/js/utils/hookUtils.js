@@ -21,7 +21,6 @@ export const useAuth = () => {
           setLoading(false);
         },
         error => {
-          localStorage.removeItem("user");
           setLoading(false);
         }
       );
@@ -30,6 +29,18 @@ export const useAuth = () => {
   }, [onLoginOrSignupPage]);
 
   return [authenticated, user, loading];
+};
+
+export const useRenderCount = () => {
+  const [renderCount, setRenderCount] = useState(0);
+
+  let count = 0;
+  useEffect(() => {
+    count++;
+    setRenderCount(count);
+  }, [renderCount, count]);
+
+  return renderCount;
 };
 
 export const useFetch = () => {
@@ -45,7 +56,6 @@ export const useFetch = () => {
         })
         .catch(error => {
           setLoading(false);
-          localStorage.removeItem("user");
         });
     };
 

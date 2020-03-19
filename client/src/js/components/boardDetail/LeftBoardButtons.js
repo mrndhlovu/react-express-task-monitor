@@ -1,10 +1,12 @@
-import React, { useContext, Fragment } from "react";
+import React, { useContext, Fragment, useState } from "react";
 import styled from "styled-components";
 
 import NavButton from "../sharedComponents/NavButton";
 import { BoardContext } from "../../utils/contextUtils";
-import { Dropdown, Button, Icon, List } from "semantic-ui-react";
+import { Dropdown, Button, Icon, List, Input } from "semantic-ui-react";
 import { ACCESS_LEVELS } from "../../constants/constants";
+import MessageAlert from "../sharedComponents/MessageAlert";
+import { isEmail } from "validator";
 
 const StyledDiv = styled.div`
   justify-self: ${props => (props.mobile ? "center" : "start")};
@@ -22,12 +24,37 @@ const Description = styled.div`
   padding: 10px 15px;
 `;
 
+const StyledTextArea = styled(Input)`
+  min-width: 250px;
+`;
+
+const StyledDropdownMenu = styled(Dropdown.Menu)`
+  padding: 0 10px 10px 10px !important;
+`;
+
 export default function LeftBoardButtons({ mobile, isStarred }) {
-  const { handleBoardStarClick, changeBoardAccessLevel, board } = useContext(
-    BoardContext
-  );
+  const {
+    board,
+    changeBoardAccessLevel,
+    handleBoardStarClick,
+    handleInviteClick,
+    loading
+  } = useContext(BoardContext);
   const { accessLevel } = board;
   let permission;
+
+  const [inviteEmail, setInviteEmail] = useState("");
+  const [error, setError] = useState(null);
+
+  const handleChange = e => setInviteEmail(e.target.value);
+
+  const validateEmail = e => {
+    const validEmail = isEmail(inviteEmail);
+    console.log("validEmail: ", validEmail);
+
+    if (!validEmail) return setError("Email provided is invalid");
+    handleInviteClick(inviteEmail);
+  };
 
   Object.keys(accessLevel).forEach((key, index) => {
     const active = ACCESS_LEVELS[index].option.toLowerCase();
@@ -77,7 +104,34 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
           </Dropdown.Menu>
         </Dropdown>
       </StyledButton>
-      <NavButton buttonText="Invite" forceText={true} />
+      <StyledButton size="tiny">
+        <Dropdown text="Invite" icon={false} closeOnChange={false}>
+          <StyledDropdownMenu>
+            {error ? (
+              <Dropdown.Header>
+                <MessageAlert
+                  message={error}
+                  open={true}
+                  close={() => setError(null)}
+                />
+              </Dropdown.Header>
+            ) : (
+              <Dropdown.Header content="Add an invite email" />
+            )}
+
+            <Dropdown.Divider />
+            <Description>
+              <StyledTextArea
+                onChange={e => handleChange(e)}
+                onClick={e => e.stopPropagation()}
+                onKeyDown={e => (e.key === "Enter" ? validateEmail() : null)}
+                placeholder="Add invite email and press Enter"
+                loading={loading}
+              />
+            </Description>
+          </StyledDropdownMenu>
+        </Dropdown>
+      </StyledButton>
     </StyledDiv>
   );
 }

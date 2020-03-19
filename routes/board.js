@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
+const User = require("../models/User");
 const auth = require("../utils.js/middleware/authMiddleware");
 
 router.get("/", auth, async (req, res) => {
@@ -13,7 +14,28 @@ router.get("/", auth, async (req, res) => {
         match
       })
       .execPopulate();
-    res.send(req.user.boards);
+    const boards = req.user.boards;
+
+    let invitedBoards = [];
+
+    const userId = req.user._id;
+
+    const getInvitedBoards = async () => {
+      await Board.find({}).then(allBoards =>
+        Object.keys(allBoards).map(index => {
+          if (allBoards[index].members.includes(userId)) {
+            invitedBoards.push(allBoards[index]);
+            allBoards[index].populate("owner").execPopulate();
+          }
+        })
+      );
+    };
+
+    await getInvitedBoards();
+
+    const data = [...boards, ...invitedBoards];
+
+    res.send(data);
   } catch (error) {
     res.status(400).send("Failed to retrieve user boards!");
   }
@@ -21,8 +43,14 @@ router.get("/", auth, async (req, res) => {
 
 router.get("/id/:boardId", auth, async (req, res) => {
   const _id = req.params.boardId;
+  let board;
   try {
-    const board = await Board.findOne({ _id, owner: req.user._id });
+    board = await Board.findOne({ _id, owner: req.user._id });
+
+    if (!board) {
+      board = await Board.findOne({ _id });
+      board.validateBoardMember(req.user._id);
+    }
     await board.populate("owner").execPopulate();
 
     res.send(board);
@@ -42,9 +70,24 @@ router.delete("/id/:boardId", auth, async (req, res) => {
   }
 });
 
+router.patch("/id/:boardId/invite", auth, async (req, res) => {
+  const _id = req.params.boardId;
+  const { email } = req.body;
+
+  try {
+    const board = await Board.findOne({ _id, owner: req.user._id });
+    const user = await User.findOne({ email });
+    board.members.push(user._id);
+    board.save();
+    res.send({ message: "User invited and added to board members!" });
+  } catch (error) {
+    res.status(400).send({ message: "User email not found" });
+  }
+});
+
 router.patch("/id/:boardId", auth, async (req, res) => {
   const _id = req.params.boardId;
-
+  let board;
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     "title",
@@ -60,7 +103,17 @@ router.patch("/id/:boardId", auth, async (req, res) => {
   if (!isValidField)
     return res.status(400).send({ message: "Invalid update field" });
   try {
-    const board = await Board.findOne({ _id, owner: req.user._id });
+    board = await Board.findOne({ _id, owner: req.user._id });
+
+    if (!board) {
+      try {
+        board = await Board.findOne({ _id });
+        board.validateBoardMember(req.user._id);
+      } catch (error) {
+        return res.status(400).send({ message: error.message });
+      }
+    }
+
     updates.forEach(update => (board[update] = req.body[update]));
     board.save();
     res.send(board);

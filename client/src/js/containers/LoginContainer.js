@@ -34,8 +34,6 @@ const LoginContainer = ({ history, location }) => {
     const login = async () => {
       await requestAuthLogin(credentials)
         .then(res => {
-          const user = { ...res.data };
-          localStorage.setItem("user", JSON.stringify(user));
           setLoading(false);
           if (res.status === 200) return history.push(`${from.pathname}`);
         })

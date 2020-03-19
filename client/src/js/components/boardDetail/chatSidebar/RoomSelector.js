@@ -23,7 +23,7 @@ const RoomSelector = ({ rooms = defaultRoom, handleSelectRoom }) => (
     fluid
     selection
     options={rooms}
-    onChange={(e, { value }) => handleSelectRoom(value)}
+    onChange={(e, { value }) => handleSelectRoom(e, value)}
   />
 );
 

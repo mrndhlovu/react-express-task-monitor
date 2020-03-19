@@ -17,13 +17,19 @@ const InputWrapper = styled.div`
 
 const BoardThread = styled.div``;
 
+const FormWrapper = styled.div`
+  margin-top: 10px;
+`;
+
 const ChatSideBar = ({
   openChats,
   handleChange,
   handleSend,
   handleClose,
   room,
-  handleSelectRoom
+  handleSelectRoom,
+  messages,
+  name
 }) => {
   return (
     <SideBarWrapper
@@ -42,18 +48,26 @@ const ChatSideBar = ({
       {room && (
         <InputWrapper>
           <BoardThread>
-            <Thread />
-            <Thread owner={true} />
+            {messages.map(message => (
+              <Thread
+                key={message}
+                owner={message.user !== name}
+                message={message}
+              />
+            ))}
           </BoardThread>
-          <Form id="chat-form">
-            <TextArea
-              onChange={e => handleChange(e)}
-              onKeyDown={e => (e.key === "Enter" ? handleSend(e) : null)}
-              placeholder="Message"
-              rows={2}
-              type="text"
-            />
-          </Form>
+          <FormWrapper>
+            <Form id="chat-form">
+              <TextArea
+                id="message-field"
+                onChange={e => handleChange(e)}
+                onKeyDown={e => (e.key === "Enter" ? handleSend(e) : null)}
+                placeholder="Message"
+                rows={2}
+                type="text"
+              />
+            </Form>
+          </FormWrapper>
           <Divider />
         </InputWrapper>
       )}

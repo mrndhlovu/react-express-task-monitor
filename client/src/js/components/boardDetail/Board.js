@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useMemo } from "react";
+import React, { useContext, useState, useEffect, useMemo, memo } from "react";
 import styled from "styled-components";
 import socketIOClient from "socket.io-client";
 
@@ -23,67 +23,88 @@ const BoardWrapper = styled.div`
   overflow-x: scroll;
 `;
 
-let socket;
-
 const Board = () => {
   const { auth } = useContext(AppContext);
   const { board, handleColorPick, handleDeleteBoard } = useContext(
     BoardContext
   );
-  const name = auth.data && getFormattedString(auth.data.fname);
+  const name = auth.user && getFormattedString(auth.user.fname);
 
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState(undefined);
   const [messages, setMessages] = useState([]);
-  const [openChats, setOpenChats] = useState(true);
+  const [openChats, setOpenChats] = useState(false);
   const [room, setRoom] = useState(null);
-  const [send, setSend] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
+  const [sendMessage, setSendMessage] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
 
-  const SOCKET_ENDPOINT = `${getRootUrl()}?name=${name}&room=${room}`;
-
-  socket = socketIOClient(SOCKET_ENDPOINT);
+  const socket = useMemo(
+    () => socketIOClient(`${getRootUrl()}/chat?name=${name}`),
+    [name]
+  );
 
   const handleChangeColorClick = () => setShowColorPicker(!showColorPicker);
   const handleOpenChatSidebar = () => setOpenChats(true);
-  const handleSelectRoom = selection => setRoom(selection);
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
+
+  const handleSelectRoom = (e, selection) => {
+    e.preventDefault();
+    setRoom(selection);
+  };
 
   const handleChange = e => {
     e.preventDefault();
     setMessage(e.target.value);
+    setIsTyping(true);
   };
 
   const handleSendChatMessage = e => {
     e.preventDefault();
-    setSend(true);
-    setMessages([...messages, message]);
-    resetForm("chat-form");
+    setSendMessage(true);
+    setIsTyping(false);
   };
 
   const handleClose = () => {
-    setMessage(null);
+    setMessage(undefined);
     setOpenChats(false);
-    setSend(null);
+    setSendMessage(null);
   };
 
   useEffect(() => {
-    if (!room) return emptyFunction();
-
-    socket.emit("join", () => console.log("Connection live"));
+    socket.emit("join");
     return () => {
       socket.emit("disconnect");
       socket.off();
     };
-  }, [room]);
+  }, [socket]);
 
   useEffect(() => {
-    if (!send) return emptyFunction;
+    if (!room) return emptyFunction();
+    socket.on("message", message => {
+      setMessages([...messages, message]);
+    });
+    return () => {
+      socket.emit("disconnect");
+      socket.off();
+    };
+  }, [messages, room, socket]);
 
-    socket.emit("sendMessage", message, () => setSend(false));
-  }, [messages, send, message]);
+  useEffect(() => {
+    if (!sendMessage) return emptyFunction;
+    socket.on("message", message => {
+      setMessages([...messages, message]);
+    });
+    socket.emit("sendMessage", message, error => {
+      resetForm("message-field");
+    });
+    setSendMessage(false);
 
-  console.log(message, messages);
+    return () => {
+      socket.emit("disconnect");
+      socket.off();
+    };
+  }, [sendMessage, message, messages, socket]);
 
   return (
     <BoardWrapper bgColor={board.styleProperties.color}>
@@ -102,7 +123,7 @@ const Board = () => {
         handleChangeColorClick={handleChangeColorClick}
         handleColorPick={handleColorPick}
       />
-      {auth.data && (
+      {auth.user && (
         <ChatSideBar
           openChats={openChats}
           handleChatsOpen={() => handleOpenChatSidebar()}
@@ -111,10 +132,13 @@ const Board = () => {
           handleClose={handleClose}
           handleSelectRoom={handleSelectRoom}
           room={room}
+          message={message}
+          messages={messages}
+          name={name}
         />
       )}
     </BoardWrapper>
   );
 };
 
-export default Board;
+export default memo(Board);
