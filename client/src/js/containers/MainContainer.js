@@ -50,7 +50,8 @@ const MainContainer = ({ children, history, auth }) => {
         getBoardDetail,
         handleSearchClick,
         makeNewBoard,
-        search
+        search,
+        history
       }}
     >
       <Container color={color === DEFAULT_NAV_COLOR ? "#fff" : color}>

@@ -30,9 +30,7 @@ export const requestSignup = data => {
     dispatch(makeRequest(REQUEST_SIGNUP));
     requestAuthSignup(data).then(
       response => {
-        console.log("response: ", response.data.data.user);
         dispatch(requestSuccess(SIGNUP_SUCCESS, response.data));
-        localStorage.setItem("token", response.data.token);
       },
       error => dispatch(requestFail(SIGNUP_FAIL, error.message))
     );
@@ -45,7 +43,6 @@ export const requestLogin = data => {
     requestAuthLogin(data).then(
       response => {
         dispatch(requestSuccess(SIGNUP_SUCCESS, response.data));
-        localStorage.setItem("token", response.data.token);
       },
       error => dispatch(requestFail(SIGNUP_FAIL, error.message))
     );

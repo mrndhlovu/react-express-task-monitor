@@ -22,8 +22,9 @@ const ProtectedRoute = ({ component: Component, location, ...rest }) => {
               }}
             />
           );
-        } else
+        } else if (auth.authenticated)
           return <Component key={location.pathname} auth={auth} {...props} />;
+        else return;
       }}
     />
   );
