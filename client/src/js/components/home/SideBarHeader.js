@@ -3,8 +3,9 @@ import styled from "styled-components";
 
 const MenuHeader = styled.div`
   height: 34px;
-  position: relative;
   color: ${props => props.inverted && "white"};
+  position: fixed;
+  width: 95%;
 `;
 
 const CloseIcon = styled.span`
@@ -17,9 +18,9 @@ const Header = styled.span`
 `;
 
 const HeadWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const SideBarHeader = ({ handleClose, header = "Board", inverted }) => {

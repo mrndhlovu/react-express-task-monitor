@@ -9,7 +9,7 @@ import LoginPage from "../components/auth/LoginPage";
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
 
-  const { authenticated } = useContext(AppContext);
+  const { authenticated } = useContext(AppContext).auth;
   const [credentials, setCredentials] = useState({
     password: null,
     email: null
@@ -27,6 +27,7 @@ const LoginContainer = ({ history, location }) => {
     setError(null);
     resetForm("authForm");
   };
+  if (authenticated) history.push(`${from.pathname}`);
 
   useEffect(() => {
     if (!loading) return;

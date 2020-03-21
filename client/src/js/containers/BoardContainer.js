@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { Sidebar } from "semantic-ui-react";
 
-import { BoardContext, AppContext } from "../utils/contextUtils";
+import { BoardContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
 import {
   requestBoardUpdate,
@@ -18,18 +18,26 @@ import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 import { getActivity, emptyFunction } from "../utils/appUtils";
 
 const StyledContainer = styled.div`
+  background-color: ${props => props.bgColor};
   display: grid;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+`;
+
+const ContentDiv = styled.div`
+  padding-top: 35px;
 `;
 
 const BoardContainer = ({ match, history, auth }) => {
-  const { getBoardDetail } = useContext(AppContext);
   const { id } = match.params;
 
   const [board, setBoard] = useState(null);
-  const [updatedField, setUpdatedField] = useState(null);
-  const [starred, setStarred] = useState(null);
   const [invite, setInvite] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [starred, setStarred] = useState(null);
+  const [updatedField, setUpdatedField] = useState(null);
 
   const backendUpdate = useCallback(
     (changes, fieldId, activity) => {
@@ -115,18 +123,15 @@ const BoardContainer = ({ match, history, auth }) => {
 
       await requestBoardUpdate(id, update).then(() => {
         try {
-          getBoardDetail(update);
         } catch (error) {}
       });
     };
 
     if (updatedField) serverUpdate();
-  }, [getBoardDetail, id, updatedField, board, auth]);
+  }, [id, updatedField, board, auth]);
 
   useEffect(() => {
-    getBoardDetail(board);
     if (board) return;
-
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then(res => {
@@ -135,7 +140,7 @@ const BoardContainer = ({ match, history, auth }) => {
         .catch(error => history.push("/"));
 
     fetchData();
-  }, [board, getBoardDetail, updatedField, id, history]);
+  }, [board, updatedField, id, history]);
 
   return !board ? (
     <UILoadingSpinner />
@@ -154,10 +159,12 @@ const BoardContainer = ({ match, history, auth }) => {
         saveBoardChanges
       }}
     >
-      <StyledContainer>
-        <Sidebar.Pushable>
-          <Board />
-        </Sidebar.Pushable>
+      <StyledContainer bgColor={board.styleProperties.color}>
+        <ContentDiv>
+          <Sidebar.Pushable>
+            <Board />
+          </Sidebar.Pushable>
+        </ContentDiv>
       </StyledContainer>
     </BoardContext.Provider>
   );

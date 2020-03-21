@@ -5,26 +5,26 @@ import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import { AppContext } from "../../utils/contextUtils";
 
 const ProtectedRoute = ({ component: Component, location, ...rest }) => {
-  const { auth } = useContext(AppContext);
-
+  const {
+    auth: { loading, authenticated },
+    auth
+  } = useContext(AppContext);
   return (
     <Route
       {...rest}
       render={props => {
-        if (!auth.authenticated && auth.loading) {
-          return auth.loading ? (
-            <UILoadingSpinner />
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location }
-              }}
-            />
-          );
-        } else if (auth.authenticated)
-          return <Component key={location.pathname} auth={auth} {...props} />;
-        else return;
+        return loading ? (
+          <UILoadingSpinner />
+        ) : authenticated ? (
+          <Component key={location.pathname} auth={auth} {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
+        );
       }}
     />
   );

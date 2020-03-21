@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
-import { AppContext, HomepageContext } from "../utils/contextUtils";
+import { HomepageContext } from "../utils/contextUtils";
 import { getBoard } from "../utils/appUtils";
 import { requestBoardUpdate } from "../apis/apiRequests";
 import { useFetch } from "../utils/hookUtils";
@@ -9,8 +9,7 @@ import HomePage from "../components/home/HomePage";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const HomePageContainer = ({ history, user }) => {
-  const { getBoardDetail } = useContext(AppContext);
-  const [data, loading] = useFetch();
+  const [data, loading] = useFetch(history);
   const [boards, setBoards] = useState([]);
 
   const handleBoardStarClick = useCallback(
@@ -31,8 +30,7 @@ const HomePageContainer = ({ history, user }) => {
     if (!data) return;
 
     setBoards(data);
-    getBoardDetail();
-  }, [getBoardDetail, data]);
+  }, [data]);
 
   return data && boards && !loading ? (
     <HomepageContext.Provider value={{ boards, loading, handleBoardStarClick }}>

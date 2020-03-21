@@ -1,6 +1,13 @@
 import React from "react";
+import moment from "moment";
+import styled from "styled-components";
 
-import { Dropdown } from "semantic-ui-react";
+import { Dropdown, Divider } from "semantic-ui-react";
+
+const StyledDiv = styled.div`
+  margin-top: 20px;
+  margin-bottom: 20px;
+`;
 
 const defaultRoom = [
   {
@@ -17,14 +24,33 @@ const defaultRoom = [
   }
 ];
 
-const RoomSelector = ({ rooms = defaultRoom, handleSelectRoom }) => (
-  <Dropdown
-    placeholder="Select Room"
-    fluid
-    selection
-    options={rooms}
-    onChange={(e, { value }) => handleSelectRoom(e, value)}
-  />
+const RoomSelector = ({
+  rooms = defaultRoom,
+  handleSelectRoom,
+  onlineCount
+}) => (
+  <StyledDiv>
+    <Divider
+      horizontal
+      inverted={true}
+      content={
+        <>
+          {onlineCount === 0 ? (
+            <span>{moment(Date.now()).format("LLL")}</span>
+          ) : (
+            <span> Online {onlineCount}</span>
+          )}
+        </>
+      }
+    />
+    <Dropdown
+      placeholder="Select Room"
+      fluid
+      selection
+      options={rooms}
+      onChange={(e, { value }) => handleSelectRoom(e, value)}
+    />
+  </StyledDiv>
 );
 
 export default RoomSelector;

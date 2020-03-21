@@ -17,8 +17,8 @@ const Container = styled.div`
 
 const MainContainer = ({ children, history, auth }) => {
   const { authenticated, isLoading, data } = auth;
+  const isHomePage = history.location.pathname === "/";
 
-  const [color, setColor] = useState(DEFAULT_NAV_COLOR);
   const [search, setSearch] = useState(false);
   const { device, dimensions } = useDimensions();
 
@@ -34,28 +34,22 @@ const MainContainer = ({ children, history, auth }) => {
     });
   };
 
-  const getBoardDetail = useCallback(
-    boardData =>
-      setColor(boardData ? boardData.styleProperties.color : DEFAULT_NAV_COLOR),
-    []
-  );
-
   return (
     <AppContext.Provider
       value={{
         auth: { authenticated, user: data.data, loading: isLoading },
-        color,
         device,
         dimensions,
-        getBoardDetail,
         handleSearchClick,
+        history,
         makeNewBoard,
-        search,
-        history
+        search
       }}
     >
-      <Container color={color === DEFAULT_NAV_COLOR ? "#fff" : color}>
-        {authenticated && <NavHeader />}
+      {authenticated && (
+        <NavHeader color={isHomePage ? DEFAULT_NAV_COLOR : "transparent"} />
+      )}
+      <Container>
         {children}
         {search && <SearchPage />}
       </Container>

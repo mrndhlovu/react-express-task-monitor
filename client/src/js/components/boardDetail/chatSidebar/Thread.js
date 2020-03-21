@@ -1,39 +1,44 @@
-import React from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 import moment from "moment";
+import ReactEmoji from "react-emoji";
 
-import { Comment, Divider } from "semantic-ui-react";
+import { Comment, Divider, Icon } from "semantic-ui-react";
 
 const Message = styled.div`
-  padding: 6px;
-  background-color: ${props => (props.owner ? "#bcbdbd" : "#879594")};
+  background-color: ${props =>
+    props.isCurrentUserMessage ? "white" : "#1c1c57"};
   border-radius: 2px;
   overflow-wrap: break-word;
+  padding: 6px;
+  color: ${props => (props.isCurrentUserMessage ? "black" : "white")};
+
+}
 `;
 
 const StyledSpan = styled.span`
   font-size: 10px;
-  color: #fffff3d;
 `;
 
-const Thread = ({ avatar, message, owner }) => {
-  console.log("message: ", message);
+const Thread = ({ message, isCurrentUserMessage }) => {
   return (
     <div>
       <Divider
         horizontal
         inverted
-        content={moment(message.date).format("MMM Do YY")}
+        content={<StyledSpan>{moment(message.time).calendar()}</StyledSpan>}
       />
-      <Message color={owner ? "olive" : "red"} owner={owner}>
+      <Message isCurrentUserMessage={isCurrentUserMessage}>
         <Comment>
-          <Comment.Avatar as="a" src={avatar} />
           <Comment.Content>
             <Comment.Author>
+              <Icon circular name="user" color="green" />
               {message.user}{" "}
-              <StyledSpan>{moment(message.date).format("LT")}</StyledSpan>
+              <StyledSpan isCurrentUserMessage={isCurrentUserMessage}>
+                {moment(message.date).format("LT")}
+              </StyledSpan>
             </Comment.Author>
-            <Comment.Text>{message.text}</Comment.Text>
+            <Comment.Text>{ReactEmoji.emojify(message.text)}</Comment.Text>
           </Comment.Content>
         </Comment>
       </Message>
@@ -41,4 +46,4 @@ const Thread = ({ avatar, message, owner }) => {
   );
 };
 
-export default Thread;
+export default memo(Thread);

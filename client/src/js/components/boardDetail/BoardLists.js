@@ -15,7 +15,7 @@ const StyledListContainer = styled.div`
   background-color: transparent;
 `;
 
-const BoardLists = ({ handleChatsOpen }) => {
+const BoardLists = ({ handleChatsOpen, membersOnline }) => {
   const { board, backendUpdate, id } = useContext(BoardContext);
   const { lists } = board;
 
@@ -269,7 +269,10 @@ const BoardLists = ({ handleChatsOpen }) => {
           handleChange={handleAddList}
           handleCreateClick={handleCreateList}
         />
-        <ChatIcon handleChatsOpen={handleChatsOpen} />
+        <ChatIcon
+          handleChatsOpen={handleChatsOpen}
+          membersOnline={membersOnline}
+        />
         <CardDetailModal listPosition={sourceId} />
       </StyledListContainer>
     </BoardListsContext.Provider>

@@ -1,6 +1,6 @@
 "use es6";
 
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import HomePageContainer from "./containers/HomePageContainer";
@@ -9,6 +9,7 @@ import SignupContainer from "./containers/SignupContainer";
 import LoginContainer from "./containers/LoginContainer";
 import ErrorPage from "./components/ErrorPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+
 export default function Routes() {
   return (
     <Switch>

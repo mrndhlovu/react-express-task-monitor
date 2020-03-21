@@ -73,11 +73,16 @@ router.delete("/id/:boardId", auth, async (req, res) => {
 router.patch("/id/:boardId/invite", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { email } = req.body;
-
+  const DEFAULT_ACCESS_LEVELS = { private: false, public: false, team: false };
   try {
     const board = await Board.findOne({ _id, owner: req.user._id });
     const user = await User.findOne({ email });
     board.members.push(user._id);
+    board.accessLevel = {
+      ...board.accessLevel,
+      ...DEFAULT_ACCESS_LEVELS,
+      team: true
+    };
     board.save();
     res.send({ message: "User invited and added to board members!" });
   } catch (error) {

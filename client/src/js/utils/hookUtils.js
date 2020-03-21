@@ -1,6 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 
-import { requestBoardList, userInfo } from "../apis/apiRequests";
+import {
+  requestBoardList,
+  userInfo,
+  requestAuthLogout
+} from "../apis/apiRequests";
 
 export const useAuth = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -43,7 +47,7 @@ export const useRenderCount = () => {
   return renderCount;
 };
 
-export const useFetch = () => {
+export const useFetch = history => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -56,11 +60,13 @@ export const useFetch = () => {
         })
         .catch(error => {
           setLoading(false);
+          requestAuthLogout();
+          history.push("/login");
         });
     };
 
     fetchData();
-  }, []);
+  }, [history]);
 
   return [data, loading];
 };
