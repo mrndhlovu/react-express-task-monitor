@@ -18,7 +18,7 @@ router.post("/signup", async (req, res) => {
 
     res.status(201).send(user);
   } catch (error) {
-    res.status(400).send("Signup attempt failed please try agin!");
+    res.status(400).send();
   }
 });
 

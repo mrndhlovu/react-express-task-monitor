@@ -43,3 +43,7 @@ export const AUTH_FAIL = "AUTH_FAIL";
 export const REQUEST_SIGNUP = "REQUEST_SIGNUP";
 export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const SIGNUP_FAIL = "SIGNUP_FAIL";
+
+export const REQUEST_LOGIN = "REQUEST_LOGIN";
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";

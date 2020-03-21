@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { BOARDS_EP, UPLOAD_EP, params, CARDS_EP, AUTH_EP } from "../utils/urls";
 
 export const requestNewBoard = board =>
@@ -38,7 +39,10 @@ export const requestAuthLogin = body =>
   axios.post(`${AUTH_EP}/login`, body, params);
 
 export const requestAuthLogout = () =>
-  axios.post(`${AUTH_EP}/logout`, null, params);
+  axios.post(`${AUTH_EP}/logoutAll`, null, params);
 
 export const userInfo = () =>
   axios.get(`${AUTH_EP}/users/me`, { withCredentials: true });
+
+export const requestUserInvite = (id, email) =>
+  axios.patch(`${BOARDS_EP}/id/${id}/invite`, { email }, params);

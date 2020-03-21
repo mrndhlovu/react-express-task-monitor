@@ -1,54 +1,63 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, memo } from "react";
 import styled from "styled-components";
 
 import { BoardContext } from "../../utils/contextUtils";
-import { Sidebar } from "semantic-ui-react";
 import BackGroundColors from "./BackGroundColors";
 import BoardHeader from "./BoardHeader";
 import BoardLists from "./BoardLists";
 import BoardMenu from "./BoardMenu";
+import ChatSideBar from "./chatSidebar/ChatSideBar";
 
 const BoardWrapper = styled.div`
-  background-color: ${props => props.bgColor};
+  height: 100vh;
+  overflow-x: scroll;
   padding-left: 7px;
+  position: relative;
 `;
 
 const Board = () => {
-  const { board, handleColorPick, handleDeleteBoard } = useContext(
-    BoardContext
-  );
+  const { handleColorPick, handleDeleteBoard } = useContext(BoardContext);
 
-  const [showSideBar, setShowSideBar] = useState(false);
+  const [openChat, setOpenChat] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showSideBar, setShowSideBar] = useState(false);
+  const [membersOnline, setMembersOnline] = useState(0);
 
-  function handleShowMenuClick() {
-    setShowSideBar(!showSideBar);
-  }
-
-  function handleChangeColorClick() {
-    setShowColorPicker(!showColorPicker);
-  }
+  const handleChangeColorClick = () => setShowColorPicker(!showColorPicker);
+  const handleShowMenuClick = () => setShowSideBar(!showSideBar);
+  const handleClose = () => setOpenChat(false);
+  const getMembersOnline = users => setMembersOnline(users);
 
   return (
-    <Sidebar.Pushable>
-      <BoardWrapper bgColor={board.styleProperties.color}>
-        <BoardHeader handleShowMenuClick={handleShowMenuClick} />
-        <BoardLists />
+    <BoardWrapper>
+      <BoardHeader handleShowMenuClick={handleShowMenuClick} />
 
-        <BoardMenu
-          showSideBar={showSideBar}
-          handleShowMenuClick={handleShowMenuClick}
-          handleChangeColorClick={handleChangeColorClick}
-          handleDeleteBoard={handleDeleteBoard}
+      <BoardLists
+        handleChatsOpen={() => setOpenChat(!openChat)}
+        membersOnline={membersOnline}
+      />
+
+      <BoardMenu
+        showSideBar={showSideBar}
+        handleShowMenuClick={handleShowMenuClick}
+        handleChangeColorClick={handleChangeColorClick}
+        handleDeleteBoard={handleDeleteBoard}
+      />
+      <BackGroundColors
+        showColorPicker={showColorPicker}
+        handleChangeColorClick={handleChangeColorClick}
+        handleColorPick={handleColorPick}
+      />
+
+      {openChat && (
+        <ChatSideBar
+          openChat={openChat}
+          handleClose={handleClose}
+          getMembersOnline={getMembersOnline}
         />
-        <BackGroundColors
-          showColorPicker={showColorPicker}
-          handleChangeColorClick={handleChangeColorClick}
-          handleColorPick={handleColorPick}
-        />
-      </BoardWrapper>
-    </Sidebar.Pushable>
+      )}
+    </BoardWrapper>
   );
 };
 
-export default Board;
+export default memo(Board);

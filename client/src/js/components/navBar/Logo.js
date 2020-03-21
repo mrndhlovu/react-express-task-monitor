@@ -4,35 +4,37 @@ import styled from "styled-components";
 import { Icon } from "semantic-ui-react";
 
 const StyledDiv = styled.div`
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  padding-top: 8px;
+  padding-top: 3px;
   cursor: pointer;
+  flex: 1;
+  text-align: center;
 `;
 
-const Span = styled.span`
-  font-size: ${props => (props.mobile ? "15px" : "21px")};
+const Header = styled.h1`
+  font-size: ${props => (props.mobile ? "18px" : "22px")};
   font-family: "Dancing Script", cursive;
   font-weight: 600;
-  transition-delay: 300ms;
-  transition-timing-function: ease-in-out;
-  transition-property: font;
-  color: #80b4d3;
-
-  &:hover {
-    font-weight: 500;
-  }
+  color: white;
 
   &:after {
     content: "Trello Clone";
+    font-size: ${props => (props.mobile ? "18px" : "22px")};
+  }
+  &:hover {
+    color: #5098c2;
+    transition-delay: 100ms;
+    transition-timing-function: ease-in-out;
+    transition-property: color;
   }
 `;
 
-const Logo = ({ history, mobile }) => (
-  <StyledDiv onClick={() => history.push("/")}>
-    <Span mobile={mobile}>{!mobile && <Icon name="trello" />}</Span>
-  </StyledDiv>
-);
+const Logo = ({ history, mobile }) =>
+  !mobile && (
+    <StyledDiv onClick={() => history.push("/")}>
+      <Header mobile={mobile}>
+        <Icon name="trello" />
+      </Header>
+    </StyledDiv>
+  );
 
 export default Logo;

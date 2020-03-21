@@ -33,3 +33,7 @@ ui.form,
 .nav-button-text {
   color: #fff !important;
 }
+
+#app {
+  overflow-y: hidden;
+}

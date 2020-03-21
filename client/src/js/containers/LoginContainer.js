@@ -9,13 +9,13 @@ import LoginPage from "../components/auth/LoginPage";
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
 
-  const { authenticated } = useContext(AppContext);
+  const { authenticated } = useContext(AppContext).auth;
   const [credentials, setCredentials] = useState({
     password: null,
     email: null
   });
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const onHandleChange = (e, field) => {
     const value = e.target.value;
@@ -27,6 +27,7 @@ const LoginContainer = ({ history, location }) => {
     setError(null);
     resetForm("authForm");
   };
+  if (authenticated) history.push(`${from.pathname}`);
 
   useEffect(() => {
     if (!loading) return;
@@ -34,15 +35,13 @@ const LoginContainer = ({ history, location }) => {
     const login = async () => {
       await requestAuthLogin(credentials)
         .then(res => {
-          const user = { ...res.data };
-          localStorage.setItem("user", JSON.stringify(user));
           setLoading(false);
           if (res.status === 200) return history.push(`${from.pathname}`);
         })
-        .catch(error => setError(error.response.data));
+        .catch(error => setError(error.response));
     };
     login();
-    setLoading(null);
+    setLoading(false);
   }, [loading, history, authenticated, from, credentials]);
 
   return (

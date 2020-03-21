@@ -5,17 +5,17 @@ import CreateBoard from "../sharedComponents/CreateBoard";
 import ListGrid from "./ListGrid";
 import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
 import CardDetailModal from "../cardDetail/CardDetailModal";
+import ChatIcon from "./ChatIcon";
 
 const StyledListContainer = styled.div`
   display: flex;
   overflow-y: auto;
-  overflow-x: hidden;
   vertical-align: top;
-  height: 100vh;
-  overflow-x: scroll;
+  height: 81vh;
+  background-color: transparent;
 `;
 
-const BoardLists = () => {
+const BoardLists = ({ handleChatsOpen, membersOnline }) => {
   const { board, backendUpdate, id } = useContext(BoardContext);
   const { lists } = board;
 
@@ -269,7 +269,10 @@ const BoardLists = () => {
           handleChange={handleAddList}
           handleCreateClick={handleCreateList}
         />
-
+        <ChatIcon
+          handleChatsOpen={handleChatsOpen}
+          membersOnline={membersOnline}
+        />
         <CardDetailModal listPosition={sourceId} />
       </StyledListContainer>
     </BoardListsContext.Provider>

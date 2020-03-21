@@ -23,7 +23,7 @@ export const getLocation = () => window.location;
 
 export const checkDuplicate = (collection, item) => collection.includes(item);
 
-export const resetForm = id => document.getElementById(id).reset();
+export const resetForm = id => (document.getElementById(id).value = "");
 
 export const getBoard = (boards, id) => boards.find(board => board._id === id);
 
@@ -82,3 +82,14 @@ export const getActivity = (user, action) => {
   };
   return `${user} ${getAction()}`;
 };
+
+export const emptyFunction = () => {};
+
+export const getFormattedString = string =>
+  string
+    .trim()
+    .replace(" ", "-")
+    .toLowerCase();
+
+export const capitalize = string =>
+  string.charAt(0).toUpperCase() + string.slice(1);

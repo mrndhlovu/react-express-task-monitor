@@ -53,6 +53,12 @@ UserSchema.virtual("boards", {
   foreignField: "owner"
 });
 
+UserSchema.virtual("InvitedBoards", {
+  ref: "Board",
+  localField: "_id",
+  foreignField: "owner"
+});
+
 UserSchema.methods.toJSON = function() {
   const user = this;
   const userObject = user.toObject();

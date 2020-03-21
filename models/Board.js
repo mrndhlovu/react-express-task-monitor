@@ -44,6 +44,16 @@ const BoardSchema = new mongoose.Schema(
       type: Array,
       required: true,
       default: []
+    },
+    members: {
+      type: Array,
+      required: true,
+      default: []
+    },
+    invitedBoards: {
+      type: Array,
+      required: true,
+      default: []
     }
   },
   {
@@ -56,6 +66,15 @@ BoardSchema.pre("save", async function(next) {
   board.updatedAt = Date.now();
   next();
 });
+
+BoardSchema.methods.validateBoardMember = async function(userId) {
+  const board = this;
+  const isValidBoardMember = board.members.includes(userId);
+
+  if (!isValidBoardMember)
+    return res.status(400).send({ message: "Access to the board is denied!" });
+  await board.populate("owner").execPopulate();
+};
 
 BoardSchema.methods.updateActivity = async function(user, action) {
   const board = this;
