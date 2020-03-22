@@ -17,9 +17,7 @@ serverConfig = app => {
     res.json(err);
     next();
   });
-  app.use((req, res, next) => {
-    res.send("Welcome to Express");
-  });
+
   app.use(express.static(path.join(__dirname, "/client/build/")));
 };
 
