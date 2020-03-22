@@ -8,7 +8,6 @@ import React, {
 import { withRouter } from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import styled from "styled-components";
-import ScrollToBottom from "react-scroll-to-bottom";
 
 import { TextArea, Form } from "semantic-ui-react";
 
