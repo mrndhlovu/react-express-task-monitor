@@ -2,13 +2,14 @@ const router = require("express").Router();
 const User = require("../models/User");
 const auth = require("../utils.js/middleware/authMiddleware");
 const { CLIENT_URL } = require("../utils.js/config.js");
+const { sendWelcomeEmail } = require("../utils.js/middleware/emailMiddleware");
 
 router.post("/signup", async (req, res) => {
   const user = new User(req.body);
   try {
     await user.save();
     const token = await user.getAuthToken();
-
+    sendWelcomeEmail(user.email, user.fname);
     res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
     res.cookie("access_token", token, {
       maxAge: 9999999,

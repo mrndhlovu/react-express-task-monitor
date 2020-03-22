@@ -2,6 +2,10 @@ const router = require("express").Router();
 const Board = require("../models/Board");
 const User = require("../models/User");
 const auth = require("../utils.js/middleware/authMiddleware");
+const {
+  sendInvitationEmail
+} = require("../utils.js/middleware/emailMiddleware");
+const { CLIENT_URL } = require("../utils.js/config");
 
 router.get("/", auth, async (req, res) => {
   const match = {};
@@ -83,6 +87,8 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
       ...DEFAULT_ACCESS_LEVELS,
       team: true
     };
+    const redirectLink = `${CLIENT_URL}/#/boards/id/${_id}?via=invite`;
+    sendInvitationEmail(email, req.user.fname, "admin", redirectLink);
     board.save();
     res.send({ message: "User invited and added to board members!" });
   } catch (error) {
