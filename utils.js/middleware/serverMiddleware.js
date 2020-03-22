@@ -17,8 +17,10 @@ serverConfig = app => {
     res.json(err);
     next();
   });
-
-  app.use(express.static(path.join(__dirname, "/client/build/")));
+  app.get("/", (req, res) => {
+    res.send("We are on the Home page");
+  });
+  app.use(express.static(path.join(__dirname, "client/build")));
 };
 
 module.exports = { serverConfig };
