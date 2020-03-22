@@ -13,7 +13,7 @@ const defaultRoom = [
   {
     key: "Main",
     text: "Main",
-    value: "Main",
+    value: "main",
     icon: "home"
   },
   {
