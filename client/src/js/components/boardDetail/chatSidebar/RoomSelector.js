@@ -11,16 +11,16 @@ const StyledDiv = styled.div`
 
 const defaultRoom = [
   {
-    key: "Main",
-    text: "Main",
-    value: "Main",
+    key: "Public",
+    text: "Public",
+    value: "public",
     icon: "home"
   },
   {
-    key: "Board",
-    text: "Board",
-    value: "board",
-    icon: "circle"
+    key: "Current board",
+    text: "Current board",
+    value: "current-board",
+    icon: "green circle"
   }
 ];
 

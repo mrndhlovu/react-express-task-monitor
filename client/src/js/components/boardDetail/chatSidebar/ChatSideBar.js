@@ -1,8 +1,13 @@
-import React, { useEffect, useMemo, useContext, useState } from "react";
+import React, {
+  useEffect,
+  useMemo,
+  useContext,
+  useState,
+  useCallback
+} from "react";
 import { withRouter } from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import styled from "styled-components";
-import ScrollToBottom from "react-scroll-to-bottom";
 
 import { TextArea, Form } from "semantic-ui-react";
 
@@ -11,7 +16,7 @@ import {
   emptyFunction,
   getFormattedString
 } from "../../../utils/appUtils";
-import { AppContext } from "../../../utils/contextUtils";
+import { AppContext, BoardContext } from "../../../utils/contextUtils";
 import { getRootUrl } from "../../../utils/urls";
 import RoomSelector from "./RoomSelector";
 import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
@@ -33,8 +38,9 @@ const FormWrapper = styled.div`
   width: 100%;
 `;
 
-const ChatSideBar = ({ handleClose, openChat }) => {
+const ChatSideBar = ({ openChat }) => {
   const { fname } = useContext(AppContext).auth.user;
+  const { board, backendUpdate } = useContext(BoardContext);
   const name = getFormattedString(fname);
 
   const [message, setMessage] = useState(undefined);
@@ -75,10 +81,33 @@ const ChatSideBar = ({ handleClose, openChat }) => {
     };
   }, [socket, room]);
 
+  const saveMessage = useCallback(
+    (newMessage, room) => {
+      console.log("newMessage: ", newMessage);
+      if (newMessage.room) {
+        board.comments.push({ ...newMessage });
+        backendUpdate(board, "comments");
+      }
+      return setMessages([...messages, { ...newMessage, room }]);
+    },
+    [board, backendUpdate, messages]
+  );
+
+  useEffect(() => {
+    if (board.comments.length === 0) return emptyFunction();
+    setMessages([...board.comments]);
+  }, [board.comments]);
+
   useEffect(() => {
     if (!socket) return emptyFunction();
-    socket.on("message", newMessage => setMessages([...messages, newMessage]));
-  }, [messages, socket, message]);
+    socket.on("message", newMessage => {
+      saveMessage(newMessage, room);
+    });
+    return () => {
+      socket.emit("disconnect");
+      socket.off();
+    };
+  }, [messages, socket, message, room, saveMessage]);
 
   useEffect(() => {
     if (!socket) return emptyFunction();
@@ -134,15 +163,16 @@ const ChatSideBar = ({ handleClose, openChat }) => {
           </FormWrapper>
           <InputWrapper>
             <BoardMessages>
-              <ScrollToBottom className="messagesContainer">
-                {messages.map((message, index) => (
-                  <Thread
-                    key={index}
-                    isCurrentUserMessage={message.user === name}
-                    message={message}
-                  />
-                ))}
-              </ScrollToBottom>
+              {messages.map(
+                (message, index) =>
+                  message.room === room && (
+                    <Thread
+                      key={index}
+                      isCurrentUserMessage={message.user === name}
+                      message={message}
+                    />
+                  )
+              )}
             </BoardMessages>
           </InputWrapper>
         </>

@@ -23,7 +23,8 @@ socketConfig = server => {
 
       socket.emit("message", {
         user: user.name,
-        text: `You are connected, to ${room} room.`
+        text: `You are connected, to ${room} room.`,
+        time: Date.now()
       });
 
       socket.broadcast.to(user.room).emit("message", {
@@ -45,14 +46,15 @@ socketConfig = server => {
 
       if (!user) return callback("User not found");
 
-      const newMessage = { user: user.name, text: message, time: Date.now() };
+      const newMessage = {
+        user: user.name,
+        text: message,
+        time: Date.now(),
+        room: user.room
+      };
       boardIo.to(user.room).emit("message", newMessage);
 
       callback();
-    });
-
-    socket.on("update", client => {
-      boardIo.emit("join", `${client.name} ==> : ${client.message}`);
     });
 
     socket.on("disconnect", () => {

@@ -40,6 +40,11 @@ const BoardSchema = new mongoose.Schema(
       required: true,
       default: false
     },
+    comments: {
+      type: Array,
+      required: true,
+      default: []
+    },
     activities: {
       type: Array,
       required: true,

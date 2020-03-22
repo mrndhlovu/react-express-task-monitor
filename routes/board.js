@@ -101,7 +101,8 @@ router.patch("/id/:boardId", auth, async (req, res) => {
     "styleProperties",
     "accessLevel",
     "archived",
-    "activities"
+    "activities",
+    "comments"
   ];
   const isValidField = updates.every(update => allowedUpdates.includes(update));
 
