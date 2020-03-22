@@ -13,8 +13,14 @@ serverConfig = app => {
       credentials: true
     })
   );
-  app.use((err, req, res, next) => res.json(err));
-  app.use(express.static(path.resolve(__dirname, "client/build/")));
+  app.use((err, req, res, next) => {
+    res.json(err);
+    next();
+  });
+  app.use((req, res, next) => {
+    res.send("Welcome to Express");
+  });
+  app.use(express.static(path.join(__dirname, "/client/build/")));
 };
 
 module.exports = { serverConfig };

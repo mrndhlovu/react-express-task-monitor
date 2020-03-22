@@ -10,8 +10,8 @@ require("./utils.js/mongooseDB");
 const app = express();
 const server = http.createServer(app);
 
-socketConfig(server);
 serverConfig(app);
+socketConfig(server);
 routesConfig(app);
 
 server.listen(PORT, () => log.success(`Server running on port ${PORT}`));
