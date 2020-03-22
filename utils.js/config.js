@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+const S_GRID_API_KEY = process.env.SEND_GRID_API_KEY;
 const AWS_ID_POOL = process.env.AWS_ID_POOL;
 const AWS_REGION = process.env.AWS_REGION;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_KEY;
@@ -25,6 +26,7 @@ module.exports = {
   CONNECTION_URI,
   LOCAL_MONGO_DB,
   PORT,
+  S_GRID_API_KEY,
   S3_BUCKET,
   TOKEN_SIGNATURE
 };

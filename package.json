@@ -4,6 +4,7 @@
   "description": "react-express-template",
   "main": "server.js",
   "dependencies": {
+    "@sendgrid/mail": "^6.5.5",
     "aws-sdk": "^2.619.0",
     "bcrypt": "^4.0.1",
     "chalk": "^3.0.0",
