@@ -35,7 +35,6 @@ router.post("/login", async (req, res) => {
       httpOnly: true
     });
     res.append("Set-Cookie", "access_token=" + token + ";");
-
     res.send(user);
   } catch (error) {
     res

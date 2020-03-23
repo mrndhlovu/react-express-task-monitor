@@ -34,7 +34,11 @@ const SignupContainer = ({ history }) => {
       setLoading(true);
       await requestAuthSignup(credentials)
         .then(res => {
-          if (res.status === 201) return history.push("/");
+          localStorage.setItem("user", JSON.stringify(res.data));
+          if (res.status === 201) {
+            history.push("/");
+            window.location.reload();
+          }
         })
         .catch(error => setError(error.response.data));
     };

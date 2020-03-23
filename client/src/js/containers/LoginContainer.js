@@ -27,7 +27,10 @@ const LoginContainer = ({ history, location }) => {
     setError(null);
     resetForm("authForm");
   };
-  if (authenticated) history.push(`${from.pathname}`);
+
+  useEffect(() => {
+    if (authenticated) return history.push(`${from.pathname}`);
+  }, [history, authenticated, from]);
 
   useEffect(() => {
     if (!loading) return;
@@ -35,8 +38,13 @@ const LoginContainer = ({ history, location }) => {
     const login = async () => {
       await requestAuthLogin(credentials)
         .then(res => {
+          localStorage.setItem("user", JSON.stringify(res.data));
+
           setLoading(false);
-          if (res.status === 200) return history.push(`${from.pathname}`);
+          if (res.status === 200) {
+            history.push(`${from.pathname}`);
+            window.location.reload();
+          }
         })
         .catch(error => setError(error.response));
     };

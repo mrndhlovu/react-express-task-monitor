@@ -1,15 +1,13 @@
+const { CLIENT_URL } = require("./utils.js/config");
 const { PORT } = require("./utils.js/config");
 const { routesConfig } = require("./utils.js/middleware/routesMiddleware");
 const { socketConfig } = require("./utils.js/middleware/socketIoMiddleware");
-const express = require("express");
-
-const path = require("path");
-const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const { CLIENT_URL } = require("./utils.js/config");
-
-const log = require("./utils.js/console-alert");
+const cors = require("cors");
+const express = require("express");
 const http = require("http");
+const log = require("./utils.js/console-alert");
+const path = require("path");
 require("./utils.js/mongooseDB");
 
 const app = express();
