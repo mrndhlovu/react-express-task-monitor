@@ -1,32 +1,24 @@
-import React, { Component } from "react";
+import React from "react";
 import { DndProvider } from "react-dnd";
 import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import Backend from "react-dnd-html5-backend";
-import { render } from "react-dom";
 
 import BaseRouter from "./Routes";
 import AppContainer from "./containers/AppContainer";
 import store from "./store";
 
-class App extends Component {
-  start() {
-    this.launchApp();
-  }
-  launchApp() {
-    render(
-      <Provider store={store}>
-        <DndProvider backend={Backend}>
-          <HashRouter>
-            <AppContainer>
-              <BaseRouter />
-            </AppContainer>
-          </HashRouter>
-        </DndProvider>
-      </Provider>,
-      document.getElementById("app")
-    );
-  }
-}
-
+const App = () => {
+  return (
+    <Provider store={store}>
+      <DndProvider backend={Backend}>
+        <HashRouter>
+          <AppContainer>
+            <BaseRouter />
+          </AppContainer>
+        </HashRouter>
+      </DndProvider>
+    </Provider>
+  );
+};
 export default App;
