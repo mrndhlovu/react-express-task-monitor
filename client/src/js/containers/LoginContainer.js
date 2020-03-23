@@ -46,7 +46,7 @@ const LoginContainer = ({ history, location }) => {
             window.location.reload();
           }
         })
-        .catch(error => setError(error.response));
+        .catch(error => setError(error.response.data));
     };
     login();
     setLoading(false);
