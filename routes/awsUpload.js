@@ -1,9 +1,10 @@
 const router = require("express").Router();
 const upload = require("../utils.js/upload-file");
+const auth = require("../utils.js/middleware/authMiddleware");
 
 const singleFileUpload = upload.single("image");
 
-router.post("/image", (req, res, err) => {
+router.post("/image", auth, (req, res, err) => {
   singleFileUpload(req, res, err => {
     if (err) return res.json({ message: err.message, success: false });
     return res.json({

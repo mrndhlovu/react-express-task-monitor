@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 
 import { Divider, Input, Button, Message } from "semantic-ui-react";
@@ -6,6 +6,7 @@ import { isURL } from "validator";
 import { requestUpload } from "../../apis/apiRequests";
 import AttachmentOption from "../sharedComponents/AttachmentOption";
 import DropdownButton from "../sharedComponents/DropdownButton";
+import { emptyFunction } from "../../utils/appUtils";
 
 const Container = styled.div`
   width: 100%;
@@ -39,38 +40,43 @@ const StyledSmall = styled.small`
 const AddAttachment = ({ addCardAttachment, handleLoadingAttachment }) => {
   const [attachment, setAttachment] = useState(null);
   const [error, setError] = useState(false);
+  const [update, setUpdate] = useState(null);
   const [message, setMessage] = useState(null);
 
-  const handleUpload = e => {
-    const file = e.target.files[0];
-    const data = new FormData();
-    data.append("image", file);
+  const handleUpload = useCallback(
+    e => {
+      const file = e.target.files[0];
+      const data = new FormData();
+      data.append("image", file);
 
-    const upload = async () => {
-      handleLoadingAttachment(true);
-      await requestUpload(data)
-        .then(response => {
-          const { imgUrl, uploadDate, success, message } = response.data;
-          if (!success) {
-            setMessage(message);
+      const upload = async () => {
+        handleLoadingAttachment(true);
+        await requestUpload(data)
+          .then(response => {
+            const { imgUrl, uploadDate, success, message } = response.data;
+            if (!success) {
+              handleLoadingAttachment(false);
+              return setMessage(message);
+            }
+            const uploadData = { imgUrl, uploadDate, name: file.name };
+            setUpdate(uploadData);
             handleLoadingAttachment(false);
-            return;
-          }
-          const uploadData = { imgUrl, uploadDate, name: file.name };
-          addCardAttachment(uploadData);
-          handleLoadingAttachment(false);
-        })
-        .catch(error => {
-          setMessage(error.message);
-          handleLoadingAttachment(false);
-        });
-    };
-    upload();
-  };
+          })
+          .catch(error => setMessage(error.message));
+      };
+      upload();
+    },
+    [handleLoadingAttachment]
+  );
 
-  const handleChange = e => {
-    setAttachment(e.target.value);
-  };
+  useEffect(() => {
+    if (!update) return emptyFunction();
+
+    if (update) addCardAttachment(update);
+    setUpdate(null);
+  }, [update, addCardAttachment]);
+
+  const handleChange = e => setAttachment(e.target.value);
 
   const handleAttachUrl = () => {
     const url = isURL(attachment);

@@ -1,11 +1,17 @@
-import React, { useContext, useState, useEffect, memo } from "react";
+import React, {
+  useContext,
+  useState,
+  useEffect,
+  memo,
+  useCallback
+} from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { Modal, Button, Grid } from "semantic-ui-react";
 
 import { BoardListsContext, AppContext } from "../../utils/contextUtils";
-import { checkDuplicate } from "../../utils/appUtils";
+import { checkDuplicate, emptyFunction } from "../../utils/appUtils";
 import {
   requestCardCoverUpdate,
   requestDeleteAttachment
@@ -45,58 +51,57 @@ const CardDetailModal = ({ listPosition, match }) => {
   } = useContext(BoardListsContext);
   const { auth } = useContext(AppContext);
 
-  const { id } = match.params;
-  const [newAttachment, setNewAttachment] = useState(null);
-  const [hideActivities, setHideActivities] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [removeCover, setRemoveCover] = useState(false);
-  const [newCover, setNewCover] = useState(null);
   const [activeCover, setActiveCardCover] = useState(null);
   const [deleteAttachment, setDeleteAttachment] = useState(null);
+  const [hideActivities, setHideActivities] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  const [newAttachment, setNewAttachment] = useState(null);
+  const [newCover, setNewCover] = useState(null);
+  const [removeCover, setRemoveCover] = useState(false);
+  const { id } = match.params;
 
-  const addCardAttachment = attachment => {
-    setNewAttachment(attachment);
-  };
+  const addCardAttachment = useCallback(
+    attachment => {
+      const duplicate = checkDuplicate(
+        activeCard.attachments.images,
+        attachment.imgUrl
+      );
+      if (!duplicate) {
+        let newBoard;
+        activeCard.attachments.images.push(attachment);
+
+        newBoard = {
+          ...board,
+          lists: board.lists.map(list =>
+            list.position === listPosition
+              ? {
+                  ...list,
+                  cards: list.cards.map(card =>
+                    card.position === activeCard.position
+                      ? {
+                          ...card,
+                          attachments: { ...activeCard.attachments },
+                          cardCover: attachment.imgUrl
+                        }
+                      : { ...card }
+                  )
+                }
+              : { ...list }
+          )
+        };
+        setNewAttachment(newBoard);
+        setNewCover(attachment.imgUrl);
+      }
+    },
+    [activeCard, board, listPosition]
+  );
 
   useEffect(() => {
-    if (!newAttachment) return;
-    const duplicate = checkDuplicate(
-      activeCard.attachments.images,
-      newAttachment.imgUrl
-    );
-    let newBoard;
+    if (!newAttachment) return emptyFunction();
 
-    if (!duplicate) {
-      activeCard.attachments.images.push(newAttachment);
-
-      newBoard = {
-        ...board,
-        lists: board.lists.map(list =>
-          list.position === listPosition
-            ? {
-                ...list,
-                cards: list.cards.map(card =>
-                  card.position === activeCard.position
-                    ? { ...card, cardCover: newAttachment.imgUrl }
-                    : { ...card }
-                )
-              }
-            : { ...list }
-        )
-      };
-
-      backendUpdate(newBoard, true);
-      setNewCover(newAttachment.imgUrl);
-      setNewAttachment(null);
-    }
-  }, [
-    newAttachment,
-    activeCard,
-    board,
-    getSourceList,
-    listPosition,
-    backendUpdate
-  ]);
+    backendUpdate(newAttachment, "lists", "addAttachment");
+    setNewAttachment(false);
+  }, [backendUpdate, newAttachment]);
 
   const handleLoadingAttachment = loading => {
     setIsLoading(loading);
@@ -138,7 +143,7 @@ const CardDetailModal = ({ listPosition, match }) => {
   };
 
   useEffect(() => {
-    if (!newCover) return;
+    if (!newCover) return emptyFunction();
     const body = {
       cardId: activeCard.position,
       listId: listPosition,
@@ -146,14 +151,22 @@ const CardDetailModal = ({ listPosition, match }) => {
     };
     const attachCardCover = async () => {
       await requestCardCoverUpdate(body, id).then(res => {
-        backendUpdate(res.data);
         setIsLoading(false);
-        setNewCover(null);
+
         setActiveCardCover(newCover);
       });
     };
     attachCardCover();
-  }, [activeCard, id, listPosition, backendUpdate, setNewCover, newCover]);
+    setNewCover(null);
+  }, [
+    activeCard,
+    id,
+    listPosition,
+    backendUpdate,
+    setNewCover,
+    newCover,
+    newAttachment
+  ]);
 
   useEffect(() => {
     if (newCover) return;
@@ -166,7 +179,7 @@ const CardDetailModal = ({ listPosition, match }) => {
   };
 
   useEffect(() => {
-    if (!deleteAttachment) return;
+    if (!deleteAttachment) return emptyFunction();
 
     const removeAttachment = async () => {
       const body = {
@@ -248,14 +261,13 @@ const CardDetailModal = ({ listPosition, match }) => {
                   handleRemoveCover={handleRemoveCover}
                   handleDeleteAttachment={handleDeleteAttachment}
                 />
-                {!auth.loading && (
-                  <CardModalActivities
-                    handleShowDetails={() => setHideActivities(!hideActivities)}
-                    hideActivities={hideActivities}
-                    board={board}
-                    user={auth.user.fname}
-                  />
-                )}
+
+                <CardModalActivities
+                  handleShowDetails={() => setHideActivities(!hideActivities)}
+                  hideActivities={hideActivities}
+                  board={board}
+                  user={auth.user.fname}
+                />
               </LeftSideContent>
             </ModalContent>
           </Grid.Column>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -39,44 +39,39 @@ const BoardContainer = ({ match, history, auth }) => {
   const [starred, setStarred] = useState(null);
   const [updatedField, setUpdatedField] = useState(null);
 
-  const backendUpdate = useCallback(
-    (changes, fieldId, activity) => {
+  const backendUpdate = useMemo(
+    () => (changes, fieldId, activity) => {
+      console.log("fieldId: ", changes, fieldId, activity);
       saveBoardChanges(changes);
       setUpdatedField({ fieldId, activity });
     },
-    [setUpdatedField]
+    []
   );
 
   const saveBoardChanges = changes => setBoard(changes);
 
-  const changeBoardAccessLevel = useCallback(
-    option => {
-      const newBoard = {
-        ...board,
-        accessLevel: { ...PERMISSIONS, [option]: true }
-      };
+  const changeBoardAccessLevel = option => {
+    const newBoard = {
+      ...board,
+      accessLevel: { ...PERMISSIONS, [option]: true }
+    };
 
-      backendUpdate(newBoard, "accessLevel", "changeAccess");
-    },
-    [board, backendUpdate]
-  );
+    backendUpdate(newBoard, "accessLevel", "changeAccess");
+  };
 
   const handleDeleteBoard = useCallback(() => {
     requestBoardDelete(id);
     history.push("/");
   }, [history, id]);
 
-  const handleColorPick = useCallback(
-    color => {
-      const newBoard = {
-        ...board,
-        styleProperties: { ...board.styleProperties, color }
-      };
+  const handleColorPick = color => {
+    const newBoard = {
+      ...board,
+      styleProperties: { ...board.styleProperties, color }
+    };
 
-      backendUpdate(newBoard, "styleProperties", "color");
-    },
-    [backendUpdate, board]
-  );
+    backendUpdate(newBoard, "styleProperties", "color");
+  };
 
   const handleBoardStarClick = () => {
     if (board.category.includes("starred")) {
@@ -121,13 +116,11 @@ const BoardContainer = ({ match, history, auth }) => {
         activities: board.activities
       };
 
-      await requestBoardUpdate(id, update).then(() => {
-        try {
-        } catch (error) {}
-      });
+      await requestBoardUpdate(id, update).then(() => {});
     };
 
-    if (updatedField) serverUpdate();
+    serverUpdate();
+    setUpdatedField(null);
   }, [id, updatedField, board, auth]);
 
   useEffect(() => {

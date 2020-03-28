@@ -76,6 +76,8 @@ export const getActivity = (user, action) => {
         return BOARD_ACTIVITIES.starred;
       case "removeStar":
         return BOARD_ACTIVITIES.removeStar;
+      case "addAttachment":
+        return BOARD_ACTIVITIES.addAttachment;
       default:
         break;
     }
