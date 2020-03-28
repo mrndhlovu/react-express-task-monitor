@@ -28,7 +28,7 @@ const DescriptionContent = styled.div`
 
 const DescriptionHeader = styled.div`
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 50% 49%;
   align-items: center;
   width: 100%;
 `;

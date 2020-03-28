@@ -14,8 +14,8 @@ const ProtectedRoute = ({ component: Component, location, ...rest }) => {
     <Route
       {...rest}
       render={props => {
-        if (!authenticated) {
-          return loading && AUTH_ID ? (
+        if (!authenticated && !AUTH_ID) {
+          return loading ? (
             <UILoadingSpinner />
           ) : (
             <Redirect

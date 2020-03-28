@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, memo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { Modal, Button } from "semantic-ui-react";
+import { Modal, Button, Grid } from "semantic-ui-react";
 
 import { BoardListsContext, AppContext } from "../../utils/contextUtils";
 import { checkDuplicate } from "../../utils/appUtils";
@@ -11,13 +11,13 @@ import {
   requestDeleteAttachment
 } from "../../apis/apiRequests";
 import Attachments from "./Attachments";
-import CardActivities from "./CardActivities";
+import CardModalActivities from "./CardModalActivities";
 import CardModalDescription from "./CardModalDescription";
 import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
 import ModalImageCover from "./ModalImageCover";
 
-const CardContent = styled(Modal.Content)``;
+const ModalContent = styled(Modal.Content)``;
 
 const ButtonWrapper = styled.div`
   position: absolute;
@@ -228,39 +228,46 @@ const CardDetailModal = ({ listPosition, match }) => {
         sourceTitle={sourceTitle}
         cardCover={activeCard.cardCover}
       />
-
-      <CardContent image>
-        <LeftSideContent>
-          <CardModalDescription
-            board={board}
-            backendUpdate={backendUpdate}
-            listPosition={listPosition}
-            getSourceList={getSourceList}
-            activeCard={activeCard}
-          />
-          <Attachments
-            activeCover={activeCover}
-            card={activeCard}
-            isLoading={isLoading}
-            handleMakeCover={handleMakeCover}
-            handleRemoveCover={handleRemoveCover}
-            handleDeleteAttachment={handleDeleteAttachment}
-          />
-          {!auth.loading && (
-            <CardActivities
-              handleShowDetails={() => setHideActivities(!hideActivities)}
-              hideActivities={hideActivities}
-              board={board}
-              user={auth.user.fname}
+      <Grid columns={2} divided stackable>
+        <Grid.Row stretched>
+          <Grid.Column width={12}>
+            <ModalContent image>
+              <LeftSideContent>
+                <CardModalDescription
+                  board={board}
+                  backendUpdate={backendUpdate}
+                  listPosition={listPosition}
+                  getSourceList={getSourceList}
+                  activeCard={activeCard}
+                />
+                <Attachments
+                  activeCover={activeCover}
+                  card={activeCard}
+                  isLoading={isLoading}
+                  handleMakeCover={handleMakeCover}
+                  handleRemoveCover={handleRemoveCover}
+                  handleDeleteAttachment={handleDeleteAttachment}
+                />
+                {!auth.loading && (
+                  <CardModalActivities
+                    handleShowDetails={() => setHideActivities(!hideActivities)}
+                    hideActivities={hideActivities}
+                    board={board}
+                    user={auth.user.fname}
+                  />
+                )}
+              </LeftSideContent>
+            </ModalContent>
+          </Grid.Column>
+          <Grid.Column width={4}>
+            <CardModalSidebar
+              addCardAttachment={addCardAttachment}
+              handleUploadAttachment={handleUploadAttachment}
+              handleLoadingAttachment={handleLoadingAttachment}
             />
-          )}
-        </LeftSideContent>
-        <CardModalSidebar
-          addCardAttachment={addCardAttachment}
-          handleUploadAttachment={handleUploadAttachment}
-          handleLoadingAttachment={handleLoadingAttachment}
-        />
-      </CardContent>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
     </Modal>
   );
 };

@@ -8,8 +8,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  padding-left: 30px;
-  padding-top: 45px;
+  padding: 10px;
 `;
 
 const SubHeading = styled.div`
@@ -27,8 +26,11 @@ padding-left: 35px;
 const ModalHeader = ({ title, sourceTitle }) => {
   return (
     <Container>
-      <CardDetailHeader icon="window maximize outline" description={title} />
-      <SubHeading sourceTitle={` ${sourceTitle}`} />
+      <CardDetailHeader
+        icon="window maximize outline"
+        description={title.toUpperCase()}
+      />
+      <SubHeading sourceTitle={` ${sourceTitle.toUpperCase()}`} />
     </Container>
   );
 };

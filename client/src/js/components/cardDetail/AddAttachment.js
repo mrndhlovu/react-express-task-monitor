@@ -19,6 +19,10 @@ const ButtonWrapper = styled.div`
   padding-top: 10px;
 `;
 
+const StyleMessageWrapper = styled.div`
+  padding: 10px;
+`;
+
 const StyledInput = styled.input`
   margin: 0;
   opacity: 0;
@@ -47,12 +51,19 @@ const AddAttachment = ({ addCardAttachment, handleLoadingAttachment }) => {
       await requestUpload(data)
         .then(response => {
           const { imgUrl, uploadDate, success, message } = response.data;
-          if (!success) return setMessage(message);
+          if (!success) {
+            setMessage(message);
+            handleLoadingAttachment(false);
+            return;
+          }
           const uploadData = { imgUrl, uploadDate, name: file.name };
           addCardAttachment(uploadData);
           handleLoadingAttachment(false);
         })
-        .catch(error => setMessage(error.message));
+        .catch(error => {
+          setMessage(error.message);
+          handleLoadingAttachment(false);
+        });
     };
     upload();
   };
@@ -72,12 +83,16 @@ const AddAttachment = ({ addCardAttachment, handleLoadingAttachment }) => {
     <DropdownButton icon="attach" buttonText="Attachment" header="Attach From">
       <Container>
         {message && (
-          <Message
-            error
-            size="tiny"
-            onDismiss={() => setMessage(false)}
-            content={message}
-          />
+          <StyleMessageWrapper>
+            <Message
+              error
+              size="tiny"
+              onDismiss={() => {
+                setMessage(false);
+              }}
+              content={message}
+            />
+          </StyleMessageWrapper>
         )}
         <AttachmentOption>
           <span>Computer</span>
@@ -99,12 +114,15 @@ const AddAttachment = ({ addCardAttachment, handleLoadingAttachment }) => {
           />
 
           {error && (
-            <Message
-              size="tiny"
-              error
-              content="Invalid url"
-              onDismiss={() => setError(false)}
-            />
+            <StyleMessageWrapper>
+              <Message
+                size="tiny"
+                compact
+                error
+                content="Invalid url"
+                onDismiss={() => setError(false)}
+              />
+            </StyleMessageWrapper>
           )}
 
           <ButtonWrapper>

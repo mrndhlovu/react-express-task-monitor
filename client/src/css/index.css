@@ -10,10 +10,6 @@ ui.form,
   color: #b8ccf0 !important;
 }
 
-.card-detail-container {
-  width: 40% !important;
-}
-
 .ui.modal > .close {
   top: 1.5% !important ;
   right: 0.5rem !important;

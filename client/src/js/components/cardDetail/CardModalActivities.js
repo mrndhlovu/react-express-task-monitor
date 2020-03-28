@@ -5,7 +5,7 @@ import ActivitiesHeader from "./ActivitiesHeader";
 import Activities from "./Activities";
 import CardComments from "./CardComments";
 
-const CardActivities = ({ hideActivities, ...props }) => {
+const CardModalActivities = ({ hideActivities, ...props }) => {
   return (
     <CardDetailSegment>
       <ActivitiesHeader {...props} />
@@ -15,4 +15,4 @@ const CardActivities = ({ hideActivities, ...props }) => {
   );
 };
 
-export default CardActivities;
+export default CardModalActivities;

@@ -7,7 +7,7 @@ import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 const Container = styled.div`
   margin-top: 20px;
   display: grid;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 50% 49%;
 `;
 
 const ActivitiesHeader = ({ handleShowDetails }) => {

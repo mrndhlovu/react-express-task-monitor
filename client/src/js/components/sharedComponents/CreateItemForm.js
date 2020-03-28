@@ -37,7 +37,7 @@ const IconWrapper = styled.span`
   cursor: pointer;
 `;
 
-const CreateBoard = ({
+const CreateItemForm = ({
   handleCreateClick,
   handleChange,
   buttonText,
@@ -86,4 +86,4 @@ const CreateBoard = ({
   );
 };
 
-export default CreateBoard;
+export default CreateItemForm;

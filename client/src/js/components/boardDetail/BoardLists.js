@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import CreateBoard from "../sharedComponents/CreateBoard";
+import CreateItemForm from "../sharedComponents/CreateItemForm";
 import ListGrid from "./ListGrid";
 import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
 import CardDetailModal from "../cardDetail/CardDetailModal";
@@ -260,7 +260,7 @@ const BoardLists = ({ handleChatsOpen, membersOnline }) => {
           getSourceList={getSourceList}
         />
 
-        <CreateBoard
+        <CreateItemForm
           buttonText="Create List"
           placeholder="Enter new list title..."
           ctaText="Add another list"

@@ -16,7 +16,8 @@ const StyledHeader = styled(Header)`
 `;
 
 const Container = styled.div`
-  margin-left: 10px;
+  margin-left: 2px;
+  margin-right: 5px;
 `;
 
 const CardModalSidebar = ({ ...props }) => {
