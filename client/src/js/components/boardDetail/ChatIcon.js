@@ -5,13 +5,13 @@ import { Icon } from "semantic-ui-react";
 
 const Container = styled.div`
   position: absolute;
-  bottom: 4%;
-  right: 1%;
+  bottom: ${props => (props.mobile ? "1%" : "8%")};
+  right: ${props => (props.mobile ? "2%" : "1%")};
 `;
 
-const ChatIcon = ({ handleChatsOpen }) => {
+const ChatIcon = ({ handleChatsOpen, mobile }) => {
   return (
-    <Container>
+    <Container mobile={mobile}>
       <Icon
         circular
         size="large"

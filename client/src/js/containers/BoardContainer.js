@@ -1,10 +1,14 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useContext
+} from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { Sidebar } from "semantic-ui-react";
-
-import { BoardContext } from "../utils/contextUtils";
+import { BoardContext, AppContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
 import {
   requestBoardUpdate,
@@ -13,31 +17,41 @@ import {
   requestUserInvite
 } from "../apis/apiRequests";
 
-import Board from "../components/boardDetail/Board";
-import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 import { getActivity, emptyFunction } from "../utils/appUtils";
+import Board from "../components/boardDetail/Board";
+import BoardHeader from "../components/boardDetail/BoardHeader";
+import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const StyledContainer = styled.div`
+  background-attachment: fixed;
   background-color: ${props => props.bgColor};
-  display: grid;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
+  height: 99vh;
+  padding-top: ${props => (props.mobile ? "27%" : "2%")};
+  position: relative;
 `;
 
 const ContentDiv = styled.div`
-  padding-top: 35px;
+  display: grid;
+  height: ${props => (props.mobile ? "79vh" : "93vh")};
+  left: 0;
+  overflow-y: hidden;
+  position: absolute;
+  top: ${props => (props.mobile ? "20%" : "7%")};
+  width: 100vw;
 `;
 
 const BoardContainer = ({ match, history, auth }) => {
   const { id } = match.params;
+  const { mobile } = useContext(AppContext).device;
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
   const [loading, setLoading] = useState(false);
   const [starred, setStarred] = useState(null);
   const [updatedField, setUpdatedField] = useState(null);
+  const [showSideBar, setShowSideBar] = useState(false);
+
+  const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
   const backendUpdate = useMemo(
     () => (changes, fieldId, activity) => {
@@ -140,23 +154,24 @@ const BoardContainer = ({ match, history, auth }) => {
   ) : (
     <BoardContext.Provider
       value={{
-        board,
         backendUpdate,
+        board,
         changeBoardAccessLevel,
         handleBoardStarClick,
         handleColorPick,
         handleDeleteBoard,
         handleInviteClick,
+        handleShowMenuClick,
         id,
         loading,
-        saveBoardChanges
+        saveBoardChanges,
+        showSideBar
       }}
     >
       <StyledContainer bgColor={board.styleProperties.color}>
-        <ContentDiv>
-          <Sidebar.Pushable>
-            <Board />
-          </Sidebar.Pushable>
+        <BoardHeader />
+        <ContentDiv mobile={mobile}>
+          <Board />
         </ContentDiv>
       </StyledContainer>
     </BoardContext.Provider>

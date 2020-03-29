@@ -9,7 +9,7 @@ import MessageAlert from "../sharedComponents/MessageAlert";
 import { isEmail } from "validator";
 
 const StyledDiv = styled.div`
-  justify-self: ${props => (props.mobile ? "center" : "start")};
+  justify-self: start;
   padding-bottom: 5px;
 `;
 

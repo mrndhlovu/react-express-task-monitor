@@ -7,12 +7,15 @@ import { BoardContext, AppContext } from "../../utils/contextUtils";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
 const HeaderContainer = styled.div`
+  align-items: center;
   display: grid;
   grid-template-columns: ${props =>
     props.mobile ? "1fr" : props.tablet ? "15% 46% 39%" : "11% 37% 52%"};
-  min-height: 40px;
-  padding: 5px 2px 5px 2px;
-  align-items: center;
+  left: 2px;
+  max-height: 40px;
+  position: absolute;
+  top: ${props => (props.mobile ? "6%" : "3.5%")};
+  width: 99vw;
 `;
 
 const TitleWrapper = styled.div`
@@ -25,8 +28,8 @@ const TitleWrapper = styled.div`
   padding-top: 6px;
 `;
 
-const BoardHeader = ({ handleShowMenuClick }) => {
-  const { board } = useContext(BoardContext);
+const BoardHeader = () => {
+  const { board, handleShowMenuClick } = useContext(BoardContext);
   const { mobile, tablet } = useContext(AppContext).device;
 
   return (

@@ -15,13 +15,17 @@ import ListHeader from "./ListHeader";
 
 const StyledWrapper = styled(Segment)`
   background-color: #ebecf0 !important;
-
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   max-height: 100%;
   position: relative;
   white-space: normal;
+`;
+
+const CardsContainer = styled.div`
+  overflow-y: scroll;
+  padding: 5px;
 `;
 
 const List = ({
@@ -47,9 +51,10 @@ const List = ({
     minWidth: "272px",
     verticalAlign: "top",
     visibility: isDragging && "hidden",
-    marginRight: "10px",
+    marginRight: "5px",
     position: "relative",
-    whiteSpace: "nowrap"
+    whiteSpace: "nowrap",
+    height: "100vh"
   };
 
   const wrappedList = (
@@ -64,15 +69,16 @@ const List = ({
           backendUpdate={backendUpdate}
           board={board}
         />
-        <CardsWrapper
-          cards={cards}
-          sourceListId={position}
-          hoverIndex={position}
-          listTitle={title}
-          {...rest}
-          {...otherProps}
-        />
-
+        <CardsContainer>
+          <CardsWrapper
+            cards={cards}
+            sourceListId={position}
+            hoverIndex={position}
+            listTitle={title}
+            {...rest}
+            {...otherProps}
+          />
+        </CardsContainer>
         <CreateCard
           listId={position}
           activeList={activeList === position}
