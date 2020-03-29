@@ -1,11 +1,12 @@
-import React, { useState, Fragment, useContext } from "react";
+import React, { useState, Fragment, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import NavButton from "../sharedComponents/NavButton";
 import SearchBar from "./SearchBar";
-import { Divider, Dropdown, Icon } from "semantic-ui-react";
+import { Dropdown, Icon } from "semantic-ui-react";
 import { AppContext } from "../../utils/contextUtils";
+import { useFetch } from "../../utils/hookUtils";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -21,8 +22,15 @@ const StyledSpan = styled.span`
 `;
 
 const LeftNavButtons = ({ history, results, value }) => {
+  const { isLoading, device } = useContext(AppContext);
+  const [data] = useFetch();
+
   const [showBoardList, setShowBoardList] = useState(false);
-  const { isLoading, device, boards } = useContext(AppContext);
+  const [boards, setBoards] = useState(null);
+
+  useEffect(() => {
+    setBoards(data);
+  }, [data]);
 
   return (
     <StyledDiv>
@@ -53,7 +61,6 @@ const LeftNavButtons = ({ history, results, value }) => {
                   }
                   text={board.title}
                 />
-                <Divider />
               </Fragment>
             ))}
         </Dropdown.Menu>

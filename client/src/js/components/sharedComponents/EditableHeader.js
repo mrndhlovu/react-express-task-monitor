@@ -13,6 +13,7 @@ const StyledDiv = styled.div`
 `;
 
 const EditHeader = styled(Input)`
+  display: flex important;
   border-radius: 5px;
   margin-bottom: 5px;
   height: 29px;
@@ -76,7 +77,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
 
   useEffect(() => {
     if (!newBoard) return;
-    backendUpdate(newBoard);
+    backendUpdate(newBoard, "title", "boardHeader");
     setNewBoard(null);
   }, [newBoard, backendUpdate]);
 
@@ -89,6 +90,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
           defaultValue={title}
           onBlur={() => handleUpdate()}
           onChange={e => handleChange(e)}
+          onKeyDown={e => (e.key === "Enter" ? handleUpdate() : null)}
         />
       )}
     </StyledDiv>

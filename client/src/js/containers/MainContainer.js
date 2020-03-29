@@ -16,8 +16,11 @@ const MainContainer = ({ children, history, auth }) => {
   const { authenticated, isLoading, data } = auth;
   const isHomePage = history.location.pathname === "/";
 
-  const [search, setSearch] = useState(false);
   const [board, setBoard] = useState(null);
+  const [boards, setBoards] = useState(null);
+  const [search, setSearch] = useState(false);
+  const [update, setUpdate] = useState(null);
+
   const { device, dimensions } = useDimensions();
 
   const handleSearchClick = useCallback(e => {
@@ -25,6 +28,8 @@ const MainContainer = ({ children, history, auth }) => {
   }, []);
 
   const makeNewBoard = update => setBoard(update);
+
+  const getNavigationBoards = data => setUpdate(data);
 
   useEffect(() => {
     if (!board) return emptyFunction();
@@ -39,6 +44,10 @@ const MainContainer = ({ children, history, auth }) => {
     setBoard(null);
   }, [board, history]);
 
+  useEffect(() => {
+    setBoards(update);
+  }, [update]);
+
   return (
     <AppContext.Provider
       value={{
@@ -48,7 +57,9 @@ const MainContainer = ({ children, history, auth }) => {
         handleSearchClick,
         history,
         makeNewBoard,
-        search
+        search,
+        getNavigationBoards,
+        boards
       }}
     >
       {authenticated && (

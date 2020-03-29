@@ -35,7 +35,7 @@ export const getUserInitials = name => {
 
 export const getActivity = (user, action) => {
   const BOARD_ACTIVITIES = {
-    boardHeader: "changed board header to",
+    boardHeader: "changed board header",
     cardHeader: "changed card header to",
     changedCardList: "moved card from list",
     addNewList: "added new list",
@@ -78,6 +78,8 @@ export const getActivity = (user, action) => {
         return BOARD_ACTIVITIES.removeStar;
       case "addAttachment":
         return BOARD_ACTIVITIES.addAttachment;
+      case "boardHeader":
+        return BOARD_ACTIVITIES.boardHeader;
       default:
         break;
     }

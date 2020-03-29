@@ -42,7 +42,7 @@ const ContentDiv = styled.div`
 
 const BoardContainer = ({ match, history, auth }) => {
   const { id } = match.params;
-  const { mobile } = useContext(AppContext).device;
+  const { device } = useContext(AppContext);
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
@@ -55,7 +55,6 @@ const BoardContainer = ({ match, history, auth }) => {
 
   const backendUpdate = useMemo(
     () => (changes, fieldId, activity) => {
-      console.log("fieldId: ", changes, fieldId, activity);
       saveBoardChanges(changes);
       setUpdatedField({ fieldId, activity });
     },
@@ -138,7 +137,7 @@ const BoardContainer = ({ match, history, auth }) => {
   }, [id, updatedField, board, auth]);
 
   useEffect(() => {
-    if (board) return;
+    if (board) return emptyFunction();
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then(res => {
@@ -170,7 +169,7 @@ const BoardContainer = ({ match, history, auth }) => {
     >
       <StyledContainer bgColor={board.styleProperties.color}>
         <BoardHeader />
-        <ContentDiv mobile={mobile}>
+        <ContentDiv mobile={device.mobile}>
           <Board />
         </ContentDiv>
       </StyledContainer>

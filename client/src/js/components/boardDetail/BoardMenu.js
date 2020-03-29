@@ -10,9 +10,6 @@ import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 const Wrapper = styled.div`
   width: 800px;
 `;
-const StyledContainer = styled.div`
-  margin-top: 40px important;
-`;
 
 const BoardMenu = ({
   handleChangeColorClick,
