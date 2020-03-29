@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { bgColors } from "../../constants/constants";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
+import { Divider } from "semantic-ui-react";
 
 const ColorsWrapper = styled.div`
   display: grid;
@@ -33,6 +34,7 @@ const BackGroundColors = ({
       handleClose={handleChangeColorClick}
       header="Change board color"
     >
+      <Divider hidden />
       <ColorsWrapper>
         {bgColors.map(color => (
           <ColorCard key={color}>

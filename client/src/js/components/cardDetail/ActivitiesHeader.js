@@ -10,20 +10,22 @@ const Container = styled.div`
   grid-template-columns: 50% 49%;
 `;
 
-const ActivitiesHeader = ({ handleShowDetails }) => {
+const ActivitiesHeader = ({ handleShowDetails, hideButton }) => {
   return (
     <Container>
       <div>
         <CardDetailHeader description="Activities" icon="sort amount down" />
       </div>
-      <div>
-        <Button
-          onClick={handleShowDetails}
-          floated="right"
-          size="tiny"
-          content="Show Details"
-        />
-      </div>
+      {!hideButton && (
+        <div>
+          <Button
+            onClick={handleShowDetails}
+            floated="right"
+            size="tiny"
+            content="Show Details"
+          />
+        </div>
+      )}
     </Container>
   );
 };

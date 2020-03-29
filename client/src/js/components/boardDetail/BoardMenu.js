@@ -1,36 +1,50 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import { Menu } from "semantic-ui-react";
+import { BoardContext, AppContext } from "../../utils/contextUtils";
+import { Menu, Divider } from "semantic-ui-react";
+import Activities from "../cardDetail/Activities";
+import ActivitiesHeader from "../cardDetail/ActivitiesHeader";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 
 const Wrapper = styled.div`
   width: 800px;
 `;
+const StyledContainer = styled.div`
+  margin-top: 40px important;
+`;
 
 const BoardMenu = ({
   handleChangeColorClick,
-  handleShowMenuClick,
-  showSideBar,
-  handleDeleteBoard
+  handleDeleteBoard,
+  showSideBar
 }) => {
+  const { board, handleShowMenuClick } = useContext(BoardContext);
+  const { user } = useContext(AppContext).auth;
+  const [activities, setActivities] = useState(false);
+
   return (
     <Wrapper>
-      <SideBarWrapper
-        handleClose={handleShowMenuClick}
-        inverted={true}
-        open={showSideBar}
-      >
-        <Menu.Item color="grey" as="a">
-          About This Board
-        </Menu.Item>
+      <SideBarWrapper handleClose={handleShowMenuClick} open={showSideBar}>
+        <Divider hidden />
+
         <Menu.Item as="a" onClick={() => handleChangeColorClick()}>
           Change Background
         </Menu.Item>
-        <Menu.Item as="a">Search Cards</Menu.Item>
         <Menu.Item as="a" onClick={() => handleDeleteBoard()}>
           Delete board
         </Menu.Item>
+
+        <ActivitiesHeader
+          handleShowDetails={() => setActivities(!activities)}
+        />
+
+        {activities && (
+          <>
+            <Divider />
+            <Activities board={board} user={user.fname} />
+          </>
+        )}
       </SideBarWrapper>
     </Wrapper>
   );
