@@ -17,7 +17,7 @@ import {
   requestUserInvite
 } from "../apis/apiRequests";
 
-import { getActivity, emptyFunction } from "../utils/appUtils";
+import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
 import Board from "../components/boardDetail/Board";
 import BoardHeader from "../components/boardDetail/BoardHeader";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
@@ -50,6 +50,7 @@ const BoardContainer = ({ match, history, auth }) => {
   const [starred, setStarred] = useState(null);
   const [updatedField, setUpdatedField] = useState(null);
   const [showSideBar, setShowSideBar] = useState(false);
+  const [inviteDone, setInviteDone] = useState(false);
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
@@ -104,11 +105,13 @@ const BoardContainer = ({ match, history, auth }) => {
     const inviteUser = async () => {
       await requestUserInvite(id, invite)
         .then(res => {
+          setInviteDone(true);
           setLoading(false);
           setInvite(null);
+          resetForm("invite-input");
         })
         .catch(error => {
-          console.log("error: ", error.response);
+          alert(error.response.data.message);
         });
     };
 
@@ -161,6 +164,7 @@ const BoardContainer = ({ match, history, auth }) => {
         handleDeleteBoard,
         handleInviteClick,
         handleShowMenuClick,
+        inviteDone,
         id,
         loading,
         saveBoardChanges,

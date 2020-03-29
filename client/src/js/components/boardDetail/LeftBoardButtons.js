@@ -38,6 +38,7 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
     changeBoardAccessLevel,
     handleBoardStarClick,
     handleInviteClick,
+    inviteDone,
     loading
   } = useContext(BoardContext);
   const { accessLevel } = board;
@@ -50,7 +51,6 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
 
   const validateEmail = e => {
     const validEmail = isEmail(inviteEmail);
-    console.log("validEmail: ", validEmail);
 
     if (!validEmail) return setError("Email provided is invalid");
     handleInviteClick(inviteEmail);
@@ -122,10 +122,14 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
             <Dropdown.Divider />
             <Description>
               <StyledTextArea
+                id="invite-input"
                 onChange={e => handleChange(e)}
                 onClick={e => e.stopPropagation()}
                 onKeyDown={e => (e.key === "Enter" ? validateEmail() : null)}
-                placeholder="Add invite email and press Enter"
+                placeholder={
+                  inviteDone ? "Done" : "Add invite email and press Enter"
+                }
+                icon={inviteDone && <Icon name="check" color="green" />}
                 loading={loading}
               />
             </Description>
