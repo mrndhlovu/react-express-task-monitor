@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
 `;
 
 const RightNavButtons = () => {
-  const { device, auth } = useContext(AppContext);
+  const { auth } = useContext(AppContext);
 
   const handleLogOut = async () => {
     await requestAuthLogout().then(res => {
@@ -35,12 +35,7 @@ const RightNavButtons = () => {
 
   return (
     <StyledDiv>
-      <NavButton iconName="add" />
-
-      {!device.mobile && <NavButton iconName="attention" />}
-
       <NavButton iconName="bell" />
-
       {auth.user && (
         <Dropdown trigger={trigger} pointing="top right" icon={null}>
           <Dropdown.Menu>

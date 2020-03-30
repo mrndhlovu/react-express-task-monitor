@@ -4,7 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import { Button, Card, TextArea, Icon } from "semantic-ui-react";
 import { requestCreateNewCard } from "../../apis/apiRequests";
-import { resetForm } from "../../utils/appUtils";
+import { resetForm, emptyFunction } from "../../utils/appUtils";
 import { BoardContext } from "../../utils/contextUtils";
 
 const StyledTextArea = styled(TextArea)`
@@ -62,7 +62,7 @@ const CreateCard = ({
   };
 
   useEffect(() => {
-    if (!save) return;
+    if (!save) return emptyFunction();
 
     const card = { title: newCard };
     const createCard = async () =>
@@ -90,11 +90,14 @@ const CreateCard = ({
           </StyleDiv>
         </StyledButton>
       ) : (
-        <form id="create-card-input">
+        <form>
           <StyledCardContent extra>
             <StyledTextArea
+              id="create-card-input"
               placeholder="Enter a title for this card..."
               onChange={e => handleChange(e)}
+              autoFocus
+              onKeyDown={e => (e.key === "Enter" ? setSave(true) : null)}
             />
           </StyledCardContent>
 

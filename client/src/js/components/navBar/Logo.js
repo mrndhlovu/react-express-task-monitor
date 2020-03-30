@@ -30,8 +30,8 @@ const Header = styled.h1`
 
 const Logo = ({ history, mobile }) =>
   !mobile && (
-    <StyledDiv onClick={() => history.push("/")}>
-      <Header mobile={mobile}>
+    <StyledDiv>
+      <Header mobile={mobile} onClick={() => history.push("/")}>
         <Icon name="trello" />
       </Header>
     </StyledDiv>

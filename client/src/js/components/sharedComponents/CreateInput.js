@@ -34,6 +34,7 @@ const CreateInput = ({
             placeholder={placeholder}
             defaultValue={defaultValue}
             onChange={e => handleChange(e)}
+            autoFocus
           />
         </StyledCardContent>
       </TextAreaWrapper>

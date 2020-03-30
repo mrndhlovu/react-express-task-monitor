@@ -61,6 +61,7 @@ const CreateItemForm = ({
               fluid
               placeholder={placeholder}
               onChange={e => handleChange(e)}
+              autoFocus
             />
             <ButtonWrapper>
               <Button

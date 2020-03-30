@@ -68,7 +68,6 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
         buttonColor={isStarred ? "yellow" : "grey"}
         redirect={() => handleBoardStarClick()}
       />
-      <NavButton buttonText="Personal" forceText={true} />
 
       <StyledButton size="tiny">
         <Icon name={permission.icon} />
