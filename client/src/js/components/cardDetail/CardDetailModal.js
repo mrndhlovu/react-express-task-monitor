@@ -51,6 +51,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     handleUploadAttachment
   } = useContext(BoardListsContext);
   const { auth } = useContext(AppContext);
+  const hasLabel = activeCard.labels.length !== 0;
 
   const [activeCover, setActiveCardCover] = useState(null);
   const [deleteAttachment, setDeleteAttachment] = useState(null);
@@ -247,13 +248,15 @@ const CardDetailModal = ({ listPosition, match }) => {
           <Grid.Column width={12}>
             <ModalContent image>
               <LeftSideContent>
-                <CardLabels
-                  board={board}
-                  backendUpdate={backendUpdate}
-                  activeCard={activeCard}
-                  listPosition={listPosition}
-                  getSourceList={getSourceList}
-                />
+                {hasLabel && (
+                  <CardLabels
+                    board={board}
+                    backendUpdate={backendUpdate}
+                    activeCard={activeCard}
+                    listPosition={listPosition}
+                    getSourceList={getSourceList}
+                  />
+                )}
                 <CardModalDescription
                   board={board}
                   backendUpdate={backendUpdate}

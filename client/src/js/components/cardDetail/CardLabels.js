@@ -33,7 +33,6 @@ const CardLabels = ({
   getSourceList
 }) => {
   const { labels } = activeCard;
-  const hasLabel = labels.length !== 0;
 
   const [label, setLabel] = useState(null);
   const [removeLabel, setRemoveLabel] = useState(null);
@@ -89,8 +88,9 @@ const CardLabels = ({
         <Header content="Labels" as="h5" />
       </HeaderWrapper>
       <Container>
-        {hasLabel &&
-          labels.map((color, index) => <Label key={index} color={color} />)}
+        {labels.map((color, index) => (
+          <Label key={index} color={color} />
+        ))}
         <DropdownButton
           icon="add"
           header="Labels"
