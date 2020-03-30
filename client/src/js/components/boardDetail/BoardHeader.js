@@ -15,7 +15,7 @@ const HeaderContainer = styled.div`
   max-height: 40px;
   position: absolute;
   top: ${props => (props.mobile ? "6%" : "3.5%")};
-  width: 99vw;
+  width: 100vw;
 `;
 
 const TitleWrapper = styled.div`

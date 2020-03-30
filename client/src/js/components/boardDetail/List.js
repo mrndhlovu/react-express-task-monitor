@@ -10,7 +10,7 @@ import { Segment } from "semantic-ui-react";
 import { Types } from "../../constants/constants";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
-import { BoardListsContext } from "../../utils/contextUtils";
+import { BoardListsContext, AppContext } from "../../utils/contextUtils";
 import ListHeader from "./ListHeader";
 
 const StyledWrapper = styled(Segment)`
@@ -21,11 +21,19 @@ const StyledWrapper = styled(Segment)`
   max-height: 100%;
   position: relative;
   white-space: normal;
+  border-radius: 2px !important;
 `;
 
 const CardsContainer = styled.div`
-  overflow-y: scroll;
-  padding: 5px;
+  overflow-y: auto;
+  overflow-x: hidden;
+`;
+
+const CreateCardInputWrapper = styled.div`
+  margin-top: 10px;
+  background-color: #ebecf0 !important;
+  position: sticky;
+  bottom: 0;
 `;
 
 const List = ({
@@ -44,6 +52,7 @@ const List = ({
     board,
     ...otherProps
   } = useContext(BoardListsContext);
+  const { mobile } = useContext(AppContext).device;
 
   const { title, position, cards } = list;
 
@@ -54,7 +63,7 @@ const List = ({
     marginRight: "5px",
     position: "relative",
     whiteSpace: "nowrap",
-    height: "100vh"
+    height: mobile ? "79vh" : "92vh"
   };
 
   const wrappedList = (
@@ -69,7 +78,8 @@ const List = ({
           backendUpdate={backendUpdate}
           board={board}
         />
-        <CardsContainer>
+
+        <CardsContainer className="card-list">
           <CardsWrapper
             cards={cards}
             sourceListId={position}
@@ -79,11 +89,13 @@ const List = ({
             {...otherProps}
           />
         </CardsContainer>
-        <CreateCard
-          listId={position}
-          activeList={activeList === position}
-          {...otherProps}
-        />
+        <CreateCardInputWrapper>
+          <CreateCard
+            listId={position}
+            activeList={activeList === position}
+            {...otherProps}
+          />
+        </CreateCardInputWrapper>
       </StyledWrapper>
     </div>
   );

@@ -8,6 +8,8 @@ import React, {
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
+import { Sidebar } from "semantic-ui-react";
+
 import { BoardContext, AppContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
 import {
@@ -23,21 +25,19 @@ import BoardHeader from "../components/boardDetail/BoardHeader";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const StyledContainer = styled.div`
-  background-attachment: fixed;
+  height: 100vh;
+`;
+
+const Container = styled.div`
   background-color: ${props => props.bgColor};
-  height: 99vh;
-  padding-top: ${props => (props.mobile ? "27%" : "2%")};
-  position: relative;
 `;
 
 const ContentDiv = styled.div`
   display: grid;
-  height: ${props => (props.mobile ? "79vh" : "93vh")};
   left: 0;
-  overflow-y: hidden;
   position: absolute;
   top: ${props => (props.mobile ? "20%" : "7%")};
-  width: 100vw;
+  width: 100%;
 `;
 
 const BoardContainer = ({ match, history, auth }) => {
@@ -171,12 +171,16 @@ const BoardContainer = ({ match, history, auth }) => {
         showSideBar
       }}
     >
-      <StyledContainer bgColor={board.styleProperties.color}>
-        <BoardHeader />
-        <ContentDiv mobile={device.mobile}>
-          <Board />
-        </ContentDiv>
-      </StyledContainer>
+      <Container bgColor={board.styleProperties.color}>
+        <StyledContainer>
+          <BoardHeader />
+          <ContentDiv mobile={device.mobile}>
+            <Sidebar.Pushable>
+              <Board />
+            </Sidebar.Pushable>
+          </ContentDiv>
+        </StyledContainer>
+      </Container>
     </BoardContext.Provider>
   );
 };

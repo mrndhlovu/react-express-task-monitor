@@ -9,9 +9,8 @@ import CardDetailModal from "../cardDetail/CardDetailModal";
 const StyledListContainer = styled.div`
   display: flex;
   vertical-align: top;
-  height: -webkit-fill-available;
-  background-color: transparent;
-  overflow-y: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 `;
 
 const BoardLists = () => {
@@ -244,7 +243,7 @@ const BoardLists = () => {
 
   return (
     <BoardListsContext.Provider value={context}>
-      <StyledListContainer>
+      <StyledListContainer className="lists-container">
         <ListGrid
           draggingList={draggingList}
           handleMoveCardToNewList={handleMoveCardToNewList}

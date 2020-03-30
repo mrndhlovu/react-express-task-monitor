@@ -1,8 +1,6 @@
 import React, { useContext, useState, memo } from "react";
 import styled from "styled-components";
 
-import { Sidebar } from "semantic-ui-react";
-
 import { BoardContext, AppContext } from "../../utils/contextUtils";
 import BackGroundColors from "./BackGroundColors";
 import BoardLists from "./BoardLists";
@@ -11,7 +9,7 @@ import ChatSideBar from "./chatSidebar/ChatSideBar";
 import ChatIcon from "./ChatIcon";
 
 const BoardWrapper = styled.div`
-  height: 99%;
+  height: 100%;
   padding-left: ${props => (props.mobile ? "3px" : "7px")};
   position: relative;
   width: 100vw;
@@ -36,34 +34,34 @@ const Board = () => {
 
   return (
     <BoardWrapper mobile={mobile}>
-      <Sidebar.Pushable>
-        <BoardLists />
+      <BoardLists />
 
-        <BoardMenu
-          showSideBar={showSideBar}
-          handleShowMenuClick={handleShowMenuClick}
-          handleChangeColorClick={handleChangeColorClick}
-          handleDeleteBoard={handleDeleteBoard}
-        />
-        <BackGroundColors
-          showColorPicker={showColorPicker}
-          handleChangeColorClick={handleChangeColorClick}
-          handleColorPick={handleColorPick}
-        />
-
-        {openChat && (
-          <ChatSideBar
-            openChat={openChat}
-            handleClose={handleClose}
-            getMembersOnline={getMembersOnline}
-          />
-        )}
-      </Sidebar.Pushable>
-      <ChatIcon
-        handleChatsOpen={() => setOpenChat(!openChat)}
-        membersOnline={membersOnline}
-        mobile={mobile}
+      <BoardMenu
+        showSideBar={showSideBar}
+        handleShowMenuClick={handleShowMenuClick}
+        handleChangeColorClick={handleChangeColorClick}
+        handleDeleteBoard={handleDeleteBoard}
       />
+      <BackGroundColors
+        showColorPicker={showColorPicker}
+        handleChangeColorClick={handleChangeColorClick}
+        handleColorPick={handleColorPick}
+      />
+
+      {openChat && (
+        <ChatSideBar
+          openChat={openChat}
+          handleClose={handleClose}
+          getMembersOnline={getMembersOnline}
+        />
+      )}
+      {!openChat && (
+        <ChatIcon
+          handleChatsOpen={() => setOpenChat(!openChat)}
+          mobile={mobile}
+          membersOnline={membersOnline}
+        />
+      )}
     </BoardWrapper>
   );
 };

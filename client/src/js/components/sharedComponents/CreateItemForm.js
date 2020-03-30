@@ -61,6 +61,7 @@ const CreateItemForm = ({
               fluid
               placeholder={placeholder}
               onChange={e => handleChange(e)}
+              onKeyDown={e => (e.key === "Enter" ? handleCreateClick() : null)}
               autoFocus
             />
             <ButtonWrapper>
