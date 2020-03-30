@@ -281,6 +281,11 @@ const CardDetailModal = ({ listPosition, match }) => {
           </Grid.Column>
           <Grid.Column width={4}>
             <CardModalSidebar
+              board={board}
+              backendUpdate={backendUpdate}
+              activeCard={activeCard}
+              listPosition={listPosition}
+              getSourceList={getSourceList}
               addCardAttachment={addCardAttachment}
               handleUploadAttachment={handleUploadAttachment}
               handleLoadingAttachment={handleLoadingAttachment}

@@ -25,7 +25,7 @@ const CardModalSidebar = ({ ...props }) => {
     <Container>
       <StyledHeader content="ADD TO CARD" />
       <AddCardMembers />
-      <AddCardLabel />
+      <AddCardLabel {...props} />
       <AddCardCheckList />
       <AddCardDueDate />
       <AddAttachment {...props} />
