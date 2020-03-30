@@ -52,7 +52,8 @@ export const getActivity = (user, action) => {
     starred: "added board to starred list",
     removeStar: "removed board from starred list",
     addLabel: "add a card label.",
-    removeLabel: "removed a card label."
+    removeLabel: "removed a card label.",
+    description: "added card description."
   };
   const getAction = () => {
     switch (action) {
@@ -86,6 +87,8 @@ export const getActivity = (user, action) => {
         return BOARD_ACTIVITIES.addLabel;
       case "removeLabel":
         return BOARD_ACTIVITIES.removeLabel;
+      case "description":
+        return BOARD_ACTIVITIES.description;
       default:
         break;
     }

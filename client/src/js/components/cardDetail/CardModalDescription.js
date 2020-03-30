@@ -71,7 +71,7 @@ const CardModalDescription = ({
       ]
     };
 
-    description && backendUpdate(newBoard);
+    description && backendUpdate(newBoard, "lists", "description");
     setHideSaveButton(!hideSaveButton);
     setUpdated(true);
   };
