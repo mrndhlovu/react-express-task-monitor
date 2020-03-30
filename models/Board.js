@@ -59,6 +59,11 @@ const BoardSchema = new mongoose.Schema(
       type: Array,
       required: true,
       default: []
+    },
+    labels: {
+      type: Array,
+      required: true,
+      default: []
     }
   },
   {

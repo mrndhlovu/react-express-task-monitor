@@ -50,7 +50,9 @@ export const getActivity = (user, action) => {
     changeAccess: "changed board access level",
     color: "changed board color",
     starred: "added board to starred list",
-    removeStar: "removed board from starred list"
+    removeStar: "removed board from starred list",
+    addLabel: "add a card label.",
+    removeLabel: "removed a card label."
   };
   const getAction = () => {
     switch (action) {
@@ -80,6 +82,10 @@ export const getActivity = (user, action) => {
         return BOARD_ACTIVITIES.addAttachment;
       case "boardHeader":
         return BOARD_ACTIVITIES.boardHeader;
+      case "addLabel":
+        return BOARD_ACTIVITIES.addLabel;
+      case "removeLabel":
+        return BOARD_ACTIVITIES.removeLabel;
       default:
         break;
     }

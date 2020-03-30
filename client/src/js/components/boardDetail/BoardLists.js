@@ -268,7 +268,7 @@ const BoardLists = () => {
           handleCreateClick={handleCreateList}
         />
 
-        <CardDetailModal listPosition={sourceId} />
+        {!hideCardDetail && <CardDetailModal listPosition={sourceId} />}
       </StyledListContainer>
     </BoardListsContext.Provider>
   );

@@ -22,6 +22,7 @@ import CardModalDescription from "./CardModalDescription";
 import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
 import ModalImageCover from "./ModalImageCover";
+import CardLabels from "./CardLabels";
 
 const ModalContent = styled(Modal.Content)``;
 
@@ -246,6 +247,11 @@ const CardDetailModal = ({ listPosition, match }) => {
           <Grid.Column width={12}>
             <ModalContent image>
               <LeftSideContent>
+                <CardLabels
+                  board={board}
+                  backendUpdate={backendUpdate}
+                  colors={board.labels}
+                />
                 <CardModalDescription
                   board={board}
                   backendUpdate={backendUpdate}

@@ -19,21 +19,31 @@ const HeaderWrapper = styled(Dropdown.Header)`
   width: 100%;
 `;
 
-const DropdownButton = ({ buttonText, children, icon, header, color }) => {
+const DropdownButton = ({
+  buttonText,
+  children,
+  icon,
+  header,
+  color,
+  size = "tiny",
+  fluid = true,
+  labeled = true
+}) => {
   const [open, setOpen] = useState(false);
   return (
     <StyledDropdown
       button
       className="icon"
+      color={color}
       compact
       floating
-      fluid
+      fluid={fluid}
       icon={icon}
-      labeled
-      text={buttonText}
-      open={open}
+      labeled={labeled}
       onClick={() => setOpen(!open)}
-      color={color}
+      open={open}
+      size={size}
+      text={buttonText}
     >
       <Dropdown.Menu
         className="sidebar-dropdown-button"
