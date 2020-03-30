@@ -1,10 +1,11 @@
 import React, { useState, useContext, useEffect, memo } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
 import { BoardListsContext } from "../../utils/contextUtils";
 import EditCardPenIcon from "./EditCardPenIcon";
 import CardCover from "../cardDetail/CardCover";
-import { withRouter } from "react-router-dom";
+import LabelsSnippets from "./LabelsSnippets";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -62,6 +63,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
       onMouseLeave={() => setShowEditButton(!showEditButton)}
       onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
+      <LabelsSnippets labels={board.labels} />
       <CardCover card={card} />
       <CardTitle edit={showEditButton} title={card.title} />
       <EditCardPenIcon
