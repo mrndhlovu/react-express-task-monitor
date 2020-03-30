@@ -250,7 +250,9 @@ const CardDetailModal = ({ listPosition, match }) => {
                 <CardLabels
                   board={board}
                   backendUpdate={backendUpdate}
-                  colors={board.labels}
+                  activeCard={activeCard}
+                  listPosition={listPosition}
+                  getSourceList={getSourceList}
                 />
                 <CardModalDescription
                   board={board}

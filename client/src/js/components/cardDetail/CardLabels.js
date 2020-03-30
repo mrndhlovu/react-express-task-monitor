@@ -25,36 +25,63 @@ const HeaderWrapper = styled.div`
   padding-bottom: 10px;
 `;
 
-const CardLabels = ({ colors = [], backendUpdate, board }) => {
-  const hasLabel = colors.length !== 0;
+const CardLabels = ({
+  activeCard,
+  backendUpdate,
+  board,
+  listPosition,
+  getSourceList
+}) => {
+  const { labels } = activeCard;
+  const hasLabel = labels.length !== 0;
+
   const [label, setLabel] = useState(null);
   const [removeLabel, setRemoveLabel] = useState(null);
 
   const handleColorClick = color => {
-    if (colors.includes(color)) return setRemoveLabel(color);
+    if (labels.includes(color)) return setRemoveLabel(color);
     setLabel(color);
   };
 
   useEffect(() => {
     let activity;
+    const sourceList = getSourceList(listPosition).shift();
 
     if (label) {
       activity = "addLabel";
-      board.labels.push(label);
+      activeCard.labels.push(label);
     }
 
     if (removeLabel) {
       activity = "removeLabel";
-      board.labels.splice(colors.indexOf(removeLabel), 1);
+      activeCard.labels.splice(labels.indexOf(removeLabel), 1);
     }
 
-    activity && backendUpdate(board, "labels", activity);
+    if (activity) {
+      sourceList.cards.splice(
+        sourceList.cards.indexOf(activeCard),
+        1,
+        activeCard
+      );
+
+      board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+      backendUpdate(board, "lists", activity);
+    }
 
     return () => {
       setLabel(null);
       setRemoveLabel(null);
     };
-  }, [label, removeLabel, board, backendUpdate, colors]);
+  }, [
+    activeCard,
+    backendUpdate,
+    board,
+    getSourceList,
+    label,
+    labels,
+    listPosition,
+    removeLabel
+  ]);
 
   return (
     <CardDetailSegment>
@@ -63,7 +90,7 @@ const CardLabels = ({ colors = [], backendUpdate, board }) => {
       </HeaderWrapper>
       <Container>
         {hasLabel &&
-          colors.map((color, index) => <Label key={index} color={color} />)}
+          labels.map((color, index) => <Label key={index} color={color} />)}
         <DropdownButton
           icon="add"
           header="Labels"
@@ -74,7 +101,7 @@ const CardLabels = ({ colors = [], backendUpdate, board }) => {
         >
           <CardLabelColors
             handleColorClick={handleColorClick}
-            labels={colors}
+            labels={labels}
           />
         </DropdownButton>
       </Container>

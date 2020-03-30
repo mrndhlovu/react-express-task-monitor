@@ -63,7 +63,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
       onMouseLeave={() => setShowEditButton(!showEditButton)}
       onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
-      <LabelsSnippets labels={board.labels} />
+      <LabelsSnippets labels={card.labels} />
       <CardCover card={card} />
       <CardTitle edit={showEditButton} title={card.title} />
       <EditCardPenIcon
