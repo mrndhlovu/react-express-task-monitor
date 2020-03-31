@@ -39,7 +39,7 @@ const CardSchema = mongoose.Schema(
       default: [],
       required: true
     },
-    checklist: {
+    checklists: {
       type: Array,
       default: [],
       required: true

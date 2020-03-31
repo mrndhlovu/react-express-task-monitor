@@ -46,3 +46,6 @@ export const userInfo = () =>
 
 export const requestUserInvite = (id, email) =>
   axios.patch(`${BOARDS_EP}/id/${id}/invite`, { email }, params);
+
+export const requestNewChecklistItem = (body, id) =>
+  axios.patch(`${CARDS_EP}/${id}/list-item`, body, params);

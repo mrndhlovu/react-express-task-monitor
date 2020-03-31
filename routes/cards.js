@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
 const Card = require("../models/Card");
+const CheckListItem = require("../models/CheckListItem");
 const auth = require("../utils.js/middleware/authMiddleware");
 
 const updateBoardLists = (id, newLists) =>
@@ -35,6 +36,37 @@ router.patch("/:boardId", auth, async (req, res) => {
     board.lists[listId - 1].cards.push(newCard);
 
     board.updateActivity(req.user.fname, "addNewCard");
+
+    await updateBoardLists(_id, board.lists);
+
+    res.send(board);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+});
+
+router.patch("/:boardId/list-item", auth, async (req, res) => {
+  const _id = req.params.boardId;
+  const { listItem, cardId, listId } = req.body;
+
+  try {
+    board = await Board.findOne({ _id, owner: req.user._id });
+
+    if (!board) {
+      board = await Board.findOne({ _id });
+      board.validateBoardMember(req.user._id);
+    }
+
+    const newListItemPosition =
+      board.lists[listId - 1].cards[cardId - 1].checklists.length + 1;
+
+    const checkListItem = new CheckListItem({
+      ...listItem,
+      position: newListItemPosition
+    });
+
+    board.lists[listId - 1].cards[cardId - 1].checklists.push(checkListItem);
+    board.updateActivity(req.user.fname, "addChecklistItem");
 
     await updateBoardLists(_id, board.lists);
 

@@ -53,7 +53,8 @@ export const getActivity = (user, action) => {
     removeStar: "removed board from starred list",
     addLabel: "add a card label.",
     removeLabel: "removed a card label.",
-    description: "added card description."
+    description: "added card description.",
+    updatedChecklist: "updated checklist"
   };
   const getAction = () => {
     switch (action) {
@@ -89,6 +90,8 @@ export const getActivity = (user, action) => {
         return BOARD_ACTIVITIES.removeLabel;
       case "description":
         return BOARD_ACTIVITIES.description;
+      case "updatedChecklist":
+        return BOARD_ACTIVITIES.updatedChecklist;
       default:
         break;
     }
@@ -106,3 +109,6 @@ export const getFormattedString = string =>
 
 export const capitalize = string =>
   string.charAt(0).toUpperCase() + string.slice(1);
+
+export const getProgression = (partialValue, totalValue) =>
+  (100 * partialValue) / totalValue;

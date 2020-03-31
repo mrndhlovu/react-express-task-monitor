@@ -10,7 +10,11 @@ import { withRouter } from "react-router-dom";
 
 import { Modal, Button, Grid } from "semantic-ui-react";
 
-import { BoardListsContext, AppContext } from "../../utils/contextUtils";
+import {
+  BoardListsContext,
+  AppContext,
+  BoardContext
+} from "../../utils/contextUtils";
 import { checkDuplicate, emptyFunction } from "../../utils/appUtils";
 import {
   requestCardCoverUpdate,
@@ -23,6 +27,7 @@ import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
 import ModalImageCover from "./ModalImageCover";
 import CardLabels from "./CardLabels";
+import CheckLists from "./CheckLists";
 
 const ModalContent = styled(Modal.Content)``;
 
@@ -50,6 +55,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     activeCard,
     handleUploadAttachment
   } = useContext(BoardListsContext);
+  const { saveBoardChanges } = useContext(BoardContext);
   const { auth } = useContext(AppContext);
   const hasLabel = activeCard.labels.length !== 0;
 
@@ -264,6 +270,16 @@ const CardDetailModal = ({ listPosition, match }) => {
                   getSourceList={getSourceList}
                   activeCard={activeCard}
                 />
+                <CheckLists
+                  activeCard={activeCard}
+                  backendUpdate={backendUpdate}
+                  board={board}
+                  getSourceList={getSourceList}
+                  listPosition={listPosition}
+                  match={match}
+                  saveBoardChanges={saveBoardChanges}
+                />
+
                 <Attachments
                   activeCover={activeCover}
                   card={activeCard}

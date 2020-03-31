@@ -24,7 +24,8 @@ const CreateInput = ({
   handleChange,
   placeholder,
   defaultValue,
-  buttonText
+  buttonText,
+  id
 }) => {
   return (
     <>
@@ -35,6 +36,8 @@ const CreateInput = ({
             defaultValue={defaultValue}
             onChange={e => handleChange(e)}
             autoFocus
+            id={id}
+            onKeyDown={e => (e.key === "Enter" ? handleCreateClick() : null)}
           />
         </StyledCardContent>
       </TextAreaWrapper>

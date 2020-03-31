@@ -44,7 +44,8 @@ const CreateItemForm = ({
   handleAddList,
   placeholder,
   showInputField,
-  ctaText
+  ctaText,
+  color = "grey"
 }) => {
   return (
     <StyledWrapper>
@@ -77,7 +78,7 @@ const CreateItemForm = ({
                   name="close"
                   size="large"
                   onClick={() => handleAddList()}
-                  color="grey"
+                  color={color}
                 />
               </IconWrapper>
             </ButtonWrapper>

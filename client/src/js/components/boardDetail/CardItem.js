@@ -30,6 +30,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
   const { backendUpdate, handleCardClick, updateBoard, board } = useContext(
     BoardListsContext
   );
+  const hasLabel = card.labels.length !== 0;
 
   const [showEditButton, setShowEditButton] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -63,7 +64,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
       onMouseLeave={() => setShowEditButton(!showEditButton)}
       onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
-      <LabelsSnippets labels={card.labels} />
+      {hasLabel && <LabelsSnippets labels={card.labels} />}
       <CardCover card={card} />
       <CardTitle edit={showEditButton} title={card.title} />
       <EditCardPenIcon
