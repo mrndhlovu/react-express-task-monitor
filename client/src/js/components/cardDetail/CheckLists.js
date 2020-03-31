@@ -34,10 +34,12 @@ const CheckLists = ({
   const [description, setDescription] = useState(null);
   const [done, setDone] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [removeChecklist, setRemoveChecklist] = useState(false);
 
   const { id } = match.params;
+  const sourceList = getSourceList(listPosition).shift();
 
-  const deleteChecklist = () => {};
+  const deleteChecklist = () => setRemoveChecklist(true);
   const handleChange = e => setDescription(e.target.value);
   const handleAddClick = () => setDone(true);
 
@@ -48,6 +50,25 @@ const CheckLists = ({
     },
     []
   );
+
+  useEffect(() => {
+    let newCard;
+    if (removeChecklist) {
+      newCard = { ...card, checklists: [] };
+    }
+
+    if (removeChecklist) {
+      setCard(newCard);
+
+      sourceList.cards.splice(sourceList.cards.indexOf(card), 1, newCard);
+      board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
+      backendUpdate(board, "lists", "removeChecklist");
+    }
+    return () => {
+      setRemoveChecklist(false);
+    };
+  }, [removeChecklist, backendUpdate, board, card, sourceList, checked]);
 
   useEffect(() => {
     let newCard;
@@ -64,7 +85,7 @@ const CheckLists = ({
 
     if (newCard) {
       setCard(newCard);
-      const sourceList = getSourceList(listPosition).shift();
+
       sourceList.cards.splice(sourceList.cards.indexOf(card), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
@@ -75,7 +96,15 @@ const CheckLists = ({
       setChecked(null);
       setIsLoading(false);
     };
-  }, [checked, card, board, backendUpdate, getSourceList, listPosition]);
+  }, [
+    checked,
+    card,
+    board,
+    backendUpdate,
+    getSourceList,
+    listPosition,
+    sourceList
+  ]);
 
   useEffect(() => {
     if (!done) return emptyFunction();

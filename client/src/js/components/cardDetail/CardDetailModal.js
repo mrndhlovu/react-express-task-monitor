@@ -69,6 +69,7 @@ const CardDetailModal = ({ listPosition, match }) => {
   const [newCover, setNewCover] = useState(null);
   const [removeCover, setRemoveCover] = useState(false);
   const { id } = match.params;
+  console.log("checklist: ", checklist, hasChecklist);
 
   const addCardAttachment = useCallback(
     attachment => {

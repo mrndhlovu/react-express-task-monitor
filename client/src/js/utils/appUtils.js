@@ -54,7 +54,8 @@ export const getActivity = (user, action) => {
     addLabel: "add a card label.",
     removeLabel: "removed a card label.",
     description: "added card description.",
-    updatedChecklist: "updated checklist"
+    updatedChecklist: "updated checklist",
+    removeChecklist: "removed checklist"
   };
   const getAction = () => {
     switch (action) {
@@ -92,6 +93,8 @@ export const getActivity = (user, action) => {
         return BOARD_ACTIVITIES.description;
       case "updatedChecklist":
         return BOARD_ACTIVITIES.updatedChecklist;
+      case "removeChecklist":
+        return BOARD_ACTIVITIES.removeChecklist;
       default:
         break;
     }
