@@ -40,6 +40,10 @@ const ButtonWrapper = styled.div`
 
 const LeftSideContent = styled(Modal.Description)``;
 
+const Container = styled.div`
+  padding: 25px;
+`;
+
 const StyledIcon = styled(Button)`
   border-radius: 50px !important;
 `;
@@ -247,80 +251,84 @@ const CardDetailModal = ({ listPosition, match }) => {
         handleCardClick={handleCardClick}
         isLoading={isLoading}
       />
-      <ModalHeader
-        title={activeCard.title}
-        cardPosition={activeCard.position}
-        listPosition={listPosition}
-        sourceTitle={sourceTitle}
-        cardCover={activeCard.cardCover}
-      />
-      <Grid columns={2} divided stackable>
-        <Grid.Row stretched>
-          <Grid.Column width={12}>
-            <ModalContent image>
-              <LeftSideContent>
-                {hasLabel && (
-                  <CardLabels
+
+      <Container>
+        <ModalHeader
+          title={activeCard.title}
+          cardPosition={activeCard.position}
+          listPosition={listPosition}
+          sourceTitle={sourceTitle}
+          cardCover={activeCard.cardCover}
+        />
+
+        <Grid columns={2} divided stackable>
+          <Grid.Row stretched>
+            <Grid.Column width={12}>
+              <ModalContent image>
+                <LeftSideContent>
+                  {hasLabel && (
+                    <CardLabels
+                      board={board}
+                      backendUpdate={backendUpdate}
+                      activeCard={activeCard}
+                      listPosition={listPosition}
+                      getSourceList={getSourceList}
+                    />
+                  )}
+                  <CardModalDescription
                     board={board}
                     backendUpdate={backendUpdate}
-                    activeCard={activeCard}
                     listPosition={listPosition}
                     getSourceList={getSourceList}
-                  />
-                )}
-                <CardModalDescription
-                  board={board}
-                  backendUpdate={backendUpdate}
-                  listPosition={listPosition}
-                  getSourceList={getSourceList}
-                  activeCard={activeCard}
-                />
-                {(hasChecklist || checklist) && (
-                  <CheckLists
                     activeCard={activeCard}
-                    backendUpdate={backendUpdate}
+                  />
+                  {(hasChecklist || checklist) && (
+                    <CheckLists
+                      activeCard={activeCard}
+                      backendUpdate={backendUpdate}
+                      board={board}
+                      getSourceList={getSourceList}
+                      listPosition={listPosition}
+                      match={match}
+                      saveBoardChanges={saveBoardChanges}
+                    />
+                  )}
+
+                  <Attachments
+                    activeCover={activeCover}
+                    card={activeCard}
+                    isLoading={isLoading}
+                    handleMakeCover={handleMakeCover}
+                    handleRemoveCover={handleRemoveCover}
+                    handleDeleteAttachment={handleDeleteAttachment}
+                  />
+
+                  <CardModalActivities
+                    handleShowDetails={() => setHideActivities(!hideActivities)}
+                    hideActivities={hideActivities}
                     board={board}
-                    getSourceList={getSourceList}
-                    listPosition={listPosition}
-                    match={match}
-                    saveBoardChanges={saveBoardChanges}
+                    user={auth.user.fname}
                   />
-                )}
-
-                <Attachments
-                  activeCover={activeCover}
-                  card={activeCard}
-                  isLoading={isLoading}
-                  handleMakeCover={handleMakeCover}
-                  handleRemoveCover={handleRemoveCover}
-                  handleDeleteAttachment={handleDeleteAttachment}
-                />
-
-                <CardModalActivities
-                  handleShowDetails={() => setHideActivities(!hideActivities)}
-                  hideActivities={hideActivities}
-                  board={board}
-                  user={auth.user.fname}
-                />
-              </LeftSideContent>
-            </ModalContent>
-          </Grid.Column>
-          <Grid.Column width={4}>
-            <CardModalSidebar
-              activeCard={activeCard}
-              addCardAttachment={addCardAttachment}
-              backendUpdate={backendUpdate}
-              board={board}
-              getSourceList={getSourceList}
-              handleLoadingAttachment={handleLoadingAttachment}
-              handleUploadAttachment={handleUploadAttachment}
-              listPosition={listPosition}
-              handleCreateChecklist={handleCreateChecklist}
-              hasChecklist={hasChecklist}
-            />
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+                </LeftSideContent>
+              </ModalContent>
+            </Grid.Column>
+            <Grid.Column width={4}>
+              <CardModalSidebar
+                activeCard={activeCard}
+                addCardAttachment={addCardAttachment}
+                backendUpdate={backendUpdate}
+                board={board}
+                getSourceList={getSourceList}
+                handleLoadingAttachment={handleLoadingAttachment}
+                handleUploadAttachment={handleUploadAttachment}
+                listPosition={listPosition}
+                handleCreateChecklist={handleCreateChecklist}
+                hasChecklist={hasChecklist}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Container>
     </Modal>
   );
 };
