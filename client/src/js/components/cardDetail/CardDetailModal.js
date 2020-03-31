@@ -58,8 +58,10 @@ const CardDetailModal = ({ listPosition, match }) => {
   const { saveBoardChanges } = useContext(BoardContext);
   const { auth } = useContext(AppContext);
   const hasLabel = activeCard.labels.length !== 0;
+  const hasChecklist = activeCard.checklists.length !== 0;
 
   const [activeCover, setActiveCardCover] = useState(null);
+  const [checklist, setCheckList] = useState(false);
   const [deleteAttachment, setDeleteAttachment] = useState(null);
   const [hideActivities, setHideActivities] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -118,6 +120,8 @@ const CardDetailModal = ({ listPosition, match }) => {
     setRemoveCover(true);
     handleLoadingAttachment(true);
   };
+
+  const handleCreateChecklist = () => setCheckList(true);
 
   useEffect(() => {
     if (!removeCover) return;
@@ -270,15 +274,17 @@ const CardDetailModal = ({ listPosition, match }) => {
                   getSourceList={getSourceList}
                   activeCard={activeCard}
                 />
-                <CheckLists
-                  activeCard={activeCard}
-                  backendUpdate={backendUpdate}
-                  board={board}
-                  getSourceList={getSourceList}
-                  listPosition={listPosition}
-                  match={match}
-                  saveBoardChanges={saveBoardChanges}
-                />
+                {(hasChecklist || checklist) && (
+                  <CheckLists
+                    activeCard={activeCard}
+                    backendUpdate={backendUpdate}
+                    board={board}
+                    getSourceList={getSourceList}
+                    listPosition={listPosition}
+                    match={match}
+                    saveBoardChanges={saveBoardChanges}
+                  />
+                )}
 
                 <Attachments
                   activeCover={activeCover}
@@ -300,14 +306,16 @@ const CardDetailModal = ({ listPosition, match }) => {
           </Grid.Column>
           <Grid.Column width={4}>
             <CardModalSidebar
-              board={board}
-              backendUpdate={backendUpdate}
               activeCard={activeCard}
-              listPosition={listPosition}
-              getSourceList={getSourceList}
               addCardAttachment={addCardAttachment}
-              handleUploadAttachment={handleUploadAttachment}
+              backendUpdate={backendUpdate}
+              board={board}
+              getSourceList={getSourceList}
               handleLoadingAttachment={handleLoadingAttachment}
+              handleUploadAttachment={handleUploadAttachment}
+              listPosition={listPosition}
+              handleCreateChecklist={handleCreateChecklist}
+              hasChecklist={hasChecklist}
             />
           </Grid.Column>
         </Grid.Row>

@@ -32,12 +32,12 @@ const CreateInput = ({
       <TextAreaWrapper>
         <StyledCardContent extra>
           <StyledInput
-            placeholder={placeholder}
-            defaultValue={defaultValue}
-            onChange={e => handleChange(e)}
             autoFocus
+            defaultValue={defaultValue}
             id={id}
+            onChange={e => handleChange(e)}
             onKeyDown={e => (e.key === "Enter" ? handleCreateClick() : null)}
+            placeholder={placeholder}
           />
         </StyledCardContent>
       </TextAreaWrapper>

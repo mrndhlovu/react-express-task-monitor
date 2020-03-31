@@ -95,16 +95,26 @@ const CheckLists = ({
         id
       )
         .then(res => {
-          setDescription(null);
           saveBoardChanges(res.data);
+
+          const updatedList = res.data.lists
+            .filter(list => list.position === listPosition)
+            .shift();
+
+          const newCard = updatedList.cards
+            .filter(cardItem => cardItem._id === card._id)
+            .shift();
+
+          setCard(newCard);
         })
         .catch(error => {});
     createListItem();
     setDone(false);
 
-    resetForm("checklist-item");
     return () => {
+      resetForm("checklist-item");
       setDone(false);
+      setDescription(null);
       setDescription(null);
     };
   }, [
@@ -137,18 +147,15 @@ const CheckLists = ({
         </div>
       </CheckListHeader>
       <ProgressBar checklistName={checklistName} card={card} />
-      {card.checklists.map(
-        item =>
-          item.name === checklistName && (
-            <ChecklistItem
-              handleCheckboxClick={handleCheckboxClick}
-              isChecked={item.status === "done"}
-              item={item}
-              key={item._id}
-              isLoading={isLoading}
-            />
-          )
-      )}
+      {card.checklists.map(item => (
+        <ChecklistItem
+          handleCheckboxClick={handleCheckboxClick}
+          isChecked={item.status === "done"}
+          item={item}
+          key={item._id}
+          isLoading={isLoading}
+        />
+      ))}
 
       {createItem ? (
         <CreateInput

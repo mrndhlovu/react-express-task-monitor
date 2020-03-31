@@ -1,10 +1,30 @@
 import React from "react";
-import DropdownButton from "../sharedComponents/DropdownButton";
+import styled from "styled-components";
 
-const AddCardCheckList = () => {
+import DropdownButton from "../sharedComponents/DropdownButton";
+import { Button } from "semantic-ui-react";
+
+const Container = styled.div`
+  padding: 8px 5px;
+`;
+
+const AddCardCheckList = ({ handleCreateChecklist }) => {
   return (
-    <DropdownButton icon="check square outline" buttonText="Checklist">
-      AddCardCheckList
+    <DropdownButton
+      icon="check square outline"
+      header="Add Checklist"
+      buttonText="Checklist"
+    >
+      <Container>
+        <Button
+          fluid
+          compact
+          positive
+          content="Add"
+          defaultValue="Checklist"
+          onClick={() => handleCreateChecklist()}
+        />
+      </Container>
     </DropdownButton>
   );
 };
