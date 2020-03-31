@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { BoardListsContext } from "../../utils/contextUtils";
-import EditCardPenIcon from "./EditCardPenIcon";
+import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
+import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
 
 const CardTitle = styled.div`
@@ -18,7 +19,7 @@ const CardTitle = styled.div`
   }
 `;
 
-const Container = styled.div`
+const ContentWrapper = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -26,11 +27,30 @@ const Container = styled.div`
   position: relative;
 `;
 
+const Container = styled.div`
+  padding: 5px;
+`;
+
+const CardBadges = styled.div`
+  padding: 2px 10px;
+  display: flex;
+`;
+
+const Span = styled.span`
+  font-size: 12px;
+`;
+
 const CardItem = ({ card, sourceListId, sourceTitle }) => {
   const { backendUpdate, handleCardClick, updateBoard, board } = useContext(
     BoardListsContext
   );
   const hasLabel = card.labels.length !== 0;
+  const hasAttachments =
+    card.attachments.images.length !== 0 ||
+    card.attachments.documents.length !== 0;
+  const hasChecklist = card.checklists.length !== 0;
+  const hasDescription = card.description !== undefined;
+  const hasComments = card.comments.length !== 0;
 
   const [showEditButton, setShowEditButton] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -59,19 +79,33 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
   }, [card, deleting, sourceListId, backendUpdate, board, updateBoard]);
 
   return (
-    <Container
+    <ContentWrapper
       onMouseEnter={() => setShowEditButton(!showEditButton)}
       onMouseLeave={() => setShowEditButton(!showEditButton)}
       onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
       {hasLabel && <LabelsSnippets labels={card.labels} />}
-      <CardCover card={card} />
-      <CardTitle edit={showEditButton} title={card.title} />
+      <Container>
+        <CardCover card={card} />
+      </Container>
+      <Container>
+        <CardTitle edit={showEditButton} title={card.title} />
+        {card.shortDescription && <Span>{card.shortDescription}</Span>}
+      </Container>
+      <CardBadges>
+        {hasAttachments && <CardBadge icon="attach" />}
+        {hasChecklist && <CardBadge icon="check square outline" />}
+        {hasComments && (
+          <CardBadge icon="comment outline" content={card.comments.length} />
+        )}
+        {hasDescription && <CardBadge icon="list" />}
+      </CardBadges>
+
       <EditCardPenIcon
         handleDeleteCard={() => setDeleting(true)}
         showEditButton={showEditButton}
       />
-    </Container>
+    </ContentWrapper>
   );
 };
 

@@ -43,6 +43,14 @@ const CardSchema = mongoose.Schema(
       type: Array,
       default: [],
       required: true
+    },
+    shortDescription: {
+      type: String,
+      default: ""
+    },
+    description: {
+      type: String,
+      default: ""
     }
   },
   {

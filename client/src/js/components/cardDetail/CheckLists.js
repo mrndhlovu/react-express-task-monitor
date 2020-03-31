@@ -169,7 +169,8 @@ const CheckLists = ({
       ) : (
         <Button
           content="Add an item"
-          size="small"
+          compact
+          positive
           onClick={() => setCreateItem(!createItem)}
         />
       )}

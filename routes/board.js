@@ -109,7 +109,8 @@ router.patch("/id/:boardId", auth, async (req, res) => {
     "labels",
     "lists",
     "styleProperties",
-    "title"
+    "title",
+    "description"
   ];
   const isValidField = updates.every(update => allowedUpdates.includes(update));
 
