@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router-dom";
 
-import { AppContext } from "../utils/contextUtils";
+import { MainContext } from "../utils/contextUtils";
 import { requestAuthLogin } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
 import LoginPage from "../components/auth/LoginPage";
@@ -9,7 +9,7 @@ import LoginPage from "../components/auth/LoginPage";
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
 
-  const { authenticated } = useContext(AppContext).auth;
+  const { authenticated } = useContext(MainContext).auth;
   const [credentials, setCredentials] = useState({
     password: null,
     email: null

@@ -2,7 +2,7 @@ import React, { useContext, memo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 import LeftNavButtons from "./LeftNavButtons";
 import Logo from "./Logo";
 import RightNavButtons from "./RightNavButtons";
@@ -19,7 +19,7 @@ const NavWrapper = styled.nav`
 `;
 
 const NavHeader = ({ history, color }) => {
-  const { device } = useContext(AppContext);
+  const { device } = useContext(MainContext);
 
   return (
     <NavWrapper color={color}>

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import { AppContext, HomepageContext } from "../../utils/contextUtils";
+import { MainContext, HomepageContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
 import BoardCategory from "./BoardCategory";
 
@@ -12,9 +12,10 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard, device } = useContext(AppContext);
+  const { makeNewBoard, device, auth } = useContext(MainContext);
   const { boards } = useContext(HomepageContext);
   const hasBoards = boards.length > 0;
+  const { user } = auth;
 
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
@@ -39,24 +40,15 @@ const BoardsSummary = () => {
   return (
     <StyledContainer mobile={device.mobile}>
       <>
-        {hasBoards && boards[0].category.includes("starred") && (
-          <BoardCategory
-            icon="star"
-            header="Starred Boards"
-            category="starred"
-          />
+        {hasBoards && user.starred.includes(boards[0]._id) && (
+          <BoardCategory icon="star" header="Starred Boards" />
         )}
-        {hasBoards && boards[0].category.includes("recent") && (
-          <BoardCategory
-            icon="clock"
-            header="Recently Viewed"
-            category="recent"
-          />
+        {hasBoards && user.viewedRecent.includes(boards[0]._id) && (
+          <BoardCategory icon="clock" header="Recently Viewed" />
         )}
         <BoardCategory
           icon="user"
           header="Personal Boards"
-          category="default"
           showNewBoardModal={showNewBoardModal}
           isDefault={true}
           isLast={true}

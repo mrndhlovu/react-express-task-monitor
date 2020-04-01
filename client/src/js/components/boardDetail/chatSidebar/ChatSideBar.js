@@ -16,7 +16,7 @@ import {
   emptyFunction,
   getFormattedString
 } from "../../../utils/appUtils";
-import { AppContext, BoardContext } from "../../../utils/contextUtils";
+import { MainContext, BoardContext } from "../../../utils/contextUtils";
 import { getRootUrl } from "../../../utils/urls";
 import RoomSelector from "./RoomSelector";
 import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
@@ -39,7 +39,7 @@ const FormWrapper = styled.div`
 `;
 
 const ChatSideBar = ({ openChat }) => {
-  const { fname } = useContext(AppContext).auth.user;
+  const { fname } = useContext(MainContext).auth.user;
   const { board, backendUpdate } = useContext(BoardContext);
   const name = getFormattedString(fname);
 

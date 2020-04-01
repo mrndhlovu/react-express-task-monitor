@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 
-import { BoardContext, AppContext } from "../../utils/contextUtils";
+import { BoardContext, MainContext } from "../../utils/contextUtils";
 import { Menu, Divider } from "semantic-ui-react";
 import Activities from "../cardDetail/Activities";
 import ActivitiesHeader from "../cardDetail/ActivitiesHeader";
@@ -17,7 +17,7 @@ const BoardMenu = ({
   showSideBar
 }) => {
   const { board, handleShowMenuClick } = useContext(BoardContext);
-  const { user } = useContext(AppContext).auth;
+  const { user } = useContext(MainContext).auth;
   const [activities, setActivities] = useState(false);
 
   return (

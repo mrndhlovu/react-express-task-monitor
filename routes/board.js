@@ -6,40 +6,32 @@ const {
   sendInvitationEmail
 } = require("../utils.js/middleware/emailMiddleware");
 const { CLIENT_URL } = require("../utils.js/config");
+const ObjectID = require("mongodb").ObjectID;
 
 router.get("/", auth, async (req, res) => {
   const match = {};
   if (req.query.archived) match.archived = req.query.archived === "true";
 
   try {
-    await req.user
-      .populate({
-        path: "boards",
-        match
-      })
-      .execPopulate();
-    const boards = req.user.boards;
+    let boards = [];
+    const userId = new ObjectID(req.user._id);
 
-    let invitedBoards = [];
+    const getBoards = async () => {
+      const allBoards = await Board.find();
 
-    const userId = req.user._id;
-
-    const getInvitedBoards = async () => {
-      await Board.find({}).then(allBoards =>
-        Object.keys(allBoards).map(index => {
-          if (allBoards[index].members.includes(userId)) {
-            invitedBoards.push(allBoards[index]);
+      Object.keys(allBoards).map(index => {
+        allBoards[index].members.map(member => {
+          const boardId = new ObjectID(member.id);
+          boardId.equals(userId) &&
+            boards.push(allBoards[index]) &&
             allBoards[index].populate("owner").execPopulate();
-          }
-        })
-      );
+        });
+      });
     };
 
-    await getInvitedBoards();
+    await getBoards();
 
-    const data = [...boards, ...invitedBoards];
-
-    res.send(data);
+    res.send(boards);
   } catch (error) {
     res.status(400).send("Failed to retrieve user boards!");
   }
@@ -67,7 +59,13 @@ router.delete("/id/:boardId", auth, async (req, res) => {
   const _id = req.params.boardId;
 
   try {
-    await Board.deleteOne({ _id, owner: req.user._id });
+    await Board.findById({ _id }).then(board => {
+      board.members.map(member => {
+        if (member.isAdmin) return board.delete();
+        throw "Access level limited! Only admin can delete a board!";
+      });
+    });
+
     res.send({ message: "Board deleted" });
   } catch (error) {
     res.status(400).send({ message: error });
@@ -77,22 +75,26 @@ router.delete("/id/:boardId", auth, async (req, res) => {
 router.patch("/id/:boardId/invite", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { email } = req.body;
+  const redirectLink = `${CLIENT_URL}/#/boards/id/${_id}?via=invite`;
+
   const DEFAULT_ACCESS_LEVELS = { private: false, public: false, team: false };
   try {
     const board = await Board.findOne({ _id, owner: req.user._id });
-    const user = await User.findOne({ email });
-    board.members.push(user._id);
+    const invitedUser = await User.findOne({ email });
+
+    const member = { id: invitedUser._id, isAdmin: false };
+    board.members.push(member);
+
     board.accessLevel = {
       ...board.accessLevel,
       ...DEFAULT_ACCESS_LEVELS,
       team: true
     };
-    const redirectLink = `${CLIENT_URL}/#/boards/id/${_id}?via=invite`;
     sendInvitationEmail(email, req.user.fname, "admin", redirectLink);
     board.save();
     res.send({ message: "User invited and added to board members!" });
   } catch (error) {
-    res.status(400).send({ message: "User email not found" });
+    res.status(400).send({ message: "User with that email not found!" });
   }
 });
 
@@ -141,6 +143,8 @@ router.post("/create", auth, async (req, res) => {
     ...req.body,
     owner: req.user._id
   });
+  const member = { id: `${req.user._id}`, isAdmin: true };
+  board.members.push(member);
 
   try {
     const savedBoard = await board.save();

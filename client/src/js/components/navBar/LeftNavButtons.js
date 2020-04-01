@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import NavButton from "../sharedComponents/NavButton";
 import SearchBar from "./SearchBar";
 import { Dropdown, Icon } from "semantic-ui-react";
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 import { useFetch } from "../../utils/hookUtils";
 
 const StyledDiv = styled.div`
@@ -22,7 +22,7 @@ const StyledSpan = styled.span`
 `;
 
 const LeftNavButtons = ({ history, results, value }) => {
-  const { isLoading, device } = useContext(AppContext);
+  const { isLoading, device } = useContext(MainContext);
   const [data] = useFetch();
 
   const [showBoardList, setShowBoardList] = useState(false);

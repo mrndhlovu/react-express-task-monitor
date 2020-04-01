@@ -3,7 +3,7 @@ import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Divider } from "semantic-ui-react";
 import styled from "styled-components";
 import { listMenuOptions } from "../../constants/constants";
-import { BoardContext, AppContext } from "../../utils/contextUtils";
+import { BoardContext, MainContext } from "../../utils/contextUtils";
 
 const Wrapper = styled.div`
   display: grid;
@@ -46,7 +46,7 @@ const ListMenu = ({
   const { backendUpdate, board } = useContext(BoardContext);
   const sourceId = listPosition;
 
-  const { getSourceList } = useContext(AppContext);
+  const { getSourceList } = useContext(MainContext);
 
   const [newBoard, setNewBoard] = useState(null);
 

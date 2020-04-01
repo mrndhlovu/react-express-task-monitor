@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 import { Dropdown } from "semantic-ui-react";
 import { getUserInitials } from "../../utils/appUtils";
 import { requestAuthLogout } from "../../apis/apiRequests";
@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
 `;
 
 const RightNavButtons = () => {
-  const { auth } = useContext(AppContext);
+  const { auth } = useContext(MainContext);
 
   const handleLogOut = async () => {
     await requestAuthLogout().then(res => {

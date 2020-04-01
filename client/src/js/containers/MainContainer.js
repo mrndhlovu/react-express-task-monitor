@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
-import { AppContext } from "../utils/contextUtils";
+import { MainContext } from "../utils/contextUtils";
 import { DEFAULT_NAV_COLOR } from "../constants/constants";
 import { emptyFunction } from "../utils/appUtils";
 import { requestNewBoard } from "../apis/apiRequests";
@@ -49,7 +49,7 @@ const MainContainer = ({ children, history, auth }) => {
   }, [update]);
 
   return (
-    <AppContext.Provider
+    <MainContext.Provider
       value={{
         auth: { authenticated, user: data.data, loading: isLoading },
         device,
@@ -69,7 +69,7 @@ const MainContainer = ({ children, history, auth }) => {
         {children}
         {search && <SearchPage />}
       </Container>
-    </AppContext.Provider>
+    </MainContext.Provider>
   );
 };
 

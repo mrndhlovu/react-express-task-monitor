@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Sidebar, Menu } from "semantic-ui-react";
 
 import SideBarHeader from "../home/SideBarHeader";
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 
 const Container = styled.div`
   background-color: "#eee";
@@ -16,7 +16,7 @@ const Container = styled.div`
 `;
 
 const SideBarWrapper = ({ open, handleClose, children, inverted, header }) => {
-  const { mobile } = useContext(AppContext).device;
+  const { mobile } = useContext(MainContext).device;
 
   const width = !mobile && "wide";
 

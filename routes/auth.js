@@ -87,7 +87,7 @@ router.delete("/delete", auth, async (req, res) => {
 
 router.patch("/update", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-  const allowedUpdates = ["fname", "email", "password"];
+  const allowedUpdates = ["fname", "email", "password", "starred", "idBoards"];
   const isValidField = updates.every(update => allowedUpdates.includes(update));
 
   if (!isValidField)

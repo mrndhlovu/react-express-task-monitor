@@ -12,7 +12,7 @@ import { Modal, Button, Grid } from "semantic-ui-react";
 
 import {
   BoardListsContext,
-  AppContext,
+  MainContext,
   BoardContext
 } from "../../utils/contextUtils";
 import { checkDuplicate, emptyFunction } from "../../utils/appUtils";
@@ -61,7 +61,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     handleUploadAttachment
   } = useContext(BoardListsContext);
   const { saveBoardChanges } = useContext(BoardContext);
-  const { auth, device } = useContext(AppContext);
+  const { auth, device } = useContext(MainContext);
 
   const [activeCover, setActiveCardCover] = useState(null);
   const [card, setCard] = useState(activeCard);

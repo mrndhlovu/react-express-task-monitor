@@ -1,7 +1,7 @@
 import React, { useContext, useState, memo } from "react";
 import styled from "styled-components";
 
-import { BoardContext, AppContext } from "../../utils/contextUtils";
+import { BoardContext, MainContext } from "../../utils/contextUtils";
 import BackGroundColors from "./BackGroundColors";
 import BoardLists from "./BoardLists";
 import BoardMenu from "./BoardMenu";
@@ -22,7 +22,7 @@ const Board = () => {
     showSideBar,
     handleShowMenuClick
   } = useContext(BoardContext);
-  const { mobile } = useContext(AppContext).device;
+  const { mobile } = useContext(MainContext).device;
 
   const [membersOnline, setMembersOnline] = useState(0);
   const [openChat, setOpenChat] = useState(false);

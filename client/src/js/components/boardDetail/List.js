@@ -10,7 +10,7 @@ import { Segment } from "semantic-ui-react";
 import { Types } from "../../constants/constants";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
-import { BoardListsContext, AppContext } from "../../utils/contextUtils";
+import { BoardListsContext, MainContext } from "../../utils/contextUtils";
 import ListHeader from "./ListHeader";
 
 const StyledWrapper = styled(Segment)`
@@ -52,7 +52,7 @@ const List = ({
     board,
     ...otherProps
   } = useContext(BoardListsContext);
-  const { mobile } = useContext(AppContext).device;
+  const { mobile } = useContext(MainContext).device;
 
   const { title, position, cards } = list;
 

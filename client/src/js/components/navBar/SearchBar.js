@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Input } from "semantic-ui-react";
 import NavButton from "../sharedComponents/NavButton";
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 
 const StyledSearchInput = styled(Input)`
   border-radius: 3px !important;
@@ -12,7 +12,7 @@ const StyledSearchInput = styled(Input)`
 `;
 
 const SearchBar = ({ handleSearchClick }) => {
-  const { mobile } = useContext(AppContext).device;
+  const { mobile } = useContext(MainContext).device;
 
   return mobile ? (
     <NavButton iconName="search" onClick={() => handleSearchClick} />

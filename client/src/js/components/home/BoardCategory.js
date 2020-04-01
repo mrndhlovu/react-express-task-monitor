@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Header, Icon } from "semantic-ui-react";
 
-import { AppContext, HomepageContext } from "../../utils/contextUtils";
+import { HomepageContext, MainContext } from "../../utils/contextUtils";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import Summary from "./Summary";
 
@@ -27,16 +27,13 @@ const Span = styled(Header)`
 `;
 
 const BoardCategory = ({
-  category,
   header,
   icon,
   isDefault,
   isLast,
   showNewBoardModal
 }) => {
-  const { tablet, loading, handleBoardStarClick, device } = useContext(
-    AppContext
-  );
+  const { tablet, loading, device, auth } = useContext(MainContext);
   const { boards } = useContext(HomepageContext);
 
   return (
@@ -46,19 +43,15 @@ const BoardCategory = ({
       </Span>
       <Category mobile={device.mobile} tablet={tablet} isLast={isLast}>
         {!loading &&
-          boards.map(
-            board =>
-              board.category.includes(category) && (
-                <Summary
-                  color={board.styleProperties.color}
-                  handleBoardStarClick={handleBoardStarClick}
-                  header={board.title}
-                  key={board._id}
-                  starred={board.category.includes("starred")}
-                  id={board._id}
-                />
-              )
-          )}
+          boards.map(board => (
+            <Summary
+              color={board.styleProperties.color}
+              header={board.title}
+              key={board._id}
+              starred={auth.user.starred.includes(board._id)}
+              id={board._id}
+            />
+          ))}
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
       </Category>
     </>

@@ -10,13 +10,14 @@ import { withRouter } from "react-router-dom";
 
 import { Sidebar } from "semantic-ui-react";
 
-import { BoardContext, AppContext } from "../utils/contextUtils";
+import { BoardContext, MainContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
 import {
   requestBoardUpdate,
   requestBoardDelete,
   requestBoardDetail,
-  requestUserInvite
+  requestUserInvite,
+  requestUserUpdate
 } from "../apis/apiRequests";
 
 import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
@@ -40,14 +41,16 @@ const ContentDiv = styled.div`
   width: 100%;
 `;
 
-const BoardContainer = ({ match, history, auth }) => {
+const BoardContainer = ({ match, history }) => {
   const { id } = match.params;
-  const { device } = useContext(AppContext);
+  const { device, auth } = useContext(MainContext);
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
+  const [user, setUser] = useState(auth.user);
   const [loading, setLoading] = useState(false);
-  const [starred, setStarred] = useState(null);
+  const [starred, setStarred] = useState(false);
+  const [unStarred, setUnStarred] = useState(false);
   const [updatedField, setUpdatedField] = useState(null);
   const [showSideBar, setShowSideBar] = useState(false);
   const [inviteDone, setInviteDone] = useState(false);
@@ -88,16 +91,38 @@ const BoardContainer = ({ match, history, auth }) => {
   };
 
   const handleBoardStarClick = () => {
-    if (board.category.includes("starred")) {
-      board.category.splice(board.category.indexOf("starred"));
-      setStarred(false);
+    if (user.starred.includes(id)) {
+      user.starred.splice(user.starred.indexOf(id));
+      setUnStarred(true);
     } else {
-      board.category.push("starred");
+      user.starred.push(id);
       setStarred(true);
     }
-
-    backendUpdate(board, "category", starred ? "removeStar" : "starred");
   };
+
+  useEffect(() => {
+    setUser(auth.user);
+  }, [auth]);
+
+  useEffect(() => {
+    if (!starred && !unStarred) return emptyFunction();
+
+    const upUserInfo = async () => {
+      await requestUserUpdate({ starred: user.starred }).then(res => {
+        try {
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+    };
+
+    upUserInfo();
+
+    return () => {
+      setStarred(false);
+      setUnStarred(false);
+    };
+  }, [starred, user, unStarred]);
 
   useEffect(() => {
     if (!invite) return emptyFunction();

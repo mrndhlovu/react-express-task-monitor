@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { Button } from "semantic-ui-react";
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 import NavButtonIcon from "./NavButtonIcon";
 
 const StyledButton = styled(Button)`
@@ -19,7 +19,7 @@ const NavButton = ({
   id,
   redirect
 }) => {
-  const { mobile } = useContext(AppContext).device;
+  const { mobile } = useContext(MainContext).device;
 
   return mobile && !forceText ? (
     <StyledButton

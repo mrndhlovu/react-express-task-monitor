@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext, HomepageContext } from "../../utils/contextUtils";
 import { Icon } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
@@ -55,14 +55,20 @@ const Card = styled.div`
 
 const Summary = ({
   color,
-  handleBoardStarClick,
+
   header,
   history,
   id,
   starred
 }) => {
-  const { mobile } = useContext(AppContext).device;
+  const { mobile } = useContext(MainContext).device;
   const [showStar, setShowStar] = useState(false);
+  const { handleBoardStarClick } = useContext(HomepageContext);
+
+  const handleCardClick = (e, star) =>
+    e.target.id
+      ? handleBoardStarClick(id, star)
+      : history.push(`/boards/id/${id}`);
 
   return (
     <Wrapper
@@ -70,14 +76,10 @@ const Summary = ({
       onMouseEnter={() => setShowStar(!showStar)}
       mobile={mobile}
     >
-      <Card
-        color={color}
-        mobile={mobile}
-        onClick={() => history.push(`/boards/id/${id}`)}
-      >
+      <Card color={color} mobile={mobile} onClick={e => handleCardClick(e)}>
         <CardHeader content={header} />
 
-        <StarWrapper onClick={() => handleBoardStarClick(id)}>
+        <StarWrapper onClick={e => handleCardClick(e, "star")}>
           {(starred || showStar) && (
             <Icon
               id={id}

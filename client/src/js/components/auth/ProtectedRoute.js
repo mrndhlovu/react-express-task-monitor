@@ -2,10 +2,10 @@ import React, { useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
 
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 
 const ProtectedRoute = ({ component: Component, location, ...rest }) => {
-  const { auth } = useContext(AppContext);
+  const { auth } = useContext(MainContext);
   const { loading, authenticated } = auth;
   const data = localStorage.getItem("user");
   const AUTH_ID = data && JSON.parse(data)._id;

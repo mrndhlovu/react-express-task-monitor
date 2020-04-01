@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 
 import { Header, Input } from "semantic-ui-react";
-import { AppContext, BoardContext } from "../../utils/contextUtils";
+import { MainContext, BoardContext } from "../../utils/contextUtils";
 
 const StyledHeader = styled(Header)`
   font-size: 13px !important;
@@ -22,7 +22,7 @@ const EditHeader = styled(Input)`
 
 const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
   const { backendUpdate, board } = useContext(BoardContext);
-  const { getSourceList } = useContext(AppContext);
+  const { getSourceList } = useContext(MainContext);
 
   const [editable, setEditable] = useState(false);
   const [newTitle, setNewTitle] = useState(title);

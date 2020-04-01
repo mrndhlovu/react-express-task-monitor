@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import RightBoardButtons from "../home/RightBoardButtons";
 import LeftBoardButtons from "./LeftBoardButtons";
-import { BoardContext, AppContext } from "../../utils/contextUtils";
+import { BoardContext, MainContext } from "../../utils/contextUtils";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
 const HeaderContainer = styled.div`
@@ -30,7 +30,8 @@ const TitleWrapper = styled.div`
 
 const BoardHeader = () => {
   const { board, handleShowMenuClick } = useContext(BoardContext);
-  const { mobile, tablet } = useContext(AppContext).device;
+  const { device, auth } = useContext(MainContext);
+  const { mobile, tablet } = device;
 
   return (
     <HeaderContainer mobile={mobile} tablet={tablet}>
@@ -39,7 +40,7 @@ const BoardHeader = () => {
       </TitleWrapper>
       <LeftBoardButtons
         mobile={mobile}
-        isStarred={board.category.includes("starred")}
+        isStarred={auth.user.starred.includes(board._id)}
       />
       <RightBoardButtons
         handleShowMenuClick={handleShowMenuClick}

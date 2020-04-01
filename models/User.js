@@ -33,6 +33,21 @@ const UserSchema = new mongoose.Schema(
           throw new Error(`Password should not be 'password'`);
       }
     },
+    starred: {
+      type: Array,
+      required: true,
+      default: []
+    },
+    viewedRecent: {
+      type: Array,
+      required: true,
+      default: []
+    },
+    idBoards: {
+      type: Array,
+      required: true,
+      default: []
+    },
     tokens: [
       {
         token: {

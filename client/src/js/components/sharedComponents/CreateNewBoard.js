@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { AppContext } from "../../utils/contextUtils";
+import { MainContext } from "../../utils/contextUtils";
 
 const Card = styled.div`
   position: absolute;
@@ -33,7 +33,7 @@ const CreateNewBoardHeader = styled.span`
 `;
 
 const CreateNewBoard = ({ showNewBoardModal }) => {
-  const { mobile } = useContext(AppContext).device;
+  const { mobile } = useContext(MainContext).device;
 
   return (
     <Wrapper mobile={mobile} onClick={() => showNewBoardModal()}>
