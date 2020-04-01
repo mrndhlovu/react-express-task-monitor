@@ -28,6 +28,7 @@ import ModalHeader from "./ModalHeader";
 import ModalImageCover from "./ModalImageCover";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
+import DueDate from "./DueDate";
 
 const ModalContent = styled(Modal.Content)``;
 
@@ -60,11 +61,10 @@ const CardDetailModal = ({ listPosition, match }) => {
     handleUploadAttachment
   } = useContext(BoardListsContext);
   const { saveBoardChanges } = useContext(BoardContext);
-  const { auth } = useContext(AppContext);
-  const hasLabel = activeCard.labels.length !== 0;
-  const hasChecklist = activeCard.checklists.length !== 0;
+  const { auth, device } = useContext(AppContext);
 
   const [activeCover, setActiveCardCover] = useState(null);
+  const [card, setCard] = useState(activeCard);
   const [checklist, setCheckList] = useState(false);
   const [deleteAttachment, setDeleteAttachment] = useState(null);
   const [hideActivities, setHideActivities] = useState(true);
@@ -73,17 +73,22 @@ const CardDetailModal = ({ listPosition, match }) => {
   const [newCover, setNewCover] = useState(null);
   const [removeCover, setRemoveCover] = useState(false);
   const { id } = match.params;
-  console.log("checklist: ", checklist, hasChecklist);
+
+  const hasLabel = card.labels.length !== 0;
+  const hasChecklist = card.checklists.length !== 0;
+  const hasDueDate = card.dueDate && card.dueDate.date;
+
+  const saveCardChanges = changes => setCard(changes);
 
   const addCardAttachment = useCallback(
     attachment => {
       const duplicate = checkDuplicate(
-        activeCard.attachments.images,
+        card.attachments.images,
         attachment.imgUrl
       );
       if (!duplicate) {
         let newBoard;
-        activeCard.attachments.images.push(attachment);
+        card.attachments.images.push(attachment);
 
         newBoard = {
           ...board,
@@ -91,14 +96,14 @@ const CardDetailModal = ({ listPosition, match }) => {
             list.position === listPosition
               ? {
                   ...list,
-                  cards: list.cards.map(card =>
-                    card.position === activeCard.position
+                  cards: list.cards.map(cardItem =>
+                    cardItem.position === card.position
                       ? {
-                          ...card,
-                          attachments: { ...activeCard.attachments },
+                          ...cardItem,
+                          attachments: { ...cardItem.attachments },
                           cardCover: attachment.imgUrl
                         }
-                      : { ...card }
+                      : { ...cardItem }
                   )
                 }
               : { ...list }
@@ -108,7 +113,7 @@ const CardDetailModal = ({ listPosition, match }) => {
         setNewCover(attachment.imgUrl);
       }
     },
-    [activeCard, board, listPosition]
+    [card, board, listPosition]
   );
 
   useEffect(() => {
@@ -133,7 +138,7 @@ const CardDetailModal = ({ listPosition, match }) => {
 
     const removeCardCover = async () => {
       const body = {
-        cardId: activeCard.position,
+        cardId: card.position,
         listId: listPosition,
         cardCover: ""
       };
@@ -145,14 +150,7 @@ const CardDetailModal = ({ listPosition, match }) => {
       });
     };
     removeCardCover();
-  }, [
-    activeCard,
-    id,
-    listPosition,
-    backendUpdate,
-    removeCover,
-    setRemoveCover
-  ]);
+  }, [card, id, listPosition, backendUpdate, removeCover, setRemoveCover]);
 
   const handleMakeCover = cover => {
     setIsLoading(true);
@@ -162,7 +160,7 @@ const CardDetailModal = ({ listPosition, match }) => {
   useEffect(() => {
     if (!newCover) return emptyFunction();
     const body = {
-      cardId: activeCard.position,
+      cardId: card.position,
       listId: listPosition,
       cardCover: newCover
     };
@@ -176,7 +174,7 @@ const CardDetailModal = ({ listPosition, match }) => {
     attachCardCover();
     setNewCover(null);
   }, [
-    activeCard,
+    card,
     id,
     listPosition,
     backendUpdate,
@@ -187,8 +185,8 @@ const CardDetailModal = ({ listPosition, match }) => {
 
   useEffect(() => {
     if (newCover) return;
-    setActiveCardCover(activeCard.cardCover);
-  }, [activeCard, newCover]);
+    setActiveCardCover(card.cardCover);
+  }, [card, newCover]);
 
   const handleDeleteAttachment = imgUrl => {
     setDeleteAttachment(imgUrl);
@@ -200,7 +198,7 @@ const CardDetailModal = ({ listPosition, match }) => {
 
     const removeAttachment = async () => {
       const body = {
-        cardId: activeCard.position,
+        cardId: card.position,
         listId: listPosition,
         deleteId: deleteAttachment
       };
@@ -221,7 +219,7 @@ const CardDetailModal = ({ listPosition, match }) => {
   }, [
     activeCover,
     deleteAttachment,
-    activeCard,
+    card,
     id,
     listPosition,
     backendUpdate,
@@ -254,11 +252,11 @@ const CardDetailModal = ({ listPosition, match }) => {
 
       <Container>
         <ModalHeader
-          title={activeCard.title}
-          cardPosition={activeCard.position}
+          title={card.title}
+          cardPosition={card.position}
           listPosition={listPosition}
           sourceTitle={sourceTitle}
-          cardCover={activeCard.cardCover}
+          cardCover={card.cardCover}
         />
 
         <Grid columns={2} divided stackable>
@@ -266,37 +264,49 @@ const CardDetailModal = ({ listPosition, match }) => {
             <Grid.Column width={12}>
               <ModalContent image>
                 <LeftSideContent>
+                  {hasDueDate && (
+                    <DueDate
+                      activeCard={card}
+                      backendUpdate={backendUpdate}
+                      getSourceList={getSourceList}
+                      listPosition={listPosition}
+                      board={board}
+                      saveCardChanges={saveCardChanges}
+                    />
+                  )}
                   {hasLabel && (
                     <CardLabels
                       board={board}
                       backendUpdate={backendUpdate}
-                      activeCard={activeCard}
+                      activeCard={card}
                       listPosition={listPosition}
                       getSourceList={getSourceList}
                     />
                   )}
+
                   <CardModalDescription
                     board={board}
                     backendUpdate={backendUpdate}
                     listPosition={listPosition}
                     getSourceList={getSourceList}
-                    activeCard={activeCard}
+                    activeCard={card}
                   />
                   {(hasChecklist || checklist) && (
                     <CheckLists
-                      activeCard={activeCard}
+                      activeCard={card}
                       backendUpdate={backendUpdate}
                       board={board}
                       getSourceList={getSourceList}
                       listPosition={listPosition}
                       match={match}
                       saveBoardChanges={saveBoardChanges}
+                      saveCardChanges={saveCardChanges}
                     />
                   )}
 
                   <Attachments
                     activeCover={activeCover}
-                    card={activeCard}
+                    activeCard={card}
                     isLoading={isLoading}
                     handleMakeCover={handleMakeCover}
                     handleRemoveCover={handleRemoveCover}
@@ -314,7 +324,7 @@ const CardDetailModal = ({ listPosition, match }) => {
             </Grid.Column>
             <Grid.Column width={4}>
               <CardModalSidebar
-                activeCard={activeCard}
+                activeCard={card}
                 addCardAttachment={addCardAttachment}
                 backendUpdate={backendUpdate}
                 board={board}
@@ -324,6 +334,9 @@ const CardDetailModal = ({ listPosition, match }) => {
                 listPosition={listPosition}
                 handleCreateChecklist={handleCreateChecklist}
                 hasChecklist={hasChecklist}
+                hasDueDate={hasDueDate}
+                mobile={device.mobile}
+                saveCardChanges={saveCardChanges}
               />
             </Grid.Column>
           </Grid.Row>

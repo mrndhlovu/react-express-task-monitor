@@ -104,7 +104,7 @@ const CardModalDescription = ({
         </DescriptionHeader>
       </StyledHeader>
       <Description>
-        {editing ? (
+        {editing && (
           <Form>
             <StyledTextArea
               placeholder="Add more detailed description"
@@ -130,7 +130,9 @@ const CardModalDescription = ({
               </ButtonsWrapper>
             )}
           </Form>
-        ) : (
+        )}
+
+        {description && !editing && (
           <DescriptionContent>
             <p>{description}</p>
           </DescriptionContent>

@@ -26,9 +26,9 @@ const CheckLists = ({
   checklistName = "Checklist",
   getSourceList,
   board,
-  backendUpdate
+  backendUpdate,
+  saveCardChanges
 }) => {
-  const [card, setCard] = useState(activeCard);
   const [checked, setChecked] = useState(null);
   const [createItem, setCreateItem] = useState(false);
   const [description, setDescription] = useState(null);
@@ -54,13 +54,13 @@ const CheckLists = ({
   useEffect(() => {
     let newCard;
     if (removeChecklist) {
-      newCard = { ...card, checklists: [] };
+      newCard = { ...activeCard, checklists: [] };
     }
 
     if (removeChecklist) {
-      setCard(newCard);
+      saveCardChanges(newCard);
 
-      sourceList.cards.splice(sourceList.cards.indexOf(card), 1, newCard);
+      sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
       backendUpdate(board, "lists", "removeChecklist");
@@ -68,14 +68,22 @@ const CheckLists = ({
     return () => {
       setRemoveChecklist(false);
     };
-  }, [removeChecklist, backendUpdate, board, card, sourceList, checked]);
+  }, [
+    removeChecklist,
+    backendUpdate,
+    board,
+    activeCard,
+    sourceList,
+    checked,
+    saveCardChanges
+  ]);
 
   useEffect(() => {
     let newCard;
     if (checked) {
       newCard = {
-        ...card,
-        checklists: card.checklists.map(item =>
+        ...activeCard,
+        checklists: activeCard.checklists.map(item =>
           item._id === checked.id
             ? { ...item, status: checked.status }
             : { ...item }
@@ -84,9 +92,9 @@ const CheckLists = ({
     }
 
     if (newCard) {
-      setCard(newCard);
+      saveCardChanges(newCard);
 
-      sourceList.cards.splice(sourceList.cards.indexOf(card), 1, newCard);
+      sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
       backendUpdate(board, "lists", "updatedChecklist");
@@ -97,12 +105,13 @@ const CheckLists = ({
       setIsLoading(false);
     };
   }, [
-    checked,
-    card,
-    board,
+    activeCard,
     backendUpdate,
+    board,
+    checked,
     getSourceList,
     listPosition,
+    saveCardChanges,
     sourceList
   ]);
 
@@ -118,7 +127,7 @@ const CheckLists = ({
       await requestNewChecklistItem(
         {
           listItem,
-          cardId: card.position,
+          cardId: activeCard.position,
           listId: listPosition
         },
         id
@@ -131,10 +140,10 @@ const CheckLists = ({
             .shift();
 
           const newCard = updatedList.cards
-            .filter(cardItem => cardItem._id === card._id)
+            .filter(cardItem => cardItem._id === activeCard._id)
             .shift();
 
-          setCard(newCard);
+          saveCardChanges(newCard);
         })
         .catch(error => {});
     createListItem();
@@ -147,13 +156,14 @@ const CheckLists = ({
       setDescription(null);
     };
   }, [
-    card,
+    activeCard,
     checklistName,
     description,
     done,
     id,
     listPosition,
-    saveBoardChanges
+    saveBoardChanges,
+    saveCardChanges
   ]);
 
   return (
@@ -175,8 +185,8 @@ const CheckLists = ({
           />
         </div>
       </CheckListHeader>
-      <ProgressBar checklistName={checklistName} card={card} />
-      {card.checklists.map(item => (
+      <ProgressBar checklistName={checklistName} activeCard={activeCard} />
+      {activeCard.checklists.map(item => (
         <ChecklistItem
           handleCheckboxClick={handleCheckboxClick}
           isChecked={item.status === "done"}

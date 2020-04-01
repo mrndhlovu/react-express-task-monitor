@@ -46,9 +46,15 @@ const CardSchema = mongoose.Schema(
     },
     shortDescription: {
       type: String,
-      default: ""
+      default: "",
+      required: true
     },
     description: {
+      type: String,
+      default: "",
+      required: true
+    },
+    dueDate: {
       type: String,
       default: ""
     }

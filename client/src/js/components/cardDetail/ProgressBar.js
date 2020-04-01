@@ -12,11 +12,11 @@ const PercentLabel = styled.span`
   font-size: 12px;
 `;
 
-const ProgressBar = ({ card, checklistName }) => {
+const ProgressBar = ({ activeCard, checklistName }) => {
   let partialValue = 0;
   let total = 0;
 
-  card.checklists.map(item => {
+  activeCard.checklists.map(item => {
     if (item.name === checklistName) {
       item.status === "done" && partialValue++;
     }

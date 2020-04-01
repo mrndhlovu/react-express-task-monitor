@@ -27,7 +27,8 @@ const DropdownButton = ({
   color,
   size = "tiny",
   fluid = true,
-  labeled = true
+  labeled = true,
+  direction = "left"
 }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -44,6 +45,7 @@ const DropdownButton = ({
       open={open}
       size={size}
       text={buttonText}
+      direction={direction}
     >
       <Dropdown.Menu
         className="sidebar-dropdown-button"

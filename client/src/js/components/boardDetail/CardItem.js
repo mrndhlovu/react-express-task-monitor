@@ -51,6 +51,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
   const hasChecklist = card.checklists.length !== 0;
   const hasDescription = card.description !== undefined;
   const hasComments = card.comments.length !== 0;
+  const hasDueDate = card.dueDate;
 
   const [showEditButton, setShowEditButton] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -99,6 +100,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
           <CardBadge icon="comment outline" content={card.comments.length} />
         )}
         {hasDescription && <CardBadge icon="list" />}
+        {hasDueDate && <CardBadge icon="clock outline" />}
       </CardBadges>
 
       <EditCardPenIcon

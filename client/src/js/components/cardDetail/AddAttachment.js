@@ -37,7 +37,11 @@ const StyledSmall = styled.small`
   padding-left: 3px;
 `;
 
-const AddAttachment = ({ addCardAttachment, handleLoadingAttachment }) => {
+const AddAttachment = ({
+  addCardAttachment,
+  handleLoadingAttachment,
+  mobile
+}) => {
   const [attachment, setAttachment] = useState(null);
   const [error, setError] = useState(false);
   const [update, setUpdate] = useState(null);
@@ -101,7 +105,7 @@ const AddAttachment = ({ addCardAttachment, handleLoadingAttachment }) => {
           </StyleMessageWrapper>
         )}
         <AttachmentOption>
-          <span>Computer</span>
+          <span>{mobile ? "Phone" : "Computer"}</span>
           <StyledInput type="file" onChange={e => handleUpload(e)} />
         </AttachmentOption>
         <AttachmentOption>

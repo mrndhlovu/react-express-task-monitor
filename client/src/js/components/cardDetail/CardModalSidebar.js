@@ -20,14 +20,14 @@ const Container = styled.div`
   margin-right: 5px;
 `;
 
-const CardModalSidebar = ({ hasChecklist, ...props }) => {
+const CardModalSidebar = ({ hasDueDate, hasChecklist, ...props }) => {
   return (
     <Container>
       <StyledHeader content="ADD TO CARD" />
       <AddCardMembers />
       <AddCardLabel {...props} />
       {!hasChecklist && <AddCardCheckList {...props} />}
-      <AddCardDueDate />
+      {!hasDueDate && <AddCardDueDate {...props} />}
       <AddAttachment {...props} />
       <StyledHeader content="ACTIONS" />
       <MoveCardAction />

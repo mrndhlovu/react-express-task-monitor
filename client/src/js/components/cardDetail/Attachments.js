@@ -45,14 +45,14 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
 
 const Attachments = ({
   activeCover,
-  card,
+  activeCard,
   handleAttachmentComment,
   handleDeleteAttachment,
   handleRemoveCover,
   handleMakeCover,
   isLoading
 }) => {
-  const { images } = card.attachments;
+  const { images } = activeCard.attachments;
   const hasAttachments = images.length > 0;
 
   return isLoading ? (
