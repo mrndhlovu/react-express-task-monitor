@@ -11,7 +11,7 @@ const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    ${props => (props.mobile ? "100%" : props.tablet ? "33.33333%" : "25%")}
+    ${props => (props.mobile ? "100%" : props.tablet ? "100%" : "25%")}
   );
   vertical-align: top;
 `;
@@ -31,10 +31,12 @@ const BoardCategory = ({
   icon,
   isDefault,
   isLast,
-  showNewBoardModal
+  showNewBoardModal,
+  category
 }) => {
   const { tablet, loading, device, auth } = useContext(MainContext);
   const { boards } = useContext(HomepageContext);
+  const { user } = auth;
 
   return (
     <>
@@ -43,15 +45,21 @@ const BoardCategory = ({
       </Span>
       <Category mobile={device.mobile} tablet={tablet} isLast={isLast}>
         {!loading &&
-          boards.map(board => (
-            <Summary
-              color={board.styleProperties.color}
-              header={board.title}
-              key={board._id}
-              starred={auth.user.starred.includes(board._id)}
-              id={board._id}
-            />
-          ))}
+          boards.map(
+            board =>
+              ((user.starred.includes(board._id) && category === "starred") ||
+                (user.viewedRecent.includes(board._id) &&
+                  category === "recent") ||
+                category === "default") && (
+                <Summary
+                  color={board.styleProperties.color}
+                  header={board.title}
+                  key={board._id}
+                  starred={user.starred.includes(board._id)}
+                  id={board._id}
+                />
+              )
+          )}
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
       </Category>
     </>

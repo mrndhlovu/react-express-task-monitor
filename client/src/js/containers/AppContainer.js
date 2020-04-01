@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import { getAuth } from "../selectors/authSelectors";
 import { getUserInfo } from "../actions/AuthActions";
 import MainContainer from "./MainContainer";
-import { getAuth } from "../selectors/authSelectors";
 
 class AppContainer extends Component {
   componentDidMount() {

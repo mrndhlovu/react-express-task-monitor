@@ -13,7 +13,9 @@ const NavWrapper = styled.nav`
   padding: 3px 0;
   background-color: ${props => props.color};
   max-height: 40px;
-  position: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 100;
   width: 100%;
 `;

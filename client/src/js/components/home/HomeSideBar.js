@@ -7,6 +7,7 @@ const StyledContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: start;
+  padding: 10px;
 `;
 
 const HomeSideBar = () => {

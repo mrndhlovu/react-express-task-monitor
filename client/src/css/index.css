@@ -30,10 +30,6 @@ ui.form,
   color: #fff !important;
 }
 
-#app {
-  overflow-y: auto;
-}
-
 .card-list::-webkit-scrollbar {
   display: none;
 }
@@ -45,4 +41,16 @@ ui.form,
 .lists-container,
 .card-list {
   -ms-overflow-style: none;
+}
+
+#app {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.boards-container::-webkit-scrollbar {
+  display: none;
 }

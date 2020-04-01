@@ -1,32 +1,30 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import { Container } from "semantic-ui-react";
-
 import BoardsSummary from "./BoardsSummary";
 import HomeSideBar from "./HomeSideBar";
 import { MainContext } from "../../utils/contextUtils";
 
-const StyledContainer = styled(Container)`
-  height: 100vh;
-  margin-top: 45px;
-  margin-bottom: 40px;
-  padding-left: 5px;
+const StyledContainer = styled.div`
   font-family: roboto, sans-serif;
+  margin: 40px 10px;
+  height: 97vh;
+  overflow-y: auto;
 `;
 
 const StyledWrapper = styled.div`
   display: grid;
-  grid-template-columns: ${props => (props.mobile ? "100%" : "20% 80%")};
-  margin-top: 6%;
+  grid-template-columns: ${props =>
+    props.mobile || props.tablet ? "100%" : "20% 80%"};
+  margin: ${props => (props.mobile || props.tablet ? "8% 0" : "3%  20%")};
 `;
 
 const HomePage = () => {
-  const { mobile } = useContext(MainContext).device;
+  const { mobile, tablet } = useContext(MainContext).device;
   return (
-    <StyledContainer>
-      <StyledWrapper mobile={mobile}>
-        {!mobile && <HomeSideBar />}
+    <StyledContainer className="boards-container" mobile={mobile}>
+      <StyledWrapper mobile={mobile} tablet={tablet}>
+        {!mobile && !tablet && <HomeSideBar />}
         <BoardsSummary />
       </StyledWrapper>
     </StyledContainer>

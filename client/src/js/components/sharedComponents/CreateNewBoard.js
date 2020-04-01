@@ -3,19 +3,22 @@ import styled from "styled-components";
 import { MainContext } from "../../utils/contextUtils";
 
 const Card = styled.div`
-  position: absolute;
-  top: ${props => (props.mobile ? "48%" : "40%")}!important;
-  left: ${props => (props.mobile ? "27%" : "15%")}!important;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Wrapper = styled.div`
+  display: flex;
+  margin: 5px;
+  min-height: 90px;
+  width: 98%;
   background-color: #dce3eb;
   border-radius: 2px;
   cursor: pointer;
-  height: 100px;
   opacity: 5;
   position: relative;
-  width: ${props => (props.mobile ? "98%" : "200px")}!important;
 
   &:hover {
     background-color: #dce3db;
@@ -25,7 +28,7 @@ const Wrapper = styled.div`
 const CreateNewBoardHeader = styled.span`
   color: #8f99a9;
   font-family: "Noto Sans", sans-serif;
-  font-size: 16px;
+  text-align: center;
 
   &:before {
     content: "Create new board";

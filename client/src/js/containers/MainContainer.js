@@ -10,7 +10,11 @@ import { useDimensions } from "../utils/hookUtils";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
 
-const Container = styled.div``;
+const Container = styled.div`
+  margin: 0;
+  position: absolute;
+  width: 100vw;
+`;
 
 const MainContainer = ({ children, history, auth }) => {
   const { authenticated, isLoading, data } = auth;
@@ -62,12 +66,14 @@ const MainContainer = ({ children, history, auth }) => {
         boards
       }}
     >
-      {authenticated && (
-        <NavHeader color={isHomePage ? DEFAULT_NAV_COLOR : "transparent"} />
-      )}
       <Container>
-        {children}
-        {search && <SearchPage />}
+        {authenticated && (
+          <NavHeader color={isHomePage ? DEFAULT_NAV_COLOR : "transparent"} />
+        )}
+        <>
+          {children}
+          {search && <SearchPage />}
+        </>
       </Container>
     </MainContext.Provider>
   );

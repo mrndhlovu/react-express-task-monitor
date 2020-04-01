@@ -7,6 +7,7 @@ const Container = styled.div`
   position: absolute;
   bottom: ${props => (props.mobile ? "0%" : "1%")};
   right: ${props => (props.mobile ? "1%" : "2%")};
+  position: fixed;
 `;
 
 const ChatIcon = ({ handleChatsOpen, mobile }) => {

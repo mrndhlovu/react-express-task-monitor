@@ -174,6 +174,9 @@ const BoardContainer = ({ match, history }) => {
         .catch(error => history.push("/"));
 
     fetchData();
+    return () => {
+      console.log("Un mount");
+    };
   }, [board, updatedField, id, history]);
 
   return !board ? (

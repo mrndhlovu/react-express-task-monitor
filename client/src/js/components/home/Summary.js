@@ -29,38 +29,28 @@ const StarWrapper = styled.div`
   transition-timing-function: ease-in-out;
 
   &:after {
-    z-index: 100;
     font-size: 20px !important;
   }
 `;
 
 const Wrapper = styled.div`
-  padding-right: 7px;
-  padding-bottom: 7px;
+  display: flex;
+  margin: 5px;
+  min-height: 90px;
+  width: 98%;
 `;
 
 const Card = styled.div`
   background-color: ${props => props.color};
   border-radius: 2px !important;
   height: 100px !important;
-  width: ${props => (props.mobile ? "100%" : "200px")}!important;
+  width: 100%;
   opacity: 5;
   cursor: pointer;
   position: relative;
-
-  &:before {
-    z-index: 0;
-  }
 `;
 
-const Summary = ({
-  color,
-
-  header,
-  history,
-  id,
-  starred
-}) => {
+const Summary = ({ color, header, history, id, starred }) => {
   const { mobile } = useContext(MainContext).device;
   const [showStar, setShowStar] = useState(false);
   const { handleBoardStarClick } = useContext(HomepageContext);
