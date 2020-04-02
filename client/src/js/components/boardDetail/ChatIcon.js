@@ -5,7 +5,7 @@ import { Icon } from "semantic-ui-react";
 
 const Container = styled.div`
   position: absolute;
-  bottom: ${props => (props.mobile ? "0%" : "1%")};
+  bottom: ${props => (props.mobile ? "50%" : "1%")};
   right: ${props => (props.mobile ? "1%" : "2%")};
   position: fixed;
   z-index: 100;
