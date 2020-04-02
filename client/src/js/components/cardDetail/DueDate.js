@@ -101,9 +101,6 @@ const DueDate = ({
     activeCard.dueDate && (
       <CardDetailSegment>
         <HeaderWrapper>
-          <CardDetailHeader description="Due Date" icon="clock outline" />
-        </HeaderWrapper>
-        <ButtonWrapper>
           <Button
             negative
             content="Delete"
@@ -112,7 +109,9 @@ const DueDate = ({
             size="tiny"
             onClick={() => handleDeleteDueDate()}
           />
-        </ButtonWrapper>
+          <CardDetailHeader description="Due Date" icon="clock outline" />
+        </HeaderWrapper>
+
         <Container>
           <Checkbox
             id="dueDate"
