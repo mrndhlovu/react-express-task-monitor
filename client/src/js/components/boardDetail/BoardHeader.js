@@ -1,16 +1,14 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import RightBoardButtons from "../home/RightBoardButtons";
 import LeftBoardButtons from "./LeftBoardButtons";
 import { BoardContext, MainContext } from "../../utils/contextUtils";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
 const HeaderContainer = styled.div`
-  align-items: center;
+  align-items: ${props => (props.mobile ? "center" : "start")};
   display: grid;
-  grid-template-columns: ${props =>
-    props.mobile ? "1fr" : props.tablet ? "15% 46% 39%" : "11% 37% 52%"};
+  grid-template-columns: ${props => (props.mobile ? "1fr" : "1fr 1fr")};
   left: 2px;
   max-height: 40px;
   position: absolute;
@@ -19,32 +17,26 @@ const HeaderContainer = styled.div`
 `;
 
 const TitleWrapper = styled.div`
-  align-self: ${props => (props.mobile ? "center" : "start")};
+  justify-content: ${props => (props.mobile ? "center" : "start")};
   align-self: auto;
   display: flex;
-  justify-content: start;
-  padding-bottom: 10px;
-  padding-left: 5px;
-  padding-top: 6px;
+  padding: 10px;
 `;
 
 const BoardHeader = () => {
   const { board, handleShowMenuClick } = useContext(BoardContext);
   const { device, auth } = useContext(MainContext);
-  const { mobile, tablet } = device;
+  const { mobile } = device;
 
   return (
-    <HeaderContainer mobile={mobile} tablet={tablet}>
-      <TitleWrapper mobile={mobile} tablet={tablet}>
+    <HeaderContainer mobile={mobile}>
+      <TitleWrapper mobile={mobile}>
         <EditableHeader type="boardTitle" title={board.title} />
       </TitleWrapper>
       <LeftBoardButtons
         mobile={mobile}
         isStarred={auth.user.starred.includes(board._id)}
-      />
-      <RightBoardButtons
         handleShowMenuClick={handleShowMenuClick}
-        mobile={mobile}
       />
     </HeaderContainer>
   );

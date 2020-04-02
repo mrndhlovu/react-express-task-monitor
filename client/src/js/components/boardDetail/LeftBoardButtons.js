@@ -9,8 +9,9 @@ import MessageAlert from "../sharedComponents/MessageAlert";
 import { isEmail } from "validator";
 
 const StyledDiv = styled.div`
-  justify-self: start;
-  padding-bottom: 5px;
+  justify-self: ${props => (props.mobile ? "center" : "end")};
+  padding: 2px;
+  display: flex;
 `;
 
 const StyledButton = styled(Button)`
@@ -39,7 +40,8 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
     handleBoardStarClick,
     handleInviteClick,
     inviteDone,
-    loading
+    loading,
+    handleShowMenuClick
   } = useContext(BoardContext);
   const { accessLevel } = board;
   let permission;
@@ -135,6 +137,14 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
           </StyledDropdownMenu>
         </Dropdown>
       </StyledButton>
+      <NavButton
+        iconName={!mobile ? "ellipsis horizontal" : ""}
+        size="tiny"
+        buttonText="Show Menu"
+        redirect={() => handleShowMenuClick()}
+        forceText={true}
+        float="right"
+      />
     </StyledDiv>
   );
 }

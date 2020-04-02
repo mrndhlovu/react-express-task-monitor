@@ -5,11 +5,12 @@ import { Header, Input } from "semantic-ui-react";
 import { MainContext, BoardContext } from "../../utils/contextUtils";
 
 const StyledHeader = styled(Header)`
-  font-size: 13px !important;
+  font-size: 14px !important;
 `;
 
 const StyledDiv = styled.div`
   cursor: pointer;
+  display: flex;
 `;
 
 const EditHeader = styled(Input)`

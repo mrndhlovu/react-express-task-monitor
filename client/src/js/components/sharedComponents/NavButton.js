@@ -17,7 +17,8 @@ const NavButton = ({
   forceText,
   iconName,
   id,
-  redirect
+  redirect,
+  float
 }) => {
   const { mobile } = useContext(MainContext).device;
 
@@ -25,6 +26,7 @@ const NavButton = ({
     <StyledButton
       size="tiny"
       onClick={redirect}
+      float={float}
       icon={
         iconName && (
           <NavButtonIcon iconName={iconName} iconColor={buttonColor} />
@@ -39,6 +41,7 @@ const NavButton = ({
       size="tiny"
       onClick={redirect}
       content={buttonText}
+      float={float}
       icon={
         iconName && (
           <NavButtonIcon iconName={iconName} iconColor={buttonColor} />

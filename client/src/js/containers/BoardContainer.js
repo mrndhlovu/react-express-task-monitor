@@ -37,8 +37,9 @@ const ContentDiv = styled.div`
   display: grid;
   left: 0;
   position: absolute;
-  top: ${props => (props.mobile ? "20%" : "7%")};
+  top: ${props => (props.mobile ? "17%" : "7%")};
   width: 100%;
+  height: ${props => (props.mobile ? "82vh" : "92vh")};
 `;
 
 const BoardContainer = ({ match, history }) => {
