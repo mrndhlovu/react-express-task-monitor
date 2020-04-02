@@ -20,10 +20,6 @@ const Span = styled.span`
   padding-left: 5px;
 `;
 
-const ButtonWrapper = styled.div`
-  padding: 10px;
-`;
-
 const DueDate = ({
   activeCard,
   backendUpdate,
