@@ -17,7 +17,7 @@ const EditIconWrapper = styled.div`
 const EditCardPenIcon = ({ handleDeleteCard, showEditButton }) => {
   return (
     <EditIconWrapper showEditButton={showEditButton}>
-      <Dropdown floating icon="pencil alternate">
+      <Dropdown floating icon="pencil alternate" direction="left">
         <Dropdown.Menu>
           <Dropdown.Item>Move</Dropdown.Item>
           <Dropdown.Item onClick={handleDeleteCard}>Delete</Dropdown.Item>
