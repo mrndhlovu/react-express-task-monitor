@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, TextArea } from "semantic-ui-react";
 import UserAvatar from "./UserAvatar";
 import { getUserInitials } from "../../utils/appUtils";
 
@@ -21,7 +21,7 @@ const FormWrapper = styled.div`
   margin-left: 20px;
 `;
 
-const CardComment = ({ comment, saveComment, user }) => {
+const CardCommentInput = ({ comment, saveComment, user }) => {
   const [newComment, setNewComment] = useState(null);
   const [focus, setFocus] = useState(false);
 
@@ -45,13 +45,13 @@ const CardComment = ({ comment, saveComment, user }) => {
         <FormWrapper>
           <Form>
             <Form.Field>
-              <input
+              <TextArea
+                rows={1}
                 id="comment-input"
                 placeholder={comment ? comment : "Write a comment"}
                 onFocus={() => setFocus(true)}
-                onBlur={() => setFocus(false)}
+                onBlur={() => !newComment && setFocus(false)}
                 onChange={e => handleChange(e)}
-                onKeyDown={e => (e.key === "Enter" ? handleSaveClick() : null)}
               />
             </Form.Field>
           </Form>
@@ -71,4 +71,4 @@ const CardComment = ({ comment, saveComment, user }) => {
   );
 };
 
-export default CardComment;
+export default CardCommentInput;

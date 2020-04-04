@@ -49,9 +49,8 @@ const StyledIcon = styled(Button)`
   border-radius: 50px !important;
 `;
 
-const CardDetailModal = ({ listPosition, match }) => {
+const CardDetailModal = ({ listPosition, match, modalOpen }) => {
   const {
-    hideCardDetail,
     handleCardClick,
     sourceTitle,
     board,
@@ -62,6 +61,7 @@ const CardDetailModal = ({ listPosition, match }) => {
   } = useContext(BoardListsContext);
   const { saveBoardChanges } = useContext(BoardContext);
   const { auth, device } = useContext(MainContext);
+  const { id } = match.params;
 
   const [activeCover, setActiveCardCover] = useState(null);
   const [card, setCard] = useState(activeCard);
@@ -72,11 +72,9 @@ const CardDetailModal = ({ listPosition, match }) => {
   const [newAttachment, setNewAttachment] = useState(null);
   const [newCover, setNewCover] = useState(null);
   const [removeCover, setRemoveCover] = useState(false);
-  const { id } = match.params;
 
-  const hasLabel = card.labels.length !== 0;
-  const hasChecklist = card.checklists.length !== 0;
-  const hasDueDate = card.dueDate && card.dueDate.date;
+  const hasLabel = card && card.labels.length !== 0;
+  const hasChecklist = card && card.checklists.length !== 0;
 
   const saveCardChanges = changes => setCard(changes);
   const handleCreateChecklist = () => setCheckList(true);
@@ -226,7 +224,7 @@ const CardDetailModal = ({ listPosition, match }) => {
       className="card-detail-container"
       closeOnDocumentClick={true}
       centered={false}
-      open={!hideCardDetail}
+      open={card && modalOpen}
       closeOnRootNodeClick={false}
       onClose={() => handleCardClick()}
       closeIcon={
@@ -259,7 +257,7 @@ const CardDetailModal = ({ listPosition, match }) => {
             <Grid.Column width={12}>
               <ModalContent image>
                 <LeftSideContent>
-                  {hasDueDate && (
+                  {card.dueDate && card.dueDate.date && (
                     <DueDate
                       activeCard={card}
                       backendUpdate={backendUpdate}
@@ -335,7 +333,7 @@ const CardDetailModal = ({ listPosition, match }) => {
                 listPosition={listPosition}
                 handleCreateChecklist={handleCreateChecklist}
                 hasChecklist={hasChecklist}
-                hasDueDate={hasDueDate}
+                hasDueDate={card.dueDate && card.dueDate.date}
                 mobile={device.mobile}
                 saveCardChanges={saveCardChanges}
               />

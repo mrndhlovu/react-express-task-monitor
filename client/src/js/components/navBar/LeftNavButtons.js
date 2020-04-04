@@ -23,7 +23,7 @@ const StyledSpan = styled.span`
 
 const LeftNavButtons = ({ history, results, value }) => {
   const { isLoading, device } = useContext(MainContext);
-  const [data] = useFetch();
+  const [data] = useFetch(history);
 
   const [showBoardList, setShowBoardList] = useState(false);
   const [boards, setBoards] = useState(null);

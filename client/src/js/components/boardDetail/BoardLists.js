@@ -1,10 +1,12 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router-dom";
 
-import CreateItemForm from "../sharedComponents/CreateItemForm";
-import ListGrid from "./ListGrid";
 import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
 import CardDetailModal from "../cardDetail/CardDetailModal";
+import CreateItemForm from "../sharedComponents/CreateItemForm";
+import ListGrid from "./ListGrid";
+import { parseSearchQuery, getQueryString } from "../../utils/urls";
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -13,9 +15,12 @@ const StyledListContainer = styled.div`
   overflow-y: hidden;
 `;
 
-const BoardLists = () => {
+const BoardLists = ({ history }) => {
   const { board, backendUpdate, id } = useContext(BoardContext);
   const { lists } = board;
+  const modalOpen = parseSearchQuery(getQueryString(history.location))[
+    "modal-open"
+  ];
 
   const [activeList, setActiveList] = useState("");
   const [dragging, setDragging] = useState(false);
@@ -194,12 +199,16 @@ const BoardLists = () => {
   }
 
   const handleCardClick = (card, sourceId, listTitle) => {
+    const { pathname } = history.location;
+
     if (sourceId) {
       setActiveCard(card);
       setSourceId(sourceId);
       setSourceTitle(listTitle);
     }
     setHideCardDetail(!hideCardDetail);
+    if (!hideCardDetail) return history.push(`${pathname}?modal-open=false`);
+    history.push(`${pathname}?modal-open=true`);
   };
 
   const handleDrop = () => {
@@ -268,10 +277,16 @@ const BoardLists = () => {
           handleCreateClick={handleCreateList}
         />
 
-        {!hideCardDetail && <CardDetailModal listPosition={sourceId} />}
+        {modalOpen && !hideCardDetail && (
+          <CardDetailModal
+            listPosition={sourceId}
+            history={history}
+            modalOpen={modalOpen}
+          />
+        )}
       </StyledListContainer>
     </BoardListsContext.Provider>
   );
 };
 
-export default BoardLists;
+export default withRouter(BoardLists);

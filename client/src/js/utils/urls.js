@@ -16,3 +16,10 @@ export const params = {
   credentials: "same-origin",
   withCredentials: true
 };
+
+export const parseSearchQuery = query => {
+  const queryArray = query.split("=");
+  return { [`${queryArray.shift()}`]: queryArray.shift() === "true" };
+};
+
+export const getQueryString = location => location.search.slice(1);

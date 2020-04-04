@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Card, Input, Button, Icon } from "semantic-ui-react";
+import { Card, Button, Icon, TextArea } from "semantic-ui-react";
 
 const StyledCardContent = styled(Card.Content)`
   padding-top: 10px !important;
   background-color: inherit !important;
 `;
 
-const StyledInput = styled(Input)`
+const StyledInput = styled(TextArea)`
   width: 100%;
   border-radius: 3px;
 `;
@@ -36,7 +36,6 @@ const CreateInput = ({
             defaultValue={defaultValue}
             id={id}
             onChange={e => handleChange(e)}
-            onKeyDown={e => (e.key === "Enter" ? handleCreateClick() : null)}
             placeholder={placeholder}
           />
         </StyledCardContent>

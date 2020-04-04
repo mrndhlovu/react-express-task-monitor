@@ -28,12 +28,16 @@ const DropdownButton = ({
   size = "tiny",
   fluid = true,
   labeled = true,
-  direction = "left"
+  button = true,
+  direction = "left",
+  upward = false
 }) => {
   const [open, setOpen] = useState(false);
   return (
     <StyledDropdown
-      button
+      upward={upward}
+      lazyLoad
+      button={button}
       className="icon"
       color={color}
       compact

@@ -31,7 +31,11 @@ const StyledSegment = styled.div`
   flex-flow: column-reverse;
 `;
 
-const CommentWrapper = styled.p`
+const EditCommentInputWrapper = styled.div`
+  padding: 8px 2%;
+`;
+
+const CommentWrapper = styled.div`
   padding-left: 9%;
   display: flex;
 `;
@@ -156,14 +160,16 @@ const Comment = ({
         </StyledSmall>
       </Container>
       {editComment && (
-        <CreateInput
-          close={handleEditComment}
-          buttonText="Add"
-          defaultValue={comment.comment}
-          handleCreateClick={handleAddClick}
-          handleChange={handleChange}
-          id="edit-comment-input"
-        />
+        <EditCommentInputWrapper>
+          <CreateInput
+            close={handleEditComment}
+            buttonText="Add"
+            defaultValue={comment.comment}
+            handleCreateClick={handleAddClick}
+            handleChange={handleChange}
+            id="edit-comment-input"
+          />
+        </EditCommentInputWrapper>
       )}
       <StyledSegment>
         <CommentWrapper>

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Picker, Emoji } from "emoji-mart";
 
-import { Dropdown } from "semantic-ui-react";
+import DropdownButton from "../sharedComponents/DropdownButton";
 
 const Container = styled.div`
   padding-left: 10px;
@@ -44,9 +44,8 @@ const EditCommentIcons = ({
     <Container>
       {hasEmojis ? (
         emojis.map(emoji => (
-          <EmojiWrapper>
+          <EmojiWrapper key={emoji.id}>
             <Emoji
-              key={emoji.id}
               emoji={{ id: emoji.id }}
               size={16}
               onClick={(emoji, event) =>
@@ -56,15 +55,18 @@ const EditCommentIcons = ({
           </EmojiWrapper>
         ))
       ) : (
-        <Dropdown upward icon="meh outline">
-          <Dropdown.Menu>
-            <Dropdown.Header content="Emoji" />
-            <Picker
-              set="apple"
-              onSelect={(emoji, event) => handleEmojiClick(emoji, commentId)}
-            />
-          </Dropdown.Menu>
-        </Dropdown>
+        <DropdownButton
+          upward={true}
+          button={false}
+          header="Emoji"
+          icon="meh outline"
+          direction="right"
+        >
+          <Picker
+            set="apple"
+            onSelect={(emoji, event) => handleEmojiClick(emoji, commentId)}
+          />
+        </DropdownButton>
       )}
 
       <CommentLink content="Edit" onClick={() => handleEditComment()} />

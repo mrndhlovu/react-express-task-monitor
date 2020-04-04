@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import CardComment from "../sharedComponents/CardComment";
+import CardCommentInput from "../sharedComponents/CardCommentInput";
 import { emptyFunction, resetForm } from "../../utils/appUtils";
 import { requestCreateComment } from "../../apis/apiRequests";
 import Comment from "./Comment";
@@ -44,7 +44,7 @@ const CardComments = ({
 
   return (
     <CardDetailSegment>
-      <CardComment saveComment={saveComment} {...props} />
+      <CardCommentInput saveComment={saveComment} {...props} />
 
       {activeCard.comments.map(comment => (
         <Comment
