@@ -79,6 +79,13 @@ const CardDetailModal = ({ listPosition, match }) => {
   const hasDueDate = card.dueDate && card.dueDate.date;
 
   const saveCardChanges = changes => setCard(changes);
+  const handleCreateChecklist = () => setCheckList(true);
+  const handleMakeCover = cover => setIsLoading(true) && setNewCover(cover);
+
+  const handleDeleteAttachment = imgUrl => {
+    setDeleteAttachment(imgUrl);
+    setIsLoading(true);
+  };
 
   const addCardAttachment = useCallback(
     attachment => {
@@ -131,8 +138,6 @@ const CardDetailModal = ({ listPosition, match }) => {
     handleLoadingAttachment(true);
   };
 
-  const handleCreateChecklist = () => setCheckList(true);
-
   useEffect(() => {
     if (!removeCover) return;
 
@@ -151,11 +156,6 @@ const CardDetailModal = ({ listPosition, match }) => {
     };
     removeCardCover();
   }, [card, id, listPosition, backendUpdate, removeCover, setRemoveCover]);
-
-  const handleMakeCover = cover => {
-    setIsLoading(true);
-    setNewCover(cover);
-  };
 
   useEffect(() => {
     if (!newCover) return emptyFunction();
@@ -187,11 +187,6 @@ const CardDetailModal = ({ listPosition, match }) => {
     if (newCover) return;
     setActiveCardCover(card.cardCover);
   }, [card, newCover]);
-
-  const handleDeleteAttachment = imgUrl => {
-    setDeleteAttachment(imgUrl);
-    setIsLoading(true);
-  };
 
   useEffect(() => {
     if (!deleteAttachment) return emptyFunction();
@@ -314,9 +309,15 @@ const CardDetailModal = ({ listPosition, match }) => {
                   />
 
                   <CardModalActivities
+                    activeCard={card}
+                    backendUpdate={backendUpdate}
+                    board={board}
+                    getSourceList={getSourceList}
                     handleShowDetails={() => setHideActivities(!hideActivities)}
                     hideActivities={hideActivities}
-                    board={board}
+                    id={id}
+                    listPosition={listPosition}
+                    saveCardChanges={saveCardChanges}
                     user={auth.user.fname}
                   />
                 </LeftSideContent>

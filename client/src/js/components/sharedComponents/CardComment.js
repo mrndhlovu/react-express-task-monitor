@@ -46,10 +46,12 @@ const CardComment = ({ comment, saveComment, user }) => {
           <Form>
             <Form.Field>
               <input
+                id="comment-input"
                 placeholder={comment ? comment : "Write a comment"}
                 onFocus={() => setFocus(true)}
                 onBlur={() => setFocus(false)}
                 onChange={e => handleChange(e)}
+                onKeyDown={e => (e.key === "Enter" ? handleSaveClick() : null)}
               />
             </Form.Field>
           </Form>

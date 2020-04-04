@@ -152,7 +152,8 @@ const BoardContainer = ({ match, history }) => {
       const { fieldId, activity } = updatedField;
       const { fname } = auth.user;
       const userAction = getActivity(fname, activity);
-      board.activities.push({ activity: userAction, createdAt: Date.now() });
+      activity &&
+        board.activities.push({ activity: userAction, createdAt: Date.now() });
       const update = {
         [fieldId]: board[fieldId],
         activities: board.activities
@@ -176,7 +177,7 @@ const BoardContainer = ({ match, history }) => {
 
     fetchData();
     return () => {
-      console.log("Un mount");
+      // console.log("Un mount");
     };
   }, [board, updatedField, id, history]);
 

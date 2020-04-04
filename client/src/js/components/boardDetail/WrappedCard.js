@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 import { DragSource, DropTarget } from "react-dnd";
 import flow from "lodash/flow";
@@ -76,4 +76,4 @@ const cardCollect = (connect, monitor) => ({
 export default flow(
   DragSource(Types.LIST, source, collect),
   DropTarget(Types.LIST, target, cardCollect)
-)(WrappedCard);
+)(memo(WrappedCard));

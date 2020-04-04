@@ -7,9 +7,9 @@ const Span = styled.span`
 `;
 
 const StyledButton = styled.div`
-  min-height: 32px;
-  min-width: 32px;
-  padding: 5px;
+  max-height: 37px;
+  max-width: 37px;
+  padding: 18px;
   background-color: #dce3eb;
   border-radius: 50px;
   display: flex;

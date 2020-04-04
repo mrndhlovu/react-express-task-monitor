@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, memo } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -36,10 +36,6 @@ const CardBadges = styled.div`
   display: flex;
 `;
 
-const Span = styled.span`
-  font-size: 12px;
-`;
-
 const CardItem = ({ card, sourceListId, sourceTitle }) => {
   const { backendUpdate, handleCardClick, updateBoard, board } = useContext(
     BoardListsContext
@@ -49,7 +45,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
     card.attachments.images.length !== 0 ||
     card.attachments.documents.length !== 0;
   const hasChecklist = card.checklists.length !== 0;
-  const hasDescription = card.description !== undefined;
+  const hasDescription = card.shortDescription.localeCompare("") !== 0;
   const hasComments = card.comments.length !== 0;
   const hasDueDate = card.dueDate;
 
@@ -88,10 +84,7 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
       {hasLabel && <LabelsSnippets labels={card.labels} />}
       <Container>
         <CardCover card={card} />
-      </Container>
-      <Container>
         <CardTitle edit={showEditButton} title={card.title} />
-        {card.shortDescription && <Span>{card.shortDescription}</Span>}
       </Container>
       <CardBadges>
         {hasAttachments && <CardBadge icon="attach" />}
@@ -111,4 +104,4 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
   );
 };
 
-export default withRouter(memo(CardItem));
+export default withRouter(CardItem);

@@ -38,6 +38,10 @@ ui.form,
   display: none;
 }
 
+.icon-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
 .lists-container,
 .card-list {
   -ms-overflow-style: none;

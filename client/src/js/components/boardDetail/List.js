@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, memo } from "react";
 import styled from "styled-components";
 
 import flow from "lodash/flow";
@@ -151,4 +151,4 @@ const sortCollect = (connect, monitor) => ({
 export default flow(
   DragSource(Types.LIST, source, collect),
   DropTarget(Types.LIST, target, sortCollect)
-)(List);
+)(memo(List));

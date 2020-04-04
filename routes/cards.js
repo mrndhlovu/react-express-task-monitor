@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
 const Card = require("../models/Card");
+const Comment = require("../models/Comment");
 const CheckListItem = require("../models/CheckListItem");
 const auth = require("../utils.js/middleware/authMiddleware");
 
@@ -178,4 +179,36 @@ router.patch("/delete-attachment/:boardId", async (req, res) => {
   }
 });
 
+router.patch("/:boardId/comment", auth, async (req, res) => {
+  const _id = req.params.boardId;
+  const { comment, cardId, listId } = req.body;
+
+  try {
+    board = await Board.findOne({ _id, owner: req.user._id });
+
+    if (!board) {
+      board = await Board.findOne({ _id });
+      board.validateBoardMember(req.user._id);
+    }
+
+    const newComment = new Comment({
+      comment,
+      creator: req.user.fname
+    });
+
+    newComment.save();
+
+    board.lists[listId - 1].cards[cardId - 1].comments.push(newComment);
+    board.updateActivity(req.user.fname, "addComment");
+
+    await updateBoardLists(_id, board.lists);
+
+    board.save();
+    const card = board.lists[listId - 1].cards[cardId - 1];
+
+    res.status(201).send(card);
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+});
 module.exports = router;

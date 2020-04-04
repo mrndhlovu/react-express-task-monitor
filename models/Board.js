@@ -91,7 +91,8 @@ BoardSchema.methods.updateActivity = async function(user, action) {
     cardHeader: "changed card header to",
     addNewCard: "added new card",
     addAttachment: "attached",
-    addChecklist: "added Checklist to this card"
+    addChecklist: "added Checklist to this card",
+    addComment: "added a comment"
   };
 
   const getAction = action => {
@@ -104,6 +105,8 @@ BoardSchema.methods.updateActivity = async function(user, action) {
         return `${user} ${BOARD_ACTIVITIES.addAttachment}: `;
       case "addChecklist":
         return `${user} ${BOARD_ACTIVITIES.addChecklist}: `;
+      case "addComment":
+        return `${user} ${BOARD_ACTIVITIES.addComment}: `;
       default:
         break;
     }

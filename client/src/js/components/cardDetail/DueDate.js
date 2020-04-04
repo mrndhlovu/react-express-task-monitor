@@ -70,7 +70,6 @@ const DueDate = ({
 
     if (removeDueDate || checked || unChecked) {
       saveCardChanges(newCard);
-      console.log("newCard: ", newCard);
       sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
@@ -83,14 +82,14 @@ const DueDate = ({
       setUnChecked(false);
     };
   }, [
+    activeCard,
     backendUpdate,
     board,
-    activeCard,
     checked,
     removeDueDate,
+    saveCardChanges,
     sourceList,
-    unChecked,
-    saveCardChanges
+    unChecked
   ]);
 
   return (
