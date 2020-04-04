@@ -55,3 +55,6 @@ export const requestNewChecklistItem = (body, id) =>
 
 export const requestCreateComment = (body, id) =>
   axios.patch(`${CARDS_EP}/${id}/comment`, body, params);
+
+export const requestBoardMembers = id =>
+  axios.get(`${BOARDS_EP}/id/${id}/members`, params);

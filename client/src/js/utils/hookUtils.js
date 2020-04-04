@@ -118,7 +118,7 @@ export const useMountCallback = isMountedCallback => {
 
 // A hook that provides the previous value for a passed prop,
 // and undefined for the first time it is called.
-// From https://stackoverflow.com/a/53446665
+
 export const usePrevious = value => {
   const ref = useRef();
   useEffect(() => {

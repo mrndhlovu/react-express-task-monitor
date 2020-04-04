@@ -82,7 +82,11 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
     const board = await Board.findOne({ _id, owner: req.user._id });
     const invitedUser = await User.findOne({ email });
 
-    const member = { id: invitedUser._id, isAdmin: false };
+    const member = {
+      id: invitedUser._id,
+      isAdmin: false,
+      fname: invitedUser.fname
+    };
     board.members.push(member);
 
     board.accessLevel = {
@@ -143,7 +147,11 @@ router.post("/create", auth, async (req, res) => {
     ...req.body,
     owner: req.user._id
   });
-  const member = { id: `${req.user._id}`, isAdmin: true };
+  const member = {
+    id: `${req.user._id}`,
+    isAdmin: true,
+    fname: req.user.fname
+  };
   board.members.push(member);
 
   try {

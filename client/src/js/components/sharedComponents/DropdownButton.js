@@ -30,7 +30,8 @@ const DropdownButton = ({
   labeled = true,
   button = true,
   direction = "left",
-  upward = false
+  upward = false,
+  as = "h5"
 }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -57,7 +58,7 @@ const DropdownButton = ({
       >
         <HeaderWrapper>
           <div>
-            <Header size="tiny" as="h5" content={header} />
+            <Header size="tiny" as={as} content={header} />
           </div>
           <div>
             <Icon link name="close" onClick={() => setOpen(!open)} />

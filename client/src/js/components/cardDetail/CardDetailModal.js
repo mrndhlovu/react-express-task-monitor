@@ -75,6 +75,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
 
   const hasLabel = card && card.labels.length !== 0;
   const hasChecklist = card && card.checklists.length !== 0;
+  const hasMembers = board && board.members.length !== 0;
 
   const saveCardChanges = changes => setCard(changes);
   const handleCreateChecklist = () => setCheckList(true);
@@ -336,6 +337,9 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                 hasDueDate={card.dueDate && card.dueDate.date}
                 mobile={device.mobile}
                 saveCardChanges={saveCardChanges}
+                hasMembers={hasMembers}
+                boardMembers={board.members}
+                id={id}
               />
             </Grid.Column>
           </Grid.Row>

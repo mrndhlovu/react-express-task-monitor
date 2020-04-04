@@ -2,10 +2,10 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import moment from "moment";
 
+import { deleteAttachmentText } from "../../constants/constants";
 import { Item, Button, Dropdown } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import { deleteAttachmentText } from "../../constants/constants";
 
 const Container = styled.div``;
 
