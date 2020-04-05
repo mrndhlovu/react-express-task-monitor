@@ -13,7 +13,7 @@ import CreateCard from "../sharedComponents/CreateCard";
 import { BoardListsContext, MainContext } from "../../utils/contextUtils";
 import ListHeader from "./ListHeader";
 
-const StyledWrapper = styled(Segment)`
+const ListSegment = styled(Segment)`
   background-color: #ebecf0 !important;
   box-sizing: border-box;
   display: flex;
@@ -21,7 +21,8 @@ const StyledWrapper = styled(Segment)`
   max-height: 100%;
   position: relative;
   white-space: normal;
-  border-radius: 2px !important;
+  border-radius: px !important;
+  padding: 4px 7px !important;
 `;
 
 const CardsContainer = styled.div`
@@ -30,7 +31,6 @@ const CardsContainer = styled.div`
 `;
 
 const CreateCardInputWrapper = styled.div`
-  margin-top: 10px;
   background-color: #ebecf0 !important;
   position: sticky;
   bottom: 0;
@@ -60,7 +60,7 @@ const List = ({
     minWidth: "272px",
     verticalAlign: "top",
     visibility: isDragging && "hidden",
-    marginRight: "5px",
+    marginRight: "8px",
     position: "relative",
     whiteSpace: "nowrap",
     height: mobile ? "79vh" : "92vh"
@@ -68,7 +68,7 @@ const List = ({
 
   const wrappedList = (
     <div style={styles}>
-      <StyledWrapper>
+      <ListSegment>
         <ListHeader
           className="ui"
           title={title}
@@ -77,6 +77,7 @@ const List = ({
           getSourceList={getSourceList}
           backendUpdate={backendUpdate}
           board={board}
+          mobile={mobile}
         />
 
         <CardsContainer className="card-list">
@@ -96,7 +97,7 @@ const List = ({
             {...otherProps}
           />
         </CreateCardInputWrapper>
-      </StyledWrapper>
+      </ListSegment>
     </div>
   );
 

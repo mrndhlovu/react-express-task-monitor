@@ -2,7 +2,11 @@ import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { BoardContext, BoardListsContext } from "../../utils/contextUtils";
+import {
+  BoardContext,
+  BoardListsContext,
+  MainContext
+} from "../../utils/contextUtils";
 import CardDetailModal from "../cardDetail/CardDetailModal";
 import CreateItemForm from "../sharedComponents/CreateItemForm";
 import ListGrid from "./ListGrid";
@@ -17,10 +21,13 @@ const StyledListContainer = styled.div`
 
 const BoardLists = ({ history }) => {
   const { board, backendUpdate, id } = useContext(BoardContext);
+  const { mobile } = useContext(MainContext).device;
+
   const { lists } = board;
   const modalOpen = parseSearchQuery(getQueryString(history.location))[
     "modal-open"
   ];
+  const hasLists = lists.length !== 0;
 
   const [activeList, setActiveList] = useState("");
   const [dragging, setDragging] = useState(false);
@@ -247,7 +254,8 @@ const BoardLists = ({ history }) => {
     showAddCardInput,
     sourceTitle,
     updateBoard,
-    updateHoverIndex
+    updateHoverIndex,
+    mobile
   };
 
   return (
@@ -270,7 +278,7 @@ const BoardLists = ({ history }) => {
         <CreateItemForm
           buttonText="Create List"
           placeholder="Enter new list title..."
-          ctaText="Add another list"
+          ctaText={hasLists ? "Add another list" : "Add a list"}
           handleAddList={() => setShowInputField(!showInputField)}
           showInputField={showInputField}
           handleChange={handleAddList}

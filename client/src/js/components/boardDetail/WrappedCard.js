@@ -13,7 +13,8 @@ const WrappedCard = ({
   isDragging,
   isOverCard,
   sourceListId,
-  listTitle
+  listTitle,
+  isLast
 }) => {
   const styles = {
     backgroundColor: !isDragging && "#fff",
@@ -32,6 +33,7 @@ const WrappedCard = ({
         card={card}
         sourceListId={sourceListId}
         sourceTitle={listTitle}
+        isLast={isLast}
       />
     </div>
   );

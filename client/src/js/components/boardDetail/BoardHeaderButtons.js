@@ -33,7 +33,7 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
   padding: 0 10px 10px 10px !important;
 `;
 
-export default function LeftBoardButtons({ mobile, isStarred }) {
+export default function BoardHeaderButtons({ mobile, isStarred }) {
   const {
     board,
     changeBoardAccessLevel,
@@ -106,7 +106,12 @@ export default function LeftBoardButtons({ mobile, isStarred }) {
         </Dropdown>
       </StyledButton>
       <StyledButton size="tiny">
-        <Dropdown text="Invite" icon={false} closeOnChange={false}>
+        <Dropdown
+          text="Invite"
+          icon={false}
+          closeOnChange={false}
+          direction="left"
+        >
           <StyledDropdownMenu>
             {error ? (
               <Dropdown.Header>

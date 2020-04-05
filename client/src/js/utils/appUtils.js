@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const allowedUpdates = [
   "title",
   "lists",
@@ -115,3 +117,6 @@ export const capitalize = string =>
 
 export const getProgression = (partialValue, totalValue) =>
   (100 * partialValue) / totalValue;
+
+export const getFormattedDate = (date, format, calendar) =>
+  calendar ? moment(date).calendar() : moment(date).format(format);

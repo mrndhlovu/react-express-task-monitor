@@ -7,19 +7,6 @@ import { requestCreateNewCard } from "../../apis/apiRequests";
 import { resetForm, emptyFunction } from "../../utils/appUtils";
 import { BoardContext } from "../../utils/contextUtils";
 
-const StyledTextArea = styled(TextArea)`
-  width: 100%;
-  border-radius: 3px;
-  min-height: 80px !important;
-  padding-top: 5px;
-  padding-left: 5px;
-`;
-
-const StyledCardContent = styled(Card.Content)`
-  padding-top: 10px !important;
-  background-color: #eee !important;
-`;
-
 const StyledButton = styled.div`
   text-align: left !important;
   background-color: #ebecf0 !important;
@@ -29,16 +16,26 @@ const StyledButton = styled.div`
   outline: none !important;
   cursor: pointer;
 
-  display: grid;
-  grid-template-columns: 92% 8%;
+  display: flex;
+  justify-content: space-between;
 
   &:hover {
-    color: #172b4d !important;
-    background-color: #00000026 !important;
+    color: #172b30 !important;
+    background-color: #00000020 !important;
   }
 `;
 
-const StyleDiv = styled.div``;
+const Span = styled.span``;
+
+const StyledCard = styled(Card)`
+  padding: 5px !important;
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+`;
 
 const StyledContainer = styled.div`
   padding-top: 10px;
@@ -81,36 +78,34 @@ const CreateCard = ({
     <StyledContainer>
       {!activeList ? (
         <StyledButton fluid basic onClick={() => handleAddCardName(listId)}>
-          <StyleDiv>
+          <Span>
             <Icon name="add" />
             Add a card...
-          </StyleDiv>
-          <StyleDiv>
-            <Icon name="image" />
-          </StyleDiv>
+          </Span>
+          <Icon name="image" />
         </StyledButton>
       ) : (
-        <form>
-          <StyledCardContent extra>
-            <StyledTextArea
-              id="create-card-input"
-              placeholder="Enter a title for this card..."
-              onChange={e => handleChange(e)}
-              autoFocus
-              onKeyDown={e => (e.key === "Enter" ? setSave(true) : null)}
-            />
-          </StyledCardContent>
+        <StyledCard fluid>
+          <TextArea
+            id="create-card-input"
+            placeholder="Enter a title for this card..."
+            onChange={e => handleChange(e)}
+            autoFocus
+            fluid="true"
+            onKeyDown={e => (e.key === "Enter" ? setSave(true) : null)}
+          />
 
-          <>
+          <ButtonWrapper>
             <Button
               positive
               size="tiny"
               content="Add Card"
               onClick={() => setSave(true)}
             />
-            <Icon name="close" onClick={() => closeAddCardOption()} />
-          </>
-        </form>
+
+            <Icon name="close" onClick={() => closeAddCardOption()} link />
+          </ButtonWrapper>
+        </StyledCard>
       )}
     </StyledContainer>
   );

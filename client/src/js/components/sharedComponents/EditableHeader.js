@@ -10,7 +10,6 @@ const StyledHeader = styled(Header)`
 
 const StyledDiv = styled.div`
   cursor: pointer;
-  display: flex;
 `;
 
 const EditHeader = styled(Input)`

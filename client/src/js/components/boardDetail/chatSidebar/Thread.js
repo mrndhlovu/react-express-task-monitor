@@ -1,9 +1,9 @@
 import React, { memo } from "react";
 import styled from "styled-components";
-import moment from "moment";
 import ReactEmoji from "react-emoji";
 
 import { Comment, Divider, Icon } from "semantic-ui-react";
+import { getFormattedDate } from "../../../utils/appUtils";
 
 const Message = styled.div`
   background-color: ${props =>
@@ -26,7 +26,9 @@ const Thread = ({ message, isCurrentUserMessage }) => {
       <Divider
         horizontal
         inverted
-        content={<StyledSpan>{moment(message.time).calendar()}</StyledSpan>}
+        content={
+          <StyledSpan>{getFormattedDate(message.time, null, true)}</StyledSpan>
+        }
       />
       <Message isCurrentUserMessage={isCurrentUserMessage}>
         <Comment>
@@ -35,7 +37,7 @@ const Thread = ({ message, isCurrentUserMessage }) => {
               <Icon circular name="user" color="green" />
               {message.user}{" "}
               <StyledSpan isCurrentUserMessage={isCurrentUserMessage}>
-                {moment(message.date).format("LT")}
+                {getFormattedDate(message.date, "LT")}
               </StyledSpan>
             </Comment.Author>
             <Comment.Text>{ReactEmoji.emojify(message.text)}</Comment.Text>

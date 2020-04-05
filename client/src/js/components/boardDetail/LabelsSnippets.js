@@ -15,13 +15,15 @@ const Label = styled.div`
   border-radius: 20px;
 `;
 
-const LabelsSnippets = ({ labels = [] }) => {
+const LabelsSnippets = ({ labels = [], hasLabel = false }) => {
   return (
-    <Container>
-      {labels.map((label, index) => (
-        <Label key={index} color={label} />
-      ))}
-    </Container>
+    hasLabel && (
+      <Container>
+        {labels.map((label, index) => (
+          <Label key={index} color={label} />
+        ))}
+      </Container>
+    )
   );
 };
 

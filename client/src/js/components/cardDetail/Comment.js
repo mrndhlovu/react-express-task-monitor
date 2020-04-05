@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import moment from "moment";
 import styled from "styled-components";
 
-import { getUserInitials } from "../../utils/appUtils";
+import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
 import EditCommentIcons from "./EditCommentIcons";
 import UserAvatar from "../sharedComponents/UserAvatar";
 import CreateInput from "../sharedComponents/CreateInput";
@@ -156,7 +155,7 @@ const Comment = ({
         <UserAvatar userInitials={getUserInitials(creator)} />
         <StyledSmall>
           <UserLabel> {creator}</UserLabel>
-          <TimeStamp>{moment(createdAt).calendar()}</TimeStamp>
+          <TimeStamp>{getFormattedDate(createdAt, null, true)}</TimeStamp>
         </StyledSmall>
       </Container>
       {editComment && (

@@ -1,9 +1,9 @@
 import React from "react";
-import moment from "moment";
+import styled from "styled-components";
+
+import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import UserAvatar from "../sharedComponents/UserAvatar";
-import { getUserInitials } from "../../utils/appUtils";
-import styled from "styled-components";
 
 const StyledActivitiesContainer = styled.div`
   display: flex;
@@ -30,7 +30,7 @@ const Activities = ({ board, user }) => {
   return (
     <CardDetailSegment>
       {activities.map(activity => {
-        const time = moment(activity.createdAt).format("LLL");
+        const time = getFormattedDate(activity.createdAt, "LLL");
 
         return (
           <StyledActivitiesContainer key={activity.createdAt}>

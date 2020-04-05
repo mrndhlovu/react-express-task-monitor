@@ -1,11 +1,11 @@
 import React, { memo } from "react";
 import styled from "styled-components";
-import moment from "moment";
 
 import { deleteAttachmentText } from "../../constants/constants";
 import { Item, Button, Dropdown } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import { getFormattedDate } from "../../utils/appUtils";
 
 const Container = styled.div``;
 
@@ -75,7 +75,7 @@ const Attachments = ({
                     {image.name}
                   </Item.Content>
                   <DateWrapper>
-                    Added {moment(image.uploadDate).format("LL")}
+                    Added {getFormattedDate(image.uploadDate, "LL")}
                   </DateWrapper>
                 </AttachmentName>
 

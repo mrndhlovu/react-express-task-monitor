@@ -2,60 +2,55 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Dropdown } from "semantic-ui-react";
+
+import CopyListDialog from "./CopyListDialog";
 import EditableHeader from "../sharedComponents/EditableHeader";
 import ListMenu from "./ListMenu";
-import CopyListDialog from "./CopyListDialog";
 import MoveListDialog from "./MoveListDialog";
 
 const HeaderWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 90% 10%;
-  padding-bottom: 10px;
-`;
-
-const StyledDiv = styled.div`
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px 5px;
+  justify-content: space-between;
 `;
 
 const StyledDropdown = styled(Dropdown)`
-  background-color: #ffffff3d !important;
+  background-color: transparent !important;
+  font-size: 12px !important;
+  font-weight: 100 !important;
 `;
 
-const ListHeader = ({ title, position, ...otherProps }) => {
+const ListHeader = ({ title, position, mobile, ...otherProps }) => {
   const [hideMoveListOption, setHideMoveListOption] = useState(true);
   const [hideCopyList, setHideCopyList] = useState(false);
   const [hideListMenu, setHideListMenu] = useState(true);
 
   return (
     <HeaderWrapper>
-      <StyledDiv>
-        <EditableHeader
-          type="listHeader"
-          title={title}
-          listPosition={position}
-        />
-      </StyledDiv>
+      <EditableHeader type="listHeader" title={title} listPosition={position} />
 
-      <StyledDiv>
-        <StyledDropdown
-          icon="ellipsis horizontal"
-          onClick={() => setHideListMenu(!hideListMenu)}
-          floating
-          button
-          className="icon"
-          size="tiny"
-        >
-          <Dropdown.Menu>
-            <ListMenu
-              listPosition={position}
-              handleShowCopyListClick={() => setHideCopyList(!hideCopyList)}
-              handleShowMoveListClick={() =>
-                setHideMoveListOption(!hideMoveListOption)
-              }
-            />
-          </Dropdown.Menu>
-        </StyledDropdown>
-      </StyledDiv>
+      <StyledDropdown
+        icon="ellipsis horizontal"
+        onClick={() => setHideListMenu(!hideListMenu)}
+        floating
+        button
+        className="icon"
+        direction={mobile ? "left" : "right"}
+        size="tiny"
+      >
+        <Dropdown.Menu>
+          <Dropdown.Header content="List actions" as="h3" />
+          <ListMenu
+            listPosition={position}
+            handleShowCopyListClick={() => setHideCopyList(!hideCopyList)}
+            handleShowMoveListClick={() =>
+              setHideMoveListOption(!hideMoveListOption)
+            }
+          />
+        </Dropdown.Menu>
+      </StyledDropdown>
+
       {hideCopyList && (
         <CopyListDialog
           title={title}

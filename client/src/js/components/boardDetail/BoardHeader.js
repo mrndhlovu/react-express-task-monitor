@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import LeftBoardButtons from "./LeftBoardButtons";
+import BoardHeaderButtons from "./BoardHeaderButtons";
 import { BoardContext, MainContext } from "../../utils/contextUtils";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
@@ -33,7 +33,7 @@ const BoardHeader = () => {
       <TitleWrapper mobile={mobile}>
         <EditableHeader type="boardTitle" title={board.title} />
       </TitleWrapper>
-      <LeftBoardButtons
+      <BoardHeaderButtons
         mobile={mobile}
         isStarred={auth.user.starred.includes(board._id)}
         handleShowMenuClick={handleShowMenuClick}

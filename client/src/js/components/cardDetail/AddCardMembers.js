@@ -27,7 +27,7 @@ const AddCardMembers = ({ boardMembers }) => {
     >
       <CardDetailSegment>
         {boardMembers.map(member => (
-          <BoardMember>
+          <BoardMember key={member.id}>
             <UserAvatar userInitials={getUserInitials(member.fname)} />
             <Span>
               {member.fname} {member.isAdmin && "(Admin)"}

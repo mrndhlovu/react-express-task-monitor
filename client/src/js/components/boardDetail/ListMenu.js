@@ -107,9 +107,6 @@ const ListMenu = ({
 
   return (
     <Wrapper>
-      <div>
-        <span>List Actions</span>
-      </div>
       <Divider />
       <div>
         {listMenuOptions.map(option => (

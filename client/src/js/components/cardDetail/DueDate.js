@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import moment from "moment";
 
 import { Checkbox, Label, Button } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import { getFormattedDate } from "../../utils/appUtils";
 
 const Container = styled.div`
   margin-left: 10px;
@@ -110,7 +110,7 @@ const DueDate = ({
         <Container>
           <Checkbox
             id="dueDate"
-            label={moment(activeCard.dueDate.date).format("LLLL")}
+            label={getFormattedDate(activeCard.dueDate.date, "LLLL")}
             checked={activeCard.dueDate.complete}
             onChange={() => handleCheckboxClick()}
           />

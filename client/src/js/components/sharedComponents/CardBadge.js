@@ -8,12 +8,14 @@ const Badge = styled.span`
   padding-right: 5px;
 `;
 
-const CardBadge = ({ flipped, icon, content }) => {
+const CardBadge = ({ flipped, icon, content, hasBadge = false }) => {
   return (
-    <Badge>
-      <Icon name={icon} flipped={flipped} />
-      {content}
-    </Badge>
+    hasBadge && (
+      <Badge>
+        <Icon name={icon} flipped={flipped} />
+        {content}
+      </Badge>
+    )
   );
 };
 

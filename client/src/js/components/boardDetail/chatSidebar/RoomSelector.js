@@ -1,8 +1,8 @@
 import React from "react";
-import moment from "moment";
 import styled from "styled-components";
 
 import { Dropdown, Divider } from "semantic-ui-react";
+import { getFormattedDate } from "../../../utils/appUtils";
 
 const StyledDiv = styled.div`
   margin-top: 20px;
@@ -36,7 +36,7 @@ const RoomSelector = ({
       content={
         <>
           {onlineCount === 0 ? (
-            <span>{moment(Date.now()).format("LLL")}</span>
+            <span>{getFormattedDate(Date.now(), "LLL")}</span>
           ) : (
             <span> Online {onlineCount}</span>
           )}

@@ -8,16 +8,19 @@ const EditIconWrapper = styled.div`
   margin-left: 8px;
   opacity: ${props => (props.showEditButton ? 1 : 0)};
   position: absolute;
-  right: 5px;
-  top: 5px;
+  right: 0px;
+  top: 11px;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
+  z-index: 1000;
 `;
 
-const EditCardPenIcon = ({ handleDeleteCard, showEditButton }) => {
+const EditCardPenIcon = ({ handleDeleteCard, showEditButton, isLast }) => {
+  const upward = isLast ? isLast : false;
+
   return (
     <EditIconWrapper showEditButton={showEditButton}>
-      <Dropdown floating icon="pencil alternate" direction="left">
+      <Dropdown icon="pencil alternate" direction="left" upward={upward}>
         <Dropdown.Menu>
           <Dropdown.Item>Move</Dropdown.Item>
           <Dropdown.Item onClick={handleDeleteCard}>Delete</Dropdown.Item>

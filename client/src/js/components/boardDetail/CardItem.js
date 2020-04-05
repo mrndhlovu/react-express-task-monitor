@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { BoardListsContext } from "../../utils/contextUtils";
+import { getFormattedDate } from "../../utils/appUtils";
 import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
 import EditCardPenIcon from "./EditCardPenIcon";
@@ -36,10 +37,14 @@ const CardBadges = styled.div`
   display: flex;
 `;
 
-const CardItem = ({ card, sourceListId, sourceTitle }) => {
-  const { backendUpdate, handleCardClick, updateBoard, board } = useContext(
-    BoardListsContext
-  );
+const CardItem = ({ card, sourceListId, sourceTitle, isLast }) => {
+  const {
+    backendUpdate,
+    handleCardClick,
+    updateBoard,
+    board,
+    mobile
+  } = useContext(BoardListsContext);
   const hasLabel = card.labels.length !== 0;
   const hasAttachments =
     card.attachments.images.length !== 0 ||
@@ -50,11 +55,11 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
   const hasDueDate = card.dueDate;
 
   const [showEditButton, setShowEditButton] = useState(false);
-  const [deleting, setDeleting] = useState(false);
+  const [deleteCard, setDeleteCard] = useState(false);
 
   useEffect(() => {
-    if (!deleting) return;
-    const deleteCard = async () => {
+    if (!deleteCard) return;
+    const deleteCardItem = async () => {
       const newBoard = {
         ...board,
         lists: board.lists.map(list =>
@@ -71,9 +76,9 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
 
       updateBoard(newBoard, "deleteCard");
     };
-    deleteCard();
-    setDeleting(false);
-  }, [card, deleting, sourceListId, backendUpdate, board, updateBoard]);
+    deleteCardItem();
+    setDeleteCard(false);
+  }, [card, deleteCard, sourceListId, backendUpdate, board, updateBoard]);
 
   return (
     <ContentWrapper
@@ -81,24 +86,39 @@ const CardItem = ({ card, sourceListId, sourceTitle }) => {
       onMouseLeave={() => setShowEditButton(!showEditButton)}
       onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
     >
-      {hasLabel && <LabelsSnippets labels={card.labels} />}
+      <LabelsSnippets labels={card.labels} hasLabel={hasLabel} />
       <Container>
         <CardCover card={card} />
         <CardTitle edit={showEditButton} title={card.title} />
       </Container>
       <CardBadges>
-        {hasAttachments && <CardBadge icon="attach" />}
-        {hasChecklist && <CardBadge icon="check square outline" />}
-        {hasComments && (
-          <CardBadge icon="comment outline" content={card.comments.length} />
-        )}
-        {hasDescription && <CardBadge icon="list" />}
-        {hasDueDate && <CardBadge icon="clock outline" />}
-      </CardBadges>
+        <CardBadge
+          icon="attach"
+          content={card.attachments.images.length}
+          hasBadge={hasAttachments}
+        />
 
+        <CardBadge icon="check square outline" hasBadge={hasChecklist} />
+
+        <CardBadge
+          icon="comment outline"
+          content={card.comments.length}
+          hasBadge={hasComments}
+        />
+
+        <CardBadge icon="list" hasBadge={hasDescription} />
+
+        <CardBadge
+          icon="clock outline"
+          content={getFormattedDate(card.dueDate.date, "LL")}
+          hasBadge={hasDueDate}
+        />
+      </CardBadges>
       <EditCardPenIcon
-        handleDeleteCard={() => setDeleting(true)}
+        handleDeleteCard={() => setDeleteCard(true)}
         showEditButton={showEditButton}
+        isLast={isLast}
+        mobile={mobile}
       />
     </ContentWrapper>
   );
