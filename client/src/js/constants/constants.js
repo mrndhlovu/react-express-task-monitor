@@ -98,3 +98,15 @@ export const BOARD_ACTIVITIES = {
   deletedCard: "deleted card",
   deletedList: "deleted list"
 };
+
+export const SUGGESTED_COVERS = [
+  "Productivity",
+  "Perspective",
+  "Organization",
+  "Colorful",
+  "Nature",
+  "Business",
+  "Minimal",
+  "Space",
+  "Animals"
+];

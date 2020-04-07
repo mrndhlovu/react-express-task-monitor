@@ -7,6 +7,7 @@ import AddCardCheckList from "./AddCardCheckList";
 import AddCardDueDate from "./AddCardDueDate";
 import AddCardLabel from "./AddCardLabel";
 import AddCardMembers from "./AddCardMembers";
+import AddCover from "./AddCover";
 import CopyCardAction from "./CopyCardAction";
 import MoveCardAction from "./MoveCardAction";
 
@@ -34,6 +35,7 @@ const CardModalSidebar = ({
       {!hasChecklist && <AddCardCheckList />}
       {!hasDueDate && <AddCardDueDate {...props} />}
       {<AddAttachment {...props} />}
+      <AddCover {...props} />
       <StyledHeader content="ACTIONS" />
       <MoveCardAction />
       <CopyCardAction />

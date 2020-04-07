@@ -58,8 +58,9 @@ const BoardContainer = ({ match, history }) => {
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
-  const backendUpdate = useMemo(
+  const handleBoardUpdate = useMemo(
     () => (changes, fieldId, activity) => {
+      if (!changes) return setBoard(null);
       saveBoardChanges(changes);
       setUpdatedField({ fieldId, activity });
     },
@@ -74,7 +75,7 @@ const BoardContainer = ({ match, history }) => {
       accessLevel: { ...PERMISSIONS, [option]: true }
     };
 
-    backendUpdate(newBoard, "accessLevel", "changeAccess");
+    handleBoardUpdate(newBoard, "accessLevel", "changeAccess");
   };
 
   const handleDeleteBoard = useCallback(() => {
@@ -88,7 +89,7 @@ const BoardContainer = ({ match, history }) => {
       styleProperties: { ...board.styleProperties, color }
     };
 
-    backendUpdate(newBoard, "styleProperties", "color");
+    handleBoardUpdate(newBoard, "styleProperties", "color");
   };
 
   const handleBoardStarClick = () => {
@@ -108,7 +109,7 @@ const BoardContainer = ({ match, history }) => {
   useEffect(() => {
     if (!starred && !unStarred) return emptyFunction();
 
-    const upUserInfo = async () => {
+    const getUserInfo = async () => {
       await requestUserUpdate({ starred: user.starred }).then(res => {
         try {
         } catch (error) {
@@ -117,7 +118,7 @@ const BoardContainer = ({ match, history }) => {
       });
     };
 
-    upUserInfo();
+    getUserInfo();
 
     return () => {
       setStarred(false);
@@ -176,9 +177,6 @@ const BoardContainer = ({ match, history }) => {
         .catch(error => history.push("/"));
 
     fetchData();
-    return () => {
-      // console.log("Un mount");
-    };
   }, [board, updatedField, id, history]);
 
   return !board ? (
@@ -186,7 +184,7 @@ const BoardContainer = ({ match, history }) => {
   ) : (
     <BoardContext.Provider
       value={{
-        backendUpdate,
+        handleBoardUpdate,
         board,
         changeBoardAccessLevel,
         handleBoardStarClick,

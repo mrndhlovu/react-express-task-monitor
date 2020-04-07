@@ -24,7 +24,7 @@ const ContentWrapper = styled.div`
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  max-width: 244px;
+  max-width: 256px;
   position: relative;
 `;
 
@@ -39,7 +39,7 @@ const CardBadges = styled.div`
 
 const CardItem = ({ card, sourceListId, sourceTitle, isLast }) => {
   const {
-    backendUpdate,
+    handleBoardUpdate,
     handleCardClick,
     updateBoard,
     board,
@@ -78,7 +78,7 @@ const CardItem = ({ card, sourceListId, sourceTitle, isLast }) => {
     };
     deleteCardItem();
     setDeleteCard(false);
-  }, [card, deleteCard, sourceListId, backendUpdate, board, updateBoard]);
+  }, [card, deleteCard, sourceListId, handleBoardUpdate, board, updateBoard]);
 
   return (
     <ContentWrapper

@@ -20,7 +20,7 @@ const StyledListContainer = styled.div`
 `;
 
 const BoardLists = ({ history }) => {
-  const { board, backendUpdate, id } = useContext(BoardContext);
+  const { board, handleBoardUpdate, id } = useContext(BoardContext);
   const { mobile } = useContext(MainContext).device;
 
   const { lists } = board;
@@ -78,7 +78,7 @@ const BoardLists = ({ history }) => {
 
   const updateBoard = (data, action) => {
     setUpdate(data.lists);
-    backendUpdate(data, "lists", activity || action);
+    handleBoardUpdate(data, "lists", activity || action);
     setActivity(null);
   };
 
@@ -249,7 +249,7 @@ const BoardLists = ({ history }) => {
     handleStartDrag,
     hideCardDetail,
     lists,
-    backendUpdate,
+    handleBoardUpdate,
     newCardName,
     showAddCardInput,
     sourceTitle,

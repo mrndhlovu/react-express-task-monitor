@@ -64,7 +64,7 @@ const Attachments = ({
           <CardDetailHeader icon="attach" description="Attachments" />
         </HeaderWrapper>
         <Item.Group divided>
-          {images.reverse().map((image, index) => (
+          {images.map((image, index) => (
             <Item key={index}>
               <AttachmentName>
                 <Item.Image size="tiny" src={image.imgUrl} />

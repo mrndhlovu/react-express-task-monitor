@@ -6,7 +6,8 @@ import { Header, Dropdown, Divider, Icon } from "semantic-ui-react";
 const StyledDropdown = styled(Dropdown)`
   margin-bottom: 10px !important;
   padding-bottom: 15px;
-  background-color: ${props => (props.color ? props.color : "#091e420a")};
+  background-color: ${props =>
+    props.color ? props.color : "#091e420a"} !important;
   text-align: left !important;
   font-size: 13px !important;
   font-weight: 500 !important;
@@ -31,9 +32,16 @@ const DropdownButton = ({
   button = true,
   direction = "left",
   upward = false,
-  as = "h5"
+  as = "h5",
+  callback = () => {}
 }) => {
   const [open, setOpen] = useState(false);
+
+  const handleClose = callback => {
+    setOpen(!open);
+    return callback();
+  };
+
   return (
     <StyledDropdown
       upward={upward}
@@ -61,7 +69,7 @@ const DropdownButton = ({
             <Header size="tiny" as={as} content={header} />
           </div>
           <div>
-            <Icon link name="close" onClick={() => setOpen(!open)} />
+            <Icon link name="close" onClick={() => handleClose(callback)} />
           </div>
         </HeaderWrapper>
         <Divider />

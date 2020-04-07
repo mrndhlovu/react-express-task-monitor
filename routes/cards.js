@@ -106,28 +106,23 @@ router.patch("/cover/:boardId", auth, async (req, res) => {
   try {
     const board = await Board.findById({ _id: boardId });
 
-    const patchedList = {
-      ...board,
-      lists: [
-        ...board.lists.map(list =>
-          list.position === listId
-            ? {
-                ...list,
-                cards: list.cards.map(card =>
-                  card.position === cardId
-                    ? {
-                        ...card,
-                        cardCover
-                      }
-                    : { ...card }
-                )
-              }
-            : { ...list }
-        )
-      ]
-    };
+    const patchedList = board.lists.map(list =>
+      list.position === listId
+        ? {
+            ...list,
+            cards: list.cards.map(card =>
+              card.position === cardId
+                ? {
+                    ...card,
+                    cardCover
+                  }
+                : { ...card }
+            )
+          }
+        : { ...list }
+    );
 
-    const newBoard = await updateBoardLists(boardId, patchedList.lists);
+    const newBoard = await updateBoardLists(boardId, patchedList);
 
     res.send(newBoard);
   } catch (error) {

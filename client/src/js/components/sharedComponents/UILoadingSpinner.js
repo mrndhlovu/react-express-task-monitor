@@ -6,16 +6,16 @@ const Container = styled.div`
   align-items: center;
   display: grid;
   justify-items: center;
-  min-height: 100vh;
+  min-height: 100%;
   width: 100%;
   opacity: 0.4;
 `;
 
-const UILoadingSpinner = () => {
+const UILoadingSpinner = ({ inverted = true }) => {
   return (
     <Container>
-      <Dimmer active inverted>
-        <Loader inverted size="mini" content="Loading..." />
+      <Dimmer active inverted={inverted}>
+        <Loader inverted={inverted} size="mini" content="Loading..." />
       </Dimmer>
     </Container>
   );

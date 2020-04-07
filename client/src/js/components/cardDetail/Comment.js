@@ -41,7 +41,7 @@ const CommentWrapper = styled.div`
 
 const Comment = ({
   activeCard,
-  backendUpdate,
+  handleBoardUpdate,
   board,
   comment,
   getSourceList,
@@ -127,7 +127,7 @@ const Comment = ({
       sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-      backendUpdate(board, "lists");
+      handleBoardUpdate(board, "lists");
     }
 
     return () => {
@@ -139,7 +139,7 @@ const Comment = ({
     selectedEmoji,
     activeCard,
     board,
-    backendUpdate,
+    handleBoardUpdate,
     getSourceList,
     listPosition,
     saveCardChanges,

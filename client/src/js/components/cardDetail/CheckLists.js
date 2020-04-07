@@ -26,7 +26,7 @@ const CheckLists = ({
   checklistName = "Checklist",
   getSourceList,
   board,
-  backendUpdate,
+  handleBoardUpdate,
   saveCardChanges
 }) => {
   const [checked, setChecked] = useState(null);
@@ -63,14 +63,14 @@ const CheckLists = ({
       sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-      backendUpdate(board, "lists", "removeChecklist");
+      handleBoardUpdate(board, "lists", "removeChecklist");
     }
     return () => {
       setRemoveChecklist(false);
     };
   }, [
     removeChecklist,
-    backendUpdate,
+    handleBoardUpdate,
     board,
     activeCard,
     sourceList,
@@ -97,7 +97,7 @@ const CheckLists = ({
       sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-      backendUpdate(board, "lists", "updatedChecklist");
+      handleBoardUpdate(board, "lists", "updatedChecklist");
     }
 
     return () => {
@@ -106,7 +106,7 @@ const CheckLists = ({
     };
   }, [
     activeCard,
-    backendUpdate,
+    handleBoardUpdate,
     board,
     checked,
     getSourceList,

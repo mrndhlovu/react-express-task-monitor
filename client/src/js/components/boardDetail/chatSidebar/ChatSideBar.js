@@ -40,7 +40,7 @@ const FormWrapper = styled.div`
 
 const ChatSideBar = ({ openChat }) => {
   const { fname } = useContext(MainContext).auth.user;
-  const { board, backendUpdate } = useContext(BoardContext);
+  const { board, handleBoardUpdate } = useContext(BoardContext);
   const name = getFormattedString(fname);
 
   const [message, setMessage] = useState(undefined);
@@ -86,11 +86,11 @@ const ChatSideBar = ({ openChat }) => {
       console.log("newMessage: ", newMessage);
       if (newMessage.room) {
         board.comments.push({ ...newMessage });
-        backendUpdate(board, "comments");
+        handleBoardUpdate(board, "comments");
       }
       return setMessages([...messages, { ...newMessage, room }]);
     },
-    [board, backendUpdate, messages]
+    [board, handleBoardUpdate, messages]
   );
 
   useEffect(() => {

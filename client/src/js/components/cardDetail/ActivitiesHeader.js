@@ -6,25 +6,23 @@ import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 
 const Container = styled.div`
   margin-top: 20px;
-  display: grid;
-  grid-template-columns: 50% 49%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ActivitiesHeader = ({ handleShowDetails, hideButton }) => {
   return (
     <Container>
-      <div>
-        <CardDetailHeader description="Activities" icon="sort amount down" />
-      </div>
+      <CardDetailHeader description="Activities" icon="sort amount down" />
+
       {!hideButton && (
-        <div>
-          <Button
-            onClick={handleShowDetails}
-            floated="right"
-            size="tiny"
-            content="Show Details"
-          />
-        </div>
+        <Button
+          onClick={handleShowDetails}
+          floated="right"
+          size="tiny"
+          content="Show Details"
+        />
       )}
     </Container>
   );

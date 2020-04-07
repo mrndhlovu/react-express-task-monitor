@@ -20,7 +20,7 @@ const AddCardDueDate = ({
   activeCard,
   board,
   listPosition,
-  backendUpdate,
+  handleBoardUpdate,
   getSourceList,
   saveCardChanges
 }) => {
@@ -55,7 +55,7 @@ const AddCardDueDate = ({
       sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-      backendUpdate(board, "lists", "dueDate");
+      handleBoardUpdate(board, "lists", "dueDate");
     }
 
     return () => {
@@ -63,7 +63,7 @@ const AddCardDueDate = ({
       setRemoveDueDate(false);
     };
   }, [
-    backendUpdate,
+    handleBoardUpdate,
     board,
     activeCard,
     dueDate,

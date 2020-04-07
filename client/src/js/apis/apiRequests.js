@@ -1,6 +1,13 @@
 import axios from "axios";
 
-import { BOARDS_EP, UPLOAD_EP, params, CARDS_EP, AUTH_EP } from "../utils/urls";
+import {
+  BOARDS_EP,
+  UPLOAD_EP,
+  params,
+  CARDS_EP,
+  AUTH_EP,
+  IMAGES_EP
+} from "../utils/urls";
 
 export const requestNewBoard = board =>
   axios.post(`${BOARDS_EP}/create`, board, params);
@@ -58,3 +65,6 @@ export const requestCreateComment = (body, id) =>
 
 export const requestBoardMembers = id =>
   axios.get(`${BOARDS_EP}/id/${id}/members`, params);
+
+export const requestImages = query =>
+  axios.get(`${IMAGES_EP}&q=${query}&image_type=photo`);

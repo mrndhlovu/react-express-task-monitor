@@ -4,7 +4,7 @@ import CardLabelColors from "../sharedComponents/CardLabelColors";
 
 const AddCardLabel = ({
   activeCard,
-  backendUpdate,
+  handleBoardUpdate,
   board,
   listPosition,
   getSourceList
@@ -41,7 +41,7 @@ const AddCardLabel = ({
       );
 
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-      backendUpdate(board, "lists", activity);
+      handleBoardUpdate(board, "lists", activity);
     }
 
     return () => {
@@ -50,7 +50,7 @@ const AddCardLabel = ({
     };
   }, [
     activeCard,
-    backendUpdate,
+    handleBoardUpdate,
     board,
     getSourceList,
     label,

@@ -27,15 +27,14 @@ const DescriptionContent = styled.div`
 `;
 
 const DescriptionHeader = styled.div`
-  display: grid;
-  grid-template-columns: 50% 49%;
+  display: flex;
   align-items: center;
-  width: 100%;
+  justify-content: space-between;
 `;
 
 const CardModalDescription = ({
   board,
-  backendUpdate,
+  handleBoardUpdate,
   listPosition,
   activeCard
 }) => {
@@ -71,7 +70,7 @@ const CardModalDescription = ({
       ]
     };
 
-    description && backendUpdate(newBoard, "lists", "description");
+    description && handleBoardUpdate(newBoard, "lists", "description");
     setHideSaveButton(!hideSaveButton);
     setUpdated(true);
   };
@@ -85,29 +84,25 @@ const CardModalDescription = ({
     <CardDetailSegment>
       <StyledHeader>
         <DescriptionHeader>
-          <div>
-            <CardDetailHeader
-              description="Description"
-              icon="align left"
-              flipped="vertically"
-            />
-          </div>
+          <CardDetailHeader
+            description="Description"
+            icon="align left"
+            flipped="vertically"
+          />
 
-          <div>
-            <Button
-              onClick={() => setEditing(!editing)}
-              size="tiny"
-              content="Edit"
-              floated="right"
-            />
-          </div>
+          <Button
+            onClick={() => setEditing(!editing)}
+            size="tiny"
+            content="Edit"
+            floated="right"
+          />
         </DescriptionHeader>
       </StyledHeader>
       <Description>
         {editing && (
           <Form>
             <StyledTextArea
-              placeholder="Add more detailed description"
+              placeholder="Add a more detailed description"
               defaultValue={description}
               onFocus={() => setHideSaveButton(!hideSaveButton)}
               onBlur={() =>

@@ -21,13 +21,12 @@ const Label = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  padding: 0 38px;
   padding-bottom: 10px;
 `;
 
 const CardLabels = ({
   activeCard,
-  backendUpdate,
+  handleBoardUpdate,
   board,
   listPosition,
   getSourceList
@@ -64,7 +63,7 @@ const CardLabels = ({
       );
 
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-      backendUpdate(board, "lists", activity);
+      handleBoardUpdate(board, "lists", activity);
     }
 
     return () => {
@@ -73,7 +72,7 @@ const CardLabels = ({
     };
   }, [
     activeCard,
-    backendUpdate,
+    handleBoardUpdate,
     board,
     getSourceList,
     label,

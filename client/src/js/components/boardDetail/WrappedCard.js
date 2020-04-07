@@ -19,12 +19,12 @@ const WrappedCard = ({
   const styles = {
     backgroundColor: !isDragging && "#fff",
     borderRadius: "2px",
-    boxShadow: !isDragging && "0 1px 0 rgba(15, 30, 66, 0.35)",
+    boxShadow: !isDragging && "#0f1e4259",
     minHeight: "20px",
     visibility: isDragging && "hidden",
     display: isDragging && isOverCard && "none",
     zIndex: 0,
-    marginBottom: "10px"
+    marginTop: "7px"
   };
 
   const wrappedCardItem = (

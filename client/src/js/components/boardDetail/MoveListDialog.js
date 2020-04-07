@@ -15,7 +15,7 @@ const StyledDiv = styled.div`
 const MoveListDialog = ({
   close,
   listPosition,
-  backendUpdate,
+  handleBoardUpdate,
   board,
   getSourceList
 }) => {
@@ -59,7 +59,7 @@ const MoveListDialog = ({
 
       const newBoard = { ...board, lists: newList };
 
-      backendUpdate(newBoard, true);
+      handleBoardUpdate(newBoard, true);
     }
     return close();
   };

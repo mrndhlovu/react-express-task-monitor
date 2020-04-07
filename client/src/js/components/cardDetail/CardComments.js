@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import CardCommentInput from "../sharedComponents/CardCommentInput";
 import { emptyFunction, resetForm } from "../../utils/appUtils";
 import { requestCreateComment } from "../../apis/apiRequests";
+import CardCommentInput from "../sharedComponents/CardCommentInput";
 import Comment from "./Comment";
 
 const CardComments = ({
-  backendUpdate,
+  handleBoardUpdate,
   activeCard,
   id,
   listPosition,
@@ -43,7 +42,7 @@ const CardComments = ({
   }, [newComment, id, listPosition, activeCard, saveCardChanges]);
 
   return (
-    <CardDetailSegment>
+    <>
       <CardCommentInput saveComment={saveComment} {...props} />
 
       {activeCard.comments.map(comment => (
@@ -53,12 +52,12 @@ const CardComments = ({
           getSourceList={getSourceList}
           listPosition={listPosition}
           activeCard={activeCard}
-          backendUpdate={backendUpdate}
+          handleBoardUpdate={handleBoardUpdate}
           board={board}
           saveCardChanges={saveCardChanges}
         />
       ))}
-    </CardDetailSegment>
+    </>
   );
 };
 

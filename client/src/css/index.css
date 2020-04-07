@@ -42,7 +42,11 @@ ui.form,
   display: none;
 }
 
-.lists-container,
+.icon-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.image-container,
 .card-list {
   -ms-overflow-style: none;
 }
@@ -56,5 +60,9 @@ ui.form,
 }
 
 .boards-container::-webkit-scrollbar {
+  display: none;
+}
+
+.image-container::-webkit-scrollbar {
   display: none;
 }

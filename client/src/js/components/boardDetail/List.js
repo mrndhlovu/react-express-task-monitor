@@ -48,7 +48,7 @@ const List = ({
     showListActions,
     activeList,
     getSourceList,
-    backendUpdate,
+    handleBoardUpdate,
     board,
     ...otherProps
   } = useContext(BoardListsContext);
@@ -75,7 +75,7 @@ const List = ({
           showListActions={showListActions}
           position={position}
           getSourceList={getSourceList}
-          backendUpdate={backendUpdate}
+          handleBoardUpdate={handleBoardUpdate}
           board={board}
           mobile={mobile}
         />

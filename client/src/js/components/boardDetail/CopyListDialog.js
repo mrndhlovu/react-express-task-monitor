@@ -17,7 +17,7 @@ const CopyListDialog = ({
   close,
   getSourceList,
   listPosition,
-  backendUpdate,
+  handleBoardUpdate,
   title
 }) => {
   const sourceId = listPosition;
@@ -46,7 +46,7 @@ const CopyListDialog = ({
       ]
     };
 
-    backendUpdate(newBoard, true);
+    handleBoardUpdate(newBoard, true);
     return close();
   };
 

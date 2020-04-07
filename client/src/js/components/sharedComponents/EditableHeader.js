@@ -21,7 +21,7 @@ const EditHeader = styled(Input)`
 `;
 
 const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
-  const { backendUpdate, board } = useContext(BoardContext);
+  const { handleBoardUpdate, board } = useContext(BoardContext);
   const { getSourceList } = useContext(MainContext);
 
   const [editable, setEditable] = useState(false);
@@ -77,9 +77,9 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
 
   useEffect(() => {
     if (!newBoard) return;
-    backendUpdate(newBoard, "title", "boardHeader");
+    handleBoardUpdate(newBoard, "title", "boardHeader");
     setNewBoard(null);
-  }, [newBoard, backendUpdate]);
+  }, [newBoard, handleBoardUpdate]);
 
   return (
     <StyledDiv>

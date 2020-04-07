@@ -5,11 +5,11 @@ import { Dropdown } from "semantic-ui-react";
 
 const EditIconWrapper = styled.div`
   font-size: 13px;
-  margin-left: 8px;
   opacity: ${props => (props.showEditButton ? 1 : 0)};
   position: absolute;
-  right: 0px;
-  top: 11px;
+  padding-right: 5px;
+  right: 0;
+  top: 5px;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
   z-index: 1000;

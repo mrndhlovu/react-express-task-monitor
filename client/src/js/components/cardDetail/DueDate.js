@@ -12,7 +12,6 @@ const Container = styled.div`
 `;
 
 const HeaderWrapper = styled.div`
-  padding: 0 38px;
   padding-bottom: 10px;
 `;
 
@@ -22,7 +21,7 @@ const Span = styled.span`
 
 const DueDate = ({
   activeCard,
-  backendUpdate,
+  handleBoardUpdate,
   board,
   getSourceList,
   listPosition,
@@ -73,7 +72,7 @@ const DueDate = ({
       sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-      backendUpdate(board, "lists", activity);
+      handleBoardUpdate(board, "lists", activity);
     }
 
     return () => {
@@ -83,7 +82,7 @@ const DueDate = ({
     };
   }, [
     activeCard,
-    backendUpdate,
+    handleBoardUpdate,
     board,
     checked,
     removeDueDate,
@@ -97,7 +96,6 @@ const DueDate = ({
       <CardDetailSegment>
         <HeaderWrapper>
           <Button
-            negative
             content="Delete"
             compact
             floated="right"
