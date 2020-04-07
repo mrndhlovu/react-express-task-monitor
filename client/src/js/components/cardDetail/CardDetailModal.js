@@ -3,7 +3,7 @@ import React, {
   useState,
   useEffect,
   memo,
-  useCallback
+  useCallback,
 } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -13,12 +13,12 @@ import { Modal, Button, Grid } from "semantic-ui-react";
 import {
   BoardListsContext,
   MainContext,
-  BoardContext
+  BoardContext,
 } from "../../utils/contextUtils";
 import { checkDuplicate, emptyFunction } from "../../utils/appUtils";
 import {
   requestCardCoverUpdate,
-  requestDeleteAttachment
+  requestDeleteAttachment,
 } from "../../apis/apiRequests";
 import Attachments from "./Attachments";
 import CardModalActivities from "./CardModalActivities";
@@ -36,7 +36,7 @@ const ButtonWrapper = styled.div`
   position: absolute;
   top: 5px;
   right: 5px;
-  z-index: 1000 !important;
+  z-index: 10;
 `;
 
 const LeftSideContent = styled(Modal.Description)``;
@@ -57,7 +57,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     handleBoardUpdate,
     getSourceList,
     activeCard,
-    handleUploadAttachment
+    handleUploadAttachment,
   } = useContext(BoardListsContext);
   const { saveBoardChanges } = useContext(BoardContext);
   const { auth, device } = useContext(MainContext);
@@ -78,18 +78,18 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
   const hasMembers = board && board.members.length !== 0;
   const hasCover = card && card.cardCover.localeCompare("") !== 0;
 
-  const saveCardChanges = changes => setCard(changes);
+  const saveCardChanges = (changes) => setCard(changes);
   const handleCreateChecklist = () => setCheckList(true);
-  const handleMakeCover = coverUrl =>
-    setIsLoading(true) && setNewCover(coverUrl);
 
-  const handleDeleteAttachment = imgUrl => {
+  const handleMakeCover = (coverUrl) => setNewCover(coverUrl);
+
+  const handleDeleteAttachment = (imgUrl) => {
     setDeleteAttachment(imgUrl);
     setIsLoading(true);
   };
 
   const addCardAttachment = useCallback(
-    attachment => {
+    (attachment) => {
       const duplicate = checkDuplicate(
         card.attachments.images,
         attachment.imgUrl
@@ -100,22 +100,22 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
 
         newBoard = {
           ...board,
-          lists: board.lists.map(list =>
+          lists: board.lists.map((list) =>
             list.position === listPosition
               ? {
                   ...list,
-                  cards: list.cards.map(cardItem =>
+                  cards: list.cards.map((cardItem) =>
                     cardItem.position === card.position
                       ? {
                           ...cardItem,
                           attachments: { ...cardItem.attachments },
-                          cardCover: attachment.imgUrl
+                          cardCover: attachment.imgUrl,
                         }
                       : { ...cardItem }
-                  )
+                  ),
                 }
               : { ...list }
-          )
+          ),
         };
         setNewAttachment(newBoard);
         setNewCover(attachment.imgUrl);
@@ -131,7 +131,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     setNewAttachment(false);
   }, [handleBoardUpdate, newAttachment]);
 
-  const handleLoadingAttachment = loading => {
+  const handleLoadingAttachment = (loading) => {
     setIsLoading(loading);
   };
   const handleRemoveCover = () => {
@@ -146,17 +146,26 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
       const body = {
         cardId: card.position,
         listId: listPosition,
-        cardCover: ""
+        cardCover: "",
       };
-      await requestCardCoverUpdate(body, id).then(res => {
-        handleBoardUpdate(res.data);
+      await requestCardCoverUpdate(body, id).then((res) => {
+        setCard({ ...card, cardCover: "" });
+        saveBoardChanges(res.data);
         setRemoveCover(false);
         handleLoadingAttachment(false);
         setActiveCardCover(null);
       });
     };
     removeCardCover();
-  }, [card, id, listPosition, handleBoardUpdate, removeCover, setRemoveCover]);
+  }, [
+    card,
+    id,
+    listPosition,
+    handleBoardUpdate,
+    removeCover,
+    setRemoveCover,
+    saveBoardChanges,
+  ]);
 
   useEffect(() => {
     if (!newCover) return emptyFunction();
@@ -164,20 +173,19 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     const body = {
       cardId: card.position,
       listId: listPosition,
-      cardCover: newCover
+      cardCover: newCover,
     };
     const attachCardCover = async () => {
-      await requestCardCoverUpdate(body, id).then(res => {
-        console.log("res: ", res.data);
-        saveCardChanges(res.data);
-        setCard(res.data);
-        setIsLoading(false);
-        setNewCover(null);
+      let newCard = { ...card, cardCover: newCover };
 
-        setActiveCardCover(newCover);
+      await requestCardCoverUpdate(body, id).then((res) => {
+        setCard(newCard);
+        saveBoardChanges(res.data);
+        setActiveCardCover(newCard.cardCover);
       });
     };
     attachCardCover();
+    return () => setNewCover(null);
   }, [
     card,
     id,
@@ -185,7 +193,8 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     handleBoardUpdate,
     setNewCover,
     newCover,
-    newAttachment
+    newAttachment,
+    saveBoardChanges,
   ]);
 
   useEffect(() => {
@@ -200,10 +209,10 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
       const body = {
         cardId: card.position,
         listId: listPosition,
-        deleteId: deleteAttachment
+        deleteId: deleteAttachment,
       };
 
-      await requestDeleteAttachment(body, id).then(res => {
+      await requestDeleteAttachment(body, id).then((res) => {
         handleBoardUpdate(res.data);
         setIsLoading(false);
         if (activeCover.localeCompare(deleteAttachment) === 0) {
@@ -223,7 +232,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     id,
     listPosition,
     handleBoardUpdate,
-    newCover
+    newCover,
   ]);
 
   return (
@@ -254,6 +263,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
         saveCardChanges={saveCardChanges}
         saveBoardChanges={saveBoardChanges}
         handleRemoveCover={handleRemoveCover}
+        handleMakeCover={handleMakeCover}
       />
 
       <Container>
@@ -349,8 +359,6 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                 hasChecklist={hasChecklist}
                 hasDueDate={card.dueDate && card.dueDate.date}
                 hasMembers={hasMembers}
-                id={id}
-                listPosition={listPosition}
                 mobile={device.mobile}
                 saveCardChanges={saveCardChanges}
                 hasCover={hasCover}

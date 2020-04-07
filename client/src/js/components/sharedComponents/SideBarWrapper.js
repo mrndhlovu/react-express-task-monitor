@@ -18,7 +18,7 @@ const Container = styled.div`
 const SideBarWrapper = ({ open, handleClose, children, inverted, header }) => {
   const { mobile } = useContext(MainContext).device;
 
-  const width = !mobile ? "wide" : "very wide";
+  const width = mobile ? "wide" : "very wide";
 
   return (
     <Sidebar

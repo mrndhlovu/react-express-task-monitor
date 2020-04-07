@@ -7,11 +7,13 @@ import { requestImages } from "../../apis/apiRequests";
 import { SUGGESTED_COVERS } from "../../constants/constants";
 import SearchImageList from "./SearchImageList";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import { getSearchQueryString } from "../../utils/urls";
 
 const displayStyles = {
   display: "flex",
   flexWrap: "wrap",
-  minWidth: "300px"
+  minWidth: "300px",
+  marginTop: "5px",
 };
 
 const AddCoverImage = ({ ...props }) => {
@@ -19,21 +21,26 @@ const AddCoverImage = ({ ...props }) => {
   const [search, setSearch] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
 
-  const handleSuggestionClick = suggestion => {
+  const handleSuggestionClick = (suggestion) => {
+    setSearchResult(null);
     setSearchQuery(suggestion);
     setSearch(true);
   };
 
+  const handleClearSearch = () => {
+    setSearchResult(null);
+    setSearchQuery(null);
+  };
+
   useEffect(() => {
     if (!search) return emptyFunction();
-    const query = searchQuery.toLowerCase().replace(" ", "+");
+    const query = getSearchQueryString(searchQuery);
 
     const getQueryImageList = async () => {
-      await requestImages(query).then(res => {
+      await requestImages(query).then((res) => {
         try {
           setSearchResult(res.data.hits);
           setSearch(false);
-          setSearchQuery(null);
         } catch (error) {
           alert(error.message);
         }
@@ -51,7 +58,7 @@ const AddCoverImage = ({ ...props }) => {
             name={!searchResult ? "search" : "close"}
             link={searchResult}
             onClick={() =>
-              searchResult ? setSearchResult(null) : emptyFunction()
+              searchResult ? handleClearSearch(null) : emptyFunction()
             }
           />
         }
@@ -59,8 +66,8 @@ const AddCoverImage = ({ ...props }) => {
         size="small"
         fluid
         defaultValue={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
-        onKeyDown={e => (e.key === "Enter" ? setSearch(true) : null)}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        onKeyDown={(e) => (e.key === "Enter" ? setSearch(true) : null)}
       />
       <UIWrapper padding="0" display={displayStyles}>
         {!searchResult &&

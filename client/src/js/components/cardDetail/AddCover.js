@@ -12,6 +12,7 @@ const AddCover = ({
   buttonSize,
   hasCover,
   handleRemoveCover,
+  upward = true,
   ...props
 }) => {
   const [addCover, setAddCover] = useState(false);
@@ -28,35 +29,38 @@ const AddCover = ({
       callback={() => handleClose()}
       color={color}
       size={buttonSize}
+      upward={upward}
     >
-      <>
-        {!hasCover && !addCover && (
-          <>
-            <UIMessage fontSize="11px" margin="10px 10px">
-              Seems you don't have card covers. Lets add one now!
-            </UIMessage>
-            <UIWrapper padding="5">
-              <Button
-                content="Add cover"
-                positive
-                fluid
-                size="tiny"
-                onClick={() => setAddCover(true)}
-              />
-            </UIWrapper>
-          </>
-        )}
-      </>
-      {hasCover && (
+      {!hasCover && !addCover ? (
+        <>
+          <UIMessage fontSize="11px" margin="10px 10px">
+            Seems you don't have card covers. Lets add one now!
+          </UIMessage>
+          <UIWrapper padding="5">
+            <Button
+              content="Add cover"
+              positive
+              fluid
+              size="tiny"
+              onClick={() => setAddCover(true)}
+            />
+          </UIWrapper>
+        </>
+      ) : (
         <UIWrapper>
           <AddCoverImage hasCover={hasCover} {...props} />
-          <Divider />
-          <Button
-            content="Remove Cover"
-            fluid
-            compact
-            onClick={() => handleRemoveCover()}
-          />
+
+          {hasCover && (
+            <>
+              <Divider />
+              <Button
+                content="Remove Cover"
+                fluid
+                compact
+                onClick={() => handleRemoveCover()}
+              />
+            </>
+          )}
         </UIWrapper>
       )}
     </DropdownButton>

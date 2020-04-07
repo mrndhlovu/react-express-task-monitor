@@ -12,15 +12,18 @@ export const IMAGES_EP = `https://pixabay.com/api/?key=${process.env.REACT_APP_P
 export const params = {
   headers: {
     Accept: "application/json",
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
   },
   credentials: "same-origin",
-  withCredentials: true
+  withCredentials: true,
 };
 
-export const parseSearchQuery = query => {
+export const parseSearchQuery = (query) => {
   const queryArray = query.split("=");
   return { [`${queryArray.shift()}`]: queryArray.shift() === "true" };
 };
 
-export const getQueryString = location => location.search.slice(1);
+export const getQueryString = (location) => location.search.slice(1);
+
+export const getSearchQueryString = (query) =>
+  query.toLowerCase().replace(" ", "+");

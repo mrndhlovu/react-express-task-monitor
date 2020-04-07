@@ -25,6 +25,7 @@ const CardModalSidebar = ({
   hasDueDate,
   hasMembers,
   hasChecklist,
+  hasCover,
   ...props
 }) => {
   return (
@@ -35,7 +36,7 @@ const CardModalSidebar = ({
       {!hasChecklist && <AddCardCheckList />}
       {!hasDueDate && <AddCardDueDate {...props} />}
       {<AddAttachment {...props} />}
-      <AddCover {...props} />
+      {!hasCover && <AddCover {...props} />}
       <StyledHeader content="ACTIONS" />
       <MoveCardAction />
       <CopyCardAction />
