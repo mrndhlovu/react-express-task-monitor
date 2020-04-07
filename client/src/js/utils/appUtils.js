@@ -7,12 +7,12 @@ export const allowedUpdates = [
   "styleProperties",
   "accessLevel",
   "archived",
-  "activities"
+  "activities",
 ];
 
-export const filterObject = data => {
+export const filterObject = (data) => {
   const filtered = Object.keys(data)
-    .filter(key => allowedUpdates.includes(key))
+    .filter((key) => allowedUpdates.includes(key))
     .reduce((obj, key) => {
       obj[key] = data[key];
       return obj;
@@ -25,13 +25,14 @@ export const getLocation = () => window.location;
 
 export const checkDuplicate = (collection, item) => collection.includes(item);
 
-export const resetForm = id => (document.getElementById(id).value = "");
+export const resetForm = (id) => (document.getElementById(id).value = "");
 
-export const getBoard = (boards, id) => boards.find(board => board._id === id);
+export const getBoard = (boards, id) =>
+  boards.find((board) => board._id === id);
 
-export const getUserInitials = name => {
+export const getUserInitials = (name) => {
   const splitName = name.toUpperCase().split(" ");
-  const initials = splitName.map(name => `${name.split("").shift()}`);
+  const initials = splitName.map((name) => `${name.split("").shift()}`);
   return initials;
 };
 
@@ -57,7 +58,7 @@ export const getActivity = (user, action) => {
     removeLabel: "removed a card label.",
     description: "added card description.",
     updatedChecklist: "updated checklist",
-    removeChecklist: "removed checklist"
+    removeChecklist: "removed checklist",
   };
   const getAction = () => {
     switch (action) {
@@ -106,13 +107,10 @@ export const getActivity = (user, action) => {
 
 export const emptyFunction = () => {};
 
-export const getFormattedString = string =>
-  string
-    .trim()
-    .replace(" ", "-")
-    .toLowerCase();
+export const getFormattedString = (string) =>
+  string.trim().replace(" ", "-").toLowerCase();
 
-export const capitalize = string =>
+export const capitalize = (string) =>
   string.charAt(0).toUpperCase() + string.slice(1);
 
 export const getProgression = (partialValue, totalValue) =>

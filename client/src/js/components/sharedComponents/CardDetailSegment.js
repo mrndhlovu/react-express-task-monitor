@@ -14,6 +14,8 @@ const Container = styled.div`
   }
 `;
 
-const CardDetailSegment = ({ children }) => <Container>{children}</Container>;
+const CardDetailSegment = ({ children, className }) => (
+  <Container className={className}>{children}</Container>
+);
 
 export default CardDetailSegment;

@@ -27,7 +27,7 @@ const CheckLists = ({
   getSourceList,
   board,
   handleBoardUpdate,
-  saveCardChanges
+  saveCardChanges,
 }) => {
   const [checked, setChecked] = useState(null);
   const [createItem, setCreateItem] = useState(false);
@@ -40,7 +40,7 @@ const CheckLists = ({
   const sourceList = getSourceList(listPosition).shift();
 
   const deleteChecklist = () => setRemoveChecklist(true);
-  const handleChange = e => setDescription(e.target.value);
+  const handleChange = (e) => setDescription(e.target.value);
   const handleAddClick = () => setDone(true);
 
   const handleCheckboxClick = useMemo(
@@ -75,7 +75,7 @@ const CheckLists = ({
     activeCard,
     sourceList,
     checked,
-    saveCardChanges
+    saveCardChanges,
   ]);
 
   useEffect(() => {
@@ -83,11 +83,11 @@ const CheckLists = ({
     if (checked) {
       newCard = {
         ...activeCard,
-        checklists: activeCard.checklists.map(item =>
+        checklists: activeCard.checklists.map((item) =>
           item._id === checked.id
             ? { ...item, status: checked.status }
             : { ...item }
-        )
+        ),
       };
     }
 
@@ -112,7 +112,7 @@ const CheckLists = ({
     getSourceList,
     listPosition,
     saveCardChanges,
-    sourceList
+    sourceList,
   ]);
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const CheckLists = ({
 
     const listItem = {
       description,
-      name: checklistName
+      name: checklistName,
     };
 
     const createListItem = async () =>
@@ -128,24 +128,24 @@ const CheckLists = ({
         {
           listItem,
           cardId: activeCard.position,
-          listId: listPosition
+          listId: listPosition,
         },
         id
       )
-        .then(res => {
+        .then((res) => {
           saveBoardChanges(res.data);
 
           const updatedList = res.data.lists
-            .filter(list => list.position === listPosition)
+            .filter((list) => list.position === listPosition)
             .shift();
 
           const newCard = updatedList.cards
-            .filter(cardItem => cardItem._id === activeCard._id)
+            .filter((cardItem) => cardItem._id === activeCard._id)
             .shift();
 
           saveCardChanges(newCard);
         })
-        .catch(error => {});
+        .catch((error) => {});
     createListItem();
     setDone(false);
 
@@ -163,11 +163,11 @@ const CheckLists = ({
     id,
     listPosition,
     saveBoardChanges,
-    saveCardChanges
+    saveCardChanges,
   ]);
 
   return (
-    <CardDetailSegment>
+    <CardDetailSegment className="card-checklist">
       <CheckListHeader>
         <div>
           <CardDetailHeader
@@ -186,7 +186,7 @@ const CheckLists = ({
         </div>
       </CheckListHeader>
       <ProgressBar checklistName={checklistName} activeCard={activeCard} />
-      {activeCard.checklists.map(item => (
+      {activeCard.checklists.map((item) => (
         <ChecklistItem
           handleCheckboxClick={handleCheckboxClick}
           isChecked={item.status === "done"}

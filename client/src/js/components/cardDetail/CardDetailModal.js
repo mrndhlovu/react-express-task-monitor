@@ -79,6 +79,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
   const hasCover = card && card.cardCover.localeCompare("") !== 0;
 
   const saveCardChanges = (changes) => setCard(changes);
+
   const handleCreateChecklist = () => setCheckList(true);
 
   const handleMakeCover = (coverUrl) => setNewCover(coverUrl);
@@ -317,6 +318,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                       match={match}
                       saveBoardChanges={saveBoardChanges}
                       saveCardChanges={saveCardChanges}
+                      mobile={device.mobile}
                     />
                   )}
 
@@ -348,22 +350,23 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
               <CardModalSidebar
                 activeCard={card}
                 addCardAttachment={addCardAttachment}
-                handleBoardUpdate={handleBoardUpdate}
                 board={board}
                 boardMembers={board.members}
                 getSourceList={getSourceList}
+                handleBoardUpdate={handleBoardUpdate}
                 handleCreateChecklist={handleCreateChecklist}
                 handleLoadingAttachment={handleLoadingAttachment}
                 handleMakeCover={handleMakeCover}
+                handleRemoveCover={handleRemoveCover}
                 handleUploadAttachment={handleUploadAttachment}
                 hasChecklist={hasChecklist}
+                hasCover={hasCover}
                 hasDueDate={card.dueDate && card.dueDate.date}
                 hasMembers={hasMembers}
+                listPosition={listPosition}
                 mobile={device.mobile}
-                saveCardChanges={saveCardChanges}
-                hasCover={hasCover}
                 saveBoardChanges={saveBoardChanges}
-                handleRemoveCover={handleRemoveCover}
+                saveCardChanges={saveCardChanges}
               />
             </Grid.Column>
           </Grid.Row>

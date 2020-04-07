@@ -16,7 +16,7 @@ const StyledHeader = styled(Header)`
   color: #767676 !important;
 `;
 
-const Container = styled.div`
+const Container = styled.section`
   margin-left: 2px;
   margin-right: 5px;
 `;
@@ -33,7 +33,7 @@ const CardModalSidebar = ({
       <StyledHeader content="ADD TO CARD" />
       <AddCardMembers {...props} />
       <AddCardLabel {...props} />
-      {!hasChecklist && <AddCardCheckList />}
+      {!hasChecklist && <AddCardCheckList {...props} />}
       {!hasDueDate && <AddCardDueDate {...props} />}
       {<AddAttachment {...props} />}
       {!hasCover && <AddCover {...props} />}
