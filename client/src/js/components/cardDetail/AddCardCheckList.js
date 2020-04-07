@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Link } from "react-scroll";
-
 import DropdownButton from "../sharedComponents/DropdownButton";
 import { Button } from "semantic-ui-react";
 
@@ -19,24 +17,14 @@ const AddCardCheckList = ({ handleCreateChecklist, mobile }) => {
       closeOnSelect={true}
     >
       <Container>
-        <Link
-          to="card-checklist"
-          activeClass="card-checklist"
-          spy={true}
-          smooth={true}
-          offset={0}
-          duration={2000}
+        <Button
+          fluid
+          compact
+          positive
+          content="Add"
+          defaultValue="Checklist"
           onClick={() => handleCreateChecklist()}
-        >
-          <Button
-            fluid
-            compact
-            positive
-            content="Add"
-            defaultValue="Checklist"
-            onClick={() => !mobile && handleCreateChecklist()}
-          />
-        </Link>
+        />
       </Container>
     </DropdownButton>
   );
