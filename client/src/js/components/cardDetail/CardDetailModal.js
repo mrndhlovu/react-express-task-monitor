@@ -17,7 +17,7 @@ import {
 } from "../../utils/contextUtils";
 import { checkDuplicate, emptyFunction } from "../../utils/appUtils";
 import {
-  requestCardCoverUpdate,
+  requestCardUpdate,
   requestDeleteAttachment,
 } from "../../apis/apiRequests";
 import Attachments from "./Attachments";
@@ -149,7 +149,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
         listId: listPosition,
         cardCover: "",
       };
-      await requestCardCoverUpdate(body, id).then((res) => {
+      await requestCardUpdate(body, id).then((res) => {
         setCard({ ...card, cardCover: "" });
         saveBoardChanges(res.data);
         setRemoveCover(false);
@@ -171,15 +171,15 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
   useEffect(() => {
     if (!newCover) return emptyFunction();
 
-    const body = {
-      cardId: card.position,
-      listId: listPosition,
-      cardCover: newCover,
-    };
     const attachCardCover = async () => {
       let newCard = { ...card, cardCover: newCover };
 
-      await requestCardCoverUpdate(body, id).then((res) => {
+      const body = {
+        newCard,
+        listId: listPosition,
+      };
+
+      await requestCardUpdate(body, id).then((res) => {
         setCard(newCard);
         saveBoardChanges(res.data);
         setActiveCardCover(newCard.cardCover);

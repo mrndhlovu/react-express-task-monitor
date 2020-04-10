@@ -5,62 +5,67 @@ const CardSchema = mongoose.Schema(
     title: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     position: {
       type: Number,
-      default: null
+      default: null,
     },
     attachments: {
       type: Object,
       required: true,
       default: {
         images: [],
-        documents: []
-      }
+        documents: [],
+      },
     },
     cardCover: {
       type: String,
       default: "",
-      required: true
+      required: true,
     },
     comments: {
       type: Array,
       default: [],
-      required: true
+      required: true,
     },
     activities: {
       type: Array,
       default: [],
-      required: true
+      required: true,
     },
     labels: {
       type: Array,
       default: [],
-      required: true
+      required: true,
     },
     checklists: {
       type: Array,
       default: [],
-      required: true
+      required: true,
     },
     shortDescription: {
       type: String,
       default: "",
-      required: true
+      required: true,
     },
     description: {
       type: String,
       default: "",
-      required: true
+      required: true,
+    },
+    assignees: {
+      type: Array,
+      default: [],
+      required: true,
     },
     dueDate: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
   },
   {
-    timestamps: true
+    timestamps: true,
   }
 );
 

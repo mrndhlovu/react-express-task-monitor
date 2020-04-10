@@ -10,6 +10,9 @@ ui.form,
   color: #b8ccf0 !important;
 }
 
+.create-card-modal {
+}
+
 .ui.modal > .close {
   top: 1.5% !important ;
   right: 0.5rem !important;

@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 
 import { DragSource, DropTarget } from "react-dnd";
 import flow from "lodash/flow";
@@ -14,26 +14,34 @@ const WrappedCard = ({
   isOverCard,
   sourceListId,
   listTitle,
-  isLast
+  isLast,
 }) => {
+  const [showEditButton, setShowEditButton] = useState(false);
+
   const styles = {
     backgroundColor: !isDragging && "#fff",
     borderRadius: "2px",
     boxShadow: !isDragging && "#0f1e4259",
-    minHeight: "20px",
-    visibility: isDragging && "hidden",
     display: isDragging && isOverCard && "none",
+    marginTop: "7px",
+    minHeight: "20px",
+    position: "relative",
+    visibility: isDragging && "hidden",
     zIndex: 0,
-    marginTop: "7px"
   };
 
   const wrappedCardItem = (
-    <div style={styles}>
+    <div
+      style={styles}
+      onMouseEnter={() => setShowEditButton(true)}
+      onMouseLeave={() => setShowEditButton(false)}
+    >
       <CardItem
         card={card}
         sourceListId={sourceListId}
         sourceTitle={listTitle}
         isLast={isLast}
+        showEditButton={showEditButton}
       />
     </div>
   );
@@ -52,7 +60,7 @@ const source = {
     if (!monitor.didDrop()) return;
 
     return props.handleDrop();
-  }
+  },
 };
 
 const target = {
@@ -62,17 +70,17 @@ const target = {
     if (!monitor.isOver({ shallow: false })) return;
 
     return props.updateDropTargetId(card.position);
-  }
+  },
 };
 
 const collect = (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  isDragging: monitor.isDragging(),
 });
 
 const cardCollect = (connect, monitor) => ({
   isOverCard: monitor.isOver({ shallow: true }),
-  connectDropTarget: connect.dropTarget()
+  connectDropTarget: connect.dropTarget(),
 });
 
 export default flow(

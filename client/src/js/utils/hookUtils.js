@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import {
   requestBoardList,
   userInfo,
-  requestAuthLogout
+  requestAuthLogout,
 } from "../apis/apiRequests";
 
 export const useAuth = () => {
@@ -19,12 +19,12 @@ export const useAuth = () => {
     setLoading(true);
     const fetchData = async () =>
       await userInfo().then(
-        res => {
+        (res) => {
           setAuthenticated(true);
           setUser(res.data);
           setLoading(false);
         },
-        error => {
+        (error) => {
           setLoading(false);
         }
       );
@@ -47,18 +47,18 @@ export const useRenderCount = () => {
   return renderCount;
 };
 
-export const useFetch = history => {
+export const useFetch = (history) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       await requestBoardList()
-        .then(res => {
+        .then((res) => {
           setData(res.data);
           setLoading(false);
         })
-        .catch(error => {
+        .catch((error) => {
           setLoading(false);
           requestAuthLogout();
           history.push("/login");
@@ -71,26 +71,26 @@ export const useFetch = history => {
   return [data, loading];
 };
 
-export const useSocket = location => {};
+export const useSocket = (location) => {};
 
 const INITIAL_STATE = {
   mobile: window.innerWidth <= 600,
   tablet: window.innerWidth > 600 && window.innerWidth <= 768,
-  deskTop: window.innerWidth > 768
+  deskTop: window.innerWidth > 768,
 };
 
 export const useDimensions = () => {
   const [device, setDevice] = useState(INITIAL_STATE);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
-    height: window.innerHeight
+    height: window.innerHeight,
   });
 
   useEffect(() => {
     const handleResize = () => {
       setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight
+        height: window.innerHeight,
       });
       window.innerWidth <= 600
         ? setDevice({ ...INITIAL_STATE, mobile: true })
@@ -106,7 +106,7 @@ export const useDimensions = () => {
   return { dimensions, device };
 };
 
-export const useMountCallback = isMountedCallback => {
+export const useMountCallback = (isMountedCallback) => {
   const [isMounted, setMounted] = useState(false);
   return useEffect(() => {
     if (!isMounted) {
@@ -119,7 +119,7 @@ export const useMountCallback = isMountedCallback => {
 // A hook that provides the previous value for a passed prop,
 // and undefined for the first time it is called.
 
-export const usePrevious = value => {
+export const usePrevious = (value) => {
   const ref = useRef();
   useEffect(() => {
     ref.current = value;

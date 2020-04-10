@@ -8,6 +8,7 @@ import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
 import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
+import EditCardModal from "./EditCardModal";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -16,7 +17,7 @@ const CardTitle = styled.div`
   letter-spacing: 0.8px;
   padding: 5px 10px;
   &:after {
-    content: '${props => props.title}';
+    content: '${(props) => props.title}';
   }
 `;
 
@@ -25,7 +26,6 @@ const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 256px;
-  position: relative;
 `;
 
 const Container = styled.div`
@@ -37,14 +37,22 @@ const CardBadges = styled.div`
   display: flex;
 `;
 
-const CardItem = ({ card, sourceListId, sourceTitle, isLast }) => {
+const CardItem = ({
+  card,
+  sourceListId,
+  sourceTitle,
+  match,
+  history,
+  showEditButton,
+}) => {
   const {
     handleBoardUpdate,
     handleCardClick,
     updateBoard,
     board,
-    mobile
+    mobile,
   } = useContext(BoardListsContext);
+
   const hasLabel = card.labels.length !== 0;
   const hasAttachments =
     card.attachments.images.length !== 0 ||
@@ -53,25 +61,26 @@ const CardItem = ({ card, sourceListId, sourceTitle, isLast }) => {
   const hasDescription = card.shortDescription.localeCompare("") !== 0;
   const hasComments = card.comments.length !== 0;
   const hasDueDate = card.dueDate;
+  const { id } = match.params;
 
-  const [showEditButton, setShowEditButton] = useState(false);
   const [deleteCard, setDeleteCard] = useState(false);
+  const [openCardModal, setOpenCardModal] = useState(false);
 
   useEffect(() => {
     if (!deleteCard) return;
     const deleteCardItem = async () => {
       const newBoard = {
         ...board,
-        lists: board.lists.map(list =>
+        lists: board.lists.map((list) =>
           list.position === sourceListId
             ? {
                 ...list,
                 cards: list.cards.filter(
-                  item => item.position !== card.position
-                )
+                  (item) => item.position !== card.position
+                ),
               }
             : { ...list }
-        )
+        ),
       };
 
       updateBoard(newBoard, "deleteCard");
@@ -81,46 +90,53 @@ const CardItem = ({ card, sourceListId, sourceTitle, isLast }) => {
   }, [card, deleteCard, sourceListId, handleBoardUpdate, board, updateBoard]);
 
   return (
-    <ContentWrapper
-      onMouseEnter={() => setShowEditButton(!showEditButton)}
-      onMouseLeave={() => setShowEditButton(!showEditButton)}
-      onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
-    >
-      <LabelsSnippets labels={card.labels} hasLabel={hasLabel} />
-      <Container>
-        <CardCover card={card} />
-        <CardTitle edit={showEditButton} title={card.title} />
-      </Container>
-      <CardBadges>
-        <CardBadge
-          icon="attach"
-          content={card.attachments.images.length}
-          hasBadge={hasAttachments}
-        />
+    <>
+      <ContentWrapper
+        onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
+      >
+        <LabelsSnippets labels={card.labels} hasLabel={hasLabel} />
+        <Container>
+          <CardCover card={card} />
+          <CardTitle edit={showEditButton} title={card.title} />
+        </Container>
+        <CardBadges>
+          <CardBadge
+            icon="attach"
+            content={card.attachments.images.length}
+            hasBadge={hasAttachments}
+          />
 
-        <CardBadge icon="check square outline" hasBadge={hasChecklist} />
+          <CardBadge icon="check square outline" hasBadge={hasChecklist} />
 
-        <CardBadge
-          icon="comment outline"
-          content={card.comments.length}
-          hasBadge={hasComments}
-        />
+          <CardBadge
+            icon="comment outline"
+            content={card.comments.length}
+            hasBadge={hasComments}
+          />
 
-        <CardBadge icon="list" hasBadge={hasDescription} />
+          <CardBadge icon="list" hasBadge={hasDescription} />
 
-        <CardBadge
-          icon="clock outline"
-          content={getFormattedDate(card.dueDate.date, "LL")}
-          hasBadge={hasDueDate}
-        />
-      </CardBadges>
-      <EditCardPenIcon
+          <CardBadge
+            icon="clock outline"
+            content={getFormattedDate(card.dueDate.date, "LL")}
+            hasBadge={hasDueDate}
+          />
+        </CardBadges>
+      </ContentWrapper>
+      {showEditButton && (
+        <EditCardPenIcon setOpenCardModal={setOpenCardModal} />
+      )}
+      <EditCardModal
+        card={card}
         handleDeleteCard={() => setDeleteCard(true)}
-        showEditButton={showEditButton}
-        isLast={isLast}
+        history={history}
+        id={id}
+        listPosition={sourceListId}
         mobile={mobile}
+        openCardModal={openCardModal}
+        setOpenCardModal={setOpenCardModal}
       />
-    </ContentWrapper>
+    </>
   );
 };
 

@@ -44,8 +44,9 @@ const CreateItemForm = ({
   handleAddList,
   placeholder,
   showInputField,
+  defaultValue,
   ctaText,
-  color = "grey"
+  color = "grey",
 }) => {
   return (
     <StyledWrapper>
@@ -61,8 +62,11 @@ const CreateItemForm = ({
             <Input
               fluid
               placeholder={placeholder}
-              onChange={e => handleChange(e)}
-              onKeyDown={e => (e.key === "Enter" ? handleCreateClick() : null)}
+              onChange={(e) => handleChange(e)}
+              defaultValue={defaultValue}
+              onKeyDown={(e) =>
+                e.key === "Enter" ? handleCreateClick() : null
+              }
               autoFocus
             />
             <ButtonWrapper>

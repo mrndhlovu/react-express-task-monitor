@@ -11,8 +11,8 @@ const updateBoardLists = (id, newLists) =>
     {
       $set: {
         lists: [...newLists],
-        lastViewed: Date.now()
-      }
+        lastViewed: Date.now(),
+      },
     }
   );
 
@@ -32,7 +32,7 @@ router.patch("/:boardId", auth, async (req, res) => {
 
     const newCard = new Card({
       ...card,
-      position: newCardPosition
+      position: newCardPosition,
     });
     board.lists[listId - 1].cards.push(newCard);
 
@@ -63,7 +63,7 @@ router.patch("/:boardId/list-item", auth, async (req, res) => {
 
     const checkListItem = new CheckListItem({
       ...listItem,
-      position: newListItemPosition
+      position: newListItemPosition,
     });
 
     board.lists[listId - 1].cards[cardId - 1].checklists.push(checkListItem);
@@ -88,7 +88,7 @@ router.patch("/delete/:boardId", async (req, res) => {
 
     board.lists[listId - 1].cards.map((card, index) => ({
       ...card,
-      position: index + 1
+      position: index + 1,
     }));
 
     await updateBoardLists(boardId, board.lists);
@@ -99,28 +99,29 @@ router.patch("/delete/:boardId", async (req, res) => {
   }
 });
 
-router.patch("/cover/:boardId", auth, async (req, res) => {
-  const { cardId, listId, cardCover } = req.body;
+router.patch("/:boardId/update", auth, async (req, res) => {
+  const { newCard, listId } = req.body;
   const { boardId } = req.params;
 
   try {
     const board = await Board.findById({ _id: boardId });
 
-    const patchedList = board.lists.map(list =>
+    const patchedList = board.lists.map((list) =>
       list.position === listId
         ? {
             ...list,
-            cards: list.cards.map(card =>
-              card.position === cardId
+            cards: list.cards.map((card) =>
+              card.position === newCard.position
                 ? {
-                    ...card,
-                    cardCover
+                    ...newCard,
                   }
                 : { ...card }
-            )
+            ),
           }
         : { ...list }
     );
+
+    console.log("patchedList: ", patchedList);
 
     const newBoard = await updateBoardLists(boardId, patchedList);
 
@@ -140,11 +141,11 @@ router.patch("/delete-attachment/:boardId", async (req, res) => {
     const patchedList = {
       ...board,
       lists: [
-        ...board.lists.map(list =>
+        ...board.lists.map((list) =>
           list.position === listId
             ? {
                 ...list,
-                cards: list.cards.map(card =>
+                cards: list.cards.map((card) =>
                   card.position === cardId
                     ? {
                         ...card,
@@ -152,18 +153,18 @@ router.patch("/delete-attachment/:boardId", async (req, res) => {
                           ...card.attachments,
                           images: [
                             ...card.attachments.images.filter(
-                              image =>
+                              (image) =>
                                 image.imgUrl.localeCompare(deleteId) !== 0
-                            )
-                          ]
-                        }
+                            ),
+                          ],
+                        },
                       }
                     : { ...card }
-                )
+                ),
               }
             : { ...list }
-        )
-      ]
+        ),
+      ],
     };
 
     const newBoard = await updateBoardLists(boardId, patchedList.lists);
@@ -188,7 +189,7 @@ router.patch("/:boardId/comment", auth, async (req, res) => {
 
     const newComment = new Comment({
       comment,
-      creator: req.user.fname
+      creator: req.user.fname,
     });
 
     newComment.save();

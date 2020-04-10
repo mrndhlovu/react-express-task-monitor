@@ -11,10 +11,11 @@ const StyledCardContent = styled(Card.Content)`
 const StyledInput = styled(TextArea)`
   width: 100%;
   border-radius: 3px;
+  padding: 5px;
 `;
 
 const TextAreaWrapper = styled.div`
-  width: 100%;
+  width: ${(props) => props.width};
   padding-bottom: 10px;
 `;
 
@@ -25,17 +26,18 @@ const CreateInput = ({
   placeholder,
   defaultValue,
   buttonText,
-  id
+  id,
+  width = "250px",
 }) => {
   return (
     <>
-      <TextAreaWrapper>
+      <TextAreaWrapper width={width}>
         <StyledCardContent extra>
           <StyledInput
             autoFocus
             defaultValue={defaultValue}
             id={id}
-            onChange={e => handleChange(e)}
+            onChange={(e) => handleChange(e)}
             placeholder={placeholder}
           />
         </StyledCardContent>
@@ -47,7 +49,7 @@ const CreateInput = ({
           content={buttonText}
           onClick={() => handleCreateClick()}
         />
-        <Icon name="close" onClick={close} />
+        <Icon name="close" onClick={close} link />
       </div>
     </>
   );

@@ -17,9 +17,7 @@ const AddCover = ({
 }) => {
   const [addCover, setAddCover] = useState(false);
 
-  const handleClose = () => {
-    setAddCover(false);
-  };
+  const handleClose = () => setAddCover(false);
 
   return (
     <DropdownButton

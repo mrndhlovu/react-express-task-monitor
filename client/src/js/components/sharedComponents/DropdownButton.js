@@ -6,18 +6,17 @@ import { Header, Dropdown, Divider, Icon } from "semantic-ui-react";
 const StyledDropdown = styled(Dropdown)`
   margin-bottom: 10px !important;
   padding-bottom: 15px;
-  background-color: ${(props) =>
-    props.color ? props.color : "#091e420a"} !important;
+  background: ${(props) => props.color} !important;
   text-align: left !important;
   font-size: 13px !important;
   font-weight: 500 !important;
 `;
 
 const HeaderWrapper = styled(Dropdown.Header)`
-  align-items: center;
-  display: grid;
-  grid-template-columns: 90% 10%;
-  width: 100%;
+  display: flex !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+  width: 100% !important;
 `;
 
 const DropdownButton = ({
@@ -25,7 +24,7 @@ const DropdownButton = ({
   children,
   icon,
   header,
-  color,
+  color = "#091e420a",
   size = "tiny",
   fluid = true,
   labeled = true,
@@ -35,6 +34,7 @@ const DropdownButton = ({
   as = "h5",
   callback = () => {},
   closeOnSelect = false,
+  hasHeader = true,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -65,15 +65,16 @@ const DropdownButton = ({
         className="sidebar-dropdown-button"
         onClick={(e) => !closeOnSelect && e.stopPropagation()}
       >
-        <HeaderWrapper>
-          <div>
-            <Header size="tiny" as={as} content={header} />
-          </div>
-          <div>
-            <Icon link name="close" onClick={() => handleClose(callback)} />
-          </div>
-        </HeaderWrapper>
-        <Divider />
+        {hasHeader && (
+          <>
+            <HeaderWrapper>
+              <Header size="tiny" as={as} content={header} />
+              <Icon link name="close" onClick={() => handleClose(callback)} />
+            </HeaderWrapper>
+            <Divider />
+          </>
+        )}
+
         {children}
       </Dropdown.Menu>
     </StyledDropdown>

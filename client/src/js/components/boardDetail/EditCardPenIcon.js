@@ -1,31 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Dropdown } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 const EditIconWrapper = styled.div`
   font-size: 13px;
-  opacity: ${props => (props.showEditButton ? 1 : 0)};
   position: absolute;
-  padding-right: 5px;
+  margin-right: 5px;
+  margin-top: 5px;
   right: 0;
-  top: 5px;
-  transition-duration: 250ms;
-  transition-timing-function: ease-in-out;
-  z-index: 1000;
+  top: 4px;
 `;
 
-const EditCardPenIcon = ({ handleDeleteCard, showEditButton, isLast }) => {
-  const upward = isLast ? isLast : false;
+const StyledButton = styled(Button)`
+  padding: 7px !important;
+`;
 
+const EditCardPenIcon = ({ setOpenCardModal }) => {
   return (
-    <EditIconWrapper showEditButton={showEditButton}>
-      <Dropdown icon="pencil alternate" direction="left" upward={upward}>
-        <Dropdown.Menu>
-          <Dropdown.Item>Move</Dropdown.Item>
-          <Dropdown.Item onClick={handleDeleteCard}>Delete</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+    <EditIconWrapper onClick={() => setOpenCardModal(true)}>
+      <StyledButton icon="pencil alternate" size="tiny" />
     </EditIconWrapper>
   );
 };

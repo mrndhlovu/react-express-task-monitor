@@ -1,20 +1,7 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-
-import DatePicker from "react-datepicker";
-
-import { Button, Divider } from "semantic-ui-react";
 
 import DropdownButton from "../sharedComponents/DropdownButton";
-
-const Container = styled.div`
-  padding: 15px 10px;
-  width: 300px;
-`;
-
-const ButtonWrapper = styled.div`
-  padding: 10px 10px;
-`;
+import PickDueDate from "../sharedComponents/PickDueDate";
 
 const AddCardDueDate = ({
   activeCard,
@@ -22,7 +9,8 @@ const AddCardDueDate = ({
   listPosition,
   handleBoardUpdate,
   getSourceList,
-  saveCardChanges
+  saveCardChanges,
+  color,
 }) => {
   const [dueDate, setDueDate] = useState(false);
   const [removeDueDate, setRemoveDueDate] = useState(false);
@@ -39,14 +27,14 @@ const AddCardDueDate = ({
     if (removeDueDate) {
       newCard = {
         ...activeCard,
-        dueDate: ""
+        dueDate: "",
       };
     }
 
     if (dueDate) {
       newCard = {
         ...activeCard,
-        dueDate: { date: `${startDate}`, complete: false }
+        dueDate: { date: `${startDate}`, complete: false },
       };
     }
 
@@ -70,7 +58,7 @@ const AddCardDueDate = ({
     removeDueDate,
     sourceList,
     startDate,
-    saveCardChanges
+    saveCardChanges,
   ]);
 
   return (
@@ -78,35 +66,14 @@ const AddCardDueDate = ({
       icon="clock"
       buttonText="Due Date"
       header="Change Due Date."
+      color={color}
     >
-      <Container>
-        <DatePicker
-          className="ui fluid focus input"
-          selected={startDate}
-          onChange={date => setStartDate(date)}
-          showTimeSelect
-          timeFormat="HH:mm"
-          timeIntervals={15}
-          timeCaption="time"
-          dateFormat="MMMM d, yyyy h:mm aa"
-        />
-      </Container>
-      <Divider />
-      <ButtonWrapper>
-        <Button
-          content="Add"
-          compact
-          positive
-          onClick={() => handleAddClick()}
-        />
-        <Button
-          content="Remove"
-          compact
-          negative
-          floated="right"
-          onClick={() => handleRemoveClick()}
-        />
-      </ButtonWrapper>
+      <PickDueDate
+        startDate={startDate}
+        handleRemoveClick={handleRemoveClick}
+        handleAddClick={handleAddClick}
+        setStartDate={setStartDate}
+      />
     </DropdownButton>
   );
 };

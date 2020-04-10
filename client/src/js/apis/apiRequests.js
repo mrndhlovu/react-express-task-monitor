@@ -6,25 +6,25 @@ import {
   params,
   CARDS_EP,
   AUTH_EP,
-  IMAGES_EP
+  IMAGES_EP,
 } from "../utils/urls";
 
-export const requestNewBoard = board =>
+export const requestNewBoard = (board) =>
   axios.post(`${BOARDS_EP}/create`, board, params);
 
 export const requestBoardList = () => axios.get(BOARDS_EP, params);
 
-export const requestBoardDetail = id =>
+export const requestBoardDetail = (id) =>
   axios.get(`${BOARDS_EP}/id/${id}`, params);
 
-export const requestBoardDelete = id =>
+export const requestBoardDelete = (id) =>
   axios.delete(`${BOARDS_EP}/id/${id}`, params);
 
 export const requestBoardUpdate = (id, body) => {
   return axios.patch(`${BOARDS_EP}/id/${id}`, { ...body }, params);
 };
 
-export const requestUpload = body =>
+export const requestUpload = (body) =>
   axios.post(`${UPLOAD_EP}/image`, body, params);
 
 export const requestCreateNewCard = (body, id) =>
@@ -36,13 +36,16 @@ export const requestDeleteCard = (body, id) =>
 export const requestCardCoverUpdate = (body, id) =>
   axios.patch(`${CARDS_EP}/cover/${id}`, { ...body }, params);
 
+export const requestCardUpdate = (body, id) =>
+  axios.patch(`${CARDS_EP}/${id}/update`, body, params);
+
 export const requestDeleteAttachment = (body, id) =>
   axios.patch(`${CARDS_EP}/delete-attachment/${id}`, { ...body });
 
-export const requestAuthSignup = body =>
+export const requestAuthSignup = (body) =>
   axios.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
 
-export const requestAuthLogin = body =>
+export const requestAuthLogin = (body) =>
   axios.post(`${AUTH_EP}/login`, body, params);
 
 export const requestAuthLogout = () =>
@@ -51,7 +54,7 @@ export const requestAuthLogout = () =>
 export const userInfo = () =>
   axios.get(`${AUTH_EP}/users/me`, { withCredentials: true });
 
-export const requestUserUpdate = body =>
+export const requestUserUpdate = (body) =>
   axios.patch(`${AUTH_EP}/update`, body, params);
 
 export const requestUserInvite = (id, email) =>
@@ -63,8 +66,8 @@ export const requestNewChecklistItem = (body, id) =>
 export const requestCreateComment = (body, id) =>
   axios.patch(`${CARDS_EP}/${id}/comment`, body, params);
 
-export const requestBoardMembers = id =>
+export const requestBoardMembers = (id) =>
   axios.get(`${BOARDS_EP}/id/${id}/members`, params);
 
-export const requestImages = query =>
+export const requestImages = (query) =>
   axios.get(`${IMAGES_EP}&q=${query}&image_type=photo`);
