@@ -75,7 +75,6 @@ const MoveCardDialog = ({
             (card, index) => card && { ...card, position: index + 1 }
           ),
         };
-        console.log("updatedList: ", updatedList.cards);
         originalBoard.lists.splice(
           originalBoard.lists.indexOf(sourceList),
           1,
@@ -86,9 +85,41 @@ const MoveCardDialog = ({
       moveCard();
       setMove(false);
     } else if (boardChanged) {
-      console.log("sourceList: ", sourceList.cards);
-    }
-    if (listChanged) {
+      console.log("boardChanged: ", sourceList.cards);
+    } else if (listChanged) {
+      const originalList = originalBoard.lists.find(
+        (list) => list.position === originalListPosition
+      );
+      originalList.cards.splice(originalList.cards.indexOf(originalCard), 1);
+      const updatedOriginalList = {
+        ...originalList,
+        cards: originalList.cards.map(
+          (card, index) => card && { ...card, position: index + 1 }
+        ),
+      };
+
+      sourceList.cards.splice(card.position - 1, 0, originalCard);
+      const updatedSourceList = {
+        ...sourceList,
+        cards: sourceList.cards.map(
+          (card, index) => card && { ...card, position: index + 1 }
+        ),
+      };
+
+      originalBoard.lists.splice(
+        originalBoard.lists.indexOf(originalList),
+        1,
+        updatedOriginalList
+      );
+
+      originalBoard.lists.splice(
+        originalBoard.lists.indexOf(sourceList),
+        1,
+        updatedSourceList
+      );
+      handleBoardUpdate(originalBoard, "lists");
+
+      setMove(false);
     }
 
     return () => {
@@ -103,6 +134,7 @@ const MoveCardDialog = ({
     originalCard,
     sourceList,
     originalBoard,
+    originalListPosition,
   ]);
 
   useEffect(() => {
