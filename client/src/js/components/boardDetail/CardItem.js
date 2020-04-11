@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { BoardListsContext } from "../../utils/contextUtils";
+import { BoardListsContext, BoardContext } from "../../utils/contextUtils";
 import { getFormattedDate } from "../../utils/appUtils";
 import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
@@ -52,6 +52,7 @@ const CardItem = ({
     board,
     mobile,
   } = useContext(BoardListsContext);
+  const { saveBoardChanges } = useContext(BoardContext);
 
   const hasLabel = card.labels.length !== 0;
   const hasAttachments =
@@ -135,6 +136,8 @@ const CardItem = ({
         mobile={mobile}
         openCardModal={openCardModal}
         setOpenCardModal={setOpenCardModal}
+        saveBoardChanges={saveBoardChanges}
+        handleBoardUpdate={handleBoardUpdate}
       />
     </>
   );

@@ -2,10 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 import { Dropdown, Header } from "semantic-ui-react";
-import { getStringEquality } from "../../utils/appUtils";
+import { checkStringEquality } from "../../utils/appUtils";
 import UIContainer from "./UIContainer";
 
-const Span = styled.span``;
+const Span = styled.span`
+  font-size: ${(props) => props.size};
+`;
 
 const displayStyle = {
   background: "#f5f6f7",
@@ -19,10 +21,12 @@ const DropdownList = ({
   title,
   handleSelection,
   hasList,
+  hasCards,
+  current,
 }) => {
-  const isBoardsDropdown = getStringEquality(header, "Board");
-  const isListDropdown = getStringEquality(header, "List");
-  const isPositionDropdown = getStringEquality(header, "Position");
+  const isBoardsDropdown = checkStringEquality(header, "Board");
+  const isListDropdown = checkStringEquality(header, "List");
+  const isPositionDropdown = checkStringEquality(header, "Position");
 
   return (
     <UIContainer
@@ -42,17 +46,24 @@ const DropdownList = ({
               <Dropdown.Item
                 key={index}
                 onClick={() =>
-                  handleSelection(
-                    isPositionDropdown || isListDropdown ? index + 1 : item,
-                    header
-                  )
+                  handleSelection(isListDropdown ? index + 1 : item, header)
                 }
               >
-                {isPositionDropdown ? (
-                  <Span>{index ? index + 1 : 1}</Span>
-                ) : (
-                  <Span>{item.title}</Span>
-                )}
+                <Span>
+                  {isPositionDropdown ? (
+                    <>
+                      {hasCards ? index + 1 : "1"}
+                      {current === item._id && " (current)"}
+                    </>
+                  ) : (
+                    <>
+                      {item.title}{" "}
+                      {((isListDropdown && current - 1 === index) ||
+                        current === item._id) &&
+                        " (current)"}
+                    </>
+                  )}
+                </Span>
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>

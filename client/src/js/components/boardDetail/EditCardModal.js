@@ -60,6 +60,7 @@ const EditCardModal = ({
   openCardModal,
   saveBoardChanges,
   setOpenCardModal,
+  handleBoardUpdate,
 }) => {
   const { board } = useContext(BoardListsContext);
   const [startDate, setStartDate] = useState(new Date());
@@ -132,11 +133,13 @@ const EditCardModal = ({
           </EditCardButton>
           <EditCardButton buttonText="Move" header="Move" icon="right arrow">
             <MoveCardDialog
-              board={board}
-              card={card}
+              originalBoard={board}
+              originalCard={card}
               history={history}
-              listPosition={listPosition}
+              originalListPosition={listPosition}
               saveBoardChanges={saveBoardChanges}
+              id={id}
+              handleBoardUpdate={handleBoardUpdate}
             />
           </EditCardButton>
           <EditCardButton

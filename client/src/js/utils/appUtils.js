@@ -119,5 +119,5 @@ export const getProgression = (partialValue, totalValue) =>
 export const getFormattedDate = (date, format, calendar) =>
   calendar ? moment(date).calendar() : moment(date).format(format);
 
-export const getStringEquality = (mainString, comparison) =>
+export const checkStringEquality = (mainString, comparison) =>
   mainString.localeCompare(comparison) === 0;
