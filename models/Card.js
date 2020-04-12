@@ -19,6 +19,11 @@ const CardSchema = mongoose.Schema(
         documents: [],
       },
     },
+    archived: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     cardCover: {
       type: String,
       default: "",

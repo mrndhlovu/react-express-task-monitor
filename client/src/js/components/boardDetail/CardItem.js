@@ -9,6 +9,7 @@ import CardCover from "../cardDetail/CardCover";
 import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
 import EditCardModal from "./EditCardModal";
+import Assignees from "../sharedComponents/Assignees";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -61,6 +62,7 @@ const CardItem = ({
   const hasChecklist = card.checklists.length !== 0;
   const hasDescription = card.shortDescription.localeCompare("") !== 0;
   const hasComments = card.comments.length !== 0;
+  const hasAssignees = card.assignees.length !== 0;
   const hasDueDate = card.dueDate;
   const { id } = match.params;
 
@@ -100,35 +102,38 @@ const CardItem = ({
           <CardCover card={card} />
           <CardTitle edit={showEditButton} title={card.title} />
         </Container>
-        <CardBadges>
-          <CardBadge
-            icon="attach"
-            content={card.attachments.images.length}
-            hasBadge={hasAttachments}
-          />
-
-          <CardBadge icon="check square outline" hasBadge={hasChecklist} />
-
-          <CardBadge
-            icon="comment outline"
-            content={card.comments.length}
-            hasBadge={hasComments}
-          />
-
-          <CardBadge icon="list" hasBadge={hasDescription} />
-
-          <CardBadge
-            icon="clock outline"
-            content={getFormattedDate(card.dueDate.date, "LL")}
-            hasBadge={hasDueDate}
-          />
-        </CardBadges>
       </ContentWrapper>
+
+      <CardBadges>
+        <CardBadge
+          icon="attach"
+          content={card.attachments.images.length}
+          hasBadge={hasAttachments}
+        />
+
+        <CardBadge icon="check square outline" hasBadge={hasChecklist} />
+
+        <CardBadge
+          icon="comment outline"
+          content={card.comments.length}
+          hasBadge={hasComments}
+        />
+
+        <CardBadge icon="list" hasBadge={hasDescription} />
+
+        <CardBadge
+          icon="clock outline"
+          content={getFormattedDate(card.dueDate.date, "LL")}
+          hasBadge={hasDueDate}
+        />
+        {hasAssignees && <Assignees assignees={card.assignees} />}
+      </CardBadges>
+
       {showEditButton && (
         <EditCardPenIcon setOpenCardModal={setOpenCardModal} />
       )}
       <EditCardModal
-        card={card}
+        cardItem={card}
         handleDeleteCard={() => setDeleteCard(true)}
         history={history}
         id={id}
@@ -138,6 +143,7 @@ const CardItem = ({
         setOpenCardModal={setOpenCardModal}
         saveBoardChanges={saveBoardChanges}
         handleBoardUpdate={handleBoardUpdate}
+        hasDueDate={hasDueDate}
       />
     </>
   );

@@ -121,8 +121,6 @@ router.patch("/:boardId/update", auth, async (req, res) => {
         : { ...list }
     );
 
-    console.log("patchedList: ", patchedList);
-
     const newBoard = await updateBoardLists(boardId, patchedList);
 
     res.send(newBoard);

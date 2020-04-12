@@ -36,6 +36,7 @@ const MoveCardDialog = ({
   const hasList = sourceList !== undefined;
   const listChanged = originalListPosition !== moveDestination.listPosition;
   const boardChanged = originalBoard._id !== moveDestination.board._id;
+  const cardPositionChanged = originalCard._id !== moveDestination.card._id;
   const hasCards = hasList && sourceList.cards.length > 0;
 
   const handleSelection = (selection, dropDownId, position) => {
@@ -203,7 +204,13 @@ const MoveCardDialog = ({
         />
       </StyledWrapper>
       <Divider />
-      <Button positive content="Move" compact onClick={() => setMove(true)} />
+      <Button
+        positive={boardChanged || listChanged || cardPositionChanged}
+        disabled={!boardChanged && !listChanged && !cardPositionChanged}
+        content="Move"
+        compact
+        onClick={() => setMove(true)}
+      />
     </>
   );
 };

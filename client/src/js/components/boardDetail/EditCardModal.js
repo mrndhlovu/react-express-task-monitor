@@ -3,7 +3,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Modal, Button } from "semantic-ui-react";
 
 import { BoardListsContext } from "../../utils/contextUtils";
-import { emptyFunction } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
 import BoardMembersList from "../sharedComponents/BoardMembersList";
 import CreateInput from "../sharedComponents/CreateInput";
@@ -51,7 +50,8 @@ const StyledModalActions = styled(Modal.Actions)`
 `;
 
 const EditCardModal = ({
-  card,
+  cardItem,
+  handleBoardUpdate,
   handleDeleteCard,
   history,
   id,
@@ -60,41 +60,88 @@ const EditCardModal = ({
   openCardModal,
   saveBoardChanges,
   setOpenCardModal,
-  handleBoardUpdate,
 }) => {
   const { board } = useContext(BoardListsContext);
-  const [startDate, setStartDate] = useState(new Date());
+
+  const [archive, setArchive] = useState(false);
+  const [boardMember, setBoardMember] = useState(null);
+  const [card, setCard] = useState(cardItem);
+  const [newDate, setNewDate] = useState({ add: false, remove: false });
   const [newTitle, setNewTitle] = useState(false);
   const [saveCard, setSaveCard] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
 
   const handleChange = (e) => setNewTitle(e.target.value);
 
-  const handleChangeMembers = (member) => {
-    console.log("member: ", member);
-  };
+  const handleChangeMembers = (member) => setBoardMember(member);
+
+  const handleRemoveDueDate = () => setNewDate({ ...newDate, remove: true });
+  const handleAddDueDate = () => setNewDate({ ...newDate, add: true });
 
   useEffect(() => {
-    if (!saveCard) return emptyFunction();
-
-    const updateCardTitle = async () => {
-      const newCard = { ...card, title: newTitle };
+    let newCard;
+    const saveCardChanges = async () => {
       const body = {
         newCard,
         listId: listPosition,
       };
 
       await requestCardUpdate(body, id).then((res) => {
+        setCard(newCard);
         saveBoardChanges(res.data);
       });
     };
 
-    updateCardTitle();
-
-    return () => {
-      setNewTitle(null);
+    if (saveCard) {
+      newCard = { ...card, title: newTitle };
       setSaveCard(false);
+      setNewTitle(null);
+      saveCardChanges();
+    }
+
+    if (newDate.add || newDate.remove) {
+      newCard = {
+        ...card,
+        dueDate: newDate.add ? { date: `${startDate}`, complete: false } : "",
+      };
+
+      setNewDate({ add: false, remove: false });
+      saveCardChanges();
+    }
+    if (archive) {
+      newCard = { ...card, archived: true };
+
+      saveCardChanges();
+    }
+
+    if (boardMember) {
+      const isInAssigneeList = card.assignees.some(
+        (member) => member._id === boardMember._id
+      );
+      console.log("isInAssigneeList: ", isInAssigneeList);
+
+      isInAssigneeList
+        ? card.assignees.splice(card.assignees.indexOf(boardMember), 1)
+        : card.assignees.push(boardMember);
+      newCard = { ...card };
+
+      saveCardChanges();
+    }
+    return () => {
+      setBoardMember(null);
     };
-  }, [saveCard, saveBoardChanges, id, card, listPosition, newTitle]);
+  }, [
+    archive,
+    boardMember,
+    card,
+    id,
+    listPosition,
+    newDate,
+    newTitle,
+    saveBoardChanges,
+    saveCard,
+    startDate,
+  ]);
 
   return (
     <Modal
@@ -152,8 +199,14 @@ const EditCardModal = ({
               handleClick={handleChangeMembers}
             />
           </EditCardButton>
-          <EditCardButton buttonText="Change Due Date" icon="users">
-            <PickDueDate startDate={startDate} setStartDate={setStartDate} />
+
+          <EditCardButton buttonText="Change Due Date" icon="clock">
+            <PickDueDate
+              startDate={startDate}
+              setStartDate={setStartDate}
+              handleAddClick={handleAddDueDate}
+              handleRemoveClick={handleRemoveDueDate}
+            />
           </EditCardButton>
 
           <StyledEditButton
@@ -162,6 +215,7 @@ const EditCardModal = ({
             compact
             labelPosition="left"
             fluid
+            onClick={() => setArchive(true)}
           />
         </StyledModalActions>
       </Wrapper>

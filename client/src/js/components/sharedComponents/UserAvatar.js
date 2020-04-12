@@ -2,23 +2,32 @@ import React from "react";
 import styled from "styled-components";
 
 const Span = styled.span`
+
+  &:after: {
   font-weight: 700;
   text-align: center;
+  font-size: 10px;
+    content: '${(props) => props.userInitials}';
+  }
 `;
 
 const StyledButton = styled.div`
-  max-height: 37px;
-  max-width: 37px;
-  padding: 18px;
+  align-items: center;
   background-color: #dce3eb;
   border-radius: 50px;
   display: flex;
-  align-items: center;
   justify-content: space-around;
+  max-height: 15px;
+  max-width: 15px;
+  padding: 14px;
+
+  &:after: {
+    content: '${(props) => props.userInitials}';
+  }
 `;
 
 const UserAvatar = ({ userInitials = "M" }) => (
-  <StyledButton circular size="tiny">
+  <StyledButton>
     <Span>{userInitials}</Span>
   </StyledButton>
 );
