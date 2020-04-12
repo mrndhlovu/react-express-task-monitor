@@ -3,7 +3,7 @@ const Board = require("../models/Board");
 const User = require("../models/User");
 const auth = require("../utils.js/middleware/authMiddleware");
 const {
-  sendInvitationEmail
+  sendInvitationEmail,
 } = require("../utils.js/middleware/emailMiddleware");
 const { CLIENT_URL } = require("../utils.js/config");
 const ObjectID = require("mongodb").ObjectID;
@@ -19,8 +19,8 @@ router.get("/", auth, async (req, res) => {
     const getBoards = async () => {
       const allBoards = await Board.find();
 
-      Object.keys(allBoards).map(index => {
-        allBoards[index].members.map(member => {
+      Object.keys(allBoards).map((index) => {
+        allBoards[index].members.map((member) => {
           const boardId = new ObjectID(member.id);
           boardId.equals(userId) &&
             boards.push(allBoards[index]) &&
@@ -59,8 +59,8 @@ router.delete("/id/:boardId", auth, async (req, res) => {
   const _id = req.params.boardId;
 
   try {
-    await Board.findById({ _id }).then(board => {
-      board.members.map(member => {
+    await Board.findById({ _id }).then((board) => {
+      board.members.map((member) => {
         if (member.isAdmin) return board.delete();
         throw "Access level limited! Only admin can delete a board!";
       });
@@ -85,14 +85,14 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
     const member = {
       id: invitedUser._id,
       isAdmin: false,
-      fname: invitedUser.fname
+      fname: invitedUser.fname,
     };
     board.members.push(member);
 
     board.accessLevel = {
       ...board.accessLevel,
       ...DEFAULT_ACCESS_LEVELS,
-      team: true
+      team: true,
     };
     sendInvitationEmail(email, req.user.fname, "admin", redirectLink);
     board.save();
@@ -104,6 +104,7 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
 
 router.patch("/id/:boardId", auth, async (req, res) => {
   const _id = req.params.boardId;
+  console.log("_id: ", _id);
   let board;
   const updates = Object.keys(req.body);
   const allowedUpdates = [
@@ -116,9 +117,11 @@ router.patch("/id/:boardId", auth, async (req, res) => {
     "labels",
     "lists",
     "styleProperties",
-    "title"
+    "title",
   ];
-  const isValidField = updates.every(update => allowedUpdates.includes(update));
+  const isValidField = updates.every((update) =>
+    allowedUpdates.includes(update)
+  );
 
   if (!isValidField)
     return res.status(400).send({ message: "Invalid update field" });
@@ -134,7 +137,7 @@ router.patch("/id/:boardId", auth, async (req, res) => {
       }
     }
 
-    updates.forEach(update => (board[update] = req.body[update]));
+    updates.forEach((update) => (board[update] = req.body[update]));
     board.save();
     res.send(board);
   } catch (error) {
@@ -145,12 +148,12 @@ router.patch("/id/:boardId", auth, async (req, res) => {
 router.post("/create", auth, async (req, res) => {
   const board = new Board({
     ...req.body,
-    owner: req.user._id
+    owner: req.user._id,
   });
   const member = {
     id: `${req.user._id}`,
     isAdmin: true,
-    fname: req.user.fname
+    fname: req.user.fname,
   };
   board.members.push(member);
 

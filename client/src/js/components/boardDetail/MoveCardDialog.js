@@ -16,9 +16,8 @@ const MoveCardDialog = ({
   originalCard,
   history,
   originalListPosition,
-
-  id,
   handleBoardUpdate,
+  id,
 }) => {
   const [data, loading] = useFetch(history);
 
@@ -39,20 +38,21 @@ const MoveCardDialog = ({
   const boardChanged = originalBoard._id !== moveDestination.board._id;
   const hasCards = hasList && sourceList.cards.length > 0;
 
-  const handleSelection = (selection, destination) => {
-    const isBoardsDropdown = checkStringEquality(destination, "Board");
-    const isListDropdown = checkStringEquality(destination, "List");
-    const isPositionDropdown = checkStringEquality(destination, "Position");
+  const handleSelection = (selection, dropDownId, position) => {
+    const isBoardsDropdown = checkStringEquality(dropDownId, "Board");
+    const isListDropdown = checkStringEquality(dropDownId, "List");
+    const isPositionDropdown = checkStringEquality(dropDownId, "Position");
 
     if (isBoardsDropdown)
       return setMoveDestination({
         ...moveDestination,
         board: { ...selection },
+        listPosition: position,
       });
     if (isListDropdown)
       return setMoveDestination({
         ...moveDestination,
-        listPosition: selection,
+        listPosition: position,
       });
     if (isPositionDropdown)
       return setMoveDestination({
@@ -63,30 +63,8 @@ const MoveCardDialog = ({
 
   useEffect(() => {
     if (!move) return emptyFunction();
-    const { card } = moveDestination;
-
-    if (!boardChanged && !listChanged) {
-      const moveCard = async () => {
-        sourceList.cards.splice(sourceList.cards.indexOf(originalCard), 1);
-        sourceList.cards.splice(card.position - 1, 0, originalCard);
-        const updatedList = {
-          ...sourceList,
-          cards: sourceList.cards.map(
-            (card, index) => card && { ...card, position: index + 1 }
-          ),
-        };
-        originalBoard.lists.splice(
-          originalBoard.lists.indexOf(sourceList),
-          1,
-          updatedList
-        );
-        handleBoardUpdate(originalBoard, "lists");
-      };
-      moveCard();
-      setMove(false);
-    } else if (boardChanged) {
-      console.log("boardChanged: ", sourceList.cards);
-    } else if (listChanged) {
+    const { card, board, listPosition } = moveDestination;
+    const removeCardFromSource = () => {
       const originalList = originalBoard.lists.find(
         (list) => list.position === originalListPosition
       );
@@ -98,43 +76,92 @@ const MoveCardDialog = ({
         ),
       };
 
-      sourceList.cards.splice(card.position - 1, 0, originalCard);
-      const updatedSourceList = {
-        ...sourceList,
-        cards: sourceList.cards.map(
-          (card, index) => card && { ...card, position: index + 1 }
-        ),
-      };
-
       originalBoard.lists.splice(
         originalBoard.lists.indexOf(originalList),
         1,
         updatedOriginalList
       );
+    };
+
+    const getUpdatedTargetList = () => {
+      sourceList.cards.splice(card.position - 1, 0, originalCard);
+      return {
+        ...sourceList,
+        cards: sourceList.cards.map(
+          (card, index) => card && { ...card, position: index + 1 }
+        ),
+      };
+    };
+
+    if (!boardChanged && !listChanged) {
+      sourceList.cards.splice(sourceList.cards.indexOf(originalCard), 1);
+      const updatedList = getUpdatedTargetList();
 
       originalBoard.lists.splice(
         originalBoard.lists.indexOf(sourceList),
         1,
-        updatedSourceList
+        updatedList
       );
       handleBoardUpdate(originalBoard, "lists");
+      setMove(false);
+    } else if (boardChanged) {
+      removeCardFromSource(handleBoardUpdate);
 
+      const targetBoard = boards
+        .filter((boardItem) => boardItem._id === board._id)
+        .shift();
+      const targetPosition = listPosition === 0 ? 1 : listPosition;
+
+      const targetList = targetBoard.lists
+        .filter((list) => list.position === targetPosition)
+        .shift();
+
+      targetList.cards.splice(card.position - 1, 0, originalCard);
+
+      const updatedList = {
+        ...targetList,
+        cards: targetList.cards.map(
+          (card, index) => card && { ...card, position: index + 1 }
+        ),
+      };
+
+      targetBoard.lists.splice(
+        targetBoard.lists.indexOf(targetList),
+        1,
+        updatedList
+      );
+
+      handleBoardUpdate(originalBoard, "lists", null, () => {
+        handleBoardUpdate(targetBoard, "lists", null, null, targetBoard._id);
+        setTimeout(() => {
+          history.push(`/boards/id/${targetBoard._id}`);
+        }, 500);
+      });
+      setMove(false);
+    } else if (listChanged) {
+      removeCardFromSource();
+      const updatedList = getUpdatedTargetList();
+
+      originalBoard.lists.splice(
+        originalBoard.lists.indexOf(sourceList),
+        1,
+        updatedList
+      );
+      handleBoardUpdate(originalBoard, "lists");
       setMove(false);
     }
-
-    return () => {
-      setMove(false);
-    };
   }, [
     boardChanged,
+    boards,
     handleBoardUpdate,
+    history,
     listChanged,
     move,
     moveDestination,
-    originalCard,
-    sourceList,
     originalBoard,
+    originalCard,
     originalListPosition,
+    sourceList,
   ]);
 
   useEffect(() => {

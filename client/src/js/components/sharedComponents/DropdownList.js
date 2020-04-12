@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Dropdown, Header } from "semantic-ui-react";
 import { checkStringEquality } from "../../utils/appUtils";
+import { Dropdown, Header } from "semantic-ui-react";
 import UIContainer from "./UIContainer";
 
 const Span = styled.span`
@@ -46,7 +46,11 @@ const DropdownList = ({
               <Dropdown.Item
                 key={index}
                 onClick={() =>
-                  handleSelection(isListDropdown ? index + 1 : item, header)
+                  handleSelection(
+                    item,
+                    header,
+                    isBoardsDropdown ? 1 : index + 1
+                  )
                 }
               >
                 <Span>

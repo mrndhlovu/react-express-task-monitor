@@ -3,7 +3,7 @@ import React, {
   useState,
   useCallback,
   useMemo,
-  useContext
+  useContext,
 } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -17,7 +17,7 @@ import {
   requestBoardDelete,
   requestBoardDetail,
   requestUserInvite,
-  requestUserUpdate
+  requestUserUpdate,
 } from "../apis/apiRequests";
 
 import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
@@ -30,16 +30,16 @@ const StyledContainer = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: ${props => props.bgColor};
+  background-color: ${(props) => props.bgColor};
 `;
 
 const ContentDiv = styled.div`
   display: grid;
   left: 0;
   position: absolute;
-  top: ${props => (props.mobile ? "17%" : "7%")};
+  top: ${(props) => (props.mobile ? "17%" : "7%")};
   width: 100%;
-  height: ${props => (props.mobile ? "82vh" : "92vh")};
+  height: ${(props) => (props.mobile ? "82vh" : "92vh")};
 `;
 
 const BoardContainer = ({ match, history }) => {
@@ -59,20 +59,20 @@ const BoardContainer = ({ match, history }) => {
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
   const handleBoardUpdate = useMemo(
-    () => (changes, fieldId, activity) => {
+    () => (changes, fieldId, activity, callback, newId) => {
       if (!changes) return setBoard(null);
       saveBoardChanges(changes);
-      setUpdatedField({ fieldId, activity });
+      setUpdatedField({ fieldId, activity, callback, newId });
     },
     []
   );
 
-  const saveBoardChanges = changes => setBoard(changes);
+  const saveBoardChanges = (changes) => setBoard(changes);
 
-  const changeBoardAccessLevel = option => {
+  const changeBoardAccessLevel = (option) => {
     const newBoard = {
       ...board,
-      accessLevel: { ...PERMISSIONS, [option]: true }
+      accessLevel: { ...PERMISSIONS, [option]: true },
     };
 
     handleBoardUpdate(newBoard, "accessLevel", "changeAccess");
@@ -83,10 +83,10 @@ const BoardContainer = ({ match, history }) => {
     history.push("/");
   }, [history, id]);
 
-  const handleColorPick = color => {
+  const handleColorPick = (color) => {
     const newBoard = {
       ...board,
-      styleProperties: { ...board.styleProperties, color }
+      styleProperties: { ...board.styleProperties, color },
     };
 
     handleBoardUpdate(newBoard, "styleProperties", "color");
@@ -110,7 +110,7 @@ const BoardContainer = ({ match, history }) => {
     if (!starred && !unStarred) return emptyFunction();
 
     const getUserInfo = async () => {
-      await requestUserUpdate({ starred: user.starred }).then(res => {
+      await requestUserUpdate({ starred: user.starred }).then((res) => {
         try {
         } catch (error) {
           alert(error.message);
@@ -131,13 +131,13 @@ const BoardContainer = ({ match, history }) => {
     setLoading(true);
     const inviteUser = async () => {
       await requestUserInvite(id, invite)
-        .then(res => {
+        .then((res) => {
           setInviteDone(true);
           setLoading(false);
           setInvite(null);
           resetForm("invite-input");
         })
-        .catch(error => {
+        .catch((error) => {
           alert(error.response.data.message);
         });
     };
@@ -145,22 +145,25 @@ const BoardContainer = ({ match, history }) => {
     inviteUser();
   }, [invite, id]);
 
-  const handleInviteClick = email => setInvite(email);
+  const handleInviteClick = (email) => setInvite(email);
 
   useEffect(() => {
     if (!updatedField) return emptyFunction();
     const serverUpdate = async () => {
-      const { fieldId, activity } = updatedField;
+      const { fieldId, activity, newId, callback } = updatedField;
+
       const { fname } = auth.user;
       const userAction = getActivity(fname, activity);
       activity &&
         board.activities.push({ activity: userAction, createdAt: Date.now() });
       const update = {
         [fieldId]: board[fieldId],
-        activities: board.activities
+        activities: board.activities,
       };
 
-      await requestBoardUpdate(id, update).then(() => {});
+      await requestBoardUpdate(newId ? newId : id, update).then(() => {
+        if (callback) callback();
+      });
     };
 
     serverUpdate();
@@ -171,10 +174,10 @@ const BoardContainer = ({ match, history }) => {
     if (board) return emptyFunction();
     const fetchData = async () =>
       await requestBoardDetail(id)
-        .then(res => {
+        .then((res) => {
           return setBoard(res.data);
         })
-        .catch(error => history.push("/"));
+        .catch((error) => history.push("/"));
 
     fetchData();
   }, [board, updatedField, id, history]);
@@ -196,7 +199,7 @@ const BoardContainer = ({ match, history }) => {
         id,
         loading,
         saveBoardChanges,
-        showSideBar
+        showSideBar,
       }}
     >
       <Container bgColor={board.styleProperties.color}>
