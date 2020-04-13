@@ -6,22 +6,22 @@ import { MainContext } from "../../utils/contextUtils";
 
 const ProtectedRoute = ({ component: Component, location, ...rest }) => {
   const { auth } = useContext(MainContext);
-  const { loading, authenticated } = auth;
+  const { loading } = auth;
   const data = localStorage.getItem("user");
   const AUTH_ID = data && JSON.parse(data)._id;
 
   return (
     <Route
       {...rest}
-      render={props => {
-        if (!authenticated && !AUTH_ID) {
+      render={(props) => {
+        if (!AUTH_ID) {
           return loading ? (
             <UILoadingSpinner />
           ) : (
             <Redirect
               to={{
                 pathname: "/login",
-                state: { from: props.location }
+                state: { from: props.location },
               }}
             />
           );
