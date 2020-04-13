@@ -6,20 +6,20 @@ import { BoardContext, MainContext } from "../../utils/contextUtils";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
 const HeaderContainer = styled.div`
-  align-items: ${props => (props.mobile ? "center" : "start")};
+  align-items: ${(props) => (props.mobile ? "center" : "start")};
   display: grid;
-  grid-template-columns: ${props => (props.mobile ? "1fr" : "1fr 1fr")};
+  grid-template-columns: ${(props) => (props.mobile ? "1fr" : "1fr 1fr")};
   left: 2px;
   max-height: 40px;
   position: absolute;
-  top: ${props => (props.mobile ? "6%" : "3.5%")};
+  top: ${(props) => (props.mobile ? "6%" : "3.5%")};
   width: 100vw;
 `;
 
 const TitleWrapper = styled.div`
-  justify-content: ${props => (props.mobile ? "center" : "start")};
   align-self: auto;
   display: flex;
+  justify-content: ${(props) => (props.mobile ? "center" : "start")};
   padding: 10px;
 `;
 

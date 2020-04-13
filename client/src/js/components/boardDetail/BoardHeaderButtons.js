@@ -9,7 +9,7 @@ import MessageAlert from "../sharedComponents/MessageAlert";
 import { isEmail } from "validator";
 
 const StyledDiv = styled.div`
-  justify-self: ${props => (props.mobile ? "center" : "end")};
+  justify-self: ${(props) => (props.mobile ? "center" : "end")};
   padding: 2px;
   display: flex;
 `;
@@ -26,11 +26,11 @@ const Description = styled.div`
 `;
 
 const StyledTextArea = styled(Input)`
-  min-width: 250px;
+  min-width: 200px;
 `;
 
 const StyledDropdownMenu = styled(Dropdown.Menu)`
-  padding: 0 10px 10px 10px !important;
+  width: 200px !important;
 `;
 
 export default function BoardHeaderButtons({ mobile, isStarred }) {
@@ -41,7 +41,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
     handleInviteClick,
     inviteDone,
     loading,
-    handleShowMenuClick
+    handleShowMenuClick,
   } = useContext(BoardContext);
   const { accessLevel } = board;
   let permission;
@@ -49,9 +49,9 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
   const [inviteEmail, setInviteEmail] = useState("");
   const [error, setError] = useState(null);
 
-  const handleChange = e => setInviteEmail(e.target.value);
+  const handleChange = (e) => setInviteEmail(e.target.value);
 
-  const validateEmail = e => {
+  const validateEmail = (e) => {
     const validEmail = isEmail(inviteEmail);
 
     if (!validEmail) return setError("Email provided is invalid");
@@ -65,17 +65,11 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
 
   return (
     <StyledDiv mobile={mobile}>
-      <NavButton
-        iconName="star outline"
-        buttonColor={isStarred ? "yellow" : "grey"}
-        redirect={() => handleBoardStarClick()}
-      />
-
       <StyledButton size="tiny">
         <Icon name={permission.icon} />
         <Dropdown icon={false} text={permission.option}>
-          <Dropdown.Menu>
-            {ACCESS_LEVELS.map(key => (
+          <StyledDropdownMenu>
+            {ACCESS_LEVELS.map((key) => (
               <Fragment key={key.option}>
                 <Dropdown.Item
                   icon={
@@ -102,9 +96,14 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
                 </Description>
               </Fragment>
             ))}
-          </Dropdown.Menu>
+          </StyledDropdownMenu>
         </Dropdown>
       </StyledButton>
+      <NavButton
+        iconName="star outline"
+        buttonColor={isStarred ? "yellow" : "grey"}
+        redirect={() => handleBoardStarClick()}
+      />
       <StyledButton size="tiny">
         <Dropdown
           text="Invite"
@@ -129,9 +128,9 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
             <Description>
               <StyledTextArea
                 id="invite-input"
-                onChange={e => handleChange(e)}
-                onClick={e => e.stopPropagation()}
-                onKeyDown={e => (e.key === "Enter" ? validateEmail() : null)}
+                onChange={(e) => handleChange(e)}
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => (e.key === "Enter" ? validateEmail() : null)}
                 placeholder={
                   inviteDone ? "Done" : "Add invite email and press Enter"
                 }

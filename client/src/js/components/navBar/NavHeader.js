@@ -11,16 +11,16 @@ const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-between;
   padding: 3px 0;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   max-height: 40px;
-  position: absolute;
+  position: sticky;
   top: 0;
   left: 0;
   z-index: 100;
   width: 100%;
 `;
 
-const NavHeader = ({ history, color }) => {
+const NavHeader = ({ history, color = "transparent" }) => {
   const { device } = useContext(MainContext);
 
   return (

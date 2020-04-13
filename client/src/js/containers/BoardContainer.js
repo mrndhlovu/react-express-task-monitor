@@ -44,17 +44,17 @@ const ContentDiv = styled.div`
 
 const BoardContainer = ({ match, history }) => {
   const { id } = match.params;
-  const { device, auth } = useContext(MainContext);
+  const { device, auth, getBoardColor } = useContext(MainContext);
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
-  const [user, setUser] = useState(auth.user);
+  const [inviteDone, setInviteDone] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showSideBar, setShowSideBar] = useState(false);
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
   const [updatedField, setUpdatedField] = useState(null);
-  const [showSideBar, setShowSideBar] = useState(false);
-  const [inviteDone, setInviteDone] = useState(false);
+  const [user, setUser] = useState(auth.user);
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
@@ -175,6 +175,7 @@ const BoardContainer = ({ match, history }) => {
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then((res) => {
+          getBoardColor(res.data.styleProperties.color);
           return setBoard(res.data);
         })
         .catch((error) => history.push("/"));
@@ -187,16 +188,16 @@ const BoardContainer = ({ match, history }) => {
   ) : (
     <BoardContext.Provider
       value={{
-        handleBoardUpdate,
         board,
         changeBoardAccessLevel,
         handleBoardStarClick,
+        handleBoardUpdate,
         handleColorPick,
         handleDeleteBoard,
         handleInviteClick,
         handleShowMenuClick,
-        inviteDone,
         id,
+        inviteDone,
         loading,
         saveBoardChanges,
         showSideBar,

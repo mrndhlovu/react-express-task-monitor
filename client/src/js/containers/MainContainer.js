@@ -24,28 +24,31 @@ const MainContainer = ({ children, history, auth }) => {
   const [boards, setBoards] = useState(null);
   const [search, setSearch] = useState(false);
   const [update, setUpdate] = useState(null);
+  const [color, setColor] = useState(null);
 
   const { device, dimensions } = useDimensions();
 
-  const handleSearchClick = useCallback(e => {
+  const handleSearchClick = useCallback((e) => {
     setSearch(e.target.value);
   }, []);
 
-  const makeNewBoard = update => setBoard(update);
+  const makeNewBoard = (update) => setBoard(update);
 
-  const getNavigationBoards = data => setUpdate(data);
+  const getNavigationBoards = (data) => setUpdate(data);
+
+  const getBoardColor = (boardColor) => setColor(boardColor);
 
   useEffect(() => {
     if (!board) return emptyFunction();
     const createBoard = async () => {
-      requestNewBoard(board).then(res => {
+      requestNewBoard(board).then((res) => {
         try {
+          setBoard(res.data);
           history.push(`/boards/id/${res.data._id}`);
         } catch (error) {}
       });
     };
     createBoard();
-    setBoard(null);
   }, [board, history]);
 
   useEffect(() => {
@@ -56,19 +59,20 @@ const MainContainer = ({ children, history, auth }) => {
     <MainContext.Provider
       value={{
         auth: { authenticated, user: data.data, loading: isLoading },
+        boards,
         device,
         dimensions,
+        getBoardColor,
+        getNavigationBoards,
         handleSearchClick,
         history,
         makeNewBoard,
         search,
-        getNavigationBoards,
-        boards
       }}
     >
       <Container>
         {authenticated && (
-          <NavHeader color={isHomePage ? DEFAULT_NAV_COLOR : "transparent"} />
+          <NavHeader color={isHomePage ? DEFAULT_NAV_COLOR : color} />
         )}
         <>
           {children}

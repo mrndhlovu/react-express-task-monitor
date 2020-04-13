@@ -27,3 +27,8 @@ export const getQueryString = (location) => location.search.slice(1);
 
 export const getSearchQueryString = (query) =>
   query.toLowerCase().replace(" ", "+");
+
+export const getBoardId = (history) => {
+  const query = history.location.pathname.split("/");
+  return query.pop();
+};

@@ -10,7 +10,8 @@ ui.form,
   color: #b8ccf0 !important;
 }
 
-.create-card-modal {
+.card-detail-container {
+  margin-top: 0px !important;
 }
 
 .ui.modal > .close {

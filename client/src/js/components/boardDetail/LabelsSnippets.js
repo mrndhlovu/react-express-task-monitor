@@ -8,9 +8,9 @@ const Container = styled.div`
 `;
 
 const Label = styled.div`
-  background-color: ${props => props.color};
-  width: 33px;
-  height: 7px;
+  background-color: ${(props) => props.color};
+  width: 35px;
+  height: 8px;
   margin: 3px;
   border-radius: 20px;
 `;
