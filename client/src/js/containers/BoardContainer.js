@@ -35,7 +35,7 @@ const ContentDiv = styled.div`
   height: ${(props) => (props.mobile ? "92vh" : "92vh")};
   left: 0;
   position: absolute;
-  top: ${(props) => (props.mobile ? "7%" : "7%")};
+  top: ${(props) => (props.mobile ? "6%" : "7%")};
   width: 100%;
 `;
 
