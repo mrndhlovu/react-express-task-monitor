@@ -2,11 +2,8 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 
 import { MainContext } from "../../utils/contextUtils";
-import { Dropdown } from "semantic-ui-react";
-import { getUserInitials } from "../../utils/appUtils";
-import { requestAuthLogout } from "../../apis/apiRequests";
 import NavButton from "../sharedComponents/NavButton";
-import UserAvatar from "../sharedComponents/UserAvatar";
+import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 
 const StyledDiv = styled.div`
   margin-right: 10px;
@@ -18,32 +15,10 @@ const StyledDiv = styled.div`
 const RightNavButtons = () => {
   const { auth } = useContext(MainContext);
 
-  const handleLogOut = async () => {
-    await requestAuthLogout().then(res => {
-      localStorage.removeItem("user");
-      window.location.reload();
-    });
-  };
-
-  const trigger = (
-    <>
-      {auth.user && (
-        <UserAvatar userInitials={getUserInitials(auth.user.fname)} />
-      )}
-    </>
-  );
-
   return (
     <StyledDiv>
       <NavButton iconName="bell" />
-      {auth.user && (
-        <Dropdown trigger={trigger} pointing="top right" icon={null}>
-          <Dropdown.Menu>
-            <Dropdown.Item text="Profile and Visibility" />
-            <Dropdown.Item text="Log out" onClick={() => handleLogOut()} />
-          </Dropdown.Menu>
-        </Dropdown>
-      )}
+      {auth.user && <NavUserAvatar auth={auth} />}
     </StyledDiv>
   );
 };

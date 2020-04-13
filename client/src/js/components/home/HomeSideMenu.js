@@ -10,7 +10,7 @@ const StyledContainer = styled.div`
   padding: 10px;
 `;
 
-const HomeSideBar = () => {
+const HomeSideMenu = () => {
   return (
     <StyledContainer>
       <HomeSidebarButton buttonText="Boards" iconName="trello" />
@@ -22,4 +22,4 @@ const HomeSideBar = () => {
   );
 };
 
-export default HomeSideBar;
+export default HomeSideMenu;

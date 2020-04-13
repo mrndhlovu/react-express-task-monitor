@@ -37,7 +37,7 @@ const HomePageContainer = ({ history }) => {
     if (!starred && !unStarred) return emptyFunction();
 
     const upUserInfo = async () => {
-      await requestUserUpdate({ starred: user.starred }).then(res => {
+      await requestUserUpdate({ starred: user.starred }).then((res) => {
         try {
         } catch (error) {
           alert(error.message);

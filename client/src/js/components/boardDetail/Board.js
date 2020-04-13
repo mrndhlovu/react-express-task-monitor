@@ -10,7 +10,7 @@ import ChatIcon from "./ChatIcon";
 
 const BoardWrapper = styled.div`
   height: 100%;
-  padding-left: ${props => (props.mobile ? "3px" : "7px")};
+  padding-left: ${(props) => (props.mobile ? "3px" : "7px")};
   position: relative;
   width: 100vw;
 `;
@@ -20,9 +20,9 @@ const Board = () => {
     handleColorPick,
     handleDeleteBoard,
     showSideBar,
-    handleShowMenuClick
+    handleShowMenuClick,
   } = useContext(BoardContext);
-  const { mobile } = useContext(MainContext).device;
+  const { device, showMobileMenu } = useContext(MainContext);
 
   const [membersOnline, setMembersOnline] = useState(0);
   const [openChat, setOpenChat] = useState(false);
@@ -30,14 +30,14 @@ const Board = () => {
 
   const handleChangeColorClick = () => setShowColorPicker(!showColorPicker);
   const handleClose = () => setOpenChat(false);
-  const getMembersOnline = users => setMembersOnline(users);
+  const getMembersOnline = (users) => setMembersOnline(users);
 
   return (
-    <BoardWrapper mobile={mobile}>
+    <BoardWrapper mobile={device.mobile}>
       <BoardLists />
 
       <BoardMenu
-        showSideBar={showSideBar}
+        showSideBar={showSideBar || showMobileMenu}
         handleShowMenuClick={handleShowMenuClick}
         handleChangeColorClick={handleChangeColorClick}
         handleDeleteBoard={handleDeleteBoard}
@@ -58,7 +58,7 @@ const Board = () => {
       {!openChat && (
         <ChatIcon
           handleChatsOpen={() => setOpenChat(!openChat)}
-          mobile={mobile}
+          mobile={device.mobile}
           membersOnline={membersOnline}
         />
       )}

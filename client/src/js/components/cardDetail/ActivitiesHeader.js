@@ -22,6 +22,7 @@ const ActivitiesHeader = ({ handleShowDetails, hideButton }) => {
           floated="right"
           size="tiny"
           content="Show Details"
+          compact
         />
       )}
     </Container>

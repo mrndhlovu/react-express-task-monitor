@@ -9,6 +9,8 @@ import { requestNewBoard } from "../apis/apiRequests";
 import { useDimensions } from "../utils/hookUtils";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
+import { Sidebar } from "semantic-ui-react";
+import MobileSideMenu from "../components/navBar/MobileSideMenu";
 
 const Container = styled.div`
   margin: 0;
@@ -19,6 +21,8 @@ const Container = styled.div`
 const MainContainer = ({ children, history, auth }) => {
   const { authenticated, isLoading, data } = auth;
   const isHomePage = history.location.pathname === "/";
+  const [visible, setVisible] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState();
 
   const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
@@ -68,16 +72,32 @@ const MainContainer = ({ children, history, auth }) => {
         history,
         makeNewBoard,
         search,
+        isHomePage,
+        showMobileMenu,
+        setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
       }}
     >
       <Container>
-        {authenticated && (
-          <NavHeader color={isHomePage ? DEFAULT_NAV_COLOR : color} />
-        )}
-        <>
-          {children}
-          {search && <SearchPage />}
-        </>
+        <Sidebar.Pushable>
+          <>
+            {authenticated && (
+              <>
+                <NavHeader
+                  color={isHomePage ? DEFAULT_NAV_COLOR : color}
+                  setVisible={() => setVisible(!visible)}
+                />
+                <MobileSideMenu
+                  visible={visible}
+                  setVisible={() => setVisible(!visible)}
+                  auth={{ authenticated, user: data.data, loading: isLoading }}
+                />
+              </>
+            )}
+
+            {children}
+            {search && <SearchPage />}
+          </>
+        </Sidebar.Pushable>
       </Container>
     </MainContext.Provider>
   );

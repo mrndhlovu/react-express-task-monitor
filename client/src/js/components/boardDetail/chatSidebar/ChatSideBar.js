@@ -3,7 +3,7 @@ import React, {
   useMemo,
   useContext,
   useState,
-  useCallback
+  useCallback,
 } from "react";
 import { withRouter } from "react-router-dom";
 import socketIOClient from "socket.io-client";
@@ -14,7 +14,7 @@ import { TextArea, Form } from "semantic-ui-react";
 import {
   resetForm,
   emptyFunction,
-  getFormattedString
+  getFormattedString,
 } from "../../../utils/appUtils";
 import { MainContext, BoardContext } from "../../../utils/contextUtils";
 import { getRootUrl } from "../../../utils/urls";
@@ -61,12 +61,12 @@ const ChatSideBar = ({ openChat }) => {
     setRoom(selection);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     e.preventDefault();
     setMessage(e.target.value);
   };
 
-  const handleSendChatMessage = e => {
+  const handleSendChatMessage = (e) => {
     e.preventDefault();
     setSendMessage(true);
   };
@@ -100,7 +100,7 @@ const ChatSideBar = ({ openChat }) => {
 
   useEffect(() => {
     if (!socket) return emptyFunction();
-    socket.on("message", newMessage => {
+    socket.on("message", (newMessage) => {
       saveMessage(newMessage, room);
     });
     return () => {
@@ -111,13 +111,13 @@ const ChatSideBar = ({ openChat }) => {
 
   useEffect(() => {
     if (!socket) return emptyFunction();
-    socket.on("roomData", data => setOnlineCount(data.users.length));
+    socket.on("roomData", (data) => setOnlineCount(data.users.length));
   }, [socket]);
 
   useEffect(() => {
     if (!sendMessage) return emptyFunction;
 
-    socket.emit("sendMessage", message, error => {
+    socket.emit("sendMessage", message, (error) => {
       if (error) setError(error);
       resetForm("message-field");
     });
@@ -132,6 +132,7 @@ const ChatSideBar = ({ openChat }) => {
       header="Comments"
       inverted={true}
       width="very wide"
+      className="chat-sidebar"
     >
       <RoomSelector
         handleSelectRoom={handleSelectRoom}
@@ -151,8 +152,8 @@ const ChatSideBar = ({ openChat }) => {
             <Form id="chat-form">
               <TextArea
                 id="message-field"
-                onChange={e => handleChange(e)}
-                onKeyDown={e =>
+                onChange={(e) => handleChange(e)}
+                onKeyDown={(e) =>
                   e.key === "Enter" ? handleSendChatMessage(e) : null
                 }
                 placeholder="Message"

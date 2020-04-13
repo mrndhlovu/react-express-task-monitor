@@ -27,19 +27,16 @@ import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const StyledContainer = styled.div`
   height: 100vh;
-`;
-
-const Container = styled.div`
   background-color: ${(props) => props.bgColor};
 `;
 
 const ContentDiv = styled.div`
   display: grid;
+  height: ${(props) => (props.mobile ? "92vh" : "92vh")};
   left: 0;
   position: absolute;
-  top: ${(props) => (props.mobile ? "17%" : "7%")};
+  top: ${(props) => (props.mobile ? "7%" : "7%")};
   width: 100%;
-  height: ${(props) => (props.mobile ? "82vh" : "92vh")};
 `;
 
 const BoardContainer = ({ match, history }) => {
@@ -55,6 +52,7 @@ const BoardContainer = ({ match, history }) => {
   const [unStarred, setUnStarred] = useState(false);
   const [updatedField, setUpdatedField] = useState(null);
   const [user, setUser] = useState(auth.user);
+  const [showMobileMenu, setShowMobileMenu] = useState();
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
@@ -181,7 +179,7 @@ const BoardContainer = ({ match, history }) => {
         .catch((error) => history.push("/"));
 
     fetchData();
-  }, [board, updatedField, id, history]);
+  }, [board, updatedField, id, history, getBoardColor]);
 
   return !board ? (
     <UILoadingSpinner />
@@ -201,18 +199,18 @@ const BoardContainer = ({ match, history }) => {
         loading,
         saveBoardChanges,
         showSideBar,
+        showMobileMenu,
+        setShowMobileMenu,
       }}
     >
-      <Container bgColor={board.styleProperties.color}>
-        <StyledContainer>
-          <BoardHeader />
-          <ContentDiv mobile={device.mobile}>
-            <Sidebar.Pushable>
-              <Board />
-            </Sidebar.Pushable>
-          </ContentDiv>
-        </StyledContainer>
-      </Container>
+      <StyledContainer bgColor={board.styleProperties.color}>
+        {!device.mobile && <BoardHeader />}
+        <ContentDiv mobile={device.mobile}>
+          <Sidebar.Pushable>
+            <Board />
+          </Sidebar.Pushable>
+        </ContentDiv>
+      </StyledContainer>
     </BoardContext.Provider>
   );
 };

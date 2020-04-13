@@ -63,7 +63,7 @@ const List = ({
     marginRight: "8px",
     position: "relative",
     whiteSpace: "nowrap",
-    height: mobile ? "79vh" : "92vh"
+    height: mobile ? "91vh" : "92vh",
   };
 
   const wrappedList = (
@@ -120,7 +120,7 @@ const target = {
     props.updateDropTargetId(list.position);
 
     return {};
-  }
+  },
 };
 
 const source = {
@@ -136,17 +136,17 @@ const source = {
     props.updateDragOption();
 
     return props.handleDrop();
-  }
+  },
 };
 
 const collect = (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging()
+  isDragging: monitor.isDragging(),
 });
 
 const sortCollect = (connect, monitor) => ({
   connectDropTarget: connect.dropTarget(),
-  isOverCurrent: monitor.isOver({ shallow: true })
+  isOverCurrent: monitor.isOver({ shallow: true }),
 });
 
 export default flow(

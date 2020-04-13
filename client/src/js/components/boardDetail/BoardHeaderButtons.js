@@ -1,17 +1,19 @@
 import React, { useContext, Fragment, useState } from "react";
 import styled from "styled-components";
+import { isEmail } from "validator";
 
-import NavButton from "../sharedComponents/NavButton";
+import { ACCESS_LEVELS } from "../../constants/constants";
 import { BoardContext } from "../../utils/contextUtils";
 import { Dropdown, Button, Icon, List, Input } from "semantic-ui-react";
-import { ACCESS_LEVELS } from "../../constants/constants";
 import MessageAlert from "../sharedComponents/MessageAlert";
-import { isEmail } from "validator";
+import NavButton from "../sharedComponents/NavButton";
 
 const StyledDiv = styled.div`
   justify-self: ${(props) => (props.mobile ? "center" : "end")};
   padding: 2px;
   display: flex;
+  flex-direction: ${(props) => props.mobile && "column"};
+  align-items: ${(props) => props.mobile && "flex-start"};
 `;
 
 const StyledButton = styled(Button)`
@@ -39,9 +41,9 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
     changeBoardAccessLevel,
     handleBoardStarClick,
     handleInviteClick,
+    handleShowMenuClick,
     inviteDone,
     loading,
-    handleShowMenuClick,
   } = useContext(BoardContext);
   const { accessLevel } = board;
   let permission;
@@ -107,9 +109,9 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
       <StyledButton size="tiny">
         <Dropdown
           text="Invite"
-          icon={false}
+          icon={<Icon name="mail" />}
           closeOnChange={false}
-          direction="left"
+          direction={mobile ? "right" : "left"}
         >
           <StyledDropdownMenu>
             {error ? (
@@ -142,7 +144,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
         </Dropdown>
       </StyledButton>
       <NavButton
-        iconName={!mobile ? "ellipsis horizontal" : ""}
+        iconName={!mobile ? "ellipsis horizontal" : false}
         size="tiny"
         buttonText="Show Menu"
         redirect={() => handleShowMenuClick()}

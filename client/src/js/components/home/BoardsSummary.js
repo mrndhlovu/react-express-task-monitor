@@ -8,11 +8,12 @@ import BoardCategory from "./BoardCategory";
 const StyledContainer = styled.div`
   justify-self: start;
   width: 100%;
-  padding: ${props => (props.mobile ? "10px 10px 10px 0" : "10px")}};
+  padding: ${(props) => (props.mobile ? "10px 10px 10px 0" : "10px")}};
 `;
 
 const BoardsSummary = () => {
   const { makeNewBoard, device, auth } = useContext(MainContext);
+  console.log("auth: ", auth);
   const { boards } = useContext(HomepageContext);
   const hasBoards = boards.length > 0;
   const hasStarredBoards = auth && auth.user.starred.length !== 0;
@@ -25,13 +26,13 @@ const BoardsSummary = () => {
     setCreateBoard(!createBoard);
   };
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setNewBoardName(e.target.value);
   };
 
   const handleCreateClick = () => {
     const body = {
-      title: newBoardName
+      title: newBoardName,
     };
 
     makeNewBoard(body);

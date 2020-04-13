@@ -70,3 +70,10 @@ ui.form,
 .image-container::-webkit-scrollbar {
   display: none;
 }
+
+.board-menu-sidebar {
+  width: 280px !important;
+}
+.chat-sidebar {
+  width: 350px !important;
+}
