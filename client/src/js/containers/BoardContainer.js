@@ -77,9 +77,20 @@ const BoardContainer = ({ match, history }) => {
   };
 
   const handleDeleteBoard = useCallback(() => {
+    if (user.starred.includes(id))
+      user.starred.splice(user.starred.indexOf(id), 1);
     requestBoardDelete(id);
-    history.push("/");
-  }, [history, id]);
+    const updateUser = async () => {
+      await requestUserUpdate({ starred: user.starred }).then((res) => {
+        try {
+          history.push("/");
+        } catch (error) {
+          alert(error.message);
+        }
+      });
+    };
+    updateUser();
+  }, [history, id, user]);
 
   const handleColorPick = (color) => {
     const newBoard = {
@@ -92,7 +103,7 @@ const BoardContainer = ({ match, history }) => {
 
   const handleBoardStarClick = () => {
     if (user.starred.includes(id)) {
-      user.starred.splice(user.starred.indexOf(id));
+      user.starred.splice(user.starred.indexOf(id), 1);
       setUnStarred(true);
     } else {
       user.starred.push(id);
@@ -114,14 +125,13 @@ const BoardContainer = ({ match, history }) => {
           alert(error.message);
         }
       });
+      return () => {
+        setStarred(false);
+        setUnStarred(false);
+      };
     };
 
     getUserInfo();
-
-    return () => {
-      setStarred(false);
-      setUnStarred(false);
-    };
   }, [starred, user, unStarred]);
 
   useEffect(() => {
