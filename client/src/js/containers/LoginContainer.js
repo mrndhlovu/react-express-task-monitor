@@ -12,14 +12,15 @@ const LoginContainer = ({ history, location }) => {
   const { authenticated } = useContext(MainContext).auth;
   const [credentials, setCredentials] = useState({
     password: null,
-    email: null
+    email: null,
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const onHandleChange = (e, field) => {
+  const onHandleChange = (e) => {
     const value = e.target.value;
-    credentials[field] = value;
+    const type = e.target.type;
+    credentials[type === "text" ? "password" : type] = value;
     setCredentials(credentials);
   };
 
@@ -37,7 +38,7 @@ const LoginContainer = ({ history, location }) => {
     setLoading(true);
     const login = async () => {
       await requestAuthLogin(credentials)
-        .then(res => {
+        .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
 
           setLoading(false);
@@ -46,7 +47,7 @@ const LoginContainer = ({ history, location }) => {
             window.location.reload();
           }
         })
-        .catch(error => setError(error.response.data));
+        .catch((error) => setError(error.response.data));
     };
     login();
     setLoading(false);
