@@ -16,13 +16,14 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         placeholder="Email"
         type="email"
         id="emailFormField"
-        onChange={e => onHandleChange(e, "email")}
+        onChange={(e) => onHandleChange(e)}
       />
       <Form.Input
         fluid
         placeholder="Enter full name"
         id="fnameFormField"
-        onChange={e => onHandleChange(e, "fname")}
+        type="text"
+        onChange={(e) => onHandleChange(e)}
       />
 
       <Form.Input
@@ -31,7 +32,7 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         placeholder="Create password"
         type="password"
         id="passwordFormField"
-        onChange={e => onHandleChange(e, "password")}
+        onChange={(e) => onHandleChange(e)}
       />
     </AuthFormWrapper>
   );

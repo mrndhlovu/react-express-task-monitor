@@ -34,18 +34,18 @@ const StyledFormColumn = styled(Grid.Column)`
 `;
 
 const Subheader = styled.div`
-  color: ${props => (props.footer ? "#1154cd" : "#5e6c83")};
-  cursor: ${props => props.footer && "pointer"};
+  color: ${(props) => (props.footer ? "#1154cd" : "#5e6c83")};
+  cursor: ${(props) => props.footer && "pointer"};
   font-family: "Poppins";
   font-size: 14px;
-  font-weight: ${props => !props.footer && 700};
+  font-weight: ${(props) => !props.footer && 700};
   padding: 10px;
   text-align: center;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
 
   &:hover {
-    text-decoration: ${props => props.signup && "underline"};
+    text-decoration: ${(props) => props.signup && "underline"};
   }
 `;
 
@@ -75,7 +75,8 @@ const AuthFormWrapper = ({
   handleClick,
   error,
   clearError,
-  loading
+  loading,
+  disabled,
 }) => {
   const signup = history.location.pathname === "/signup";
   const suggestion = signup
@@ -105,6 +106,7 @@ const AuthFormWrapper = ({
             <StyledButton
               fluid
               loading={loading}
+              disabled={disabled}
               size="large"
               content={buttonText}
               onClick={() => handleClick()}

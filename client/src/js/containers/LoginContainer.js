@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import { MainContext } from "../utils/contextUtils";
 import { requestAuthLogin } from "../apis/apiRequests";
-import { resetForm } from "../utils/appUtils";
+import { resetForm, emptyFunction } from "../utils/appUtils";
 import LoginPage from "../components/auth/LoginPage";
 
 const LoginContainer = ({ history, location }) => {
@@ -12,15 +12,19 @@ const LoginContainer = ({ history, location }) => {
   const { authenticated } = useContext(MainContext).auth;
   const [credentials, setCredentials] = useState({
     password: null,
-    email: null
+    email: null,
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const onHandleChange = (e, field) => {
+  const onHandleChange = (e) => {
     const value = e.target.value;
-    credentials[field] = value;
-    setCredentials(credentials);
+    const type = e.target.type;
+
+    setCredentials({
+      ...credentials,
+      [type === "text" ? "password" : type]: value,
+    });
   };
 
   const clearError = () => {
@@ -33,11 +37,11 @@ const LoginContainer = ({ history, location }) => {
   }, [history, authenticated, from]);
 
   useEffect(() => {
-    if (!loading) return;
+    if (!loading) return emptyFunction();
     setLoading(true);
     const login = async () => {
       await requestAuthLogin(credentials)
-        .then(res => {
+        .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
 
           setLoading(false);
@@ -46,7 +50,7 @@ const LoginContainer = ({ history, location }) => {
             window.location.reload();
           }
         })
-        .catch(error => setError(error.response.data));
+        .catch((error) => setError(error.response.data));
     };
     login();
     setLoading(false);
@@ -60,6 +64,7 @@ const LoginContainer = ({ history, location }) => {
       history={history}
       loading={loading}
       onHandleChange={onHandleChange}
+      disabled={!credentials.password || !credentials.email}
     />
   );
 };
