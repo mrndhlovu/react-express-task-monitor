@@ -14,13 +14,17 @@ const SignupContainer = ({ history }) => {
   const [credentials, setCredentials] = useState({
     fname: null,
     password: null,
-    email: null
+    email: null,
   });
 
-  const onHandleChange = (e, field) => {
+  const onHandleChange = (e) => {
     const value = e.target.value;
-    credentials[field] = value;
-    setCredentials(credentials);
+    const type = e.target.type;
+
+    setCredentials({
+      ...credentials,
+      [type === "text" ? "fname" : type]: value,
+    });
   };
 
   const clearError = () => {
@@ -33,14 +37,14 @@ const SignupContainer = ({ history }) => {
     const handleRedirect = async () => {
       setLoading(true);
       await requestAuthSignup(credentials)
-        .then(res => {
+        .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
           if (res.status === 201) {
             history.push("/");
             window.location.reload();
           }
         })
-        .catch(error => setError(error.response.data));
+        .catch((error) => setError(error.response.data));
     };
     handleRedirect();
     setLoading(false);
@@ -54,6 +58,9 @@ const SignupContainer = ({ history }) => {
       error={error}
       clearError={clearError}
       loading={loading}
+      disabled={
+        !credentials.email || !credentials.fname || !credentials.password
+      }
     />
   );
 };

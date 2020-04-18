@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Form, Icon } from "semantic-ui-react";
 import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
 
-const LoginPage = ({ onHandleChange, handleLoginClick, ...otherProps }) => {
+const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
   const [type, setType] = useState("password");
   const env = process.env.NODE_ENV;
 
@@ -12,7 +12,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...otherProps }) => {
       buttonText="Log In"
       headText="Log in to continue to : Trello Clone"
       handleClick={handleLoginClick}
-      {...otherProps}
+      {...rest}
     >
       <Form.Input
         fluid

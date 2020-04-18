@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import { MainContext } from "../utils/contextUtils";
 import { requestAuthLogin } from "../apis/apiRequests";
-import { resetForm } from "../utils/appUtils";
+import { resetForm, emptyFunction } from "../utils/appUtils";
 import LoginPage from "../components/auth/LoginPage";
 
 const LoginContainer = ({ history, location }) => {
@@ -20,8 +20,11 @@ const LoginContainer = ({ history, location }) => {
   const onHandleChange = (e) => {
     const value = e.target.value;
     const type = e.target.type;
-    credentials[type === "text" ? "password" : type] = value;
-    setCredentials(credentials);
+
+    setCredentials({
+      ...credentials,
+      [type === "text" ? "password" : type]: value,
+    });
   };
 
   const clearError = () => {
@@ -34,7 +37,7 @@ const LoginContainer = ({ history, location }) => {
   }, [history, authenticated, from]);
 
   useEffect(() => {
-    if (!loading) return;
+    if (!loading) return emptyFunction();
     setLoading(true);
     const login = async () => {
       await requestAuthLogin(credentials)
@@ -61,6 +64,7 @@ const LoginContainer = ({ history, location }) => {
       history={history}
       loading={loading}
       onHandleChange={onHandleChange}
+      disabled={!credentials.password || !credentials.email}
     />
   );
 };
