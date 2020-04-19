@@ -6,51 +6,58 @@ import {
   AUTH_SUCCESS,
   SIGNUP_FAIL,
   SIGNUP_SUCCESS,
-  REQUEST_SIGNUP
+  REQUEST_SIGNUP,
 } from "./ActionTypes";
 import {
   userInfo,
   requestAuthSignup,
-  requestAuthLogin
+  requestAuthLogin,
 } from "../apis/apiRequests";
 import { makeRequest, requestSuccess, requestFail } from "./index";
 
-export const getUserInfo = () => {
-  return dispatch => {
+export const getCurrentUser = () => {
+  return (dispatch) => {
     dispatch(makeRequest(INITIALIZE_AUTH));
     userInfo().then(
-      response => dispatch(requestSuccess(AUTH_SUCCESS, response.data)),
-      error => dispatch(requestFail(AUTH_FAIL, error.message))
+      (response) => {
+        dispatch(requestSuccess(AUTH_SUCCESS, response.data));
+        localStorage.setItem("user", JSON.stringify(response.data.data));
+      },
+      (error) => dispatch(requestFail(AUTH_FAIL, error.message))
     );
   };
 };
 
-export const requestSignup = data => {
-  return dispatch => {
+// export const authState = () => {
+//   return (dispatch) => {};
+// };
+
+export const requestSignup = (data) => {
+  return (dispatch) => {
     dispatch(makeRequest(REQUEST_SIGNUP));
     requestAuthSignup(data).then(
-      response => {
+      (response) => {
         dispatch(requestSuccess(SIGNUP_SUCCESS, response.data));
       },
-      error => dispatch(requestFail(SIGNUP_FAIL, error.message))
+      (error) => dispatch(requestFail(SIGNUP_FAIL, error.message))
     );
   };
 };
 
-export const requestLogin = data => {
-  return dispatch => {
+export const requestLogin = (data) => {
+  return (dispatch) => {
     dispatch(makeRequest(REQUEST_SIGNUP));
     requestAuthLogin(data).then(
-      response => {
+      (response) => {
         dispatch(requestSuccess(SIGNUP_SUCCESS, response.data));
       },
-      error => dispatch(requestFail(SIGNUP_FAIL, error.message))
+      (error) => dispatch(requestFail(SIGNUP_FAIL, error.message))
     );
   };
 };
 
 export const authState = () => {
-  return dispatch => {
-    dispatch(getUserInfo());
+  return (dispatch) => {
+    dispatch(getCurrentUser());
   };
 };

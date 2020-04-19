@@ -11,7 +11,7 @@ const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    ${props => (props.mobile ? "100%" : props.tablet ? "100%" : "25%")}
+    ${(props) => (props.mobile ? "100%" : props.tablet ? "100%" : "25%")}
   );
   vertical-align: top;
 `;
@@ -21,7 +21,7 @@ const Span = styled(Header)`
   font-weight: 400;
 
   &:after {
-    content: '${props => props.text}'
+    content: '${(props) => props.text}'
   }
 
 `;
@@ -32,10 +32,10 @@ const BoardCategory = ({
   isDefault,
   isLast,
   showNewBoardModal,
-  category
+  category,
 }) => {
-  const { tablet, loading, device, auth } = useContext(MainContext);
-  const { boards } = useContext(HomepageContext);
+  const { tablet, loading, device } = useContext(MainContext);
+  const { boards, auth } = useContext(HomepageContext);
   const { user } = auth;
 
   return (
@@ -46,7 +46,7 @@ const BoardCategory = ({
       <Category mobile={device.mobile} tablet={tablet} isLast={isLast}>
         {!loading &&
           boards.map(
-            board =>
+            (board) =>
               ((user.starred.includes(board._id) && category === "starred") ||
                 (user.viewedRecent.includes(board._id) &&
                   category === "recent") ||

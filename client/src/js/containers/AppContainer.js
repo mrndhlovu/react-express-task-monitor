@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { getAuth } from "../selectors/authSelectors";
-import { getUserInfo } from "../actions/AuthActions";
+import { getCurrentUser } from "../actions/AuthActions";
 import MainContainer from "./MainContainer";
 
 class AppContainer extends Component {
@@ -11,20 +10,12 @@ class AppContainer extends Component {
     const { pathname } = this.props.location;
     const authPage = pathname === "/login" || pathname === "/signup";
 
-    !authPage && this.props.getUserInfo();
+    !authPage && this.props.getCurrentUser();
   }
 
   render() {
-    return (
-      <MainContainer auth={this.props.auth}>
-        {this.props.children}
-      </MainContainer>
-    );
+    return <MainContainer>{this.props.children}</MainContainer>;
   }
 }
 
-const mapStateToProps = (state) => ({ auth: getAuth(state) });
-
-export default connect(mapStateToProps, { getUserInfo })(
-  withRouter(AppContainer)
-);
+export default connect(null, { getCurrentUser })(withRouter(AppContainer));

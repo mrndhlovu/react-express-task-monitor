@@ -8,14 +8,14 @@ import { useFetch } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
-const HomePageContainer = ({ history }) => {
-  const { auth } = useContext(MainContext);
+const HomePageContainer = ({ history, auth }) => {
   const [data, loading] = useFetch(history);
 
   const [boards, setBoards] = useState([]);
   const [user, setUser] = useState(null);
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
+  const { getNavData } = useContext(MainContext);
 
   const handleBoardStarClick = (id, starClicked) => {
     if (starClicked) {
@@ -31,12 +31,13 @@ const HomePageContainer = ({ history }) => {
 
   useEffect(() => {
     setUser(auth.user);
-  }, [auth]);
+    auth.authenticated && getNavData(auth.data.data);
+  }, [auth, getNavData]);
 
   useEffect(() => {
     if (!starred && !unStarred) return emptyFunction();
 
-    const upUserInfo = async () => {
+    const updateUser = async () => {
       await requestUserUpdate({ starred: user.starred }).then((res) => {
         try {
         } catch (error) {
@@ -45,7 +46,7 @@ const HomePageContainer = ({ history }) => {
       });
     };
 
-    upUserInfo();
+    updateUser();
 
     return () => {
       setStarred(false);
@@ -60,7 +61,18 @@ const HomePageContainer = ({ history }) => {
   }, [data]);
 
   return data && boards && !loading ? (
-    <HomepageContext.Provider value={{ boards, loading, handleBoardStarClick }}>
+    <HomepageContext.Provider
+      value={{
+        boards,
+        loading,
+        handleBoardStarClick,
+        auth: {
+          authenticated: auth.authenticated,
+          user: auth.data.data,
+          isLoading: auth.isLoading,
+        },
+      }}
+    >
       <HomePage />
     </HomepageContext.Provider>
   ) : (

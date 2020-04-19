@@ -1,6 +1,6 @@
 "use es6";
 
-import React, { useContext } from "react";
+import React from "react";
 import { Route, Switch } from "react-router-dom";
 
 import HomePageContainer from "./containers/HomePageContainer";
@@ -9,24 +9,15 @@ import SignupContainer from "./containers/SignupContainer";
 import LoginContainer from "./containers/LoginContainer";
 import ErrorPage from "./components/ErrorPage";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import { MainContext } from "./utils/contextUtils";
 
-export default function Routes() {
-  const { auth } = useContext(MainContext);
+const Routes = () => {
   return (
     <Switch>
-      <ProtectedRoute
-        auth={auth}
-        key="/"
-        exact
-        path="/"
-        component={HomePageContainer}
-      />
+      <ProtectedRoute key="/" exact path="/" component={HomePageContainer} />
       <ProtectedRoute
         key="boardDetail"
         path="/boards/id/:id"
         component={BoardContainer}
-        auth={auth}
       />
 
       <Route
@@ -40,4 +31,6 @@ export default function Routes() {
       <Route path="*" component={ErrorPage} />
     </Switch>
   );
-}
+};
+
+export default Routes;

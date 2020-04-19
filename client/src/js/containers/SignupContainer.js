@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
-import { MainContext } from "../utils/contextUtils";
 import { requestAuthSignup } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
 import SignupPage from "../components/auth/SignupPage";
 
 const SignupContainer = ({ history }) => {
-  const { authenticated } = useContext(MainContext).auth;
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -48,7 +46,7 @@ const SignupContainer = ({ history }) => {
     };
     handleRedirect();
     setLoading(false);
-  }, [history, authenticated, loading, credentials]);
+  }, [history, loading, credentials]);
 
   return (
     <SignupPage

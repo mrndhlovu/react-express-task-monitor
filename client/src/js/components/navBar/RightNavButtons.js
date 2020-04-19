@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 
-import { MainContext } from "../../utils/contextUtils";
 import NavButton from "../sharedComponents/NavButton";
 import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 
@@ -12,13 +11,11 @@ const StyledDiv = styled.div`
   margin-left: auto;
 `;
 
-const RightNavButtons = () => {
-  const { auth } = useContext(MainContext);
-
+const RightNavButtons = ({ user }) => {
   return (
     <StyledDiv>
       <NavButton iconName="bell" />
-      {auth.user && <NavUserAvatar auth={auth} />}
+      <NavUserAvatar userName={user.fname} />
     </StyledDiv>
   );
 };

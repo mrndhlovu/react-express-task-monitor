@@ -22,7 +22,7 @@ const NavWrapper = styled.nav`
   width: 100%;
 `;
 
-const NavHeader = ({ history, color = "transparent", setVisible }) => {
+const NavHeader = ({ history, color = "transparent", setVisible, user }) => {
   const { device, isHomePage, setShowMobileMenu } = useContext(MainContext);
 
   return (
@@ -31,7 +31,7 @@ const NavHeader = ({ history, color = "transparent", setVisible }) => {
         <>
           <LeftNavButtons />
           <Logo history={history} mobile={device.mobile} />
-          <RightNavButtons history={history} />
+          <RightNavButtons history={history} user={user} />
         </>
       ) : (
         <MobileNavBar

@@ -39,9 +39,10 @@ const ContentDiv = styled.div`
   width: 100%;
 `;
 
-const BoardContainer = ({ match, history }) => {
+const BoardContainer = ({ match, history, auth }) => {
+  console.log("auth: ", auth);
   const { id } = match.params;
-  const { device, auth, getBoardColor } = useContext(MainContext);
+  const { device, getNavData } = useContext(MainContext);
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
@@ -51,7 +52,7 @@ const BoardContainer = ({ match, history }) => {
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
   const [updatedField, setUpdatedField] = useState(null);
-  const [user, setUser] = useState(auth.user);
+  const [user, setUser] = useState(null);
   const [showMobileMenu, setShowMobileMenu] = useState();
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
@@ -112,13 +113,15 @@ const BoardContainer = ({ match, history }) => {
   };
 
   useEffect(() => {
-    setUser(auth.user);
+    if (auth.authenticated) {
+      setUser(auth.data.data);
+    }
   }, [auth]);
 
   useEffect(() => {
     if (!starred && !unStarred) return emptyFunction();
 
-    const getUserInfo = async () => {
+    const updateUser = async () => {
       await requestUserUpdate({ starred: user.starred }).then((res) => {
         try {
         } catch (error) {
@@ -131,7 +134,7 @@ const BoardContainer = ({ match, history }) => {
       };
     };
 
-    getUserInfo();
+    updateUser();
   }, [starred, user, unStarred]);
 
   useEffect(() => {
@@ -160,7 +163,7 @@ const BoardContainer = ({ match, history }) => {
     const serverUpdate = async () => {
       const { fieldId, activity, newId, callback } = updatedField;
 
-      const { fname } = auth.user;
+      const { fname } = auth.data.data;
       const userAction = getActivity(fname, activity);
       activity &&
         board.activities.push({ activity: userAction, createdAt: Date.now() });
@@ -169,27 +172,28 @@ const BoardContainer = ({ match, history }) => {
         activities: board.activities,
       };
 
-      await requestBoardUpdate(newId ? newId : id, update).then(() => {
+      await requestBoardUpdate(newId ? newId : id, update).then((res) => {
+        getNavData(null, res.data.styleProperties.color);
         if (callback) callback();
       });
     };
 
     serverUpdate();
     setUpdatedField(null);
-  }, [id, updatedField, board, auth]);
+  }, [id, updatedField, board, auth, getNavData]);
 
   useEffect(() => {
     if (board) return emptyFunction();
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then((res) => {
-          getBoardColor(res.data.styleProperties.color);
+          getNavData(auth.data.data, res.data.styleProperties.color);
           return setBoard(res.data);
         })
         .catch((error) => history.push("/"));
 
-    fetchData();
-  }, [board, updatedField, id, history, getBoardColor]);
+    auth.authenticated && fetchData();
+  }, [board, updatedField, id, history, getNavData, auth]);
 
   return !board ? (
     <UILoadingSpinner />
@@ -197,6 +201,7 @@ const BoardContainer = ({ match, history }) => {
     <BoardContext.Provider
       value={{
         board,
+        auth,
         changeBoardAccessLevel,
         handleBoardStarClick,
         handleBoardUpdate,
@@ -214,7 +219,7 @@ const BoardContainer = ({ match, history }) => {
       }}
     >
       <StyledContainer bgColor={board.styleProperties.color}>
-        {!device.mobile && <BoardHeader />}
+        {!device.mobile && <BoardHeader user={user} />}
         <ContentDiv mobile={device.mobile}>
           <Sidebar.Pushable>
             <Board />
