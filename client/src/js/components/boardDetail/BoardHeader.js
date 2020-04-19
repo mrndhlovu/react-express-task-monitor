@@ -23,9 +23,10 @@ const TitleWrapper = styled.div`
   padding: 10px;
 `;
 
-const BoardHeader = () => {
+const BoardHeader = ({ user }) => {
   const { board, handleShowMenuClick } = useContext(BoardContext);
-  const { device, auth } = useContext(MainContext);
+
+  const { device } = useContext(MainContext);
   const { mobile } = device;
 
   return (
@@ -33,11 +34,13 @@ const BoardHeader = () => {
       <TitleWrapper mobile={mobile}>
         <EditableHeader type="boardTitle" title={board.title} />
       </TitleWrapper>
-      <BoardHeaderButtons
-        mobile={mobile}
-        isStarred={auth.user.starred.includes(board._id)}
-        handleShowMenuClick={handleShowMenuClick}
-      />
+      {user && (
+        <BoardHeaderButtons
+          mobile={mobile}
+          isStarred={user.starred.includes(board._id)}
+          handleShowMenuClick={handleShowMenuClick}
+        />
+      )}
     </HeaderContainer>
   );
 };

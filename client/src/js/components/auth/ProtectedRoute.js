@@ -1,7 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import { connect } from "react-redux";
 
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import { getAuth } from "../../selectors/authSelectors";
 
 const ProtectedRoute = ({ component: Component, auth, location, ...rest }) => {
   const data = localStorage.getItem("user");
@@ -12,7 +14,9 @@ const ProtectedRoute = ({ component: Component, auth, location, ...rest }) => {
       {...rest}
       render={(props) => {
         if (!auth.authenticated && !AUTH_ID) {
-          return (
+          return auth.isLoading ? (
+            <UILoadingSpinner />
+          ) : (
             <Redirect
               to={{
                 pathname: "/login",
@@ -20,12 +24,13 @@ const ProtectedRoute = ({ component: Component, auth, location, ...rest }) => {
               }}
             />
           );
-        } else if (auth.authenticated)
+        } else
           return <Component key={location.pathname} auth={auth} {...props} />;
-        return <UILoadingSpinner />;
       }}
     />
   );
 };
-
-export default ProtectedRoute;
+const mapStateToProps = (state) => ({
+  auth: getAuth(state),
+});
+export default connect(mapStateToProps)(ProtectedRoute);

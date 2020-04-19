@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
@@ -18,8 +18,7 @@ const Container = styled.div`
   width: 100vw;
 `;
 
-const MainContainer = ({ children, history, auth }) => {
-  const { authenticated, isLoading, data } = auth;
+const MainContainer = ({ children, history }) => {
   const isHomePage = history.location.pathname === "/";
   const [visible, setVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState();
@@ -29,6 +28,7 @@ const MainContainer = ({ children, history, auth }) => {
   const [search, setSearch] = useState(false);
   const [update, setUpdate] = useState(null);
   const [color, setColor] = useState(null);
+  const [auth, setAuth] = useState(null);
 
   const { device, dimensions } = useDimensions();
 
@@ -40,7 +40,13 @@ const MainContainer = ({ children, history, auth }) => {
 
   const getNavigationBoards = (data) => setUpdate(data);
 
-  const getBoardColor = (boardColor) => setColor(boardColor);
+  const getNavData = useMemo(
+    () => (auth, color) => {
+      auth && setAuth(auth);
+      color && setColor(color);
+    },
+    []
+  );
 
   useEffect(() => {
     if (!board) return emptyFunction();
@@ -62,11 +68,10 @@ const MainContainer = ({ children, history, auth }) => {
   return (
     <MainContext.Provider
       value={{
-        auth: { authenticated, user: data.data, loading: isLoading },
+        auth,
         boards,
         device,
         dimensions,
-        getBoardColor,
         getNavigationBoards,
         handleSearchClick,
         history,
@@ -74,26 +79,27 @@ const MainContainer = ({ children, history, auth }) => {
         search,
         isHomePage,
         showMobileMenu,
+        getNavData,
         setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
       }}
     >
       <Container>
         <Sidebar.Pushable>
           <>
-            {authenticated && (
+            {auth && (
               <>
                 <NavHeader
                   color={isHomePage ? DEFAULT_NAV_COLOR : color}
                   setVisible={() => setVisible(!visible)}
+                  user={auth}
                 />
                 <MobileSideMenu
                   visible={visible}
                   setVisible={() => setVisible(!visible)}
-                  auth={{ authenticated, user: data.data, loading: isLoading }}
+                  user={auth}
                 />
               </>
             )}
-
             {children}
             {search && <SearchPage />}
           </>

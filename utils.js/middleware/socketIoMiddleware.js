@@ -2,16 +2,16 @@ const socketIo = require("socket.io");
 const log = require("../console-alert");
 const {
   addUser,
-  getUser,
+  getCurrentUser,
   getUsersInRoom,
-  removeUser
+  removeUser,
 } = require("../chatRooms");
 
-socketConfig = server => {
+socketConfig = (server) => {
   const io = socketIo(server);
 
   const boardIo = io.of("chat");
-  boardIo.on("connect", socket => {
+  boardIo.on("connect", (socket) => {
     const { name, room = "main" } = socket.handshake.query;
     console.log("socket: ", socket.id);
 
@@ -24,24 +24,24 @@ socketConfig = server => {
       socket.emit("message", {
         user: user.name,
         text: `You are connected, to ${room} room.`,
-        time: Date.now()
+        time: Date.now(),
       });
 
       socket.broadcast.to(user.room).emit("message", {
         user: user.name,
-        text: `Joined the room.`
+        text: `Joined the room.`,
       });
 
       socket.join(user.room);
 
       boardIo.to(user.room).emit("roomData", {
         room: user.room,
-        users: getUsersInRoom(user.room)
+        users: getUsersInRoom(user.room),
       });
     });
 
     socket.on("sendMessage", (message, callback) => {
-      const user = getUser(socket.id);
+      const user = getCurrentUser(socket.id);
       console.log("user: ", { ...user });
 
       if (!user) return callback("User not found");
@@ -50,7 +50,7 @@ socketConfig = server => {
         user: user.name,
         text: message,
         time: Date.now(),
-        room: user.room
+        room: user.room,
       };
       boardIo.to(user.room).emit("message", newMessage);
 
@@ -63,13 +63,13 @@ socketConfig = server => {
         const newMessage = {
           user: user.name,
           text: `Has left the room!.`,
-          time: Date.now()
+          time: Date.now(),
         };
         boardIo.to(user.room).emit("message", newMessage);
 
         boardIo.to(user.room).emit("roomData", {
           room: user.room,
-          users: getUsersInRoom(user.room)
+          users: getUsersInRoom(user.room),
         });
 
         log.warning(`${user.name}, has left!!`);

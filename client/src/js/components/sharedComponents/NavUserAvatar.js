@@ -5,7 +5,7 @@ import { getUserInitials } from "../../utils/appUtils";
 import { requestAuthLogout } from "../../apis/apiRequests";
 import UserAvatar from "../sharedComponents/UserAvatar";
 
-const NavUserAvatar = ({ auth }) => {
+const NavUserAvatar = ({ userName }) => {
   const handleLogOut = async () => {
     await requestAuthLogout().then((res) => {
       localStorage.removeItem("user");
@@ -13,9 +13,7 @@ const NavUserAvatar = ({ auth }) => {
     });
   };
 
-  const trigger = (
-    <UserAvatar userInitials={getUserInitials(auth.user.fname)} />
-  );
+  const trigger = <UserAvatar userInitials={getUserInitials(userName)} />;
 
   return (
     <Dropdown trigger={trigger} pointing="top right" icon={null}>

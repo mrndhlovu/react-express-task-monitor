@@ -25,7 +25,7 @@ const Span = styled.span`
   padding: 10px 0;
 `;
 
-const MobileSideMenu = ({ visible, setVisible, auth }) => {
+const MobileSideMenu = ({ visible, setVisible, user }) => {
   return (
     <Sidebar
       as={Menu}
@@ -37,11 +37,11 @@ const MobileSideMenu = ({ visible, setVisible, auth }) => {
     >
       <Container>
         <AvatarWrapper>
-          <NavUserAvatar auth={auth} />
+          <NavUserAvatar userName={user.fname} />
           <Span>
-            {auth.user.fname}
+            {user.fname}
             <br />
-            <small> {auth.user.email}</small>
+            <small> {user.email}</small>
           </Span>
         </AvatarWrapper>
         <HomeSideMenu />
