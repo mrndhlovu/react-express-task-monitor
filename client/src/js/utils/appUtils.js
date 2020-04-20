@@ -122,7 +122,7 @@ export const getFormattedDate = (date, format, calendar) =>
 export const checkStringEquality = (mainString, comparison) =>
   mainString.localeCompare(comparison) === 0;
 
-export const findArrayItem = (array, target, itemId) =>
+export const findArrayItem = (array, itemId, target = "position") =>
   array.filter((item) => item[target] === itemId);
 
 export const updatedPosition = (data) =>

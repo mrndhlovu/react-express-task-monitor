@@ -65,11 +65,11 @@ const source = {
 
 const target = {
   hover(props, monitor) {
-    const { card } = props;
+    const { card, sourceId } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
 
-    return props.updateDropTargetId(card.position);
+    return props.updateDropTargetId(sourceId, card.position);
   },
 };
 
