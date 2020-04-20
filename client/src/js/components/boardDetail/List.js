@@ -70,14 +70,14 @@ const List = ({
     <div style={styles}>
       <ListSegment>
         <ListHeader
+          board={board}
           className="ui"
-          title={title}
-          showListActions={showListActions}
-          position={position}
           getSourceList={getSourceList}
           handleBoardUpdate={handleBoardUpdate}
-          board={board}
           mobile={mobile}
+          position={position}
+          showListActions={showListActions}
+          title={title}
         />
 
         <CardsContainer className="card-list">

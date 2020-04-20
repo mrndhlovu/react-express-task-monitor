@@ -56,7 +56,7 @@ const AddCoverImage = ({ ...props }) => {
         icon={
           <Icon
             name={!searchResult ? "search" : "close"}
-            link={searchResult}
+            link={searchResult || false}
             onClick={() =>
               searchResult ? handleClearSearch(null) : emptyFunction()
             }
