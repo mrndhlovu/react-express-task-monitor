@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const StyledButton = styled(Button)`
@@ -20,17 +20,17 @@ const MobileNavBar = ({
   setShowMobileMenu,
 }) => {
   return (
-    <UIWrapper display={display} padding="7px 10">
+    <UIWrapper display={display} padding="2px 0">
       <StyledButton
         onClick={() => (isHomePage ? setVisible() : history.push("/"))}
-        icon={isHomePage ? "bars" : "arrow left"}
+        icon={<Icon name={isHomePage ? "bars" : "arrow left"} size="large" />}
       />
 
       {!isHomePage && (
         <StyledButton
           floated="right"
           size="tiny"
-          icon="ellipsis horizontal"
+          icon={<Icon name="ellipsis vertical" size="large" />}
           onClick={() => setShowMobileMenu()}
         />
       )}

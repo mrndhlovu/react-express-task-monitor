@@ -18,7 +18,7 @@ const NavButton = ({
   iconName,
   id,
   redirect,
-  float
+  float,
 }) => {
   const { mobile } = useContext(MainContext).device;
 

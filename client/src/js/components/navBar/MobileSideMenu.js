@@ -15,12 +15,12 @@ const AvatarWrapper = styled.div`
 
 const Container = styled.div`
   position: relative;
-  width: 70vw;
+  width: 80vw;
   height: 100vh;
 `;
 
 const Span = styled.span`
-  font-size: 15px;
+  font-size: 20px;
   text-align: left;
   padding: 10px 0;
 `;

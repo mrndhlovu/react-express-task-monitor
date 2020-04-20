@@ -7,12 +7,12 @@ import { BoardContext } from "../../utils/contextUtils";
 import { Dropdown, Button, Icon, List, Input } from "semantic-ui-react";
 import MessageAlert from "../sharedComponents/MessageAlert";
 import NavButton from "../sharedComponents/NavButton";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const StyledDiv = styled.div`
   justify-self: ${(props) => (props.mobile ? "center" : "end")};
-  padding: 2px;
   display: flex;
-  flex-direction: ${(props) => props.mobile && "column"};
+  flex-direction: ${(props) => props.mobile && "row"};
   align-items: ${(props) => props.mobile && "flex-start"};
 `;
 
@@ -20,19 +20,16 @@ const StyledButton = styled(Button)`
   background-color: #ffffff3d !important;
 `;
 
-const Description = styled.div`
-  display: grid;
-  justify-items: start;
-  align-items: center;
-  padding: 10px 15px;
-`;
-
-const StyledTextArea = styled(Input)`
-  min-width: 200px;
-`;
-
 const StyledDropdownMenu = styled(Dropdown.Menu)`
-  width: 200px !important;
+  min-width: 180px !important;
+`;
+
+const StyledInput = styled(Input)`
+  min-width: 185px !important;
+`;
+
+const StyledDescription = styled(List.Description)`
+  font-size: 9px;
 `;
 
 export default function BoardHeaderButtons({ mobile, isStarred }) {
@@ -68,7 +65,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
   return (
     <StyledDiv mobile={mobile}>
       <StyledButton size="tiny">
-        <Icon name={permission.icon} />
+        {!mobile && <Icon name={permission.icon} />}
         <Dropdown icon={false} text={permission.option}>
           <StyledDropdownMenu>
             {ACCESS_LEVELS.map((key) => (
@@ -93,9 +90,9 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
                   }
                 />
 
-                <Description>
-                  <List.Description>{key.description}</List.Description>
-                </Description>
+                <UIContainer>
+                  <StyledDescription>{key.description}</StyledDescription>
+                </UIContainer>
               </Fragment>
             ))}
           </StyledDropdownMenu>
@@ -105,13 +102,15 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
         iconName="star outline"
         buttonColor={isStarred ? "yellow" : "grey"}
         redirect={() => handleBoardStarClick()}
+        buttonText="Star"
+        forceText={true}
       />
       <StyledButton size="tiny">
         <Dropdown
           text="Invite"
-          icon={<Icon name="mail" />}
+          icon={false}
           closeOnChange={false}
-          direction={mobile ? "right" : "left"}
+          direction="left"
         >
           <StyledDropdownMenu>
             {error ? (
@@ -127,19 +126,18 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
             )}
 
             <Dropdown.Divider />
-            <Description>
-              <StyledTextArea
-                id="invite-input"
-                onChange={(e) => handleChange(e)}
-                onClick={(e) => e.stopPropagation()}
-                onKeyDown={(e) => (e.key === "Enter" ? validateEmail() : null)}
-                placeholder={
-                  inviteDone ? "Done" : "Add invite email and press Enter"
-                }
-                icon={inviteDone && <Icon name="check" color="green" />}
-                loading={loading}
-              />
-            </Description>
+
+            <StyledInput
+              id="invite-input"
+              onChange={(e) => handleChange(e)}
+              onClick={(e) => e.stopPropagation()}
+              onKeyDown={(e) => (e.key === "Enter" ? validateEmail() : null)}
+              placeholder={
+                inviteDone ? "Invite Sent" : "Add invite email and press Enter"
+              }
+              icon={inviteDone && <Icon name="check" color="green" />}
+              loading={loading}
+            />
           </StyledDropdownMenu>
         </Dropdown>
       </StyledButton>

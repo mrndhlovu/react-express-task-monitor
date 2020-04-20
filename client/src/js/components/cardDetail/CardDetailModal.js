@@ -59,8 +59,8 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     activeCard,
     handleUploadAttachment,
   } = useContext(BoardListsContext);
-  const { saveBoardChanges } = useContext(BoardContext);
-  const { auth, device } = useContext(MainContext);
+  const { saveBoardChanges, auth } = useContext(BoardContext);
+  const { device } = useContext(MainContext);
   const { id } = match.params;
 
   const [activeCover, setActiveCardCover] = useState(null);
@@ -341,7 +341,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                     id={id}
                     listPosition={listPosition}
                     saveCardChanges={saveCardChanges}
-                    user={auth.user.fname}
+                    user={auth.data.data.fname}
                   />
                 </LeftSideContent>
               </ModalContent>
