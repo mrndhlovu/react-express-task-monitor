@@ -5,7 +5,7 @@ import { withRouter } from "react-router-dom";
 import {
   BoardContext,
   BoardListsContext,
-  MainContext
+  MainContext,
 } from "../../utils/contextUtils";
 import CardDetailModal from "../cardDetail/CardDetailModal";
 import CreateItemForm from "../sharedComponents/CreateItemForm";
@@ -47,34 +47,37 @@ const BoardLists = ({ history }) => {
   const [sourceTitle, setSourceTitle] = useState("");
   const [activity, setActivity] = useState(null);
 
-  function handleAddList(event) {
-    setNewListName(event.target.value);
-  }
+  const handleAddList = (event) => setNewListName(event.target.value);
+  const handleOnChange = (event) => setNewCardName(event.target.value);
+  const updateHoverIndex = (index) => setHoverIndex(index);
+  const updateSourceId = (id) => setSourceId(id);
+  const updateDragOption = () => setDraggingList(!draggingList);
+  const getSourceList = (id) => lists.filter((list) => list.position === id);
 
-  function handleCreateList() {
+  const handleCreateList = () => {
     const newList = {
       title: newListName,
       cards: [],
-      position: lists.length + 1
+      position: lists.length + 1,
     };
 
     lists.push(newList);
 
     updateBoard(board, "newList");
     setShowInputField(!showInputField);
-  }
+  };
 
-  function handleAddCardName(listId) {
+  const handleAddCardName = (listId) => {
     setShowAddCardInput(true);
     setActiveList(listId);
-  }
+  };
 
-  function getFilteredBoard(filterId) {
+  const getFilteredBoard = (filterId) => {
     return {
       ...board,
-      lists: [...lists.filter(list => list.position !== filterId)]
+      lists: [...lists.filter((list) => list.position !== filterId)],
     };
-  }
+  };
 
   const updateBoard = (data, action) => {
     setUpdate(data.lists);
@@ -82,37 +85,33 @@ const BoardLists = ({ history }) => {
     setActivity(null);
   };
 
-  function handleOnChange(event) {
-    setNewCardName(event.target.value);
-  }
-
-  function handleMoveCardToNewList() {
+  const handleMoveCardToNewList = () => {
     const newCards = [];
     let newList;
     let updatedSourceList;
 
-    const dropTargetLists = lists.filter(list => list.position !== sourceId);
+    const dropTargetLists = lists.filter((list) => list.position !== sourceId);
     const sourceList = getSourceList(sourceId).shift();
 
     const draggingCard = sourceList.cards.find(
-      card => card.position === draggingCardId
+      (card) => card.position === draggingCardId
     );
 
     sourceList.cards
-      .filter(card => card.position !== draggingCardId)
+      .filter((card) => card.position !== draggingCardId)
       .forEach((obj, index) => newCards.push({ ...obj, position: index + 1 }));
 
     updatedSourceList = {
       ...sourceList,
-      cards: newCards
+      cards: newCards,
     };
 
     dropTargetLists.find(
-      list =>
+      (list) =>
         list.position === dropTargetId &&
         list.cards.push({
           ...draggingCard,
-          position: list.cards.length + 1
+          position: list.cards.length + 1,
         })
     );
 
@@ -122,20 +121,16 @@ const BoardLists = ({ history }) => {
 
     setUpdate(newList);
     setActivity("movedCard");
-  }
+  };
 
-  function updateHoverIndex(index) {
-    setHoverIndex(index);
-  }
-
-  function moveCardToNewPosition() {
+  const moveCardToNewPosition = () => {
     const sourceList = getSourceList(sourceId).shift();
 
-    const newList = lists.filter(list => list.position !== sourceId);
+    const newList = lists.filter((list) => list.position !== sourceId);
 
     let adjustedCardPositions = [];
 
-    sourceList.cards.filter(card => {
+    sourceList.cards.filter((card) => {
       const newCard = {
         ...card,
         position:
@@ -143,7 +138,7 @@ const BoardLists = ({ history }) => {
             ? hoverIndex
             : card.position === hoverIndex
             ? draggingCardId
-            : card.position
+            : card.position,
       };
       return adjustedCardPositions.push(newCard);
     });
@@ -157,45 +152,37 @@ const BoardLists = ({ history }) => {
 
     setUpdate(newList);
     setDraggingCardId(draggingCardId);
-  }
+  };
 
-  function updateDropTargetId(id) {
+  const updateDropTargetId = (id) => {
     setDropTargetColumnId(id);
     updateHoverIndex(id);
     if (dropTargetId === sourceId) setReorderCards(true);
     else setReorderCards(false);
-  }
+  };
 
-  function updateSourceId(id) {
-    setSourceId(id);
-  }
-
-  function handleStartDrag(id, cardId) {
+  const handleStartDrag = (id, cardId) => {
     setDraggingCardId(cardId);
     setDragging(true);
     updateSourceId(id);
     updateDropTargetId(id);
-  }
+  };
 
-  function updateDragOption() {
-    setDraggingList(!draggingList);
-  }
-
-  function reOrderList() {
+  const reOrderList = () => {
     let updatedList = [];
 
     const dropTargetList = lists
-      .filter(list => list.position === dropTargetId)
-      .map(obj => ({ ...obj, position: sourceId }))
+      .filter((list) => list.position === dropTargetId)
+      .map((obj) => ({ ...obj, position: sourceId }))
       .shift();
 
     const draggingList = lists
-      .filter(list => list.position === sourceId)
-      .map(obj => ({ ...obj, position: dropTargetId }))
+      .filter((list) => list.position === sourceId)
+      .map((obj) => ({ ...obj, position: dropTargetId }))
       .shift();
 
     let newList = lists.filter(
-      list => list.position !== sourceId && list.position !== dropTargetId
+      (list) => list.position !== sourceId && list.position !== dropTargetId
     );
 
     updatedList.push(draggingList, dropTargetList, ...newList);
@@ -203,7 +190,7 @@ const BoardLists = ({ history }) => {
     updatedList.sort((a, b) => a.position - b.position);
 
     setUpdate(updatedList);
-  }
+  };
 
   const handleCardClick = (card, sourceId, listTitle) => {
     const { pathname } = history.location;
@@ -221,7 +208,7 @@ const BoardLists = ({ history }) => {
   const handleDrop = () => {
     const updatedList = {
       ...board,
-      lists: update
+      lists: update,
     };
     updateBoard(updatedList);
 
@@ -230,8 +217,6 @@ const BoardLists = ({ history }) => {
     setSourceId(undefined);
     setReorderCards(false);
   };
-
-  const getSourceList = id => lists.filter(list => list.position === id);
 
   const context = {
     activeCard,
@@ -255,7 +240,7 @@ const BoardLists = ({ history }) => {
     sourceTitle,
     updateBoard,
     updateHoverIndex,
-    mobile
+    mobile,
   };
 
   return (
