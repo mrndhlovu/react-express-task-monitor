@@ -11,7 +11,7 @@ const ColorsWrapper = styled.div`
 `;
 
 const Color = styled.div`
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   border-radius: 8px;
   height: 96px;
   margin-bottom: 8px;
@@ -26,17 +26,18 @@ const ColorCard = styled.div`
 const BackGroundColors = ({
   showColorPicker,
   handleChangeColorClick,
-  handleColorPick
+  handleColorPick,
 }) => {
   return (
     <SideBarWrapper
       open={showColorPicker}
       handleClose={handleChangeColorClick}
       header="Change board color"
+      className="board-menu-sidebar"
     >
       <Divider hidden />
       <ColorsWrapper>
-        {bgColors.map(color => (
+        {bgColors.map((color) => (
           <ColorCard key={color}>
             <Color color={color} onClick={() => handleColorPick(color)} />
           </ColorCard>

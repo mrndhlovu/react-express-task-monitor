@@ -5,19 +5,13 @@ import { BoardContext, MainContext } from "../../utils/contextUtils";
 import { Menu, Divider, Button } from "semantic-ui-react";
 import Activities from "../cardDetail/Activities";
 import ActivitiesHeader from "../cardDetail/ActivitiesHeader";
-import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import BoardHeaderButtons from "./BoardHeaderButtons";
 import DropdownButton from "../sharedComponents/DropdownButton";
+import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const Wrapper = styled.div`
   width: 800px;
-`;
-
-const SideBarFooter = styled.div`
-  position: absolute;
-  bottom: 8px;
-  width: 90%;
 `;
 
 const BoardMenu = ({
@@ -25,8 +19,8 @@ const BoardMenu = ({
   handleDeleteBoard,
   showSideBar,
 }) => {
-  const { board, handleShowMenuClick } = useContext(BoardContext);
-  const { auth, device, setShowMobileMenu } = useContext(MainContext);
+  const { board, handleShowMenuClick, auth } = useContext(BoardContext);
+  const { device, setShowMobileMenu } = useContext(MainContext);
   const [activities, setActivities] = useState(false);
 
   return (
@@ -42,7 +36,7 @@ const BoardMenu = ({
         {device.mobile && (
           <BoardHeaderButtons
             mobile={device.mobile}
-            isStarred={auth.user.starred.includes(board._id)}
+            isStarred={auth.data.data.starred.includes(board._id)}
           />
         )}
 
@@ -55,19 +49,7 @@ const BoardMenu = ({
         </Menu.Item>
 
         <Divider />
-        <ActivitiesHeader
-          handleShowDetails={() => setActivities(!activities)}
-        />
-
-        {activities && (
-          <>
-            <Divider />
-            <Activities board={board} user={auth.user.fname} />
-          </>
-        )}
-        <SideBarFooter>
-          <Divider />
-
+        <div>
           <DropdownButton
             upward={true}
             icon="trash alternate"
@@ -85,7 +67,18 @@ const BoardMenu = ({
               />
             </UIWrapper>
           </DropdownButton>
-        </SideBarFooter>
+        </div>
+        <Divider />
+        <ActivitiesHeader
+          handleShowDetails={() => setActivities(!activities)}
+        />
+
+        {activities && (
+          <>
+            <Divider />
+            <Activities board={board} user={auth.data.data.fname} />
+          </>
+        )}
       </SideBarWrapper>
     </Wrapper>
   );

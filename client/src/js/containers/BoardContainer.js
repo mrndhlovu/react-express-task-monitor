@@ -40,7 +40,6 @@ const ContentDiv = styled.div`
 `;
 
 const BoardContainer = ({ match, history, auth }) => {
-  console.log("auth: ", auth);
   const { id } = match.params;
   const { device, getNavData } = useContext(MainContext);
 
