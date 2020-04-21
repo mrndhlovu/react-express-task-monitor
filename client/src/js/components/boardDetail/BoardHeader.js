@@ -8,11 +8,12 @@ import EditableHeader from "../sharedComponents/EditableHeader";
 const HeaderContainer = styled.div`
   align-items: ${(props) => (props.mobile ? "center" : "start")};
   display: grid;
-  grid-template-columns: ${(props) => (props.mobile ? "1fr" : "1fr 1fr")};
+  grid-template-columns: ${(props) => (props.mobile ? "1fr" : "1fr 2fr")};
   left: 2px;
   max-height: 40px;
+  padding-right: 8px;
   position: absolute;
-  top: ${(props) => (props.mobile ? "6%" : "3.5%")};
+  top: 0;
   width: 100vw;
 `;
 

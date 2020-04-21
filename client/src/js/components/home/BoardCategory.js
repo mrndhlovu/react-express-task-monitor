@@ -11,17 +11,18 @@ const Category = styled.div`
   display: grid;
   grid-template-columns: repeat(
     auto-fill,
-    ${(props) => (props.mobile ? "100%" : props.tablet ? "100%" : "25%")}
+    ${(props) => (props.mobile ? "100%" : props.tablet ? "100%" : "21.5%")}
   );
   vertical-align: top;
 `;
 
 const Span = styled(Header)`
   font-size: 14px !important;
-  font-weight: 400;
-
+  font-weight: 700 !important;
+  padding: 0 5px !important;
   &:after {
-    content: '${(props) => props.text}'
+    content: '${(props) => props.text}';
+   
   }
 
 `;

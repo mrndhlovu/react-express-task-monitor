@@ -9,13 +9,15 @@ const CardHeader = styled.div`
   position: absolute;
   top: 6px;
   left: 10px;
+  
 
   &:after {
-    content: '${props => props.content}';
+    content: '${(props) => props.content}';
     font-weight: 700;
     letter-spacing: 0.9px;
     font-size: 16px;
     font-family: 'Noto Sans', sans-serif;
+    color: white;
   }
 `;
 
@@ -36,15 +38,14 @@ const StarWrapper = styled.div`
 const Wrapper = styled.div`
   display: flex;
   margin: 5px;
-  min-height: 90px;
-  width: 98%;
+  min-height: 80px;
 `;
 
 const Card = styled.div`
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   border-radius: 2px !important;
-  height: 100px !important;
-  width: 100%;
+  height: 90px !important;
+  min-width: 100%;
   opacity: 5;
   cursor: pointer;
   position: relative;
@@ -66,10 +67,10 @@ const Summary = ({ color, header, history, id, starred }) => {
       onMouseEnter={() => setShowStar(!showStar)}
       mobile={mobile}
     >
-      <Card color={color} mobile={mobile} onClick={e => handleCardClick(e)}>
+      <Card color={color} mobile={mobile} onClick={(e) => handleCardClick(e)}>
         <CardHeader content={header} />
 
-        <StarWrapper onClick={e => handleCardClick(e, "star")}>
+        <StarWrapper onClick={(e) => handleCardClick(e, "star")}>
           {(starred || showStar) && (
             <Icon
               id={id}

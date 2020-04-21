@@ -11,7 +11,7 @@ import RightNavButtons from "./RightNavButtons";
 const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-between;
-  padding: 3px 0;
+  padding: 4px;
   background-color: ${(props) => props.color};
   max-height: 40px;
   min-height: 40px;

@@ -8,8 +8,6 @@ import React, {
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { Sidebar } from "semantic-ui-react";
-
 import { BoardContext, MainContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
 import {
@@ -32,10 +30,10 @@ const StyledContainer = styled.div`
 
 const ContentDiv = styled.div`
   display: grid;
-  height: ${(props) => (props.mobile ? "92vh" : "92vh")};
+  height: ${(props) => (props.mobile ? "92vh" : "96vh")};
   left: 0;
-  position: absolute;
-  top: ${(props) => (props.mobile ? "6%" : "7%")};
+  position: relative;
+  top: 0%;
   width: 100%;
 `;
 
@@ -218,11 +216,10 @@ const BoardContainer = ({ match, history, auth }) => {
       }}
     >
       <StyledContainer bgColor={board.styleProperties.color}>
-        {!device.mobile && <BoardHeader user={user} />}
         <ContentDiv mobile={device.mobile}>
-          <Sidebar.Pushable>
-            <Board />
-          </Sidebar.Pushable>
+          {!device.mobile && <BoardHeader user={user} />}
+
+          <Board />
         </ContentDiv>
       </StyledContainer>
     </BoardContext.Provider>

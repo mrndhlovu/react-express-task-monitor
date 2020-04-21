@@ -13,7 +13,6 @@ const Wrapper = styled.div`
   display: flex;
   margin: 5px;
   min-height: 90px;
-  width: 98%;
   background-color: #dce3eb;
   border-radius: 2px;
   cursor: pointer;
