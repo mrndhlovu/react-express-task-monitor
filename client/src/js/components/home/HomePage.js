@@ -16,7 +16,7 @@ const StyledWrapper = styled.div`
   display: grid;
   grid-template-columns: ${(props) =>
     props.mobile || props.tablet ? "100%" : "20% 80%"};
-  margin: ${(props) => (props.mobile || props.tablet ? "8% 0" : "3%  11%")};
+  margin: ${(props) => (props.mobile || props.tablet ? "8% 0" : "1%  19%")};
 `;
 
 const HomePage = () => {

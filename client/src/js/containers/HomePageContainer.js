@@ -30,7 +30,7 @@ const HomePageContainer = ({ history, auth }) => {
   };
 
   useEffect(() => {
-    setUser(auth.user);
+    setUser(auth.data.data);
     auth.authenticated && getNavData(auth.data.data);
   }, [auth, getNavData]);
 

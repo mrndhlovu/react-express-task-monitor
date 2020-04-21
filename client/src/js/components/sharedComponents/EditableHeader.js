@@ -28,7 +28,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
   const [newTitle, setNewTitle] = useState(title);
   const [newBoard, setNewBoard] = useState(null);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setNewTitle(e.target.value);
   };
 
@@ -43,13 +43,13 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
         const cards = [];
         const updatedList = [];
 
-        sourceList.cards.map(card =>
+        sourceList.cards.map((card) =>
           cards.push(
             card.position === cardPosition ? { ...card, title: newTitle } : card
           )
         );
 
-        board.lists.map(list =>
+        board.lists.map((list) =>
           updatedList.push(
             list.position === listPosition ? { ...list, cards } : list
           )
@@ -60,7 +60,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
 
       case "listHeader":
         const newList = [];
-        board.lists.map(list =>
+        board.lists.map((list) =>
           newList.push(
             list.position === listPosition ? { ...list, title: newTitle } : list
           )
@@ -89,8 +89,8 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
         <EditHeader
           defaultValue={title}
           onBlur={() => handleUpdate()}
-          onChange={e => handleChange(e)}
-          onKeyDown={e => (e.key === "Enter" ? handleUpdate() : null)}
+          onChange={(e) => handleChange(e)}
+          onKeyDown={(e) => (e.key === "Enter" ? handleUpdate() : null)}
         />
       )}
     </StyledDiv>
