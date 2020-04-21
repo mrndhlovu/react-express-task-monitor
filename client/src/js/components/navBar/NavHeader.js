@@ -39,6 +39,7 @@ const NavHeader = ({ history, color = "transparent", setVisible, user }) => {
           isHomePage={isHomePage}
           history={history}
           setShowMobileMenu={setShowMobileMenu}
+          mobile={device.mobile}
         />
       )}
     </NavWrapper>

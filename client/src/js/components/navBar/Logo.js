@@ -6,7 +6,7 @@ import { Icon } from "semantic-ui-react";
 const StyledDiv = styled.div`
   cursor: pointer;
   flex: 1;
-  max-width: 62%;
+  max-width: ${(props) => (props.mobile ? "40%" : "62%")};
   padding-top: 3px;
   text-align: center;
 `;
@@ -28,13 +28,12 @@ const Header = styled.h2`
   }
 `;
 
-const Logo = ({ history, mobile }) =>
-  !mobile && (
-    <StyledDiv>
-      <Header mobile={mobile} onClick={() => history.push("/")}>
-        <Icon name="trello" />
-      </Header>
-    </StyledDiv>
-  );
+const Logo = ({ history, mobile }) => (
+  <StyledDiv mobile={mobile}>
+    <Header mobile={mobile} onClick={() => history.push("/")}>
+      <Icon name="trello" />
+    </Header>
+  </StyledDiv>
+);
 
 export default Logo;

@@ -4,11 +4,11 @@ import styled from "styled-components";
 import { MainContext, HomepageContext } from "../../utils/contextUtils";
 import NewBoardModal from "../sharedComponents/NewBoardModal";
 import BoardCategory from "./BoardCategory";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const StyledContainer = styled.div`
   justify-self: start;
   width: 100%;
-  padding: ${(props) => (props.mobile ? "10px 10px 10px 0" : "10px")}};
 `;
 
 const BoardsSummary = () => {
@@ -41,7 +41,7 @@ const BoardsSummary = () => {
 
   return (
     <StyledContainer mobile={device.mobile}>
-      <>
+      <UIContainer>
         {hasBoards && hasStarredBoards && (
           <BoardCategory
             icon="star"
@@ -64,7 +64,7 @@ const BoardsSummary = () => {
           isLast={true}
           category="default"
         />
-      </>
+      </UIContainer>
 
       <NewBoardModal
         showNewBoardModal={showNewBoardModal}
