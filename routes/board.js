@@ -1,7 +1,10 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
 const User = require("../models/User");
-const auth = require("../utils.js/middleware/authMiddleware");
+const auth = require("../utils.js/middleware/authMiddleware").authMiddleware;
+const lastViewed = require("../utils.js/middleware/boardMiddleWare")
+  .viewedRecentMiddleWare;
+
 const {
   sendInvitationEmail,
 } = require("../utils.js/middleware/emailMiddleware");
@@ -37,8 +40,9 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.get("/id/:boardId", auth, async (req, res) => {
+router.get("/id/:boardId", auth, lastViewed, async (req, res) => {
   const _id = req.params.boardId;
+
   let board;
   try {
     board = await Board.findOne({ _id, owner: req.user._id });
@@ -47,6 +51,7 @@ router.get("/id/:boardId", auth, async (req, res) => {
       board = await Board.findOne({ _id });
       board.validateBoardMember(req.user._id);
     }
+
     await board.populate("owner").execPopulate();
 
     res.send(board);
