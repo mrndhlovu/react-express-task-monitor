@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/User");
-const auth = require("../utils.js/middleware/authMiddleware");
+const auth = require("../utils.js/middleware/authMiddleware").authMiddleware;
 const { CLIENT_URL } = require("../utils.js/config.js");
 const { sendWelcomeEmail } = require("../utils.js/middleware/emailMiddleware");
 
@@ -13,7 +13,7 @@ router.post("/signup", async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
     res.cookie("access_token", token, {
       maxAge: 9999999,
-      httpOnly: true
+      httpOnly: true,
     });
     res.append("Set-Cookie", "access_token=" + token + ";");
 
@@ -32,7 +32,7 @@ router.post("/login", async (req, res) => {
     res.setHeader("Access-Control-Allow-Origin", CLIENT_URL);
     res.cookie("access_token", token, {
       maxAge: 9999999,
-      httpOnly: true
+      httpOnly: true,
     });
     res.append("Set-Cookie", "access_token=" + token + ";");
     res.send(user);
@@ -57,7 +57,7 @@ router.get("/users/me", auth, async (req, res) => {
 router.post("/logout", auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter(
-      token => token.token !== req.token
+      (token) => token.token !== req.token
     );
     await req.user.save();
     res.send();
@@ -88,13 +88,15 @@ router.delete("/delete", auth, async (req, res) => {
 router.patch("/update", auth, async (req, res) => {
   const updates = Object.keys(req.body);
   const allowedUpdates = ["fname", "email", "password", "starred", "idBoards"];
-  const isValidField = updates.every(update => allowedUpdates.includes(update));
+  const isValidField = updates.every((update) =>
+    allowedUpdates.includes(update)
+  );
 
   if (!isValidField)
     return res.status(400).send({ error: "Invalid update field" });
 
   try {
-    updates.forEach(update => {
+    updates.forEach((update) => {
       req.user[update] = req.body[update];
     });
 

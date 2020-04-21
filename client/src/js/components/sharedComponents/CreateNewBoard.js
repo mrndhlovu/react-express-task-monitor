@@ -12,7 +12,7 @@ const Card = styled.div`
 const Wrapper = styled.div`
   display: flex;
   margin: 5px;
-  min-height: 90px;
+  min-height: 100px;
   background-color: #dce3eb;
   border-radius: 2px;
   cursor: pointer;

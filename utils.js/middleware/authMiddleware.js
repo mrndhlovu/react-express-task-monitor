@@ -9,7 +9,7 @@ const authMiddleware = async (req, res, next) => {
     const decoded = jwt.verify(token, TOKEN_SIGNATURE);
     const user = await User.findOne({
       _id: decoded._id,
-      "tokens.token": token
+      "tokens.token": token,
     });
     if (!user) throw new Error();
 
@@ -21,4 +21,4 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+module.exports = { authMiddleware };

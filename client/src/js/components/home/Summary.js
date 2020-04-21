@@ -44,7 +44,7 @@ const Wrapper = styled.div`
 const Card = styled.div`
   background-color: ${(props) => props.color};
   border-radius: 2px !important;
-  height: 90px !important;
+  height: 100px !important;
   min-width: 100%;
   opacity: 5;
   cursor: pointer;

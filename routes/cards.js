@@ -3,7 +3,7 @@ const Board = require("../models/Board");
 const Card = require("../models/Card");
 const Comment = require("../models/Comment");
 const CheckListItem = require("../models/CheckListItem");
-const auth = require("../utils.js/middleware/authMiddleware");
+const auth = require("../utils.js/middleware/authMiddleware").authMiddleware;
 
 const updateBoardLists = (id, newLists) =>
   Board.findByIdAndUpdate(
