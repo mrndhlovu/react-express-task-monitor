@@ -21,10 +21,8 @@ const Header = styled.h2`
     font-family: "Shadows Into Light Two", cursive;
   }
   &:hover {
-    color: #5098c2;
+    color: #ffffff3d;
     transition-delay: 100ms;
-    transition-property: color;
-    transition-timing-function: ease-in-out;
   }
 `;
 
