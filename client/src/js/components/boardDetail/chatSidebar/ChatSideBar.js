@@ -4,6 +4,7 @@ import React, {
   useContext,
   useState,
   useCallback,
+  Fragment,
 } from "react";
 import { withRouter } from "react-router-dom";
 import socketIOClient from "socket.io-client";
@@ -147,7 +148,7 @@ const ChatSideBar = ({ openChat }) => {
         />
       )}
       {room && (
-        <>
+        <Fragment>
           <FormWrapper>
             <Form id="chat-form">
               <TextArea
@@ -176,7 +177,7 @@ const ChatSideBar = ({ openChat }) => {
               )}
             </BoardMessages>
           </InputWrapper>
-        </>
+        </Fragment>
       )}
     </SideBarWrapper>
   );

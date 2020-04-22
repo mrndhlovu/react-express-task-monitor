@@ -41,7 +41,7 @@ const DropdownItem = styled.li`
 const ListMenu = ({
   listPosition,
   handleShowCopyListClick,
-  handleShowMoveListClick
+  handleShowMoveListClick,
 }) => {
   const { handleBoardUpdate, board } = useContext(BoardContext);
   const sourceId = listPosition;
@@ -50,7 +50,7 @@ const ListMenu = ({
 
   const [newBoard, setNewBoard] = useState(null);
 
-  const handleMenuClick = key => {
+  const handleMenuClick = (key) => {
     let lists = [];
 
     switch (key) {
@@ -63,13 +63,13 @@ const ListMenu = ({
       case "menu-item-3":
         const sourceListCards = getSourceList(sourceId).shift().cards;
         board.lists.map(
-          list =>
+          (list) =>
             list.position !== sourceId &&
             list.cards.length > 0 &&
-            list.cards.map(card =>
+            list.cards.map((card) =>
               sourceListCards.push({
                 ...card,
-                position: sourceListCards.length + 1
+                position: sourceListCards.length + 1,
               })
             )
         );
@@ -77,12 +77,12 @@ const ListMenu = ({
         const updateBoard = {
           ...board,
           lists: [
-            ...board.lists.map(list =>
+            ...board.lists.map((list) =>
               list.position !== sourceId
                 ? { ...list, cards: [] }
                 : { ...list, cards: [...sourceListCards] }
-            )
-          ]
+            ),
+          ],
         };
 
         setNewBoard(updateBoard);
@@ -92,7 +92,9 @@ const ListMenu = ({
         setNewBoard({ ...board, lists });
         break;
       case "menu-item-5":
-        board.lists.map(list => list.position !== sourceId && lists.push(list));
+        board.lists.map(
+          (list) => list.position !== sourceId && lists.push(list)
+        );
         setNewBoard({ ...board, lists });
         break;
       default:
@@ -109,7 +111,7 @@ const ListMenu = ({
     <Wrapper>
       <Divider />
       <div>
-        {listMenuOptions.map(option => (
+        {listMenuOptions.map((option) => (
           <Fragment key={option.key}>
             <DropdownItem
               onClick={() => handleMenuClick(`menu-item-${option.key}`)}

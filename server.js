@@ -1,3 +1,4 @@
+require("@babel/polyfill");
 const { CLIENT_URL } = require("./utils.js/config");
 const { PORT } = require("./utils.js/config");
 const { routesConfig } = require("./utils.js/middleware/routesMiddleware");
@@ -14,18 +15,15 @@ const app = express();
 const server = http.createServer(app);
 
 socketConfig(server);
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
     origin: CLIENT_URL,
-    credentials: true
+    credentials: true,
   })
 );
 
-app.use(express.static(path.join(__dirname, "client/build")));
-
+app.use(express.static(path.join(__dirname, "client/dist/public")));
 routesConfig(app);
-
 server.listen(PORT, () => log.success(`Server running on port ${PORT}`));

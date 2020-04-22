@@ -1,6 +1,6 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
-
+import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "react-datepicker";
 
 import { Button, Divider } from "semantic-ui-react";
@@ -21,7 +21,7 @@ const PickDueDate = ({
   handleRemoveClick,
 }) => {
   return (
-    <>
+    <Fragment>
       <Container>
         <DatePicker
           className="ui fluid focus input"
@@ -50,7 +50,7 @@ const PickDueDate = ({
           onClick={() => handleRemoveClick()}
         />
       </ButtonWrapper>
-    </>
+    </Fragment>
   );
 };
 

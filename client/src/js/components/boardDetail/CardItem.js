@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, Fragment } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -93,7 +93,7 @@ const CardItem = ({
   }, [card, deleteCard, sourceListId, handleBoardUpdate, board, updateBoard]);
 
   return (
-    <>
+    <Fragment>
       <ContentWrapper
         onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
       >
@@ -145,7 +145,7 @@ const CardItem = ({
         handleBoardUpdate={handleBoardUpdate}
         hasDueDate={hasDueDate}
       />
-    </>
+    </Fragment>
   );
 };
 

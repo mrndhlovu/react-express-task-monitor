@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import "emoji-mart/css/emoji-mart.css";
 import { Picker, Emoji } from "emoji-mart";
 
 import DropdownButton from "../sharedComponents/DropdownButton";
@@ -24,7 +25,7 @@ const CommentLink = styled.a`
   }
 
   &:after{
-  content:'${props => props.content}';
+  content:'${(props) => props.content}';
   padding: 0 5px;
   text-decoration: underline;
   font-size: 10px
@@ -36,14 +37,14 @@ const EditCommentIcons = ({
   handleEditComment,
   handleDeleteComment,
   commentId,
-  emojis = []
+  emojis = [],
 }) => {
   const hasEmojis = emojis.length !== 0;
 
   return (
     <Container>
       {hasEmojis ? (
-        emojis.map(emoji => (
+        emojis.map((emoji) => (
           <EmojiWrapper key={emoji.id}>
             <Emoji
               emoji={{ id: emoji.id }}

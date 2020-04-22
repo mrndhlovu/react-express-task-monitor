@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import styled from "styled-components";
 
 import { emptyFunction, checkStringEquality } from "../../utils/appUtils";
@@ -171,7 +171,7 @@ const MoveCardDialog = ({
   }, [data, loading]);
 
   return (
-    <>
+    <Fragment>
       <UIContainer>
         <Header content="Select Destination" as="h4" />
       </UIContainer>
@@ -211,7 +211,7 @@ const MoveCardDialog = ({
         compact
         onClick={() => setMove(true)}
       />
-    </>
+    </Fragment>
   );
 };
 

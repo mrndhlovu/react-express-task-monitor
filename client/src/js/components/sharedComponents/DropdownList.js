@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
 import { checkStringEquality } from "../../utils/appUtils";
@@ -55,17 +55,17 @@ const DropdownList = ({
               >
                 <Span>
                   {isPositionDropdown ? (
-                    <>
+                    <Fragment>
                       {hasCards ? index + 1 : "1"}
                       {current === item._id && " (current)"}
-                    </>
+                    </Fragment>
                   ) : (
-                    <>
+                    <Fragment>
                       {item.title}{" "}
                       {((isListDropdown && current - 1 === index) ||
                         current === item._id) &&
                         " (current)"}
-                    </>
+                    </Fragment>
                   )}
                 </Span>
               </Dropdown.Item>

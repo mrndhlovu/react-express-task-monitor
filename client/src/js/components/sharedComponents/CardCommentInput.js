@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 
 import { Form, Button, TextArea } from "semantic-ui-react";
@@ -25,7 +25,7 @@ const CardCommentInput = ({ comment, saveComment, user }) => {
   const [newComment, setNewComment] = useState(null);
   const [focus, setFocus] = useState(false);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setNewComment(e.target.value);
   };
 
@@ -37,7 +37,7 @@ const CardCommentInput = ({ comment, saveComment, user }) => {
   };
 
   return (
-    <>
+    <Fragment>
       <Container>
         <AvatarContainer>
           <UserAvatar userInitials={getUserInitials(user)} />
@@ -51,7 +51,7 @@ const CardCommentInput = ({ comment, saveComment, user }) => {
                 placeholder={comment ? comment : "Write a comment"}
                 onFocus={() => setFocus(true)}
                 onBlur={() => !newComment && setFocus(false)}
-                onChange={e => handleChange(e)}
+                onChange={(e) => handleChange(e)}
               />
             </Form.Field>
           </Form>
@@ -67,7 +67,7 @@ const CardCommentInput = ({ comment, saveComment, user }) => {
           />
         </ButtonContainer>
       )}
-    </>
+    </Fragment>
   );
 };
 

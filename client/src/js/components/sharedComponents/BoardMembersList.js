@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
 import UserAvatar from "../sharedComponents/UserAvatar";
@@ -18,7 +18,7 @@ const Span = styled.span`
 
 const BoardMembersList = ({ boardMembers, handleClick }) => {
   return (
-    <>
+    <Fragment>
       {boardMembers.map((member) => (
         <BoardMember key={member.id} onClick={() => handleClick(member)}>
           <UserAvatar userInitials={getUserInitials(member.fname)} />
@@ -27,7 +27,7 @@ const BoardMembersList = ({ boardMembers, handleClick }) => {
           </Span>
         </BoardMember>
       ))}
-    </>
+    </Fragment>
   );
 };
 

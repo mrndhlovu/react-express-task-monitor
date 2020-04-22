@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
 import { Card, Button, Icon, TextArea } from "semantic-ui-react";
@@ -30,7 +30,7 @@ const CreateInput = ({
   width = "250px",
 }) => {
   return (
-    <>
+    <Fragment>
       <TextAreaWrapper width={width}>
         <StyledCardContent extra>
           <StyledInput
@@ -51,7 +51,7 @@ const CreateInput = ({
         />
         <Icon name="close" onClick={close} link />
       </div>
-    </>
+    </Fragment>
   );
 };
 

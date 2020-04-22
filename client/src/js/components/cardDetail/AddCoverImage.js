@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 import { Button, Header, Input, Icon } from "semantic-ui-react";
 
@@ -50,7 +50,7 @@ const AddCoverImage = ({ ...props }) => {
   }, [searchQuery, search]);
 
   return (
-    <>
+    <Fragment>
       {!searchResult && <Header content="Suggested searches" as="h4" />}
       <Input
         icon={
@@ -84,7 +84,7 @@ const AddCoverImage = ({ ...props }) => {
           ))}
       </UIWrapper>
       {searchResult && <SearchImageList data={searchResult} {...props} />}
-    </>
+    </Fragment>
   );
 };
 

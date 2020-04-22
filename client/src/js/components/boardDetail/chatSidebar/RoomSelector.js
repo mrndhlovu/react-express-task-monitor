@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
 import { Dropdown, Divider } from "semantic-ui-react";
@@ -14,33 +14,33 @@ const defaultRoom = [
     key: "Public",
     text: "Public",
     value: "public",
-    icon: "home"
+    icon: "home",
   },
   {
     key: "Current board",
     text: "Current board",
     value: "current-board",
-    icon: "green circle"
-  }
+    icon: "green circle",
+  },
 ];
 
 const RoomSelector = ({
   rooms = defaultRoom,
   handleSelectRoom,
-  onlineCount
+  onlineCount,
 }) => (
   <StyledDiv>
     <Divider
       horizontal
       inverted={true}
       content={
-        <>
+        <Fragment>
           {onlineCount === 0 ? (
             <span>{getFormattedDate(Date.now(), "LLL")}</span>
           ) : (
             <span> Online {onlineCount}</span>
           )}
-        </>
+        </Fragment>
       }
     />
     <Dropdown

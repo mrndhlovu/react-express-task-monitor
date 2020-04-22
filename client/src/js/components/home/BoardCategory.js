@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, Fragment } from "react";
 import styled from "styled-components";
 
 import { Header, Icon } from "semantic-ui-react";
@@ -40,7 +40,7 @@ const BoardCategory = ({
   const { user } = auth;
 
   return (
-    <>
+    <Fragment>
       <Span text={header}>
         <Icon name={`outline ${icon}`} />
       </Span>
@@ -63,7 +63,7 @@ const BoardCategory = ({
           )}
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
       </Category>
-    </>
+    </Fragment>
   );
 };
 

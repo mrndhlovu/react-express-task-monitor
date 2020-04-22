@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import styled from "styled-components";
 
 import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
@@ -46,7 +46,7 @@ const Comment = ({
   comment,
   getSourceList,
   listPosition,
-  saveCardChanges
+  saveCardChanges,
 }) => {
   const { creator, createdAt } = comment;
 
@@ -60,9 +60,9 @@ const Comment = ({
     setSelectedEmoji({ emoji, commentId, removeEmoji });
 
   const handleEditComment = () => setEditComment(!editComment);
-  const handleDeleteComment = commentId => setDeleteComment(commentId);
+  const handleDeleteComment = (commentId) => setDeleteComment(commentId);
   const handleAddClick = () => setUpdatedComment(true);
-  const handleChange = e => setNewComment(e.target.value);
+  const handleChange = (e) => setNewComment(e.target.value);
 
   useEffect(() => {
     const sourceList = getSourceList(listPosition).shift();
@@ -71,11 +71,11 @@ const Comment = ({
     if (updatedComment) {
       newCard = {
         ...activeCard,
-        comments: activeCard.comments.map(item =>
+        comments: activeCard.comments.map((item) =>
           item._id === comment._id
             ? { ...item, comment: newComment }
             : { ...item }
-        )
+        ),
       };
 
       setEditComment(false);
@@ -87,24 +87,24 @@ const Comment = ({
         ...activeCard,
         comments: hasMoreThanOneComment
           ? activeCard.comments.splice(activeCard.comments.indexOf(comment, 1))
-          : []
+          : [],
       };
     }
 
     if (selectedEmoji && !selectedEmoji.removeEmoji) {
       newCard = {
         ...activeCard,
-        comments: activeCard.comments.map(item =>
+        comments: activeCard.comments.map((item) =>
           item._id === selectedEmoji.commentId
             ? { ...item, emojis: [...item.emojis, selectedEmoji.emoji] }
             : { ...item }
-        )
+        ),
       };
     }
     if (selectedEmoji && selectedEmoji.removeEmoji) {
       newCard = {
         ...activeCard,
-        comments: activeCard.comments.map(item => {
+        comments: activeCard.comments.map((item) => {
           const removeIndex = item._id === selectedEmoji.commentId;
           const hasMoreThanOneEmoji = item.emojis.length > 1;
           return removeIndex
@@ -114,10 +114,10 @@ const Comment = ({
                   ? item.emojis.splice(
                       item.emojis.indexOf(selectedEmoji.emoji, 1)
                     )
-                  : []
+                  : [],
               }
             : { ...item };
-        })
+        }),
       };
     }
 
@@ -146,11 +146,11 @@ const Comment = ({
     deleteComment,
     updatedComment,
     comment,
-    newComment
+    newComment,
   ]);
 
   return (
-    <>
+    <Fragment>
       <Container>
         <UserAvatar userInitials={getUserInitials(creator)} />
         <StyledSmall>
@@ -182,7 +182,7 @@ const Comment = ({
           />
         </CommentWrapper>
       </StyledSegment>
-    </>
+    </Fragment>
   );
 };
 

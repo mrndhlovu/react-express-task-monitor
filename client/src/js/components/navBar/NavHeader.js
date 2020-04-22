@@ -1,4 +1,4 @@
-import React, { useContext, memo } from "react";
+import React, { useContext, memo, Fragment } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -28,11 +28,11 @@ const NavHeader = ({ history, color = "transparent", setVisible, user }) => {
   return (
     <NavWrapper color={color}>
       {!device.mobile ? (
-        <>
+        <Fragment>
           <LeftNavButtons />
           <Logo history={history} mobile={device.mobile} />
           <RightNavButtons history={history} user={user} />
-        </>
+        </Fragment>
       ) : (
         <MobileNavBar
           setVisible={setVisible}

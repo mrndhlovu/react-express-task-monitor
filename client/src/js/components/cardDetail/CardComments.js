@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 import { emptyFunction, resetForm } from "../../utils/appUtils";
 import { requestCreateComment } from "../../apis/apiRequests";
@@ -17,18 +17,18 @@ const CardComments = ({
 }) => {
   const [newComment, setNewComment] = useState(null);
 
-  const saveComment = comment => setNewComment(comment);
+  const saveComment = (comment) => setNewComment(comment);
 
   useEffect(() => {
     if (!newComment) return emptyFunction();
     const body = {
       comment: newComment,
       cardId: activeCard.position,
-      listId: listPosition
+      listId: listPosition,
     };
 
     const createComment = async () => {
-      await requestCreateComment(body, id).then(res => {
+      await requestCreateComment(body, id).then((res) => {
         setNewComment(null);
         try {
           saveCardChanges(res.data);
@@ -42,10 +42,10 @@ const CardComments = ({
   }, [newComment, id, listPosition, activeCard, saveCardChanges]);
 
   return (
-    <>
+    <Fragment>
       <CardCommentInput saveComment={saveComment} {...props} />
 
-      {activeCard.comments.map(comment => (
+      {activeCard.comments.map((comment) => (
         <Comment
           key={comment._id}
           comment={comment}
@@ -57,7 +57,7 @@ const CardComments = ({
           saveCardChanges={saveCardChanges}
         />
       ))}
-    </>
+    </Fragment>
   );
 };
 

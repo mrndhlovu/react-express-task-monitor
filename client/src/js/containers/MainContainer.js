@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, useMemo } from "react";
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  Fragment,
+} from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
@@ -85,9 +91,9 @@ const MainContainer = ({ children, history }) => {
     >
       <Container>
         <Sidebar.Pushable>
-          <>
+          <Fragment>
             {auth && (
-              <>
+              <Fragment>
                 <NavHeader
                   color={isHomePage ? DEFAULT_NAV_COLOR : color}
                   setVisible={() => setVisible(!visible)}
@@ -98,11 +104,11 @@ const MainContainer = ({ children, history }) => {
                   setVisible={() => setVisible(!visible)}
                   user={auth}
                 />
-              </>
+              </Fragment>
             )}
             {children}
             {search && <SearchPage />}
-          </>
+          </Fragment>
         </Sidebar.Pushable>
       </Container>
     </MainContext.Provider>

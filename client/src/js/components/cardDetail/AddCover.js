@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 
 import { Button, Divider } from "semantic-ui-react";
 
@@ -30,7 +30,7 @@ const AddCover = ({
       upward={upward}
     >
       {!hasCover && !addCover ? (
-        <>
+        <Fragment>
           <UIMessage fontSize="11px" margin="10px 10px">
             Seems you don't have card covers. Lets add one now!
           </UIMessage>
@@ -43,13 +43,13 @@ const AddCover = ({
               onClick={() => setAddCover(true)}
             />
           </UIWrapper>
-        </>
+        </Fragment>
       ) : (
         <UIWrapper>
           <AddCoverImage hasCover={hasCover} {...props} />
 
           {hasCover && (
-            <>
+            <Fragment>
               <Divider />
               <Button
                 content="Remove Cover"
@@ -57,7 +57,7 @@ const AddCover = ({
                 compact
                 onClick={() => handleRemoveCover()}
               />
-            </>
+            </Fragment>
           )}
         </UIWrapper>
       )}

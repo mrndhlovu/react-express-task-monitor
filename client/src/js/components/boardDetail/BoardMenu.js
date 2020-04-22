@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, Fragment } from "react";
 import styled from "styled-components";
 
 import { BoardContext, MainContext } from "../../utils/contextUtils";
@@ -74,10 +74,10 @@ const BoardMenu = ({
         />
 
         {activities && (
-          <>
+          <Fragment>
             <Divider />
             <Activities board={board} user={auth.data.data.fname} />
-          </>
+          </Fragment>
         )}
       </SideBarWrapper>
     </Wrapper>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 
 import { Header, Dropdown, Divider, Icon } from "semantic-ui-react";
@@ -66,13 +66,13 @@ const DropdownButton = ({
         onClick={(e) => !closeOnSelect && e.stopPropagation()}
       >
         {hasHeader && (
-          <>
+          <Fragment>
             <HeaderWrapper>
               <Header size="tiny" as={as} content={header} />
               <Icon link name="close" onClick={() => handleClose(callback)} />
             </HeaderWrapper>
             <Divider />
-          </>
+          </Fragment>
         )}
 
         {children}
