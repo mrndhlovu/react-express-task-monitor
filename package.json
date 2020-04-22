@@ -18,6 +18,11 @@
     "multer": "^1.4.2",
     "multer-s3": "^2.9.0",
     "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
     "socket.io": "^2.3.0",
     "validator": "^12.2.0"
   },
@@ -26,9 +31,31 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix client",
-    "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "heroku-postbuild": "cd client && yarn install && yarn run build"
+    "webpack:client": "webpack --config webpack.client.js --watch",
+    "webpack:server": "webpack --config webpack.server.js --watch",
+    "webpack:start": "nodemon --watch build --exec node build/bundle.js",
+    "dev": "npm-run-all --parallel webpack:*",
+    "heroku-postbuild": "yarn install && cd client && yarn install && cd .. && webpack --config webpack.client.js && webpack --config webpack.server.js"
   },
   "author": "Mduduzi Ndhlovu",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/polyfill": "^7.8.7",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.9.2",
+    "babel-loader": "^8.0.6",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.5.2",
+    "html-loader": "^1.1.0",
+    "html-webpack-plugin": "^4.2.0",
+    "style-loader": "^1.1.4",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2",
+    "webpack-node-externals": "^1.7.2"
+  }
 }
