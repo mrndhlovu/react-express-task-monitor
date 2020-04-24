@@ -1,20 +1,39 @@
-const { environment } = require("./utils.js/config");
-const webpackNodeExternals = require("webpack-node-externals");
+const { environment } = require("./server/utils/config");
+const path = require("path");
+
+const devMode = environment === "development";
 
 module.exports = {
-  target: "node",
-  mode: environment,
+  output: {
+    path: path.join(__dirname, "build"),
+    publicPath: "/",
+    filename: devMode ? "[name].js" : "[name].[hash].js",
+  },
+  target: "web",
+  devtool: "source-map",
+  mode: "development",
   module: {
     rules: [
       {
         test: /\.js$/,
-        loader: "babel-loader",
-        exclude: [/\/node_modules\//],
-        options: {
-          presets: ["@babel/preset-env", "@babel/preset-react"],
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
         },
+      },
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: { minimize: true },
+          },
+        ],
+      },
+      {
+        test: /\.jpg$/,
+        use: [{ loader: "url-loader" }],
       },
     ],
   },
-  externals: [webpackNodeExternals()],
 };
