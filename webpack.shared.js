@@ -1,13 +1,11 @@
 const { environment } = require("./server/utils/config");
 const path = require("path");
 
-const devMode = environment === "development";
-
 module.exports = {
   output: {
     path: path.join(__dirname, "build"),
     publicPath: "/",
-    filename: devMode ? "[name].js" : "[name].[hash].js",
+    filename: "[name].js",
   },
   target: "web",
   devtool: "source-map",
