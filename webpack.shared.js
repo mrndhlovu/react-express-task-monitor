@@ -11,7 +11,7 @@ module.exports = {
   },
   target: "web",
   devtool: "source-map",
-  mode: "development",
+  mode: environment,
   module: {
     rules: [
       {
