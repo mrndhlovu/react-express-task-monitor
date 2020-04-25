@@ -5,10 +5,9 @@ cache: yarn
 
 install:
   - yarn install
-  - cd client && yarn install
 
 script:
-  - yarn run build
+  - yarn run prod
 
 deploy:
   provider: pages
