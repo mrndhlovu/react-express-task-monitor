@@ -1,9 +1,10 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, lazy, Suspense } from "react";
 
 import { emptyFunction, resetForm } from "../../utils/appUtils";
 import { requestCreateComment } from "../../apis/apiRequests";
 import CardCommentInput from "../sharedComponents/CardCommentInput";
-import Comment from "./Comment";
+
+const Comment = lazy(() => import("./Comment"));
 
 const CardComments = ({
   handleBoardUpdate,
@@ -46,16 +47,18 @@ const CardComments = ({
       <CardCommentInput saveComment={saveComment} {...props} />
 
       {activeCard.comments.map((comment) => (
-        <Comment
-          key={comment._id}
-          comment={comment}
-          getSourceList={getSourceList}
-          listPosition={listPosition}
-          activeCard={activeCard}
-          handleBoardUpdate={handleBoardUpdate}
-          board={board}
-          saveCardChanges={saveCardChanges}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Comment
+            key={comment._id}
+            comment={comment}
+            getSourceList={getSourceList}
+            listPosition={listPosition}
+            activeCard={activeCard}
+            handleBoardUpdate={handleBoardUpdate}
+            board={board}
+            saveCardChanges={saveCardChanges}
+          />
+        </Suspense>
       ))}
     </Fragment>
   );

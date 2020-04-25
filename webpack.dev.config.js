@@ -1,5 +1,8 @@
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
+  .BundleAnalyzerPlugin;
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge");
+
 const shared = require("./webpack.shared");
 const webpack = require("webpack");
 
@@ -16,10 +19,6 @@ module.exports = merge(shared, {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
       },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        use: ["file-loader"],
-      },
     ],
   },
   plugins: [
@@ -27,8 +26,10 @@ module.exports = merge(shared, {
       template: "./client/html/template.html",
       filename: "./index.html",
       excludeChunks: ["server"],
+      favicon: "./client/html/favicon.ico",
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+    new BundleAnalyzerPlugin(),
   ],
 });

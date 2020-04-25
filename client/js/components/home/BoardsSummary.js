@@ -1,10 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 
 import { MainContext, HomepageContext } from "../../utils/contextUtils";
-import NewBoardModal from "../sharedComponents/NewBoardModal";
-import BoardCategory from "./BoardCategory";
+
 import UIContainer from "../sharedComponents/UIContainer";
+const BoardCategory = lazy(() => import("./BoardCategory"));
+const NewBoardModal = lazy(() => import("../sharedComponents/NewBoardModal"));
 
 const StyledContainer = styled.div`
   justify-self: start;
@@ -42,36 +43,39 @@ const BoardsSummary = () => {
   return (
     <StyledContainer mobile={device.mobile}>
       <UIContainer>
-        {hasBoards && hasStarredBoards && (
+        <Suspense fallback={<div>Loading...</div>}>
+          {hasBoards && hasStarredBoards && (
+            <BoardCategory
+              icon="star"
+              header="Starred Boards"
+              category="starred"
+            />
+          )}
+          {hasBoards && hasViewRecent && (
+            <BoardCategory
+              icon="clock"
+              header="Recently Viewed"
+              category="recent"
+            />
+          )}
           <BoardCategory
-            icon="star"
-            header="Starred Boards"
-            category="starred"
+            icon="user"
+            header="Personal Boards"
+            showNewBoardModal={showNewBoardModal}
+            isDefault={true}
+            isLast={true}
+            category="default"
           />
-        )}
-        {hasBoards && hasViewRecent && (
-          <BoardCategory
-            icon="clock"
-            header="Recently Viewed"
-            category="recent"
-          />
-        )}
-        <BoardCategory
-          icon="user"
-          header="Personal Boards"
-          showNewBoardModal={showNewBoardModal}
-          isDefault={true}
-          isLast={true}
-          category="default"
-        />
+        </Suspense>
       </UIContainer>
-
-      <NewBoardModal
-        showNewBoardModal={showNewBoardModal}
-        createBoard={createBoard}
-        handleChange={handleChange}
-        handleCreateClick={handleCreateClick}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <NewBoardModal
+          showNewBoardModal={showNewBoardModal}
+          createBoard={createBoard}
+          handleChange={handleChange}
+          handleCreateClick={handleCreateClick}
+        />
+      </Suspense>
     </StyledContainer>
   );
 };

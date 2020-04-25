@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -7,11 +7,13 @@ import {
   BoardListsContext,
   MainContext,
 } from "../../utils/contextUtils";
-import CardDetailModal from "../cardDetail/CardDetailModal";
+
 import CreateItemForm from "../sharedComponents/CreateItemForm";
 import ListGrid from "./ListGrid";
 import { parseSearchQuery, getQueryString } from "../../utils/urls";
 import { findArrayItem, updatedPosition } from "../../utils/appUtils";
+
+const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -236,11 +238,13 @@ const BoardLists = ({ history }) => {
         />
 
         {modalOpen && !hideCardDetail && (
-          <CardDetailModal
-            listPosition={sourceId}
-            history={history}
-            modalOpen={modalOpen}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <CardDetailModal
+              listPosition={sourceId}
+              history={history}
+              modalOpen={modalOpen}
+            />
+          </Suspense>
         )}
       </StyledListContainer>
     </BoardListsContext.Provider>

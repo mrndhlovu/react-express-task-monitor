@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 
 import DropdownButton from "../sharedComponents/DropdownButton";
-import PickDueDate from "../sharedComponents/PickDueDate";
+
+const PickDueDate = lazy(() => import("../sharedComponents/PickDueDate"));
 
 const AddCardDueDate = ({
   activeCard,
@@ -68,12 +69,14 @@ const AddCardDueDate = ({
       header="Change Due Date."
       color={color}
     >
-      <PickDueDate
-        startDate={startDate}
-        handleRemoveClick={handleRemoveClick}
-        handleAddClick={handleAddClick}
-        setStartDate={setStartDate}
-      />
+      <Suspense fallback={<div>Loading...</div>}>
+        <PickDueDate
+          startDate={startDate}
+          handleRemoveClick={handleRemoveClick}
+          handleAddClick={handleAddClick}
+          setStartDate={setStartDate}
+        />
+      </Suspense>
     </DropdownButton>
   );
 };

@@ -4,6 +4,8 @@ import React, {
   useEffect,
   memo,
   useCallback,
+  Suspense,
+  lazy,
 } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -25,10 +27,10 @@ import CardModalActivities from "./CardModalActivities";
 import CardModalDescription from "./CardModalDescription";
 import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
-import ModalImageCover from "./ModalImageCover";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
-import DueDate from "./DueDate";
+const DueDate = lazy(() => import("./DueDate"));
+const ModalImageCover = lazy(() => import("./ModalImageCover"));
 
 const ModalContent = styled(Modal.Content)``;
 
@@ -253,20 +255,21 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
         </ButtonWrapper>
       }
     >
-      <ModalImageCover
-        activeCard={card}
-        cardCover={activeCover}
-        handleCardClick={handleCardClick}
-        hasCover={hasCover}
-        id={id}
-        isLoading={isLoading}
-        listPosition={listPosition}
-        saveCardChanges={saveCardChanges}
-        saveBoardChanges={saveBoardChanges}
-        handleRemoveCover={handleRemoveCover}
-        handleMakeCover={handleMakeCover}
-      />
-
+      <Suspense fallback={<div>Loading...</div>}>
+        <ModalImageCover
+          activeCard={card}
+          cardCover={activeCover}
+          handleCardClick={handleCardClick}
+          hasCover={hasCover}
+          id={id}
+          isLoading={isLoading}
+          listPosition={listPosition}
+          saveCardChanges={saveCardChanges}
+          saveBoardChanges={saveBoardChanges}
+          handleRemoveCover={handleRemoveCover}
+          handleMakeCover={handleMakeCover}
+        />
+      </Suspense>
       <Container>
         <ModalHeader
           title={card.title}
@@ -281,16 +284,18 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
             <Grid.Column width={12}>
               <ModalContent image>
                 <LeftSideContent>
-                  {card.dueDate && card.dueDate.date && (
-                    <DueDate
-                      activeCard={card}
-                      handleBoardUpdate={handleBoardUpdate}
-                      getSourceList={getSourceList}
-                      listPosition={listPosition}
-                      board={board}
-                      saveCardChanges={saveCardChanges}
-                    />
-                  )}
+                  <Suspense fallback={<div>Loading...</div>}>
+                    {card.dueDate && card.dueDate.date && (
+                      <DueDate
+                        activeCard={card}
+                        handleBoardUpdate={handleBoardUpdate}
+                        getSourceList={getSourceList}
+                        listPosition={listPosition}
+                        board={board}
+                        saveCardChanges={saveCardChanges}
+                      />
+                    )}
+                  </Suspense>
                   {hasLabel && (
                     <CardLabels
                       board={board}

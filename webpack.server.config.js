@@ -1,5 +1,8 @@
+const { environment } = require("./server/utils/config");
 const path = require("path");
 const nodeExternals = require("webpack-node-externals");
+
+const devMode = environment === "development";
 
 module.exports = {
   entry: {
@@ -20,7 +23,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: path.resolve(__dirname, "node_modules"),
         use: {
           loader: "babel-loader",
         },

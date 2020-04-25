@@ -1,17 +1,21 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import ActivitiesHeader from "./ActivitiesHeader";
-import Activities from "./Activities";
-import CardComments from "./CardComments";
+const CardComments = lazy(() => import("./CardComments"));
+const CardDetailSegment = lazy(() =>
+  import("../sharedComponents/CardDetailSegment")
+);
+const ActivitiesHeader = lazy(() => import("./ActivitiesHeader"));
+const Activities = lazy(() => import("./Activities"));
 
 const CardModalActivities = ({ hideActivities, ...props }) => {
   return (
-    <CardDetailSegment>
-      <ActivitiesHeader {...props} />
-      <CardComments {...props} />
-      {!hideActivities && <Activities {...props} />}
-    </CardDetailSegment>
+    <Suspense fallback={<div>Loading...</div>}>
+      <CardDetailSegment>
+        <ActivitiesHeader {...props} />
+        <CardComments {...props} />
+        {!hideActivities && <Activities {...props} />}
+      </CardDetailSegment>
+    </Suspense>
   );
 };
 

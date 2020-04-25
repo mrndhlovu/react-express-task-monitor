@@ -1,10 +1,12 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect, Fragment, lazy, Suspense } from "react";
 import styled from "styled-components";
 
 import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
-import EditCommentIcons from "./EditCommentIcons";
+
 import UserAvatar from "../sharedComponents/UserAvatar";
 import CreateInput from "../sharedComponents/CreateInput";
+
+const EditCommentIcons = lazy(() => import("./EditCommentIcons"));
 
 const Container = styled.div`
   display: grid;
@@ -173,13 +175,15 @@ const Comment = ({
       <StyledSegment>
         <CommentWrapper>
           {!editComment && comment.comment}
-          <EditCommentIcons
-            handleEmojiClick={handleEmojiClick}
-            handleEditComment={handleEditComment}
-            handleDeleteComment={handleDeleteComment}
-            commentId={comment._id}
-            emojis={comment.emojis}
-          />
+          <Suspense fallback={<div>Loading...</div>}>
+            <EditCommentIcons
+              handleEmojiClick={handleEmojiClick}
+              handleEditComment={handleEditComment}
+              handleDeleteComment={handleDeleteComment}
+              commentId={comment._id}
+              emojis={comment.emojis}
+            />
+          </Suspense>
         </CommentWrapper>
       </StyledSegment>
     </Fragment>

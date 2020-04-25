@@ -1,9 +1,9 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import styled from "styled-components";
 import "emoji-mart/css/emoji-mart.css";
 import { Picker, Emoji } from "emoji-mart";
 
-import DropdownButton from "../sharedComponents/DropdownButton";
+const DropdownButton = lazy(() => import("../sharedComponents/DropdownButton"));
 
 const Container = styled.div`
   padding-left: 10px;
@@ -56,18 +56,20 @@ const EditCommentIcons = ({
           </EmojiWrapper>
         ))
       ) : (
-        <DropdownButton
-          upward={true}
-          button={false}
-          header="Emoji"
-          icon="meh outline"
-          direction="right"
-        >
-          <Picker
-            set="apple"
-            onSelect={(emoji, event) => handleEmojiClick(emoji, commentId)}
-          />
-        </DropdownButton>
+        <Suspense fallback={<div>Loading...</div>}>
+          <DropdownButton
+            upward={true}
+            button={false}
+            header="Emoji"
+            icon="meh outline"
+            direction="right"
+          >
+            <Picker
+              set="apple"
+              onSelect={(emoji, event) => handleEmojiClick(emoji, commentId)}
+            />
+          </DropdownButton>
+        </Suspense>
       )}
 
       <CommentLink content="Edit" onClick={() => handleEditComment()} />

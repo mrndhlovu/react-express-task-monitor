@@ -1,7 +1,8 @@
-import React, { Fragment } from "react";
+import React, { Fragment, lazy, Suspense } from "react";
 import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
-import DatePicker from "react-datepicker";
+
+const DatePicker = lazy(() => import("react-datepicker"));
 
 import { Button, Divider } from "semantic-ui-react";
 
@@ -23,16 +24,18 @@ const PickDueDate = ({
   return (
     <Fragment>
       <Container>
-        <DatePicker
-          className="ui fluid focus input"
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-          showTimeSelect
-          timeFormat="HH:mm"
-          timeIntervals={15}
-          timeCaption="time"
-          dateFormat="MMMM d, yyyy h:mm aa"
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <DatePicker
+            className="ui fluid focus input"
+            selected={startDate}
+            onChange={(date) => setStartDate(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            timeCaption="time"
+            dateFormat="MMMM d, yyyy h:mm aa"
+          />
+        </Suspense>
       </Container>
       <Divider />
       <ButtonWrapper>
