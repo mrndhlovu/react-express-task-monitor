@@ -32,6 +32,7 @@ module.exports = merge(shared, {
     new HtmlWebPackPlugin({
       template: "./client/html/template.html",
       filename: "./index.html",
+      favicon: "./client/html/favicon.ico",
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
