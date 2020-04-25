@@ -58,6 +58,8 @@
     "validator": "^12.2.0",
     "webpack": "^4.43.0",
     "webpack-merge": "^4.2.2",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-dev-middleware": "^3.7.2",
     "yarn": "^1.22.0"
   },
   "scripts": {
@@ -102,9 +104,7 @@
     "terser-webpack-plugin": "^2.3.5",
     "url-loader": "^4.1.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.10.3",
-    "webpack-hot-middleware": "^2.25.0",
     "webpack-node-externals": "^1.7.2"
   }
 }
