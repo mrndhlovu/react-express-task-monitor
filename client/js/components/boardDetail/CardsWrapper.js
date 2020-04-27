@@ -7,8 +7,8 @@ const CardsWrapper = ({ cards, ...rest }) =>
     <WrappedCard
       key={card._id}
       card={card}
-      {...rest}
       isLast={cards.length === index + 1}
+      {...rest}
     />
   ));
 

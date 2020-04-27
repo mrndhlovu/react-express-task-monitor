@@ -5,7 +5,7 @@ import { BoardListsContext } from "../../utils/contextUtils";
 
 const ListGrid = ({ ...props }) => {
   const { lists } = useContext(BoardListsContext);
-  return Object.keys(lists).map(key => (
+  return Object.keys(lists).map((key) => (
     <List key={key} list={lists[key]} {...props} />
   ));
 };

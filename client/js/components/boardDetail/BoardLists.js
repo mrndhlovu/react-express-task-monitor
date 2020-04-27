@@ -208,6 +208,7 @@ const BoardLists = ({ history }) => {
     showAddCardInput,
     sourceTitle,
     updateBoard,
+    dropTargetId,
   };
 
   return (

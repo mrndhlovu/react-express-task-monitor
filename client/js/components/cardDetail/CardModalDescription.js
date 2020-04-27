@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { debounce } from "lodash";
+import _debounce from "debounce";
 
 import { Header, Icon, TextArea, Form, Button } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
@@ -36,14 +36,14 @@ const CardModalDescription = ({
   board,
   handleBoardUpdate,
   listPosition,
-  activeCard
+  activeCard,
 }) => {
   const [hideSaveButton, setHideSaveButton] = useState(true);
   const [description, setDescription] = useState(activeCard.description);
   const [editing, setEditing] = useState(false);
   const [updated, setUpdated] = useState(false);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setDescription(e.target.value);
   };
 
@@ -53,21 +53,21 @@ const CardModalDescription = ({
     newBoard = {
       ...board,
       lists: [
-        ...board.lists.map(list =>
+        ...board.lists.map((list) =>
           list.position === listPosition
             ? {
                 ...list,
                 cards: [
-                  ...list.cards.map(card =>
+                  ...list.cards.map((card) =>
                     card.position === activeCard.position
                       ? { ...card, description }
                       : { ...card }
-                  )
-                ]
+                  ),
+                ],
               }
             : list
-        )
-      ]
+        ),
+      ],
     };
 
     description && handleBoardUpdate(newBoard, "lists", "description");
@@ -105,10 +105,8 @@ const CardModalDescription = ({
               placeholder="Add a more detailed description"
               defaultValue={description}
               onFocus={() => setHideSaveButton(!hideSaveButton)}
-              onBlur={() =>
-                debounce(() => setHideSaveButton(!hideSaveButton), 500)
-              }
-              onChange={e => handleChange(e)}
+              onBlur={_debounce(() => setHideSaveButton(!hideSaveButton), 500)}
+              onChange={(e) => handleChange(e)}
             />
             {!hideSaveButton && (
               <ButtonsWrapper>

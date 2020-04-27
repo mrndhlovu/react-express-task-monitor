@@ -45,6 +45,7 @@ const CardItem = ({
   match,
   history,
   showEditButton,
+  isOverCard,
 }) => {
   const {
     handleBoardUpdate,

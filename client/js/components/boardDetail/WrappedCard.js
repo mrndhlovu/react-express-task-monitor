@@ -1,10 +1,21 @@
 import React, { memo, useState } from "react";
+import _debounce from "debounce";
 
 import { DragSource, DropTarget } from "react-dnd";
 import flow from "lodash/flow";
 
 import { Types } from "../../constants/constants";
 import CardItem from "./CardItem";
+import styled from "styled-components";
+
+const DropTargetPlaceholder = styled.div`
+  margin-top: 7px;
+  min-height: 60px;
+  background: #bababc;
+  max-width: 256px;
+  width: 100%;
+  border-radius: 2px;
+`;
 
 const WrappedCard = ({
   card,
@@ -18,31 +29,37 @@ const WrappedCard = ({
 }) => {
   const [showEditButton, setShowEditButton] = useState(false);
 
-  const styles = {
-    backgroundColor: !isDragging && "#fff",
-    borderRadius: "2px",
-    boxShadow: !isDragging && "#0f1e4259",
-    display: isDragging && isOverCard && "none",
-    marginTop: "7px",
-    minHeight: "20px",
-    position: "relative",
-    visibility: isDragging && "hidden",
-    zIndex: 0,
+  const styles = () => {
+    return {
+      transform: isDragging && "translate3d(10px, 15px, 0)",
+      backgroundColor: !isDragging && "#fff",
+      borderRadius: "2px",
+      boxShadow: !isDragging && "#0f1e4259",
+      marginTop: "7px",
+      minHeight: "20px",
+      position: isDragging ? "absolute" : "relative",
+      opacity: isDragging ? 0 : 1,
+      zIndex: 0,
+    };
   };
 
   const wrappedCardItem = (
-    <div
-      style={styles}
-      onMouseEnter={() => setShowEditButton(true)}
-      onMouseLeave={() => setShowEditButton(false)}
-    >
-      <CardItem
-        card={card}
-        sourceListId={sourceListId}
-        sourceTitle={listTitle}
-        isLast={isLast}
-        showEditButton={showEditButton}
-      />
+    <div>
+      {isOverCard && <DropTargetPlaceholder />}
+      <div
+        style={styles()}
+        onMouseEnter={() => setShowEditButton(true)}
+        onMouseLeave={() => setShowEditButton(false)}
+      >
+        <CardItem
+          isOverCard={isOverCard}
+          card={card}
+          sourceListId={sourceListId}
+          sourceTitle={listTitle}
+          isLast={isLast}
+          showEditButton={showEditButton}
+        />
+      </div>
     </div>
   );
 
@@ -54,7 +71,7 @@ const source = {
     const { card, sourceListId } = props;
     props.handleStartDrag(sourceListId, card.position);
 
-    return {};
+    return { item: card };
   },
   endDrag(props, monitor) {
     if (!monitor.didDrop()) return;
@@ -68,8 +85,9 @@ const target = {
     const { card, sourceId } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
+    _debounce(props.updateDropTargetId(sourceId, card.position), 400);
 
-    return props.updateDropTargetId(sourceId, card.position);
+    return;
   },
 };
 

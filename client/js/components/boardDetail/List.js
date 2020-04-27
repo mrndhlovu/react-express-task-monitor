@@ -1,5 +1,6 @@
 import React, { useContext, memo } from "react";
 import styled from "styled-components";
+import { debounce } from "debounce";
 
 import flow from "lodash/flow";
 
@@ -59,11 +60,13 @@ const List = ({
   const styles = {
     minWidth: "272px",
     verticalAlign: "top",
-    visibility: isDragging && "hidden",
     marginRight: "8px",
-    position: "relative",
+    visibility: isDragging && "hidden",
+    opacity: isDragging ? 0 : 1,
     whiteSpace: "nowrap",
     height: mobile ? "91vh" : "92vh",
+    transform: isOverCurrent && "translate3d(0, 10px, 0)",
+    WebkitTransform: "transform",
   };
 
   const wrappedList = (
@@ -113,11 +116,11 @@ const target = {
     return props.handleMoveCardToNewList();
   },
   hover(props, monitor) {
-    const { list } = props;
+    const { list, setIsOverList } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
 
-    props.updateDropTargetId(list.position);
+    debounce(props.updateDropTargetId(list.position), 500);
 
     return {};
   },
