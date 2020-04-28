@@ -28,12 +28,7 @@ router.patch("/:boardId", auth, async (req, res) => {
       board.validateBoardMember(req.user._id);
     }
 
-    const newCardPosition = board.lists[listId - 1].cards.length + 1;
-
-    const newCard = new Card({
-      ...card,
-      position: newCardPosition,
-    });
+    const newCard = new Card({ ...card });
     board.lists[listId - 1].cards.push(newCard);
 
     board.updateActivity(req.user.fname, "addNewCard");
@@ -107,11 +102,11 @@ router.patch("/:boardId/update", auth, async (req, res) => {
     const board = await Board.findById({ _id: boardId });
 
     const patchedList = board.lists.map((list) =>
-      list.position === listId
+      list._id === listId
         ? {
             ...list,
             cards: list.cards.map((card) =>
-              card.position === newCard.position
+              card._id === newCard._id
                 ? {
                     ...newCard,
                   }
@@ -140,11 +135,11 @@ router.patch("/delete-attachment/:boardId", async (req, res) => {
       ...board,
       lists: [
         ...board.lists.map((list) =>
-          list.position === listId
+          list._id === listId
             ? {
                 ...list,
                 cards: list.cards.map((card) =>
-                  card.position === cardId
+                  card._id === cardId
                     ? {
                         ...card,
                         attachments: {

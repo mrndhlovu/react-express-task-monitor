@@ -127,7 +127,7 @@ const CheckLists = ({
       await requestNewChecklistItem(
         {
           listItem,
-          cardId: activeCard.position,
+          cardId: activeCard._id,
           listId: listPosition,
         },
         id
@@ -136,7 +136,7 @@ const CheckLists = ({
           saveBoardChanges(res.data);
 
           const updatedList = res.data.lists
-            .filter((list) => list.position === listPosition)
+            .filter((list) => list._id === listPosition)
             .shift();
 
           const newCard = updatedList.cards

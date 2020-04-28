@@ -1,4 +1,4 @@
-import React, { useContext, useState, lazy, Suspense } from "react";
+import React, { useContext, useState, lazy, Suspense, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -11,7 +11,8 @@ import {
 import CreateItemForm from "../sharedComponents/CreateItemForm";
 import ListGrid from "./ListGrid";
 import { parseSearchQuery, getQueryString } from "../../utils/urls";
-import { findArrayItem, updatedPosition } from "../../utils/appUtils";
+import { findArrayItem, emptyFunction } from "../../utils/appUtils";
+import { requestNewBoardList } from "../../apis/apiRequests";
 
 const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));
 
@@ -23,7 +24,9 @@ const StyledListContainer = styled.div`
 `;
 
 const BoardLists = ({ history }) => {
-  const { board, handleBoardUpdate, id } = useContext(BoardContext);
+  const { board, handleBoardUpdate, id, saveBoardChanges } = useContext(
+    BoardContext
+  );
   const { mobile } = useContext(MainContext).device;
 
   const { lists } = board;
@@ -51,6 +54,7 @@ const BoardLists = ({ history }) => {
   const [activeCard, setActiveCard] = useState(false);
   const [sourceTitle, setSourceTitle] = useState("");
   const [activity, setActivity] = useState(null);
+  const [createList, setCreateList] = useState(false);
 
   const getSourceList = (id) => findArrayItem(lists, id);
   const handleAddList = (event) => setNewListName(event.target.value);
@@ -60,17 +64,30 @@ const BoardLists = ({ history }) => {
   const updateSourceId = (id) => setSourceId(id);
 
   const handleCreateList = () => {
-    const newList = {
-      title: newListName,
-      cards: [],
-      position: lists.length + 1,
-    };
-
-    lists.push(newList);
-
-    updateBoard(board, "newList");
+    setCreateList(true);
     setShowInputField(!showInputField);
   };
+
+  useEffect(() => {
+    if (!createList) return emptyFunction();
+    const getList = async () => {
+      const newList = { title: newListName };
+      setCreateList(false);
+      await requestNewBoardList(newList, id).then((res) => {
+        setCreateList(false);
+        try {
+          saveBoardChanges(res.data);
+        } catch (error) {
+          return () => {
+            setCreateList(false);
+            setNewListName("");
+          };
+        }
+      });
+    };
+
+    getList();
+  }, [createList, newListName, id, saveBoardChanges]);
 
   const handleAddCardName = (listId) => {
     setShowAddCardInput(true);
@@ -80,7 +97,7 @@ const BoardLists = ({ history }) => {
   const getFilteredBoard = (filterId) => {
     return {
       ...board,
-      lists: [...lists.filter((list) => list.position !== filterId)],
+      lists: [...lists.filter((list) => list._id !== filterId)],
     };
   };
 
@@ -91,26 +108,31 @@ const BoardLists = ({ history }) => {
   };
 
   const handleMoveCardToNewList = () => {
-    const sourceList = getSourceList(sourceId).shift();
+    const sourceList = getSourceList(sourceId - 1).shift();
 
-    const dropTargetList = findArrayItem(lists, dropTargetId.listId).shift();
+    const dropTargetList = findArrayItem(
+      lists,
+      dropTargetId.listId - 1
+    ).shift();
     const draggingCard = findArrayItem(
       sourceList.cards,
-      draggingCardId
+      draggingCardId - 1
     ).shift();
 
     sourceList.cards.splice(sourceList.cards.indexOf(draggingCard), 1);
-    const sourceListCards = updatedPosition(sourceList.cards);
+
     const updatedSourceList = {
       ...sourceList,
-      cards: sourceListCards,
+      cards: sourceList.cards,
     };
     lists.splice(sourceId - 1, 1, updatedSourceList);
 
     dropTargetList.cards.splice(dropTargetId.cardId - 1, 0, draggingCard);
 
-    const dropTargetCards = updatedPosition(dropTargetList.cards);
-    const updatedDropTarget = { ...dropTargetList, cards: dropTargetCards };
+    const updatedDropTarget = {
+      ...dropTargetList,
+      cards: dropTargetList.cards,
+    };
 
     lists.splice(dropTargetId.listId - 1, 1, updatedDropTarget);
 
@@ -119,18 +141,17 @@ const BoardLists = ({ history }) => {
   };
 
   const moveCardToNewPosition = () => {
-    const sourceList = getSourceList(sourceId).shift();
+    const sourceList = getSourceList(sourceId - 1).shift();
 
     const draggingCard = findArrayItem(
       sourceList.cards,
-      draggingCardId
+      draggingCardId - 1
     ).shift();
 
     sourceList.cards.splice(draggingCardId - 1, 1);
     sourceList.cards.splice(dropTargetId.cardId - 1, 0, draggingCard);
 
-    const updatedCards = updatedPosition(sourceList.cards);
-    const updateList = { ...sourceList, cards: updatedCards };
+    const updateList = { ...sourceList, cards: sourceList.cards };
     lists.splice(sourceId - 1, 1, updateList);
 
     setUpdate(lists);
@@ -145,19 +166,17 @@ const BoardLists = ({ history }) => {
     else setReorderCards(false);
   };
 
-  const handleStartDrag = (id, cardId) => {
+  const handleStartDrag = (listId, cardId) => {
     setDraggingCardId(cardId);
-    updateSourceId(id);
-    updateDropTargetId(id, cardId);
+    updateSourceId(listId);
+    updateDropTargetId(listId, cardId);
   };
 
   const reOrderList = () => {
-    const sourceList = getSourceList(sourceId).shift();
+    const sourceList = getSourceList(sourceId - 1).shift();
     lists.splice(sourceId - 1, 1);
     lists.splice(dropTargetId.listId - 1, 0, sourceList);
-
-    const updatedList = updatedPosition(lists);
-    setUpdate(updatedList);
+    setUpdate(lists);
   };
 
   const handleCardClick = (card, sourceId, listTitle) => {
@@ -209,6 +228,7 @@ const BoardLists = ({ history }) => {
     sourceTitle,
     updateBoard,
     dropTargetId,
+    saveBoardChanges,
   };
 
   return (

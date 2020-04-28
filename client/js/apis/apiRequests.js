@@ -12,6 +12,9 @@ import {
 export const requestNewBoard = (board) =>
   axios.post(`${BOARDS_EP}/create`, board, params);
 
+export const requestNewBoardList = (body, id) =>
+  axios.post(`${BOARDS_EP}/${id}/create-list`, body, params);
+
 export const requestBoardList = () => axios.get(BOARDS_EP, params);
 
 export const requestBoardDetail = (id) =>

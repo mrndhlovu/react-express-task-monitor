@@ -104,11 +104,11 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
         newBoard = {
           ...board,
           lists: board.lists.map((list) =>
-            list.position === listPosition
+            list._id === listPosition
               ? {
                   ...list,
                   cards: list.cards.map((cardItem) =>
-                    cardItem.position === card.position
+                    cardItem._id === card._id
                       ? {
                           ...cardItem,
                           attachments: { ...cardItem.attachments },
@@ -147,7 +147,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
 
     const removeCardCover = async () => {
       const body = {
-        cardId: card.position,
+        cardId: card._id,
         listId: listPosition,
         cardCover: "",
       };
@@ -210,7 +210,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
 
     const removeAttachment = async () => {
       const body = {
-        cardId: card.position,
+        cardId: card._id,
         listId: listPosition,
         deleteId: deleteAttachment,
       };
@@ -273,7 +273,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
       <Container>
         <ModalHeader
           title={card.title}
-          cardPosition={card.position}
+          cardPosition={card._id}
           listPosition={listPosition}
           sourceTitle={sourceTitle}
           cardCover={card.cardCover}

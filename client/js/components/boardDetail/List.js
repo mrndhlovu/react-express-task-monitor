@@ -8,10 +8,10 @@ import { DragSource, DropTarget } from "react-dnd";
 
 import { Segment } from "semantic-ui-react";
 
+import { BoardListsContext, MainContext } from "../../utils/contextUtils";
 import { Types } from "../../constants/constants";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
-import { BoardListsContext, MainContext } from "../../utils/contextUtils";
 import ListHeader from "./ListHeader";
 
 const ListSegment = styled(Segment)`
@@ -43,6 +43,7 @@ const List = ({
   list,
   isDragging,
   isOverCurrent,
+  position,
   ...rest
 }) => {
   const {
@@ -51,11 +52,12 @@ const List = ({
     getSourceList,
     handleBoardUpdate,
     board,
+    saveBoardChanges,
     ...otherProps
   } = useContext(BoardListsContext);
   const { mobile } = useContext(MainContext).device;
 
-  const { title, position, cards } = list;
+  const { title, cards, _id } = list;
 
   const styles = {
     minWidth: "272px",
@@ -74,11 +76,12 @@ const List = ({
       <ListSegment>
         <ListHeader
           board={board}
-          className="ui"
           getSourceList={getSourceList}
           handleBoardUpdate={handleBoardUpdate}
+          listId={_id}
+          listPosition={position}
           mobile={mobile}
-          position={position}
+          saveBoardChanges={saveBoardChanges}
           showListActions={showListActions}
           title={title}
         />
@@ -87,7 +90,6 @@ const List = ({
           <CardsWrapper
             cards={cards}
             sourceListId={position}
-            hoverIndex={position}
             listTitle={title}
             {...rest}
             {...otherProps}
@@ -95,8 +97,8 @@ const List = ({
         </CardsContainer>
         <CreateCardInputWrapper>
           <CreateCard
-            listId={position}
-            activeList={activeList === position}
+            targetList={{ position, listId: _id }}
+            activeList={activeList === _id}
             {...otherProps}
           />
         </CreateCardInputWrapper>
@@ -109,18 +111,18 @@ const List = ({
 
 const target = {
   drop(props) {
-    const { draggingList, sourceId, list, reorderCards } = props;
-    if (draggingList) return props.reOrderList(sourceId, list.position);
+    const { draggingList, reorderCards } = props;
+    if (draggingList) return props.reOrderList();
     if (reorderCards) return props.moveCardToNewPosition();
 
     return props.handleMoveCardToNewList();
   },
   hover(props, monitor) {
-    const { list, setIsOverList } = props;
+    const { list, position } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
 
-    debounce(props.updateDropTargetId(list.position), 500);
+    debounce(props.updateDropTargetId(position), 500);
 
     return {};
   },
@@ -128,10 +130,10 @@ const target = {
 
 const source = {
   beginDrag(props) {
-    const { list } = props;
+    const { list, position } = props;
 
     props.updateDragOption();
-    props.updateSourceId(list.position);
+    props.updateSourceId(position);
 
     return {};
   },

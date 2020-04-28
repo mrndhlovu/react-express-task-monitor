@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
+const List = require("../models/List");
 const User = require("../models/User");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const lastViewed = require("../utils/middleware/boardMiddleWare")
@@ -106,7 +107,7 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
 
 router.patch("/id/:boardId", auth, async (req, res) => {
   const _id = req.params.boardId;
-  console.log("_id: ", _id);
+
   let board;
   const updates = Object.keys(req.body);
   const allowedUpdates = [
@@ -162,6 +163,20 @@ router.post("/create", auth, async (req, res) => {
   try {
     const savedBoard = await board.save();
     res.send(savedBoard);
+  } catch (error) {
+    res.status(400).send({ message: error });
+  }
+});
+
+router.post("/:boardId/create-list", auth, async (req, res) => {
+  const _id = req.params.boardId;
+
+  try {
+    const list = new List({ ...req.body, cards: [] });
+    const board = await Board.findOne({ _id, owner: req.user._id });
+    board.lists.push(list);
+    await board.save();
+    res.status(203).send(board);
   } catch (error) {
     res.status(400).send({ message: error });
   }

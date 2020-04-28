@@ -33,7 +33,7 @@ const Container = styled.div`
   padding: 5px;
 `;
 
-const CardBadges = styled.div`
+const BadgeContainer = styled.div`
   padding: 2px 10px;
   display: flex;
 `;
@@ -76,12 +76,10 @@ const CardItem = ({
       const newBoard = {
         ...board,
         lists: board.lists.map((list) =>
-          list.position === sourceListId
+          list._id === sourceListId
             ? {
                 ...list,
-                cards: list.cards.filter(
-                  (item) => item.position !== card.position
-                ),
+                cards: list.cards.filter((item) => item._id !== card._id),
               }
             : { ...list }
         ),
@@ -105,7 +103,7 @@ const CardItem = ({
         </Container>
       </ContentWrapper>
 
-      <CardBadges>
+      <BadgeContainer>
         <CardBadge
           icon="attach"
           content={card.attachments.images.length}
@@ -128,7 +126,7 @@ const CardItem = ({
           hasBadge={hasDueDate}
         />
         {hasAssignees && <Assignees assignees={card.assignees} />}
-      </CardBadges>
+      </BadgeContainer>
 
       {showEditButton && (
         <EditCardPenIcon setOpenCardModal={setOpenCardModal} />

@@ -24,7 +24,7 @@ const CardComments = ({
     if (!newComment) return emptyFunction();
     const body = {
       comment: newComment,
-      cardId: activeCard.position,
+      cardId: activeCard._id,
       listId: listPosition,
     };
 

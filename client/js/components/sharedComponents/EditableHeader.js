@@ -45,13 +45,13 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
 
         sourceList.cards.map((card) =>
           cards.push(
-            card.position === cardPosition ? { ...card, title: newTitle } : card
+            card._id === cardPosition ? { ...card, title: newTitle } : card
           )
         );
 
         board.lists.map((list) =>
           updatedList.push(
-            list.position === listPosition ? { ...list, cards } : list
+            list._id === listPosition ? { ...list, cards } : list
           )
         );
 
@@ -62,7 +62,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
         const newList = [];
         board.lists.map((list) =>
           newList.push(
-            list.position === listPosition ? { ...list, title: newTitle } : list
+            list._id === listPosition ? { ...list, title: newTitle } : list
           )
         );
         setNewBoard({ ...board, lists: newList });

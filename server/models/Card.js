@@ -7,10 +7,6 @@ const CardSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    position: {
-      type: Number,
-      default: null,
-    },
     attachments: {
       type: Object,
       required: true,

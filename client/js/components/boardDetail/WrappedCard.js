@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 const DropTargetPlaceholder = styled.div`
   margin-top: 7px;
-  min-height: 60px;
+  min-height: 50px;
   background: #bababc;
   max-width: 256px;
   width: 100%;
@@ -68,10 +68,10 @@ const WrappedCard = ({
 
 const source = {
   beginDrag(props) {
-    const { card, sourceListId } = props;
-    props.handleStartDrag(sourceListId, card.position);
+    const { sourceListId, cardPosition } = props;
+    props.handleStartDrag(sourceListId, cardPosition);
 
-    return { item: card };
+    return {};
   },
   endDrag(props, monitor) {
     if (!monitor.didDrop()) return;
@@ -82,10 +82,10 @@ const source = {
 
 const target = {
   hover(props, monitor) {
-    const { card, sourceId } = props;
+    const { sourceListId, cardPosition } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
-    _debounce(props.updateDropTargetId(sourceId, card.position), 400);
+    _debounce(props.updateDropTargetId(sourceListId, cardPosition), 400);
 
     return;
   },

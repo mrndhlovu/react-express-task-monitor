@@ -1,66 +1,50 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 
 import CreateInput from "../sharedComponents/CreateInput";
-
-const StyledDiv = styled.div`
-  display: grid;
-  background-color: #22242626;
-  padding: 9px 9px;
-
-  border-radius: 4px;
-  width: 100%;
-`;
+import { requestNewBoardList } from "../../apis/apiRequests";
+import { withRouter } from "react-router";
 
 const CopyListDialog = ({
   board,
   close,
   getSourceList,
   listPosition,
-  handleBoardUpdate,
-  title
+  saveBoardChanges,
+  title,
+  match,
 }) => {
   const sourceId = listPosition;
+  const { id } = match.params;
 
-  const [newListTitle, setListTitle] = useState(title);
+  const [newListTitle, setListTitle] = useState(`${title} clone`);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     setListTitle(e.target.value);
   };
 
   const handleCreateClick = () => {
-    const copiedList = getSourceList(sourceId).shift();
+    const listCopy = getSourceList(sourceId - 1).shift();
+    delete listCopy._id;
+    const updatedClone = { ...listCopy, title: newListTitle };
 
-    const insert = (arr, index, newList) => [
-      ...arr.slice(0, index),
-      ...newList,
-      ...arr.slice(index)
-    ];
-    const updatedCopy = { ...copiedList, title: newListTitle };
-    const newList = insert(board.lists, sourceId, [updatedCopy]);
-
-    const newBoard = {
-      ...board,
-      lists: [
-        ...newList.map((list, index) => ({ ...list, position: index + 1 }))
-      ]
+    const getNewList = async () => {
+      await requestNewBoardList(updatedClone, id).then((res) => {
+        saveBoardChanges(res.data);
+        return close();
+      });
     };
-
-    handleBoardUpdate(newBoard, true);
-    return close();
+    getNewList();
   };
 
   return (
-    <StyledDiv>
-      <CreateInput
-        buttonText="Copy List"
-        close={close}
-        defaultValue={title}
-        handleChange={handleChange}
-        handleCreateClick={handleCreateClick}
-      />
-    </StyledDiv>
+    <CreateInput
+      buttonText="Copy List"
+      close={close}
+      defaultValue={newListTitle}
+      handleChange={handleChange}
+      handleCreateClick={handleCreateClick}
+    />
   );
 };
 
-export default CopyListDialog;
+export default withRouter(CopyListDialog);
