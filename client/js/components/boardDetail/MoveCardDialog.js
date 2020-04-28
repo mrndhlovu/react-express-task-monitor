@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import styled from "styled-components";
+import _debounce from "debounce";
 
 import { emptyFunction, checkStringEquality } from "../../utils/appUtils";
 import { Header, Button, Divider } from "semantic-ui-react";
@@ -16,8 +17,8 @@ const MoveCardDialog = ({
   originalCard,
   history,
   originalListPosition,
+  sourceListId,
   handleBoardUpdate,
-  id,
 }) => {
   const [data, loading] = useFetch(history);
 
@@ -26,20 +27,22 @@ const MoveCardDialog = ({
   const [moveDestination, setMoveDestination] = useState({
     board: originalBoard,
     card: originalCard,
-    listPosition: originalListPosition,
+    targetId: sourceListId,
+    position: 1,
   });
 
   const sourceList = moveDestination.board.lists.find(
-    (list) => list._id === moveDestination.listPosition
+    (list) => list._id === moveDestination.targetId
   );
 
   const hasList = sourceList !== undefined;
-  const listChanged = originalListPosition !== moveDestination.listPosition;
+
+  const listChanged = sourceListId !== moveDestination.targetId;
   const boardChanged = originalBoard._id !== moveDestination.board._id;
   const cardPositionChanged = originalCard._id !== moveDestination.card._id;
   const hasCards = hasList && sourceList.cards.length > 0;
 
-  const handleSelection = (selection, dropDownId, id) => {
+  const handleSelection = (selection, dropDownId, position) => {
     const isBoardsDropdown = checkStringEquality(dropDownId, "Board");
     const isListDropdown = checkStringEquality(dropDownId, "List");
     const isPositionDropdown = checkStringEquality(dropDownId, "Position");
@@ -47,102 +50,65 @@ const MoveCardDialog = ({
     if (isBoardsDropdown)
       return setMoveDestination({
         ...moveDestination,
-        board: { ...selection },
-        listPosition: id,
+        board: selection,
+        targetId: selection.lists[0]._id,
+        position,
       });
     if (isListDropdown)
       return setMoveDestination({
         ...moveDestination,
-        listPosition: id,
+        targetId: selection._id,
+        position,
       });
     if (isPositionDropdown)
       return setMoveDestination({
         ...moveDestination,
         card: selection,
+        position,
       });
   };
 
   useEffect(() => {
     if (!move) return emptyFunction();
-    const { card, board, listPosition } = moveDestination;
-    const removeCardFromSource = () => {
-      const originalList = originalBoard.lists.find(
-        (list) => list._id === originalListPosition
-      );
-      originalList.cards.splice(originalList.cards.indexOf(originalCard), 1);
-      const updatedOriginalList = {
-        ...originalList,
-        cards: originalList.cards.map((card) => card && { ...card }),
-      };
+    const { board, targetId, position } = moveDestination;
 
-      originalBoard.lists.splice(
-        originalBoard.lists.indexOf(originalList),
-        1,
-        updatedOriginalList
+    const removeCardFromSource = () => {
+      const source = originalBoard.lists.find(
+        (list) => list._id === sourceListId
       );
+      source.cards.splice(source.cards.indexOf(originalCard), 1);
     };
 
-    const getUpdatedTargetList = () => {
-      sourceList.cards.splice(card._id - 1, 0, originalCard);
-      return {
-        ...sourceList,
-        cards: sourceList.cards.map((card, index) => card && { ...card }),
-      };
+    const updatedTargetList = () => {
+      sourceList.cards.splice(position, 0, originalCard);
+      return sourceList;
     };
 
     if (!boardChanged && !listChanged) {
       sourceList.cards.splice(sourceList.cards.indexOf(originalCard), 1);
-      const updatedList = getUpdatedTargetList();
+      updatedTargetList();
 
-      originalBoard.lists.splice(
-        originalBoard.lists.indexOf(sourceList),
-        1,
-        updatedList
-      );
       handleBoardUpdate(originalBoard, "lists");
       setMove(false);
     } else if (boardChanged) {
-      removeCardFromSource(handleBoardUpdate);
+      removeCardFromSource();
 
-      const targetBoard = boards
-        .filter((boardItem) => boardItem._id === board._id)
+      const targetList = board.lists
+        .filter((list) => list._id === targetId)
         .shift();
-      const targetPosition = listPosition === 0 ? 1 : listPosition;
-
-      const targetList = targetBoard.lists
-        .filter((list) => list._id === targetPosition)
-        .shift();
-
-      targetList.cards.splice(card._id - 1, 0, originalCard);
-
-      const updatedList = {
-        ...targetList,
-        cards: targetList.cards.map((card) => card && { ...card }),
-      };
-
-      targetBoard.lists.splice(
-        targetBoard.lists.indexOf(targetList),
-        1,
-        updatedList
-      );
+      targetList.cards.splice(position, 0, originalCard);
 
       handleBoardUpdate(originalBoard, "lists", null, () => {
-        handleBoardUpdate(targetBoard, "lists", null, null, targetBoard._id);
-        setTimeout(() => {
-          history.push(`/boards/id/${targetBoard._id}`);
-        }, 500);
+        handleBoardUpdate(board, "lists", null, null, board._id);
+
+        _debounce(history.push(`/boards/id/${targetBoard._id}`), 500);
       });
       setMove(false);
     } else if (listChanged) {
       removeCardFromSource();
-      const updatedList = getUpdatedTargetList();
+      updatedTargetList();
 
-      originalBoard.lists.splice(
-        originalBoard.lists.indexOf(sourceList),
-        1,
-        updatedList
-      );
-      handleBoardUpdate(originalBoard, "lists");
+      handleBoardUpdate(board, "lists");
       setMove(false);
     }
   }, [
@@ -185,7 +151,7 @@ const MoveCardDialog = ({
           list={hasList ? moveDestination.board.lists : []}
           handleSelection={handleSelection}
           hasList={hasList}
-          current={originalListPosition}
+          current={sourceListId}
         />
         <DropdownList
           header="Position"
@@ -194,6 +160,7 @@ const MoveCardDialog = ({
           hasList={hasList}
           hasCards={hasCards}
           current={originalCard._id}
+          position={moveDestination.position}
         />
       </StyledWrapper>
       <Divider />

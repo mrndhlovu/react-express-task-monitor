@@ -45,7 +45,7 @@ const CardItem = ({
   match,
   history,
   showEditButton,
-  isOverCard,
+  listPosition,
 }) => {
   const {
     handleBoardUpdate,
@@ -136,7 +136,8 @@ const CardItem = ({
         handleDeleteCard={() => setDeleteCard(true)}
         history={history}
         id={id}
-        listPosition={sourceListId}
+        sourceListId={sourceListId}
+        listPosition={listPosition}
         mobile={mobile}
         openCardModal={openCardModal}
         setOpenCardModal={setOpenCardModal}

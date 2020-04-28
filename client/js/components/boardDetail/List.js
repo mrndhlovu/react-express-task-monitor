@@ -89,7 +89,8 @@ const List = ({
         <CardsContainer className="card-list">
           <CardsWrapper
             cards={cards}
-            sourceListId={position}
+            sourceListId={_id}
+            listPosition={position}
             listTitle={title}
             {...rest}
             {...otherProps}

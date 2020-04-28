@@ -1,10 +1,10 @@
-import React, { Fragment, lazy, Suspense } from "react";
+import React, { Fragment, lazy, Suspense, useState } from "react";
 import styled from "styled-components";
 import "react-datepicker/dist/react-datepicker.css";
 
 const DatePicker = lazy(() => import("react-datepicker"));
 
-import { Button, Divider } from "semantic-ui-react";
+import { Button, Divider, Message } from "semantic-ui-react";
 
 const Container = styled.div`
   padding: 15px 10px;
@@ -21,10 +21,21 @@ const PickDueDate = ({
   handleAddClick,
   handleRemoveClick,
 }) => {
+  const [message, setMessage] = useState(false);
+
   return (
-    <Fragment>
-      <Container>
-        <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Fragment>
+        {message && (
+          <Message
+            positive
+            fluid
+            content="Due Date Updated"
+            size="tiny"
+            onDismiss={() => setMessage(false)}
+          />
+        )}
+        <Container>
           <DatePicker
             className="ui fluid focus input"
             selected={startDate}
@@ -35,25 +46,33 @@ const PickDueDate = ({
             timeCaption="time"
             dateFormat="MMMM d, yyyy h:mm aa"
           />
-        </Suspense>
-      </Container>
-      <Divider />
-      <ButtonWrapper>
-        <Button
-          content="Add"
-          compact
-          positive
-          onClick={() => handleAddClick()}
-        />
-        <Button
-          content="Remove"
-          compact
-          negative
-          floated="right"
-          onClick={() => handleRemoveClick()}
-        />
-      </ButtonWrapper>
-    </Fragment>
+        </Container>
+
+        {!message && (
+          <>
+            <Divider />
+            <ButtonWrapper>
+              <Button
+                content="Add"
+                compact
+                positive
+                onClick={() => {
+                  setMessage(true);
+                  handleAddClick();
+                }}
+              />
+              <Button
+                content="Remove"
+                compact
+                negative
+                floated="right"
+                onClick={() => handleRemoveClick()}
+              />
+            </ButtonWrapper>
+          </>
+        )}
+      </Fragment>
+    </Suspense>
   );
 };
 

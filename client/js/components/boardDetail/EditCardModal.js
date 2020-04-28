@@ -60,6 +60,7 @@ const EditCardModal = ({
   openCardModal,
   saveBoardChanges,
   setOpenCardModal,
+  sourceListId,
 }) => {
   const { board } = useContext(BoardListsContext);
 
@@ -83,7 +84,7 @@ const EditCardModal = ({
     const saveCardChanges = async () => {
       const body = {
         newCard,
-        listId: listPosition,
+        listId: sourceListId,
       };
 
       await requestCardUpdate(body, id).then((res) => {
@@ -135,7 +136,7 @@ const EditCardModal = ({
     boardMember,
     card,
     id,
-    listPosition,
+    sourceListId,
     newDate,
     newTitle,
     saveBoardChanges,
@@ -184,6 +185,7 @@ const EditCardModal = ({
               originalCard={card}
               history={history}
               originalListPosition={listPosition}
+              sourceListId={sourceListId}
               saveBoardChanges={saveBoardChanges}
               id={id}
               handleBoardUpdate={handleBoardUpdate}

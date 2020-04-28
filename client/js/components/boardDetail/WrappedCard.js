@@ -24,6 +24,7 @@ const WrappedCard = ({
   isDragging,
   isOverCard,
   sourceListId,
+  listPosition,
   listTitle,
   isLast,
 }) => {
@@ -55,6 +56,7 @@ const WrappedCard = ({
           isOverCard={isOverCard}
           card={card}
           sourceListId={sourceListId}
+          listPosition={listPosition}
           sourceTitle={listTitle}
           isLast={isLast}
           showEditButton={showEditButton}
