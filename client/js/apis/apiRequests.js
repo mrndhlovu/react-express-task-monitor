@@ -10,7 +10,7 @@ import {
 } from "../utils/urls";
 
 export const requestNewBoard = (board) =>
-  axios.post(`${BOARDS_EP}/create`, board, params);
+  axios.post(`${BOARDS_EP}/create-board`, board, params);
 
 export const requestNewBoardList = (body, id) =>
   axios.post(`${BOARDS_EP}/${id}/create-list`, body, params);
@@ -21,10 +21,10 @@ export const requestBoardDetail = (id) =>
   axios.get(`${BOARDS_EP}/id/${id}`, params);
 
 export const requestBoardDelete = (id) =>
-  axios.delete(`${BOARDS_EP}/id/${id}`, params);
+  axios.delete(`${BOARDS_EP}/${id}/delete-board`, params);
 
 export const requestBoardUpdate = (id, body) => {
-  return axios.patch(`${BOARDS_EP}/id/${id}`, { ...body }, params);
+  return axios.patch(`${BOARDS_EP}/${id}/update-board`, { ...body }, params);
 };
 
 export const requestUpload = (body) =>

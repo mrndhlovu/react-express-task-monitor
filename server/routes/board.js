@@ -58,7 +58,7 @@ router.get("/id/:boardId", auth, lastViewed, async (req, res) => {
   }
 });
 
-router.delete("/id/:boardId", auth, async (req, res) => {
+router.delete("/:boardId/delete-board", auth, async (req, res) => {
   const _id = req.params.boardId;
 
   try {
@@ -105,7 +105,7 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
   }
 });
 
-router.patch("/id/:boardId", auth, async (req, res) => {
+router.patch("/:boardId/update-board", auth, async (req, res) => {
   const _id = req.params.boardId;
 
   let board;
@@ -148,7 +148,7 @@ router.patch("/id/:boardId", auth, async (req, res) => {
   }
 });
 
-router.post("/create", auth, async (req, res) => {
+router.post("/create-board", auth, async (req, res) => {
   const board = new Board({
     ...req.body,
     owner: req.user._id,
