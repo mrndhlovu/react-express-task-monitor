@@ -63,7 +63,7 @@ const CreateCard = ({
 
     const card = { title: newCard };
     const createCard = async () =>
-      await requestCreateNewCard({ card, listId: targetList.position }, id)
+      await requestCreateNewCard({ card, listId: targetList.listId }, id)
         .then((res) => {
           setNewCard("");
           saveBoardChanges(res.data);

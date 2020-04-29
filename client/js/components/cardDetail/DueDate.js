@@ -24,14 +24,14 @@ const DueDate = ({
   handleBoardUpdate,
   board,
   getSourceList,
-  listPosition,
-  saveCardChanges
+  sourceId,
+  saveCardChanges,
 }) => {
   const [removeDueDate, setRemoveDueDate] = useState(false);
   const [checked, setChecked] = useState(false);
   const [unChecked, setUnChecked] = useState(false);
 
-  const sourceList = getSourceList(listPosition).shift();
+  const sourceList = getSourceList(sourceId, "_id").shift();
 
   const handleCheckboxClick = () =>
     activeCard.dueDate.complete ? setUnChecked(true) : setChecked(true);
@@ -46,7 +46,7 @@ const DueDate = ({
       activity = "removeDueDate";
       newCard = {
         ...activeCard,
-        dueDate: ""
+        dueDate: "",
       };
     }
 
@@ -54,7 +54,7 @@ const DueDate = ({
       activity = "dueDateComplete";
       newCard = {
         ...activeCard,
-        dueDate: { ...activeCard.dueDate, complete: true }
+        dueDate: { ...activeCard.dueDate, complete: true },
       };
     }
 
@@ -63,7 +63,7 @@ const DueDate = ({
 
       newCard = {
         ...activeCard,
-        dueDate: { ...activeCard.dueDate, complete: false }
+        dueDate: { ...activeCard.dueDate, complete: false },
       };
     }
 
@@ -88,7 +88,7 @@ const DueDate = ({
     removeDueDate,
     saveCardChanges,
     sourceList,
-    unChecked
+    unChecked,
   ]);
 
   return (

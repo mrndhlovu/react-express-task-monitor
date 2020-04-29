@@ -31,19 +31,13 @@ export const requestUpload = (body) =>
   axios.post(`${UPLOAD_EP}/image`, body, params);
 
 export const requestCreateNewCard = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}`, body, params);
-
-export const requestDeleteCard = (body, id) =>
-  axios.patch(`${CARDS_EP}/delete/${id}`, { ...body });
-
-export const requestCardCoverUpdate = (body, id) =>
-  axios.patch(`${CARDS_EP}/cover/${id}`, { ...body }, params);
+  axios.patch(`${CARDS_EP}/${id}/new-card`, body, params);
 
 export const requestCardUpdate = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/update`, body, params);
+  axios.patch(`${CARDS_EP}/${id}/update-card`, body, params);
 
 export const requestDeleteAttachment = (body, id) =>
-  axios.patch(`${CARDS_EP}/delete-attachment/${id}`, { ...body });
+  axios.patch(`${CARDS_EP}/${id}/delete-attachment`, { ...body });
 
 export const requestAuthSignup = (body) =>
   axios.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
@@ -64,7 +58,7 @@ export const requestUserInvite = (id, email) =>
   axios.patch(`${BOARDS_EP}/id/${id}/invite`, { email }, params);
 
 export const requestNewChecklistItem = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/list-item`, body, params);
+  axios.patch(`${CARDS_EP}/${id}/checklist`, body, params);
 
 export const requestCreateComment = (body, id) =>
   axios.patch(`${CARDS_EP}/${id}/comment`, body, params);

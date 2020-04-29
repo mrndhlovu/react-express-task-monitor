@@ -51,7 +51,7 @@ const StyledIcon = styled(Button)`
   border-radius: 50px !important;
 `;
 
-const CardDetailModal = ({ listPosition, match, modalOpen }) => {
+const CardDetailModal = ({ sourceId, match, modalOpen }) => {
   const {
     handleCardClick,
     sourceTitle,
@@ -104,7 +104,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
         newBoard = {
           ...board,
           lists: board.lists.map((list) =>
-            list._id === listPosition
+            list._id === sourceId
               ? {
                   ...list,
                   cards: list.cards.map((cardItem) =>
@@ -124,7 +124,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
         setNewCover(attachment.imgUrl);
       }
     },
-    [card, board, listPosition]
+    [card, board, sourceId]
   );
 
   useEffect(() => {
@@ -148,8 +148,8 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     const removeCardCover = async () => {
       const body = {
         cardId: card._id,
-        listId: listPosition,
-        cardCover: "",
+        listId: sourceId,
+        newCard: { ...card, cardCover: "" },
       };
       await requestCardUpdate(body, id).then((res) => {
         setCard({ ...card, cardCover: "" });
@@ -160,15 +160,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
       });
     };
     removeCardCover();
-  }, [
-    card,
-    id,
-    listPosition,
-    handleBoardUpdate,
-    removeCover,
-    setRemoveCover,
-    saveBoardChanges,
-  ]);
+  }, [card, id, sourceId, handleBoardUpdate, removeCover, saveBoardChanges]);
 
   useEffect(() => {
     if (!newCover) return emptyFunction();
@@ -178,7 +170,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
 
       const body = {
         newCard,
-        listId: listPosition,
+        listId: sourceId,
       };
 
       await requestCardUpdate(body, id).then((res) => {
@@ -192,7 +184,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
   }, [
     card,
     id,
-    listPosition,
+    sourceId,
     handleBoardUpdate,
     setNewCover,
     newCover,
@@ -211,30 +203,25 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
     const removeAttachment = async () => {
       const body = {
         cardId: card._id,
-        listId: listPosition,
+        listId: sourceId,
         deleteId: deleteAttachment,
       };
 
       await requestDeleteAttachment(body, id).then((res) => {
-        handleBoardUpdate(res.data);
+        saveBoardChanges(res.data);
         setIsLoading(false);
-        if (activeCover.localeCompare(deleteAttachment) === 0) {
-          setIsLoading(false);
-          setNewCover(null);
-          setRemoveCover(true);
-        }
-
-        setDeleteAttachment(null);
+        setNewCover(null);
       });
     };
     removeAttachment();
+    setDeleteAttachment(null);
   }, [
     activeCover,
     deleteAttachment,
     card,
     id,
-    listPosition,
-    handleBoardUpdate,
+    sourceId,
+    saveBoardChanges,
     newCover,
   ]);
 
@@ -263,7 +250,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
           hasCover={hasCover}
           id={id}
           isLoading={isLoading}
-          listPosition={listPosition}
+          sourceId={sourceId}
           saveCardChanges={saveCardChanges}
           saveBoardChanges={saveBoardChanges}
           handleRemoveCover={handleRemoveCover}
@@ -274,7 +261,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
         <ModalHeader
           title={card.title}
           cardPosition={card._id}
-          listPosition={listPosition}
+          sourceId={sourceId}
           sourceTitle={sourceTitle}
           cardCover={card.cardCover}
         />
@@ -290,7 +277,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                         activeCard={card}
                         handleBoardUpdate={handleBoardUpdate}
                         getSourceList={getSourceList}
-                        listPosition={listPosition}
+                        sourceId={sourceId}
                         board={board}
                         saveCardChanges={saveCardChanges}
                       />
@@ -301,7 +288,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                       board={board}
                       handleBoardUpdate={handleBoardUpdate}
                       activeCard={card}
-                      listPosition={listPosition}
+                      sourceId={sourceId}
                       getSourceList={getSourceList}
                     />
                   )}
@@ -309,7 +296,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                   <CardModalDescription
                     board={board}
                     handleBoardUpdate={handleBoardUpdate}
-                    listPosition={listPosition}
+                    sourceId={sourceId}
                     getSourceList={getSourceList}
                     activeCard={card}
                   />
@@ -319,7 +306,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                       handleBoardUpdate={handleBoardUpdate}
                       board={board}
                       getSourceList={getSourceList}
-                      listPosition={listPosition}
+                      sourceId={sourceId}
                       match={match}
                       saveBoardChanges={saveBoardChanges}
                       saveCardChanges={saveCardChanges}
@@ -344,7 +331,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                     handleShowDetails={() => setHideActivities(!hideActivities)}
                     hideActivities={hideActivities}
                     id={id}
-                    listPosition={listPosition}
+                    sourceId={sourceId}
                     saveCardChanges={saveCardChanges}
                     user={auth.data.data.fname}
                   />
@@ -368,7 +355,7 @@ const CardDetailModal = ({ listPosition, match, modalOpen }) => {
                 hasCover={hasCover}
                 hasDueDate={card.dueDate && card.dueDate.date}
                 hasMembers={hasMembers}
-                listPosition={listPosition}
+                sourceId={sourceId}
                 mobile={device.mobile}
                 saveBoardChanges={saveBoardChanges}
                 saveCardChanges={saveCardChanges}

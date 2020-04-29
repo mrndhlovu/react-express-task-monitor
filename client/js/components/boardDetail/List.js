@@ -119,7 +119,7 @@ const target = {
     return props.handleMoveCardToNewList();
   },
   hover(props, monitor) {
-    const { list, position } = props;
+    const { position } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
 

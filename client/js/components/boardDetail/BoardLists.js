@@ -56,7 +56,7 @@ const BoardLists = ({ history }) => {
   const [activity, setActivity] = useState(null);
   const [createList, setCreateList] = useState(false);
 
-  const getSourceList = (id) => findArrayItem(lists, id);
+  const getSourceList = (id, target) => findArrayItem(lists, id, target);
   const handleAddList = (event) => setNewListName(event.target.value);
   const handleOnChange = (event) => setNewCardName(event.target.value);
   const updateDragOption = () => setDraggingList(!draggingList);
@@ -261,7 +261,7 @@ const BoardLists = ({ history }) => {
         {modalOpen && !hideCardDetail && (
           <Suspense fallback={<div>Loading...</div>}>
             <CardDetailModal
-              listPosition={sourceId}
+              sourceId={sourceId}
               history={history}
               modalOpen={modalOpen}
             />

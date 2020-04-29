@@ -6,22 +6,23 @@ const AddCardLabel = ({
   activeCard,
   handleBoardUpdate,
   board,
-  listPosition,
-  getSourceList
+  sourceId,
+  getSourceList,
 }) => {
   const { labels } = activeCard;
 
   const [label, setLabel] = useState(null);
   const [removeLabel, setRemoveLabel] = useState(null);
 
-  const handleColorClick = color => {
+  const handleColorClick = (color) => {
     if (labels.includes(color)) return setRemoveLabel(color);
     setLabel(color);
   };
 
   useEffect(() => {
     let activity;
-    const sourceList = getSourceList(listPosition).shift();
+    const sourceList = getSourceList(sourceId, "_id").shift();
+    console.log("sourceList: ", sourceList);
 
     if (label) {
       activity = "addLabel";
@@ -55,8 +56,8 @@ const AddCardLabel = ({
     getSourceList,
     label,
     labels,
-    listPosition,
-    removeLabel
+    sourceId,
+    removeLabel,
   ]);
 
   return (

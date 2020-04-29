@@ -22,7 +22,7 @@ const CheckLists = ({
   activeCard,
   match,
   saveBoardChanges,
-  listPosition,
+  sourceId,
   checklistName = "Checklist",
   getSourceList,
   board,
@@ -37,7 +37,7 @@ const CheckLists = ({
   const [removeChecklist, setRemoveChecklist] = useState(false);
 
   const { id } = match.params;
-  const sourceList = getSourceList(listPosition).shift();
+  const sourceList = getSourceList(sourceId, "_id").shift();
 
   const deleteChecklist = () => setRemoveChecklist(true);
   const handleChange = (e) => setDescription(e.target.value);
@@ -110,7 +110,7 @@ const CheckLists = ({
     board,
     checked,
     getSourceList,
-    listPosition,
+    sourceId,
     saveCardChanges,
     sourceList,
   ]);
@@ -128,7 +128,7 @@ const CheckLists = ({
         {
           listItem,
           cardId: activeCard._id,
-          listId: listPosition,
+          listId: sourceId,
         },
         id
       )
@@ -136,7 +136,7 @@ const CheckLists = ({
           saveBoardChanges(res.data);
 
           const updatedList = res.data.lists
-            .filter((list) => list._id === listPosition)
+            .filter((list) => list._id === sourceId)
             .shift();
 
           const newCard = updatedList.cards
@@ -161,7 +161,7 @@ const CheckLists = ({
     description,
     done,
     id,
-    listPosition,
+    sourceId,
     saveBoardChanges,
     saveCardChanges,
   ]);
