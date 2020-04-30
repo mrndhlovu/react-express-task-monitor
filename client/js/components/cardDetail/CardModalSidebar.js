@@ -38,8 +38,8 @@ const CardModalSidebar = ({
       {<AddAttachment {...props} />}
       {!hasCover && <AddCover {...props} />}
       <StyledHeader content="ACTIONS" />
-      <MoveCardAction />
-      <CopyCardAction />
+      <MoveCardAction {...props} />
+      <CopyCardAction {...props} />
     </Container>
   );
 };

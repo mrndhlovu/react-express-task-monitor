@@ -33,6 +33,7 @@ const CreateInput = ({
   defaultValue,
   buttonText,
   id,
+  hideIcon = false,
   width = "250px",
 }) => {
   return (
@@ -55,9 +56,11 @@ const CreateInput = ({
           content={buttonText}
           onClick={() => handleCreateClick()}
         />
-        <UIWrapper>
-          <Icon name="close" size="large" onClick={close} link />
-        </UIWrapper>
+        {!hideIcon && (
+          <UIWrapper>
+            <Icon name="close" size="large" onClick={close} link />
+          </UIWrapper>
+        )}
       </ButtonsWrapper>
     </Fragment>
   );

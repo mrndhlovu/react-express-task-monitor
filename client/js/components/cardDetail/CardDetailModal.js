@@ -51,7 +51,7 @@ const StyledIcon = styled(Button)`
   border-radius: 50px !important;
 `;
 
-const CardDetailModal = ({ sourceId, match, modalOpen }) => {
+const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
   const {
     handleCardClick,
     sourceTitle,
@@ -359,6 +359,8 @@ const CardDetailModal = ({ sourceId, match, modalOpen }) => {
                 mobile={device.mobile}
                 saveBoardChanges={saveBoardChanges}
                 saveCardChanges={saveCardChanges}
+                id={id}
+                history={history}
               />
             </Grid.Column>
           </Grid.Row>

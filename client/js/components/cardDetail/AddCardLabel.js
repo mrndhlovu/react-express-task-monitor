@@ -22,7 +22,6 @@ const AddCardLabel = ({
   useEffect(() => {
     let activity;
     const sourceList = getSourceList(sourceId, "_id");
-    console.log("sourceList: ", sourceList);
 
     if (label) {
       activity = "addLabel";

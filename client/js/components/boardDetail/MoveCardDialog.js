@@ -16,7 +16,6 @@ const MoveCardDialog = ({
   originalBoard,
   originalCard,
   history,
-  originalListPosition,
   sourceListId,
   handleBoardUpdate,
 }) => {
@@ -121,7 +120,6 @@ const MoveCardDialog = ({
     moveDestination,
     originalBoard,
     originalCard,
-    originalListPosition,
     sourceList,
   ]);
 
