@@ -55,7 +55,7 @@ const BoardContainer = ({ match, history, auth }) => {
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
   const handleBoardUpdate = useMemo(
-    () => (changes, fieldId, activity, callback, newId) => {
+    () => (changes, fieldId = "lists", activity, callback, newId) => {
       if (!changes) return setBoard(null);
       saveBoardChanges(changes);
       setUpdatedField({ fieldId, activity, callback, newId });

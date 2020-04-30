@@ -54,12 +54,12 @@ const CardModalDescription = ({
       ...board,
       lists: [
         ...board.lists.map((list) =>
-          list.position === listPosition
+          list._id === listPosition
             ? {
                 ...list,
                 cards: [
                   ...list.cards.map((card) =>
-                    card.position === activeCard.position
+                    card._id === activeCard._id
                       ? { ...card, description }
                       : { ...card }
                   ),

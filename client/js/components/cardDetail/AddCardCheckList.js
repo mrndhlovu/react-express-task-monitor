@@ -8,7 +8,7 @@ const Container = styled.div`
   padding: 8px 5px;
 `;
 
-const AddCardCheckList = ({ handleCreateChecklist, mobile }) => {
+const AddCardCheckList = ({ handleCreateChecklist }) => {
   return (
     <DropdownButton
       icon="check square outline"

@@ -10,7 +10,7 @@ const CardComments = ({
   handleBoardUpdate,
   activeCard,
   id,
-  listPosition,
+  sourceId,
   saveCardChanges,
   getSourceList,
   board,
@@ -24,8 +24,8 @@ const CardComments = ({
     if (!newComment) return emptyFunction();
     const body = {
       comment: newComment,
-      cardId: activeCard.position,
-      listId: listPosition,
+      cardId: activeCard._id,
+      listId: sourceId,
     };
 
     const createComment = async () => {
@@ -40,7 +40,7 @@ const CardComments = ({
     };
 
     createComment();
-  }, [newComment, id, listPosition, activeCard, saveCardChanges]);
+  }, [newComment, id, sourceId, activeCard, saveCardChanges]);
 
   return (
     <Fragment>
@@ -52,7 +52,7 @@ const CardComments = ({
             key={comment._id}
             comment={comment}
             getSourceList={getSourceList}
-            listPosition={listPosition}
+            sourceId={sourceId}
             activeCard={activeCard}
             handleBoardUpdate={handleBoardUpdate}
             board={board}

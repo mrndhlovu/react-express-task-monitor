@@ -60,6 +60,7 @@ const EditCardModal = ({
   openCardModal,
   saveBoardChanges,
   setOpenCardModal,
+  sourceListId,
 }) => {
   const { board } = useContext(BoardListsContext);
 
@@ -83,7 +84,7 @@ const EditCardModal = ({
     const saveCardChanges = async () => {
       const body = {
         newCard,
-        listId: listPosition,
+        listId: sourceListId,
       };
 
       await requestCardUpdate(body, id).then((res) => {
@@ -110,7 +111,7 @@ const EditCardModal = ({
     }
     if (archive) {
       newCard = { ...card, archived: true };
-
+      setArchive(false);
       saveCardChanges();
     }
 
@@ -118,7 +119,6 @@ const EditCardModal = ({
       const isInAssigneeList = card.assignees.some(
         (member) => member._id === boardMember._id
       );
-      console.log("isInAssigneeList: ", isInAssigneeList);
 
       isInAssigneeList
         ? card.assignees.splice(card.assignees.indexOf(boardMember), 1)
@@ -135,7 +135,7 @@ const EditCardModal = ({
     boardMember,
     card,
     id,
-    listPosition,
+    sourceListId,
     newDate,
     newTitle,
     saveBoardChanges,
@@ -184,6 +184,7 @@ const EditCardModal = ({
               originalCard={card}
               history={history}
               originalListPosition={listPosition}
+              sourceListId={sourceListId}
               saveBoardChanges={saveBoardChanges}
               id={id}
               handleBoardUpdate={handleBoardUpdate}
@@ -208,15 +209,19 @@ const EditCardModal = ({
               handleRemoveClick={handleRemoveDueDate}
             />
           </EditCardButton>
-
-          <StyledEditButton
-            content="Archive"
+          <EditCardButton
+            buttonText="Archive"
             icon="archive"
-            compact
-            labelPosition="left"
-            fluid
-            onClick={() => setArchive(true)}
-          />
+            closeOnSelect={true}
+          >
+            <Button
+              content="Archive"
+              negative
+              compact
+              fluid
+              onClick={() => setArchive(true)}
+            />
+          </EditCardButton>
         </StyledModalActions>
       </Wrapper>
     </Modal>

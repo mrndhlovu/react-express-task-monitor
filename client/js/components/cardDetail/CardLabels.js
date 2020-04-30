@@ -15,7 +15,7 @@ const Container = styled.div`
 const Label = styled.div`
   height: 28px;
   width: 36px;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   border-radius: 2px;
   margin-right: 2px;
 `;
@@ -28,22 +28,22 @@ const CardLabels = ({
   activeCard,
   handleBoardUpdate,
   board,
-  listPosition,
-  getSourceList
+  sourceId,
+  getSourceList,
 }) => {
   const { labels } = activeCard;
 
   const [label, setLabel] = useState(null);
   const [removeLabel, setRemoveLabel] = useState(null);
 
-  const handleColorClick = color => {
+  const handleColorClick = (color) => {
     if (labels.includes(color)) return setRemoveLabel(color);
     setLabel(color);
   };
 
   useEffect(() => {
     let activity;
-    const sourceList = getSourceList(listPosition).shift();
+    const sourceList = getSourceList(sourceId, "_id");
 
     if (label) {
       activity = "addLabel";
@@ -77,8 +77,8 @@ const CardLabels = ({
     getSourceList,
     label,
     labels,
-    listPosition,
-    removeLabel
+    sourceId,
+    removeLabel,
   ]);
 
   return (

@@ -1,9 +1,11 @@
-const router = require("express").Router();
+const equals = require("validator/lib/equals");
+const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const Board = require("../models/Board");
 const Card = require("../models/Card");
-const Comment = require("../models/Comment");
 const CheckListItem = require("../models/CheckListItem");
-const auth = require("../utils/middleware/authMiddleware").authMiddleware;
+const Comment = require("../models/Comment");
+const ObjectID = require("mongodb").ObjectID;
+const router = require("express").Router();
 
 const updateBoardLists = (id, newLists) =>
   Board.findByIdAndUpdate(
@@ -16,7 +18,13 @@ const updateBoardLists = (id, newLists) =>
     }
   );
 
-router.patch("/:boardId", auth, async (req, res) => {
+const getSourceList = (lists, id) => {
+  const listId = new ObjectID(id);
+  const sourceList = lists.filter((list) => listId.equals(list._id));
+  return sourceList[0];
+};
+
+router.patch("/:boardId/new-card", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { card, listId } = req.body;
   let board;
@@ -28,13 +36,11 @@ router.patch("/:boardId", auth, async (req, res) => {
       board.validateBoardMember(req.user._id);
     }
 
-    const newCardPosition = board.lists[listId - 1].cards.length + 1;
+    const newCard = new Card({ ...card });
+    const sourceList = getSourceList(board.lists, listId);
+    sourceList.cards.push(newCard);
 
-    const newCard = new Card({
-      ...card,
-      position: newCardPosition,
-    });
-    board.lists[listId - 1].cards.push(newCard);
+    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
     board.updateActivity(req.user.fname, "addNewCard");
 
@@ -46,7 +52,7 @@ router.patch("/:boardId", auth, async (req, res) => {
   }
 });
 
-router.patch("/:boardId/list-item", auth, async (req, res) => {
+router.patch("/:boardId/checklist", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { listItem, cardId, listId } = req.body;
 
@@ -58,17 +64,22 @@ router.patch("/:boardId/list-item", auth, async (req, res) => {
       board.validateBoardMember(req.user._id);
     }
 
-    const newListItemPosition =
-      board.lists[listId - 1].cards[cardId - 1].checklists.length + 1;
+    const checkListItem = new CheckListItem({ ...listItem });
 
-    const checkListItem = new CheckListItem({
-      ...listItem,
-      position: newListItemPosition,
-    });
+    const sourceList = getSourceList(board.lists, listId);
+    const sourceCard = getSourceList(sourceList.cards, cardId);
 
-    board.lists[listId - 1].cards[cardId - 1].checklists.push(checkListItem);
+    sourceCard.checklists.push(checkListItem);
+
+    sourceList.cards.splice(
+      sourceList.cards.indexOf(sourceCard),
+      1,
+      sourceCard
+    );
+
+    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
     board.updateActivity(req.user.fname, "addChecklistItem");
-
     await updateBoardLists(_id, board.lists);
 
     res.send(board);
@@ -77,51 +88,20 @@ router.patch("/:boardId/list-item", auth, async (req, res) => {
   }
 });
 
-router.patch("/delete/:boardId", async (req, res) => {
-  const { cardId, listId } = req.body;
-  const { boardId } = req.params;
-
-  try {
-    const board = await Board.findById({ _id: boardId });
-
-    board.lists[listId - 1].cards.splice(cardId - 1, 1);
-
-    board.lists[listId - 1].cards.map((card, index) => ({
-      ...card,
-      position: index + 1,
-    }));
-
-    await updateBoardLists(boardId, board.lists);
-
-    res.send(board);
-  } catch (error) {
-    res.status(400).send({ message: "Failed to delete card" });
-  }
-});
-
-router.patch("/:boardId/update", auth, async (req, res) => {
+router.patch("/:boardId/update-card", auth, async (req, res) => {
   const { newCard, listId } = req.body;
   const { boardId } = req.params;
 
   try {
     const board = await Board.findById({ _id: boardId });
 
-    const patchedList = board.lists.map((list) =>
-      list.position === listId
-        ? {
-            ...list,
-            cards: list.cards.map((card) =>
-              card.position === newCard.position
-                ? {
-                    ...newCard,
-                  }
-                : { ...card }
-            ),
-          }
-        : { ...list }
-    );
+    const sourceList = getSourceList(board.lists, listId);
+    const sourceCard = getSourceList(sourceList.cards, newCard._id);
 
-    const newBoard = await updateBoardLists(boardId, patchedList);
+    sourceList.cards.splice(sourceList.cards.indexOf(sourceCard), 1, newCard);
+    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
+    const newBoard = await updateBoardLists(boardId, board.lists);
 
     res.send(newBoard);
   } catch (error) {
@@ -129,47 +109,37 @@ router.patch("/:boardId/update", auth, async (req, res) => {
   }
 });
 
-router.patch("/delete-attachment/:boardId", async (req, res) => {
+router.patch("/:boardId/delete-attachment", async (req, res) => {
   const { cardId, listId, deleteId } = req.body;
   const { boardId } = req.params;
 
   try {
     const board = await Board.findById({ _id: boardId });
+    const sourceList = getSourceList(board.lists, listId);
+    let sourceCard = getSourceList(sourceList.cards, cardId);
 
-    const patchedList = {
-      ...board,
-      lists: [
-        ...board.lists.map((list) =>
-          list.position === listId
-            ? {
-                ...list,
-                cards: list.cards.map((card) =>
-                  card.position === cardId
-                    ? {
-                        ...card,
-                        attachments: {
-                          ...card.attachments,
-                          images: [
-                            ...card.attachments.images.filter(
-                              (image) =>
-                                image.imgUrl.localeCompare(deleteId) !== 0
-                            ),
-                          ],
-                        },
-                      }
-                    : { ...card }
-                ),
-              }
-            : { ...list }
-        ),
-      ],
-    };
+    sourceCard.attachments.images.map((image, index) =>
+      equals(image.imgUrl, deleteId)
+        ? sourceCard.attachments.images.splice(index, 1)
+        : { ...image }
+    );
 
-    const newBoard = await updateBoardLists(boardId, patchedList.lists);
+    if (equals(sourceCard.cardCover, deleteId))
+      sourceCard = { ...sourceCard, cardCover: "" };
+
+    sourceList.cards.splice(
+      sourceList.cards.indexOf(sourceCard),
+      1,
+      sourceCard
+    );
+
+    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
+    const newBoard = await updateBoardLists(boardId, board.lists);
 
     res.send(newBoard);
   } catch (error) {
-    res.status(400).send({ message: "Failed to delete attachment card" });
+    res.status(400).send({ message: "Failed to delete card attachment" });
   }
 });
 
@@ -192,15 +162,25 @@ router.patch("/:boardId/comment", auth, async (req, res) => {
 
     newComment.save();
 
-    board.lists[listId - 1].cards[cardId - 1].comments.push(newComment);
+    const sourceList = getSourceList(board.lists, listId);
+    const sourceCard = getSourceList(sourceList.cards, cardId);
+
+    sourceCard.comments.push(newComment);
+
+    sourceList.cards.splice(
+      sourceList.cards.indexOf(sourceCard),
+      1,
+      sourceCard
+    );
+
+    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
     board.updateActivity(req.user.fname, "addComment");
 
     await updateBoardLists(_id, board.lists);
 
     board.save();
-    const card = board.lists[listId - 1].cards[cardId - 1];
 
-    res.status(201).send(card);
+    res.status(201).send(sourceCard);
   } catch (error) {
     res.status(400).send({ message: error.message });
   }

@@ -20,7 +20,7 @@ const EditHeader = styled(Input)`
   width: 95%;
 `;
 
-const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
+const EditableHeader = ({ title, type, cardPosition, sourceId }) => {
   const { handleBoardUpdate, board } = useContext(BoardContext);
   const { getSourceList } = useContext(MainContext);
 
@@ -39,20 +39,18 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
         break;
 
       case "cardTitle":
-        const sourceList = getSourceList(listPosition).shift();
+        const sourceList = getSourceList(sourceId, "_id");
         const cards = [];
         const updatedList = [];
 
         sourceList.cards.map((card) =>
           cards.push(
-            card.position === cardPosition ? { ...card, title: newTitle } : card
+            card._id === cardPosition ? { ...card, title: newTitle } : card
           )
         );
 
         board.lists.map((list) =>
-          updatedList.push(
-            list.position === listPosition ? { ...list, cards } : list
-          )
+          updatedList.push(list._id === sourceId ? { ...list, cards } : list)
         );
 
         setNewBoard({ ...board, lists: updatedList });
@@ -62,7 +60,7 @@ const EditableHeader = ({ title, type, cardPosition, listPosition }) => {
         const newList = [];
         board.lists.map((list) =>
           newList.push(
-            list.position === listPosition ? { ...list, title: newTitle } : list
+            list._id === sourceId ? { ...list, title: newTitle } : list
           )
         );
         setNewBoard({ ...board, lists: newList });

@@ -7,7 +7,7 @@ const PickDueDate = lazy(() => import("../sharedComponents/PickDueDate"));
 const AddCardDueDate = ({
   activeCard,
   board,
-  listPosition,
+  sourceId,
   handleBoardUpdate,
   getSourceList,
   saveCardChanges,
@@ -17,7 +17,7 @@ const AddCardDueDate = ({
   const [removeDueDate, setRemoveDueDate] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
 
-  const sourceList = getSourceList(listPosition).shift();
+  const sourceList = getSourceList(sourceId, "_id");
 
   const handleAddClick = () => setDueDate(true);
   const handleRemoveClick = () => setRemoveDueDate(true);

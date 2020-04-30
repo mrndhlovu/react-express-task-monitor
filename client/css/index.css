@@ -73,9 +73,13 @@ ui.form,
 
 .board-menu-sidebar {
   width: 280px !important;
+  border-radius: 8px !important;
+  border: none !important;
 }
 .chat-sidebar {
   width: 350px !important;
+  border-radius: 8px !important;
+  border: none !important;
 }
 
 .board-menu-sidebar::-webkit-scrollbar {

@@ -47,7 +47,7 @@ const Comment = ({
   board,
   comment,
   getSourceList,
-  listPosition,
+  sourceId,
   saveCardChanges,
 }) => {
   const { creator, createdAt } = comment;
@@ -67,7 +67,7 @@ const Comment = ({
   const handleChange = (e) => setNewComment(e.target.value);
 
   useEffect(() => {
-    const sourceList = getSourceList(listPosition).shift();
+    const sourceList = getSourceList(sourceId, "_id");
     let newCard;
 
     if (updatedComment) {
@@ -143,7 +143,7 @@ const Comment = ({
     board,
     handleBoardUpdate,
     getSourceList,
-    listPosition,
+    sourceId,
     saveCardChanges,
     deleteComment,
     updatedComment,

@@ -10,7 +10,7 @@ import styled from "styled-components";
 
 const DropTargetPlaceholder = styled.div`
   margin-top: 7px;
-  min-height: 60px;
+  min-height: 50px;
   background: #bababc;
   max-width: 256px;
   width: 100%;
@@ -24,6 +24,7 @@ const WrappedCard = ({
   isDragging,
   isOverCard,
   sourceListId,
+  listPosition,
   listTitle,
   isLast,
 }) => {
@@ -55,6 +56,7 @@ const WrappedCard = ({
           isOverCard={isOverCard}
           card={card}
           sourceListId={sourceListId}
+          listPosition={listPosition}
           sourceTitle={listTitle}
           isLast={isLast}
           showEditButton={showEditButton}
@@ -68,10 +70,10 @@ const WrappedCard = ({
 
 const source = {
   beginDrag(props) {
-    const { card, sourceListId } = props;
-    props.handleStartDrag(sourceListId, card.position);
+    const { sourceListId, card } = props;
+    props.handleStartDrag(sourceListId, card._id);
 
-    return { item: card };
+    return {};
   },
   endDrag(props, monitor) {
     if (!monitor.didDrop()) return;
@@ -82,10 +84,10 @@ const source = {
 
 const target = {
   hover(props, monitor) {
-    const { card, sourceId } = props;
+    const { sourceListId, card } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
-    _debounce(props.updateDropTargetId(sourceId, card.position), 400);
+    _debounce(props.updateDropTargetId(sourceListId, card._id), 400);
 
     return;
   },

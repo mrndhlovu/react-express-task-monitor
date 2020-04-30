@@ -45,13 +45,7 @@ const DropdownList = ({
             {list.map((item, index) => (
               <Dropdown.Item
                 key={index}
-                onClick={() =>
-                  handleSelection(
-                    item,
-                    header,
-                    isBoardsDropdown ? 1 : index + 1
-                  )
-                }
+                onClick={() => handleSelection(item, header, index)}
               >
                 <Span>
                   {isPositionDropdown ? (
@@ -62,9 +56,7 @@ const DropdownList = ({
                   ) : (
                     <Fragment>
                       {item.title}{" "}
-                      {((isListDropdown && current - 1 === index) ||
-                        current === item._id) &&
-                        " (current)"}
+                      {isListDropdown && current === item._id && " (current)"}
                     </Fragment>
                   )}
                 </Span>

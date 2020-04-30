@@ -6,6 +6,7 @@ import { Button, Card, TextArea, Icon } from "semantic-ui-react";
 import { requestCreateNewCard } from "../../apis/apiRequests";
 import { resetForm, emptyFunction } from "../../utils/appUtils";
 import { BoardContext } from "../../utils/contextUtils";
+import UIWrapper from "./UIWrapper";
 
 const StyledButton = styled.div`
   text-align: left !important;
@@ -45,16 +46,16 @@ const StyledContainer = styled.div`
 const CreateCard = ({
   handleAddCardName,
   closeAddCardOption,
-  listId,
+  targetList,
   activeList,
-  match
+  match,
 }) => {
   const { saveBoardChanges } = useContext(BoardContext);
   const [newCard, setNewCard] = useState(null);
   const [save, setSave] = useState(false);
   const { id } = match.params;
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     setNewCard(event.target.value);
   };
 
@@ -63,21 +64,25 @@ const CreateCard = ({
 
     const card = { title: newCard };
     const createCard = async () =>
-      await requestCreateNewCard({ card, listId }, id)
-        .then(res => {
+      await requestCreateNewCard({ card, listId: targetList.listId }, id)
+        .then((res) => {
           setNewCard("");
           saveBoardChanges(res.data);
         })
-        .catch(error => {});
+        .catch((error) => {});
     createCard();
     setSave(false);
     resetForm("create-card-input");
-  }, [newCard, save, listId, saveBoardChanges, id]);
+  }, [newCard, save, targetList, saveBoardChanges, id]);
 
   return (
     <StyledContainer>
       {!activeList ? (
-        <StyledButton fluid basic onClick={() => handleAddCardName(listId)}>
+        <StyledButton
+          fluid
+          basic
+          onClick={() => handleAddCardName(targetList.listId)}
+        >
           <Span>
             <Icon name="add" />
             Add a card...
@@ -89,10 +94,10 @@ const CreateCard = ({
           <TextArea
             id="create-card-input"
             placeholder="Enter a title for this card..."
-            onChange={e => handleChange(e)}
+            onChange={(e) => handleChange(e)}
             autoFocus
             fluid="true"
-            onKeyDown={e => (e.key === "Enter" ? setSave(true) : null)}
+            onKeyDown={(e) => (e.key === "Enter" ? setSave(true) : null)}
           />
 
           <ButtonWrapper>
@@ -103,7 +108,14 @@ const CreateCard = ({
               onClick={() => setSave(true)}
             />
 
-            <Icon name="close" onClick={() => closeAddCardOption()} link />
+            <UIWrapper>
+              <Icon
+                name="close"
+                onClick={() => closeAddCardOption()}
+                size="large"
+                link
+              />
+            </UIWrapper>
           </ButtonWrapper>
         </StyledCard>
       )}
