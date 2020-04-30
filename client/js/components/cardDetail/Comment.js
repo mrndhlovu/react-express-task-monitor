@@ -67,7 +67,7 @@ const Comment = ({
   const handleChange = (e) => setNewComment(e.target.value);
 
   useEffect(() => {
-    const sourceList = getSourceList(sourceId, "_id").shift();
+    const sourceList = getSourceList(sourceId, "_id");
     let newCard;
 
     if (updatedComment) {

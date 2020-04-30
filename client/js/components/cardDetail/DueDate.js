@@ -31,7 +31,7 @@ const DueDate = ({
   const [checked, setChecked] = useState(false);
   const [unChecked, setUnChecked] = useState(false);
 
-  const sourceList = getSourceList(sourceId, "_id").shift();
+  const sourceList = getSourceList(sourceId, "_id");
 
   const handleCheckboxClick = () =>
     activeCard.dueDate.complete ? setUnChecked(true) : setChecked(true);

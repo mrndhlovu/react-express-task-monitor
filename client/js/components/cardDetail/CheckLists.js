@@ -37,7 +37,7 @@ const CheckLists = ({
   const [removeChecklist, setRemoveChecklist] = useState(false);
 
   const { id } = match.params;
-  const sourceList = getSourceList(sourceId, "_id").shift();
+  const sourceList = getSourceList(sourceId, "_id");
 
   const deleteChecklist = () => setRemoveChecklist(true);
   const handleChange = (e) => setDescription(e.target.value);

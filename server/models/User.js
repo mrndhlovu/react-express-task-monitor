@@ -48,6 +48,11 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: [],
     },
+    avatar: {
+      type: Array,
+      required: true,
+      default: [],
+    },
     tokens: [
       {
         token: {

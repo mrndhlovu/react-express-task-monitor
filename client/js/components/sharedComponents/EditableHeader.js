@@ -39,7 +39,7 @@ const EditableHeader = ({ title, type, cardPosition, sourceId }) => {
         break;
 
       case "cardTitle":
-        const sourceList = getSourceList(sourceId, "_id").shift();
+        const sourceList = getSourceList(sourceId, "_id");
         const cards = [];
         const updatedList = [];
 

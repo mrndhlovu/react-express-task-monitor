@@ -1,4 +1,5 @@
 import moment from "moment";
+import equals from "validator/lib/equals";
 
 export const allowedUpdates = [
   "title",
@@ -120,9 +121,9 @@ export const getFormattedDate = (date, format, calendar) =>
   calendar ? moment(date).calendar() : moment(date).format(format);
 
 export const checkStringEquality = (mainString, comparison) =>
-  mainString.localeCompare(comparison) === 0;
+  equals(mainString, comparison);
 
-export const findArrayItem = (array, itemId, attrib) =>
-  array.filter(
-    (item, index) => (attrib ? item[attrib] : index) === itemId && item
-  );
+export const findArrayItem = (array, itemId, fieldProp) =>
+  array.filter((item, index) =>
+    fieldProp ? equals(item[fieldProp], itemId) : index === itemId
+  )[0];

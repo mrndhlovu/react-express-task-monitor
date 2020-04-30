@@ -27,7 +27,7 @@ const MoveListDialog = ({
       targetPosition !== 0 && targetPosition <= lists.length;
 
     if (isValidPosition) {
-      const moveList = getSourceList(sourceId - 1).shift();
+      const moveList = getSourceList(sourceId - 1);
 
       lists.splice(lists.indexOf(moveList), 1);
       lists.splice(targetPosition - 1, 0, moveList);

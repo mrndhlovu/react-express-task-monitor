@@ -17,7 +17,7 @@ const AddCardDueDate = ({
   const [removeDueDate, setRemoveDueDate] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
 
-  const sourceList = getSourceList(sourceId, "_id").shift();
+  const sourceList = getSourceList(sourceId, "_id");
 
   const handleAddClick = () => setDueDate(true);
   const handleRemoveClick = () => setRemoveDueDate(true);

@@ -43,7 +43,7 @@ const CardLabels = ({
 
   useEffect(() => {
     let activity;
-    const sourceList = getSourceList(sourceId, "_id").shift();
+    const sourceList = getSourceList(sourceId, "_id");
 
     if (label) {
       activity = "addLabel";

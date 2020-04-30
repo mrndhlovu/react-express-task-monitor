@@ -70,8 +70,8 @@ const WrappedCard = ({
 
 const source = {
   beginDrag(props) {
-    const { sourceListId, cardPosition } = props;
-    props.handleStartDrag(sourceListId, cardPosition);
+    const { sourceListId, card } = props;
+    props.handleStartDrag(sourceListId, card._id);
 
     return {};
   },
@@ -84,10 +84,10 @@ const source = {
 
 const target = {
   hover(props, monitor) {
-    const { sourceListId, cardPosition } = props;
+    const { sourceListId, card } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
-    _debounce(props.updateDropTargetId(sourceListId, cardPosition), 400);
+    _debounce(props.updateDropTargetId(sourceListId, card._id), 400);
 
     return;
   },

@@ -119,11 +119,11 @@ const target = {
     return props.handleMoveCardToNewList();
   },
   hover(props, monitor) {
-    const { position } = props;
+    const { list } = props;
 
     if (!monitor.isOver({ shallow: false })) return;
 
-    debounce(props.updateDropTargetId(position), 500);
+    debounce(props.updateDropTargetId(list._id), 500);
 
     return {};
   },
@@ -131,10 +131,10 @@ const target = {
 
 const source = {
   beginDrag(props) {
-    const { list, position } = props;
+    const { list } = props;
+    props.updateSourceId(list._id);
 
     props.updateDragOption();
-    props.updateSourceId(position);
 
     return {};
   },

@@ -46,7 +46,7 @@ const ListHeader = ({
   };
 
   const handleMoveAllCards = () => {
-    const sourceList = getSourceList(listPosition - 1).shift();
+    const sourceList = getSourceList(listPosition - 1);
 
     board.lists.map(
       (list) =>

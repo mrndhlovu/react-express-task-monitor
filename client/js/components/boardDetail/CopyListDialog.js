@@ -23,7 +23,7 @@ const CopyListDialog = ({
   };
 
   const handleCreateClick = () => {
-    const listCopy = getSourceList(sourceId - 1).shift();
+    const listCopy = getSourceList(sourceId - 1);
     delete listCopy._id;
     const updatedClone = { ...listCopy, title: newListTitle };
 
