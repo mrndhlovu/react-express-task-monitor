@@ -13,7 +13,7 @@ const displayStyle = {
 
 const UserProfile = ({ auth }) => {
   const [user, setUser] = useState(null);
-  const { getNavData } = useContext(MainContext);
+  const { getNavData, device } = useContext(MainContext);
 
   useEffect(() => {
     setUser(auth.data.data);
@@ -22,8 +22,8 @@ const UserProfile = ({ auth }) => {
 
   return (
     <UIContainer padding="0" display={displayStyle}>
-      <TabPaneHeader user={user} />
-      <TabProfileContent user={user} />
+      <TabPaneHeader user={user} device={device} />
+      <TabProfileContent user={user} device={device} />
     </UIContainer>
   );
 };

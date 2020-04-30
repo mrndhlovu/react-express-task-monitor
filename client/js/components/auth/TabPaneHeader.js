@@ -8,19 +8,21 @@ import UserAvatar from "../sharedComponents/UserAvatar";
 import { getUserInitials } from "../../utils/appUtils";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
-const displayStyle = {
-  alignItems: "center",
-  background: "#f4f5f7",
-  display: "flex",
-  height: "20vh",
-  justifyContent: "center",
-};
-
 const Small = styled.span`
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #5e6c84;
 `;
 
-const TabPaneHeader = ({ user }) => {
+const TabPaneHeader = ({ user, device }) => {
+  const displayStyle = {
+    alignItems: "center",
+    background: "#f4f5f7",
+    display: "flex",
+    height: device.mobile ? "26vh" : "20vh",
+    justifyContent: "center",
+  };
+
   return (
     <UIContainer display={displayStyle}>
       <UserAvatar

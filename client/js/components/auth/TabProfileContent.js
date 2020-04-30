@@ -4,20 +4,30 @@ import { Tab } from "semantic-ui-react";
 
 import UIContainer from "../sharedComponents/UIContainer";
 import PersonalInfo from "./PersonalInfo";
+import TabContainer from "../sharedComponents/TabContainer";
 
-const displayStyle = {
-  marginTop: "-43px",
-  height: "80vh",
-};
+const TabProfileContent = ({ user, device }) => {
+  const displayStyle = {
+    marginTop: "-43px",
+    height: "80vh",
+  };
 
-const TabProfileContent = ({ user }) => {
+  const style = [
+    `margin-left: ${device.mobile ? "2% !important;" : "41% !important;"}`,
+    `margin-right: ${device.mobile ? "2% !important;" : "41% !important;"}`,
+    "width: 0%;",
+    "border-bottom: 1px solid grey !important;",
+  ];
+
   const panes = [
     {
       menuItem: "Profile and Visibility",
       render: () => (
-        <Tab.Pane className="tab-container">
-          <PersonalInfo user={user} />
-        </Tab.Pane>
+        <TabContainer mobile={device.mobile}>
+          <Tab.Pane className="tab-container">
+            <PersonalInfo user={user} device={device} />
+          </Tab.Pane>
+        </TabContainer>
       ),
     },
     {
@@ -35,8 +45,17 @@ const TabProfileContent = ({ user }) => {
   ];
 
   return (
-    <UIContainer display={displayStyle} padding="0">
-      <Tab as={"div"} defaultActiveIndex={0} panes={panes} />
+    <UIContainer
+      nested={{ element: "div div:first-child.tabular", style }}
+      display={displayStyle}
+      padding="0"
+    >
+      <Tab
+        className="tab-header"
+        as={"div"}
+        defaultActiveIndex={0}
+        panes={panes}
+      />
     </UIContainer>
   );
 };

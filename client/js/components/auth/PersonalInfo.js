@@ -10,7 +10,7 @@ import UIMessage from "../sharedComponents/UIMessage";
 
 const initialMsgState = { success: false, error: false, text: null };
 
-const PersonalInfo = ({ user }) => {
+const PersonalInfo = ({ user, device }) => {
   const [username, setUserName] = useState(null);
   const [bio, setBio] = useState(null);
   const [save, setSave] = useState(false);
@@ -46,7 +46,7 @@ const PersonalInfo = ({ user }) => {
   }, [save, username, bio, requestUserUpdate, msg]);
 
   return (
-    <TabContainer>
+    <>
       {msg.text && (
         <UIMessage
           success={msg.success}
@@ -86,7 +86,7 @@ const PersonalInfo = ({ user }) => {
           />
         </UIWrapper>
       </Form>
-    </TabContainer>
+    </>
   );
 };
 
