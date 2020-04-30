@@ -1,5 +1,6 @@
 const { environment } = require("./server/utils/config");
 const path = require("path");
+const Dotenv = require("dotenv-webpack");
 
 const devMode = environment === "development";
 
@@ -47,4 +48,5 @@ module.exports = {
       },
     ],
   },
+  plugins: [new Dotenv()],
 };

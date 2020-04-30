@@ -36,7 +36,7 @@ const CardModalSidebar = ({
       {!hasChecklist && <AddCardCheckList {...props} />}
       {!hasDueDate && <AddCardDueDate {...props} />}
       {<AddAttachment {...props} />}
-      {!hasCover && <AddCover {...props} />}
+      {!hasCover && <AddCover upward={false} {...props} />}
       <StyledHeader content="ACTIONS" />
       <MoveCardAction {...props} />
       <CopyCardAction {...props} />

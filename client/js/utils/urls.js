@@ -7,7 +7,9 @@ export const BOARDS_EP = `${getRootUrl()}/boards`;
 export const UPLOAD_EP = `${getRootUrl()}/upload`;
 export const CARDS_EP = `${getRootUrl()}/cards`;
 export const AUTH_EP = `${getRootUrl()}/auth`;
-export const IMAGES_EP = `https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}`;
+
+const IMAGES_API_KEY = process.env.REACT_APP_PIXABAY_API_KEY;
+export const IMAGES_EP = `https://pixabay.com/api/?key=${IMAGES_API_KEY}`;
 
 export const params = {
   headers: {
