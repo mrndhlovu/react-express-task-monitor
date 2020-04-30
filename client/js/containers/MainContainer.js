@@ -55,6 +55,10 @@ const MainContainer = ({ children, history }) => {
   );
 
   useEffect(() => {
+    history.location.pathname === "/" && setColor(null);
+  }, [history]);
+
+  useEffect(() => {
     if (!board) return emptyFunction();
     const createBoard = async () => {
       requestNewBoard(board).then((res) => {
@@ -95,7 +99,7 @@ const MainContainer = ({ children, history }) => {
             {auth && (
               <Fragment>
                 <NavHeader
-                  color={isHomePage ? DEFAULT_NAV_COLOR : color}
+                  color={color ? color : DEFAULT_NAV_COLOR}
                   setVisible={() => setVisible(!visible)}
                   user={auth}
                 />

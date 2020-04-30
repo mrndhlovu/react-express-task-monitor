@@ -17,6 +17,14 @@ class DynamicImport extends Component {
   }
 }
 
+const UserProfileContainer = (props) => (
+  <DynamicImport load={() => import("./containers/UserProfileContainer")}>
+    {(Component) =>
+      !Component ? <UILoadingSpinner /> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+
 const LoginContainer = (props) => (
   <DynamicImport load={() => import("./containers/LoginContainer")}>
     {(Component) =>
@@ -73,6 +81,11 @@ const Routes = () => {
         key="boardDetail"
         path="/boards/id/:id"
         component={BoardContainer}
+      />
+      <ProtectedRoute
+        key="profile"
+        path="/profile"
+        component={UserProfileContainer}
       />
 
       <Route

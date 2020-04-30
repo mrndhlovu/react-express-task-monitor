@@ -90,3 +90,12 @@ ui.form,
   display: none;
   overflow-y: scroll;
 }
+
+.tabular {
+  margin-left: 41% !important;
+  width: 0% !important;
+}
+
+.tab-container {
+  border: none !important;
+}

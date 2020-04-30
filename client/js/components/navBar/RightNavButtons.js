@@ -11,11 +11,11 @@ const StyledDiv = styled.div`
   margin-left: auto;
 `;
 
-const RightNavButtons = ({ user }) => {
+const RightNavButtons = ({ user, history }) => {
   return (
     <StyledDiv>
       <NavButton iconName="bell" />
-      <NavUserAvatar userName={user.fname} />
+      <NavUserAvatar userName={user.fname} history={history} />
     </StyledDiv>
   );
 };

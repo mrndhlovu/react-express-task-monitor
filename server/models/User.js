@@ -1,12 +1,18 @@
+const { TOKEN_SIGNATURE } = require("../utils/config");
+const bcrypt = require("bcrypt");
+const Board = require("../models/Board");
+const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const validate = require("validator");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-const Board = require("../models/Board");
-const { TOKEN_SIGNATURE } = require("../utils/config");
 
 const UserSchema = new mongoose.Schema(
   {
+    username: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      minlength: 4,
+    },
     fname: {
       type: String,
       required: true,
@@ -52,6 +58,11 @@ const UserSchema = new mongoose.Schema(
       type: Array,
       required: true,
       default: [],
+    },
+    bio: {
+      type: String,
+      trim: true,
+      minlength: 4,
     },
     tokens: [
       {
@@ -102,6 +113,8 @@ UserSchema.methods.getAuthToken = async function () {
     TOKEN_SIGNATURE
   );
   user.tokens = user.tokens.concat({ token });
+  user.username = user.email.split("@")[0];
+
   await user.save();
   return token;
 };

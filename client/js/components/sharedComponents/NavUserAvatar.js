@@ -5,7 +5,7 @@ import { getUserInitials } from "../../utils/appUtils";
 import { requestAuthLogout } from "../../apis/apiRequests";
 import UserAvatar from "./UserAvatar";
 
-const NavUserAvatar = ({ userName }) => {
+const NavUserAvatar = ({ userName, history }) => {
   const handleLogOut = async () => {
     await requestAuthLogout().then((res) => {
       localStorage.removeItem("user");
@@ -16,9 +16,12 @@ const NavUserAvatar = ({ userName }) => {
   const trigger = <UserAvatar userInitials={getUserInitials(userName)} />;
 
   return (
-    <Dropdown trigger={trigger} pointing="top right" icon={null}>
+    <Dropdown size="huge" trigger={trigger} pointing="top right" icon={null}>
       <Dropdown.Menu>
-        <Dropdown.Item text="Profile and Visibility" />
+        <Dropdown.Item
+          text="Profile and Visibility"
+          onClick={() => (history ? history.push("/profile") : {})}
+        />
         <Dropdown.Item text="Log out" onClick={() => handleLogOut()} />
       </Dropdown.Menu>
     </Dropdown>
