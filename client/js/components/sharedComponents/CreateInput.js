@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 
 import { Card, Button, Icon, TextArea } from "semantic-ui-react";
+import UIWrapper from "./UIWrapper";
 
 const StyledCardContent = styled(Card.Content)`
   padding-top: 10px !important;
@@ -12,6 +13,11 @@ const StyledInput = styled(TextArea)`
   width: 100%;
   border-radius: 3px;
   padding: 5px;
+`;
+
+const ButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const TextAreaWrapper = styled.div`
@@ -42,15 +48,17 @@ const CreateInput = ({
           />
         </StyledCardContent>
       </TextAreaWrapper>
-      <div>
+      <ButtonsWrapper>
         <Button
           positive
           size="tiny"
           content={buttonText}
           onClick={() => handleCreateClick()}
         />
-        <Icon name="close" onClick={close} link />
-      </div>
+        <UIWrapper>
+          <Icon name="close" size="large" onClick={close} link />
+        </UIWrapper>
+      </ButtonsWrapper>
     </Fragment>
   );
 };

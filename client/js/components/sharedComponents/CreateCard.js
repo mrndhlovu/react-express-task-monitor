@@ -6,6 +6,7 @@ import { Button, Card, TextArea, Icon } from "semantic-ui-react";
 import { requestCreateNewCard } from "../../apis/apiRequests";
 import { resetForm, emptyFunction } from "../../utils/appUtils";
 import { BoardContext } from "../../utils/contextUtils";
+import UIWrapper from "./UIWrapper";
 
 const StyledButton = styled.div`
   text-align: left !important;
@@ -107,7 +108,14 @@ const CreateCard = ({
               onClick={() => setSave(true)}
             />
 
-            <Icon name="close" onClick={() => closeAddCardOption()} link />
+            <UIWrapper>
+              <Icon
+                name="close"
+                onClick={() => closeAddCardOption()}
+                size="large"
+                link
+              />
+            </UIWrapper>
           </ButtonWrapper>
         </StyledCard>
       )}

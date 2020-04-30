@@ -111,7 +111,7 @@ const EditCardModal = ({
     }
     if (archive) {
       newCard = { ...card, archived: true };
-
+      setArchive(false);
       saveCardChanges();
     }
 
@@ -119,7 +119,6 @@ const EditCardModal = ({
       const isInAssigneeList = card.assignees.some(
         (member) => member._id === boardMember._id
       );
-      console.log("isInAssigneeList: ", isInAssigneeList);
 
       isInAssigneeList
         ? card.assignees.splice(card.assignees.indexOf(boardMember), 1)
@@ -210,15 +209,19 @@ const EditCardModal = ({
               handleRemoveClick={handleRemoveDueDate}
             />
           </EditCardButton>
-
-          <StyledEditButton
-            content="Archive"
+          <EditCardButton
+            buttonText="Archive"
             icon="archive"
-            compact
-            labelPosition="left"
-            fluid
-            onClick={() => setArchive(true)}
-          />
+            closeOnSelect={true}
+          >
+            <Button
+              content="Archive"
+              negative
+              compact
+              fluid
+              onClick={() => setArchive(true)}
+            />
+          </EditCardButton>
         </StyledModalActions>
       </Wrapper>
     </Modal>
