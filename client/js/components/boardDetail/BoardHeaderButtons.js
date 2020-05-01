@@ -1,10 +1,11 @@
 import React, { useContext, Fragment, useState } from "react";
 import styled from "styled-components";
-import { isEmail } from "validator";
+import isEmail from "validator/lib/isEmail";
+
+import { Dropdown, Button, Icon, List, Input } from "semantic-ui-react";
 
 import { ACCESS_LEVELS } from "../../constants/constants";
 import { BoardContext } from "../../utils/contextUtils";
-import { Dropdown, Button, Icon, List, Input } from "semantic-ui-react";
 import MessageAlert from "../sharedComponents/MessageAlert";
 import NavButton from "../sharedComponents/NavButton";
 import UIContainer from "../sharedComponents/UIContainer";
@@ -141,14 +142,16 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
           </StyledDropdownMenu>
         </Dropdown>
       </StyledButton>
-      <NavButton
-        iconName={!mobile ? "ellipsis horizontal" : false}
-        size="tiny"
-        buttonText="Show Menu"
-        redirect={() => handleShowMenuClick()}
-        forceText={true}
-        float="right"
-      />
+      {!mobile && (
+        <NavButton
+          iconName={!mobile ? "ellipsis horizontal" : false}
+          size="tiny"
+          buttonText="Show Menu"
+          redirect={() => handleShowMenuClick()}
+          forceText={true}
+          float="right"
+        />
+      )}
     </StyledDiv>
   );
 }

@@ -1,28 +1,17 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import isURL from "validator/lib/isURL";
 
-import { Divider, Input, Button, Message } from "semantic-ui-react";
-import { isURL } from "validator";
+import { Input, Button } from "semantic-ui-react";
+
+import { emptyFunction } from "../../utils/appUtils";
 import { requestUpload } from "../../apis/apiRequests";
 import AttachmentOption from "../sharedComponents/AttachmentOption";
 import DropdownButton from "../sharedComponents/DropdownButton";
-import { emptyFunction } from "../../utils/appUtils";
-
-const Container = styled.div`
-  width: 100%;
-`;
-
-const FormWrapper = styled.div`
-  padding: 15px;
-`;
-
-const ButtonWrapper = styled.div`
-  padding-top: 10px;
-`;
-
-const StyleMessageWrapper = styled.div`
-  padding: 10px;
-`;
+import UIDivider from "../sharedComponents/UIDivider";
+import UIMessage from "../sharedComponents/UIMessage";
+import UIWrapper from "../sharedComponents/UIWrapper";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const StyledInput = styled.input`
   margin: 0;
@@ -40,7 +29,7 @@ const StyledSmall = styled.small`
 const AddAttachment = ({
   addCardAttachment,
   handleLoadingAttachment,
-  mobile
+  mobile,
 }) => {
   const [attachment, setAttachment] = useState(null);
   const [error, setError] = useState(false);
@@ -48,7 +37,7 @@ const AddAttachment = ({
   const [message, setMessage] = useState(null);
 
   const handleUpload = useCallback(
-    e => {
+    (e) => {
       const file = e.target.files[0];
       const data = new FormData();
       data.append("image", file);
@@ -56,7 +45,7 @@ const AddAttachment = ({
       const upload = async () => {
         handleLoadingAttachment(true);
         await requestUpload(data)
-          .then(response => {
+          .then((response) => {
             const { imgUrl, uploadDate, success, message } = response.data;
             if (!success) {
               handleLoadingAttachment(false);
@@ -66,7 +55,7 @@ const AddAttachment = ({
             setUpdate(uploadData);
             handleLoadingAttachment(false);
           })
-          .catch(error => setMessage(error.message));
+          .catch((error) => setMessage(error.message));
       };
       upload();
     },
@@ -80,7 +69,7 @@ const AddAttachment = ({
     setUpdate(null);
   }, [update, addCardAttachment]);
 
-  const handleChange = e => setAttachment(e.target.value);
+  const handleChange = (e) => setAttachment(e.target.value);
 
   const handleAttachUrl = () => {
     const url = isURL(attachment);
@@ -91,40 +80,35 @@ const AddAttachment = ({
 
   return (
     <DropdownButton icon="attach" buttonText="Attachment" header="Attach From">
-      <Container>
+      <UIContainer padding="0">
         {message && (
-          <StyleMessageWrapper>
-            <Message
-              error
-              size="tiny"
-              onDismiss={() => {
-                setMessage(false);
-              }}
-              content={message}
-            />
-          </StyleMessageWrapper>
+          <UIMessage
+            error={true}
+            handleDismiss={() => setMessage(false)}
+            message={message}
+          />
         )}
         <AttachmentOption>
           <span>{mobile ? "Phone" : "Computer"}</span>
-          <StyledInput type="file" onChange={e => handleUpload(e)} />
+          <StyledInput type="file" onChange={(e) => handleUpload(e)} />
         </AttachmentOption>
         <AttachmentOption>
           <span>Google Drive</span>
         </AttachmentOption>
-        <Divider />
-        <FormWrapper>
+        <UIDivider />
+        <UIWrapper padding="15px">
           <StyledSmall>Attach a link</StyledSmall>
 
           <Input
             size="tiny"
             focus
             placeholder="Paste a link here..."
-            onChange={e => handleChange(e)}
+            onChange={(e) => handleChange(e)}
             fluid
           />
 
           {error && (
-            <StyleMessageWrapper>
+            <UIContainer>
               <Message
                 size="tiny"
                 compact
@@ -132,18 +116,18 @@ const AddAttachment = ({
                 content="Invalid url"
                 onDismiss={() => setError(false)}
               />
-            </StyleMessageWrapper>
+            </UIContainer>
           )}
 
-          <ButtonWrapper>
+          <UIContainer>
             <Button
               content="Attach"
               size="tiny"
               onClick={() => handleAttachUrl()}
             />
-          </ButtonWrapper>
-        </FormWrapper>
-      </Container>
+          </UIContainer>
+        </UIWrapper>
+      </UIContainer>
     </DropdownButton>
   );
 };

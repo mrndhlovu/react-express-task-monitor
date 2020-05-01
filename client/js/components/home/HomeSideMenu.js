@@ -1,23 +1,24 @@
 import React from "react";
-import styled from "styled-components";
 
 import HomeSidebarButton from "../sharedComponents/HomeSidebarButton";
+import UIContainer from "../sharedComponents/UIContainer";
 
-const StyledContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-`;
+const style = {
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "start",
+  padding: "10px 5px",
+};
 
 const HomeSideMenu = () => {
   return (
-    <StyledContainer>
-      <HomeSidebarButton buttonText="Boards" iconName="trello" />
+    <UIContainer display={style}>
+      <HomeSidebarButton buttonText="Boards" iconName="target" />
       <HomeSidebarButton
         buttonText="Templates"
         iconName="object ungroup outline"
       />
-    </StyledContainer>
+    </UIContainer>
   );
 };
 

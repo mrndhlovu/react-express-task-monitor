@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { Header, Divider, Form, TextArea, Button } from "semantic-ui-react";
+import { Header, Form, TextArea, Button } from "semantic-ui-react";
 
 import { emptyFunction } from "../../utils/appUtils";
 import { requestUserUpdate } from "../../apis/apiRequests";
-import TabContainer from "../sharedComponents/TabContainer";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UIMessage from "../sharedComponents/UIMessage";
+import UIDivider from "../sharedComponents/UIDivider";
 
 const initialMsgState = { success: false, error: false, text: null };
 
@@ -58,7 +58,7 @@ const PersonalInfo = ({ user, device }) => {
       )}
       <Header as="h3" content="Manage your personal information" />
       <Header as="h5" content="About" />
-      <Divider />
+      <UIDivider />
 
       <Form>
         <Form.Field

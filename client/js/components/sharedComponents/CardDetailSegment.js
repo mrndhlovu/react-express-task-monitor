@@ -4,7 +4,6 @@ import styled from "styled-components";
 const Container = styled.div`
   border-radius: 3px;
   letter-spacing: 1px;
-  padding: 5px;
   padding: 10px;
   transition-duration: 300ms;
   transition-property: background;

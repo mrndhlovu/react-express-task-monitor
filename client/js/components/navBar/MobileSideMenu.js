@@ -1,23 +1,27 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Menu, Sidebar, Divider } from "semantic-ui-react";
-import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 import HomeSideMenu from "../home/HomeSideMenu";
+import NavUserAvatar from "../sharedComponents/NavUserAvatar";
+import SideBarWrapper from "../sharedComponents/SideBarWrapper";
+import UIWrapper from "../sharedComponents/UIWrapper";
+import UIDivider from "../sharedComponents/UIDivider";
 
-const AvatarWrapper = styled.div`
-  background: #026aa7;
-  padding: 10px;
-  height: 20%;
-  display: flex;
-  flex-direction: column;
-`;
+const wrapperStyle = {
+  background: "#026aa7",
+  padding: " 20px 10px",
+  height: "20%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "end",
+};
 
-const Container = styled.div`
-  position: relative;
-  width: 80vw;
-  height: 100vh;
-`;
+const style = {
+  position: "relative,",
+  width: "62vw",
+  height: "100vh",
+  padding: 0,
+};
 
 const Span = styled.span`
   font-size: 20px;
@@ -25,29 +29,30 @@ const Span = styled.span`
   padding: 10px 0;
 `;
 
-const MobileSideMenu = ({ visible, setVisible, user }) => {
+const MobileSideMenu = ({ visible, setVisible, user, history }) => {
   return (
-    <Sidebar
-      as={Menu}
-      animation="overlay"
+    <SideBarWrapper
+      direction="left"
       icon="labeled"
-      onHide={() => setVisible()}
-      vertical
-      visible={visible}
+      handleClose={setVisible}
+      open={visible}
+      style={style}
+      hasHeader={false}
+      onHide={setVisible}
     >
-      <Container>
-        <AvatarWrapper>
-          <NavUserAvatar userName={user.fname} />
-          <Span>
-            {user.fname}
-            <br />
-            <small> {user.email}</small>
-          </Span>
-        </AvatarWrapper>
-        <HomeSideMenu />
-        <Divider />
-      </Container>
-    </Sidebar>
+      <UIWrapper display={wrapperStyle}>
+        <NavUserAvatar
+          callback={() => setVisible()}
+          pointing="left"
+          userName={user.fname}
+          history={history}
+        />
+        <Span>{user.fname}</Span>
+        <small>{user.email}</small>
+      </UIWrapper>
+      <HomeSideMenu />
+      <UIDivider margin="0" />
+    </SideBarWrapper>
   );
 };
 

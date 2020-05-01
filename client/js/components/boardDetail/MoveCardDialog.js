@@ -1,16 +1,18 @@
 import React, { useState, useEffect, Fragment } from "react";
-import styled from "styled-components";
 import _debounce from "debounce";
 
+import { Header, Button } from "semantic-ui-react";
+
 import { emptyFunction, checkStringEquality } from "../../utils/appUtils";
-import { Header, Button, Divider } from "semantic-ui-react";
 import { useFetch } from "../../utils/hookUtils";
 import DropdownList from "../sharedComponents/DropdownList";
 import UIContainer from "../sharedComponents/UIContainer";
+import UIDivider from "../sharedComponents/UIDivider";
 
-const StyledWrapper = styled.div`
-  display: flex;
-`;
+const style = {
+  display: "flex",
+  padding: 0,
+};
 
 const MoveCardDialog = ({
   originalBoard,
@@ -142,7 +144,7 @@ const MoveCardDialog = ({
           current={originalBoard._id}
         />
       )}
-      <StyledWrapper>
+      <UIContainer display={style}>
         <DropdownList
           header="List"
           title={hasList && sourceList.title}
@@ -160,8 +162,8 @@ const MoveCardDialog = ({
           current={originalCard._id}
           position={moveDestination.position}
         />
-      </StyledWrapper>
-      <Divider />
+      </UIContainer>
+      <UIDivider />
       <Button
         positive={boardChanged || listChanged || cardPositionChanged}
         disabled={!boardChanged && !listChanged && !cardPositionChanged}

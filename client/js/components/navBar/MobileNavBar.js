@@ -34,7 +34,7 @@ const MobileNavBar = ({
           floated="right"
           size="tiny"
           icon={<Icon name="ellipsis vertical" size="large" />}
-          onClick={() => setShowMobileMenu()}
+          onClick={setShowMobileMenu}
         />
       ) : (
         <Logo mobile={mobile} history={history} />

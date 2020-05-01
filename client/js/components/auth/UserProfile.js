@@ -14,7 +14,6 @@ const displayStyle = {
 const UserProfile = ({ auth }) => {
   const [user, setUser] = useState(null);
   const { getNavData, device } = useContext(MainContext);
-
   useEffect(() => {
     setUser(auth.data.data);
     auth.authenticated && getNavData(auth.data.data);

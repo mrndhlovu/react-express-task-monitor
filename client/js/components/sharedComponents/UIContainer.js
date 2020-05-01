@@ -20,7 +20,6 @@ const UIContainer = ({
   className,
   nested,
 }) => {
-  console.log(nested);
   return (
     <Container
       nested={nested}

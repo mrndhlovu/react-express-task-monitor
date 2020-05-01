@@ -1,18 +1,21 @@
 import React, { useContext, useState, Fragment } from "react";
-import styled from "styled-components";
+
+import { Menu, Button } from "semantic-ui-react";
 
 import { BoardContext, MainContext } from "../../utils/contextUtils";
-import { Menu, Divider, Button } from "semantic-ui-react";
 import Activities from "../cardDetail/Activities";
 import ActivitiesHeader from "../cardDetail/ActivitiesHeader";
 import BoardHeaderButtons from "./BoardHeaderButtons";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
+import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import UIContainer from "../sharedComponents/UIContainer";
 
-const Wrapper = styled.div`
-  width: 800px;
-`;
+const style = {
+  width: "800px",
+  padding: 0,
+};
 
 const BoardMenu = ({
   handleChangeColorClick,
@@ -24,14 +27,14 @@ const BoardMenu = ({
   const [activities, setActivities] = useState(false);
 
   return (
-    <Wrapper>
+    <UIContainer display={style}>
       <SideBarWrapper
         handleClose={device.mobile ? setShowMobileMenu : handleShowMenuClick}
         open={showSideBar}
         header={board.title}
         className="board-menu-sidebar"
       >
-        <Divider hidden />
+        <UIDivider margin="0" hidden={true} />
 
         {device.mobile && (
           <BoardHeaderButtons
@@ -48,7 +51,7 @@ const BoardMenu = ({
           Change Background
         </Menu.Item>
 
-        <Divider />
+        <UIDivider margin="0" />
         <div>
           <DropdownButton
             upward={true}
@@ -68,19 +71,18 @@ const BoardMenu = ({
             </UIWrapper>
           </DropdownButton>
         </div>
-        <Divider />
+
         <ActivitiesHeader
           handleShowDetails={() => setActivities(!activities)}
         />
 
         {activities && (
           <Fragment>
-            <Divider />
             <Activities board={board} user={auth.data.data.fname} />
           </Fragment>
         )}
       </SideBarWrapper>
-    </Wrapper>
+    </UIContainer>
   );
 };
 

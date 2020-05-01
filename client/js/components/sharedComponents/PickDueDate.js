@@ -4,7 +4,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const DatePicker = lazy(() => import("react-datepicker"));
 
-import { Button, Divider, Message } from "semantic-ui-react";
+import { Button, Message } from "semantic-ui-react";
+import UIDivider from "./UIDivider";
 
 const Container = styled.div`
   padding: 15px 10px;
@@ -50,7 +51,7 @@ const PickDueDate = ({
 
         {!message && (
           <>
-            <Divider />
+            <UIDivider />
             <ButtonWrapper>
               <Button
                 content="Add"

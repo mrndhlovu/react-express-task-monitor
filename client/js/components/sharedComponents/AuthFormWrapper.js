@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Form, Grid, Icon, Button, Divider } from "semantic-ui-react";
+import { Form, Grid, Icon, Button } from "semantic-ui-react";
+
 import OtherSignupOptionButton from "./OtherSignupOptionButton";
 import MessageAlert from "./MessageAlert";
+import UIDivider from "./UIDivider";
 
 const FormContainer = styled.div`
   align-items: center;
@@ -111,7 +113,7 @@ const AuthFormWrapper = ({
               content={buttonText}
               onClick={() => handleClick()}
             />
-            <Divider content="OR" horizontal />
+            <UIDivider content="OR" horizontal={true} />
             <OtherSignupOptionButton
               buttonText="Continue with Google"
               icon="google"
@@ -121,7 +123,7 @@ const AuthFormWrapper = ({
               buttonText="Continue with Microsoft"
               icon="microsoft"
             />
-            <Divider />
+            <UIDivider />
             <Subheader
               footer={true}
               onClick={() => history.push(signup ? "/login" : "/signup")}

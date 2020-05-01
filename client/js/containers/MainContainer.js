@@ -6,28 +6,30 @@ import React, {
   Fragment,
 } from "react";
 import { withRouter } from "react-router-dom";
-import styled from "styled-components";
 
-import { MainContext } from "../utils/contextUtils";
+import { Sidebar } from "semantic-ui-react";
+
 import { DEFAULT_NAV_COLOR } from "../constants/constants";
 import { emptyFunction } from "../utils/appUtils";
+import { MainContext } from "../utils/contextUtils";
 import { requestNewBoard } from "../apis/apiRequests";
 import { useDimensions } from "../utils/hookUtils";
+import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
-import { Sidebar } from "semantic-ui-react";
-import MobileSideMenu from "../components/navBar/MobileSideMenu";
+import UIContainer from "../components/sharedComponents/UIContainer";
 
-const Container = styled.div`
-  margin: 0;
-  position: absolute;
-  width: 100vw;
-`;
+const style = {
+  padding: "0",
+  margin: 0,
+  position: "absolute",
+  width: "100vw",
+};
 
 const MainContainer = ({ children, history }) => {
   const isHomePage = history.location.pathname === "/";
   const [visible, setVisible] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState();
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
@@ -93,7 +95,7 @@ const MainContainer = ({ children, history }) => {
         setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
       }}
     >
-      <Container>
+      <UIContainer display={style}>
         <Sidebar.Pushable>
           <Fragment>
             {auth && (
@@ -107,6 +109,7 @@ const MainContainer = ({ children, history }) => {
                   visible={visible}
                   setVisible={() => setVisible(!visible)}
                   user={auth}
+                  history={history}
                 />
               </Fragment>
             )}
@@ -114,7 +117,7 @@ const MainContainer = ({ children, history }) => {
             {search && <SearchPage />}
           </Fragment>
         </Sidebar.Pushable>
-      </Container>
+      </UIContainer>
     </MainContext.Provider>
   );
 };

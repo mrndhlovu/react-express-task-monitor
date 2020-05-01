@@ -1,8 +1,9 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-import { Dropdown, Divider } from "semantic-ui-react";
+import { Dropdown } from "semantic-ui-react";
 import { getFormattedDate } from "../../../utils/appUtils";
+import UIDivider from "../../sharedComponents/UIDivider";
 
 const StyledDiv = styled.div`
   margin-top: 20px;
@@ -30,8 +31,8 @@ const RoomSelector = ({
   onlineCount,
 }) => (
   <StyledDiv>
-    <Divider
-      horizontal
+    <UIDivider
+      horizontal={true}
       inverted={true}
       content={
         <Fragment>

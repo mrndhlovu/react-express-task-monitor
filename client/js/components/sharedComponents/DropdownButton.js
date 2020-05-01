@@ -1,7 +1,8 @@
 import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 
-import { Header, Dropdown, Divider, Icon } from "semantic-ui-react";
+import { Header, Dropdown, Icon } from "semantic-ui-react";
+import UIDivider from "./UIDivider";
 
 const StyledDropdown = styled(Dropdown)`
   margin-bottom: 10px !important;
@@ -35,6 +36,7 @@ const DropdownButton = ({
   callback = () => {},
   closeOnSelect = false,
   hasHeader = true,
+  pointing,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -60,6 +62,7 @@ const DropdownButton = ({
       size={size}
       text={buttonText}
       direction={direction}
+      pointing={pointing}
     >
       <Dropdown.Menu
         className="sidebar-dropdown-button"
@@ -71,7 +74,7 @@ const DropdownButton = ({
               <Header size="tiny" as={as} content={header} />
               <Icon link name="close" onClick={() => handleClose(callback)} />
             </HeaderWrapper>
-            <Divider />
+            <UIDivider />
           </Fragment>
         )}
 

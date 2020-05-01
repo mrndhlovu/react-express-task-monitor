@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const Board = require("../models/Board");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-const validate = require("validator");
+const isEmail = require("validator/lib/isEmail");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -26,7 +26,7 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       required: true,
       validate(value) {
-        if (!validate.isEmail(value)) throw new Error("Email is invalid");
+        if (!isEmail(value)) throw new Error("Email is invalid");
       },
     },
     password: {

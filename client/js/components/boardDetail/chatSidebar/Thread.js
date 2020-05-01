@@ -2,16 +2,17 @@ import React, { memo } from "react";
 import styled from "styled-components";
 import ReactEmoji from "react-emoji";
 
-import { Comment, Divider, Icon } from "semantic-ui-react";
+import { Comment, Icon } from "semantic-ui-react";
 import { getFormattedDate } from "../../../utils/appUtils";
+import UIDivider from "../../sharedComponents/UIDivider";
 
 const Message = styled.div`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isCurrentUserMessage ? "white" : "#1c1c57"};
   border-radius: 2px;
   overflow-wrap: break-word;
   padding: 6px;
-  color: ${props => (props.isCurrentUserMessage ? "black" : "white")};
+  color: ${(props) => (props.isCurrentUserMessage ? "black" : "white")};
 
 }
 `;
@@ -23,9 +24,9 @@ const StyledSpan = styled.span`
 const Thread = ({ message, isCurrentUserMessage }) => {
   return (
     <div>
-      <Divider
-        horizontal
-        inverted
+      <UIDivider
+        horizontal={true}
+        inverted={true}
         content={
           <StyledSpan>{getFormattedDate(message.time, null, true)}</StyledSpan>
         }

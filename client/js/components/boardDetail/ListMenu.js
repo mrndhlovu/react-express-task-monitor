@@ -1,8 +1,9 @@
 import React, { Fragment } from "react";
 
-import { Divider } from "semantic-ui-react";
 import styled from "styled-components";
+
 import { listMenuOptions } from "../../constants/constants";
+import UIDivider from "../sharedComponents/UIDivider";
 
 const DropdownItem = styled.li`
   font-size: 15px !important;
@@ -58,7 +59,7 @@ const ListMenu = ({
           >
             <span>{option.value}</span>
           </DropdownItem>
-          {(option.key === 2 || option.key === 4) && <Divider />}
+          {(option.key === 2 || option.key === 4) && <UIDivider />}
         </Fragment>
       ))}
     </div>

@@ -94,3 +94,11 @@ ui.form,
 .tab-container {
   border: none !important;
 }
+
+.sidebar {
+  border: none !important;
+}
+
+.ui.sidebar {
+  border-radius: 3px !important;
+}

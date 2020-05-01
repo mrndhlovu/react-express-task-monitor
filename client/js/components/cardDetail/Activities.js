@@ -25,11 +25,9 @@ const Detail = styled.span`
 `;
 
 const Activities = ({ board, user }) => {
-  const activities = board.activities.sort((a, b) => b.createdAt - a.createdAt);
-
   return (
     <CardDetailSegment>
-      {activities.map(activity => {
+      {board.activities.map((activity) => {
         const time = getFormattedDate(activity.createdAt, "LLL");
 
         return (

@@ -1,27 +1,24 @@
 import React from "react";
-import styled from "styled-components";
 
 import { bgColors } from "../../constants/constants";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
-import { Divider } from "semantic-ui-react";
+import UIContainer from "../sharedComponents/UIContainer";
+import UIDivider from "../sharedComponents/UIDivider";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
-const ColorsWrapper = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-`;
+const wrapperStyle = {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  padding: 0,
+};
 
-const Color = styled.div`
-  background-color: ${(props) => props.color};
-  border-radius: 8px;
-  height: 96px;
-  margin-bottom: 8px;
-  width: 100%;
-  cursor: pointer;
-`;
-
-const ColorCard = styled.div`
-  padding: 6px;
-`;
+const colorStyle = {
+  borderRadius: "8px",
+  height: "96px",
+  marginBottom: "8px",
+  width: "100%",
+  cursor: "pointer",
+};
 
 const BackGroundColors = ({
   showColorPicker,
@@ -35,14 +32,18 @@ const BackGroundColors = ({
       header="Change board color"
       className="board-menu-sidebar"
     >
-      <Divider hidden />
-      <ColorsWrapper>
+      <UIDivider hidden={true} />
+      <UIWrapper display={wrapperStyle}>
         {bgColors.map((color) => (
-          <ColorCard key={color}>
-            <Color color={color} onClick={() => handleColorPick(color)} />
-          </ColorCard>
+          <UIContainer padding="6px" key={color}>
+            <UIWrapper
+              display={{ ...colorStyle, backgroundColor: color }}
+              color={color}
+              onClick={() => handleColorPick(color)}
+            />
+          </UIContainer>
         ))}
-      </ColorsWrapper>
+      </UIWrapper>
     </SideBarWrapper>
   );
 };

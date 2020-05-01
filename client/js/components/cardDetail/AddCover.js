@@ -1,11 +1,12 @@
 import React, { useState, Fragment } from "react";
 
-import { Button, Divider } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 import AddCoverImage from "./AddCoverImage";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import UIDivider from "../sharedComponents/UIDivider";
 
 const AddCover = ({
   color,
@@ -50,7 +51,7 @@ const AddCover = ({
 
           {hasCover && (
             <Fragment>
-              <Divider />
+              <UIDivider />
               <Button
                 content="Remove Cover"
                 fluid
