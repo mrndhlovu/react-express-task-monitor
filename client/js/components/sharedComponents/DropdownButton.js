@@ -41,7 +41,7 @@ const DropdownButton = ({
   const [open, setOpen] = useState(false);
 
   const handleClose = (callback) => {
-    setOpen(!open);
+    setOpen(false);
     return callback();
   };
 
@@ -57,12 +57,13 @@ const DropdownButton = ({
       fluid={fluid}
       icon={icon}
       labeled={labeled}
-      onClick={() => setOpen(!open)}
+      onClick={() => setOpen(true)}
       open={open}
       size={size}
       text={buttonText}
       direction={direction}
       pointing={pointing}
+      onBlur={() => handleClose(callback)}
     >
       <Dropdown.Menu
         className="sidebar-dropdown-button"
@@ -71,8 +72,13 @@ const DropdownButton = ({
         {hasHeader && (
           <Fragment>
             <HeaderWrapper>
-              <Header size="tiny" as={as} content={header} />
-              <Icon link name="close" onClick={() => handleClose(callback)} />
+              <Header size="small" as={as} content={header} />
+              <Icon
+                size="large"
+                link
+                name="close"
+                onClick={() => handleClose(callback)}
+              />
             </HeaderWrapper>
             <UIDivider />
           </Fragment>

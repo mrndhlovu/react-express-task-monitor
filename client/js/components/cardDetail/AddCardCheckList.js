@@ -1,31 +1,92 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 
+import { emptyFunction, findArrayItem, resetForm } from "../../utils/appUtils";
+import { requestNewChecklist } from "../../apis/apiRequests";
+import CreateInput from "../sharedComponents/CreateInput";
 import DropdownButton from "../sharedComponents/DropdownButton";
-import { Button } from "semantic-ui-react";
+import UIContainer from "../sharedComponents/UIContainer";
+import UIMessage from "../sharedComponents/UIMessage";
 
-const Container = styled.div`
-  padding: 8px 5px;
-`;
+const AddCardCheckList = ({
+  activeCard,
+  id,
+  saveBoardChanges,
+  saveCardChanges,
+  sourceId,
+}) => {
+  const [add, setAdd] = useState(false);
+  const [buttonText, setButtonText] = useState("Add");
+  const [checklist, setChecklist] = useState(null);
+  const [message, setMessage] = useState({ header: null, lists: [] });
 
-const AddCardCheckList = ({ handleCreateChecklist }) => {
+  useEffect(() => {
+    if (!add) return emptyFunction();
+    const checkChecklist = async () => {
+      const body = {
+        checklist: { name: checklist },
+        cardId: activeCard._id,
+        listId: sourceId,
+      };
+
+      await requestNewChecklist(body, id).then((res) => {
+        try {
+          const sourceList = findArrayItem(res.data.lists, sourceId, "_id");
+          activeCard = findArrayItem(sourceList.cards, activeCard._id, "_id");
+          saveCardChanges(activeCard);
+          saveBoardChanges(res.data);
+          setButtonText("Done");
+          resetForm("new-checklist");
+          setChecklist(null);
+        } catch (error) {
+          setMessage({
+            ...message,
+            header: "Failed to create a checklist",
+            lists: [error.message],
+          });
+        }
+      });
+    };
+
+    checkChecklist();
+    setAdd(false);
+  }, [
+    activeCard,
+    message,
+    sourceId,
+    checklist,
+    add,
+    saveBoardChanges,
+    saveCardChanges,
+    resetForm,
+    id,
+  ]);
+
   return (
     <DropdownButton
-      icon="check square outline"
-      header="Add Checklist"
       buttonText="Checklist"
+      callback={() => setButtonText("Add")}
       closeOnSelect={true}
+      header="Add Checklist"
+      icon="check square outline"
     >
-      <Container>
-        <Button
-          fluid
-          compact
-          positive
-          content="Add"
-          defaultValue="Checklist"
-          onClick={() => handleCreateChecklist()}
+      <UIContainer padding="5px 10px" width="300px">
+        {message.header && (
+          <UIMessage
+            error={true}
+            handleDismiss={() => setMessage({ header: null, lists: [] })}
+            list={message.lists}
+            message={message.header}
+          />
+        )}
+        <CreateInput
+          buttonText={buttonText}
+          handleChange={(e) => setChecklist(e.target.value)}
+          handleCreateClick={() => setAdd(true)}
+          hideIcon={true}
+          id="new-checklist"
+          placeholder="Checklist name"
         />
-      </Container>
+      </UIContainer>
     </DropdownButton>
   );
 };

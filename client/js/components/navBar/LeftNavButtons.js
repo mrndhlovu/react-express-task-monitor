@@ -2,11 +2,12 @@ import React, { useState, Fragment, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import NavButton from "../sharedComponents/NavButton";
-import SearchBar from "./SearchBar";
 import { Dropdown, Icon } from "semantic-ui-react";
+
 import { MainContext } from "../../utils/contextUtils";
 import { useFetch } from "../../utils/hookUtils";
+import NavButton from "../sharedComponents/NavButton";
+import SearchBar from "./SearchBar";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -18,7 +19,7 @@ const StyledButton = styled(Dropdown)`
 `;
 
 const StyledSpan = styled.span`
-  color: ${props => props.color};
+  color: ${(props) => props.color};
 `;
 
 const LeftNavButtons = ({ history, results, value }) => {
@@ -39,7 +40,7 @@ const LeftNavButtons = ({ history, results, value }) => {
       <StyledButton
         text="Boards"
         icon={
-          !device.mobile && <Icon name="trello" className="nav-button-icon" />
+          !device.mobile && <Icon name="target" className="nav-button-icon" />
         }
         labeled={!device.mobile}
         button
@@ -50,7 +51,7 @@ const LeftNavButtons = ({ history, results, value }) => {
       >
         <Dropdown.Menu>
           {boards &&
-            boards.map(board => (
+            boards.map((board) => (
               <Fragment key={board._id}>
                 <Dropdown.Item
                   onClick={() => history.push(`/boards/id/${board._id}`)}

@@ -3,7 +3,7 @@ import _debounce from "debounce";
 
 import { Header, Button } from "semantic-ui-react";
 
-import { emptyFunction, checkStringEquality } from "../../utils/appUtils";
+import { emptyFunction, stringsEqual } from "../../utils/appUtils";
 import { useFetch } from "../../utils/hookUtils";
 import DropdownList from "../sharedComponents/DropdownList";
 import UIContainer from "../sharedComponents/UIContainer";
@@ -44,9 +44,9 @@ const MoveCardDialog = ({
   const hasCards = hasList && sourceList.cards.length > 0;
 
   const handleSelection = (selection, dropDownId, position) => {
-    const isBoardsDropdown = checkStringEquality(dropDownId, "Board");
-    const isListDropdown = checkStringEquality(dropDownId, "List");
-    const isPositionDropdown = checkStringEquality(dropDownId, "Position");
+    const isBoardsDropdown = stringsEqual(dropDownId, "Board");
+    const isListDropdown = stringsEqual(dropDownId, "List");
+    const isPositionDropdown = stringsEqual(dropDownId, "Position");
 
     if (isBoardsDropdown)
       return setMoveDestination({

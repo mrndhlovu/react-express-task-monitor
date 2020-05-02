@@ -1,20 +1,27 @@
 import React, { memo } from "react";
-import { Checkbox } from "semantic-ui-react";
 import styled from "styled-components";
+
+import { Checkbox } from "semantic-ui-react";
 
 const Container = styled.div`
   padding: 8px 15px;
 `;
 
-const ChecklistItem = ({ item, handleCheckboxClick, isChecked }) => {
+const ChecklistItem = ({
+  item,
+  handleCheckboxClick,
+  isCompleted,
+  position,
+}) => {
   return (
     <Container>
       <Checkbox
+        className={isCompleted ? "item-complete" : "item-doing"}
         id={item._id}
         label={item.description}
-        checked={isChecked}
+        checked={isCompleted}
         onChange={() =>
-          handleCheckboxClick(item._id, isChecked ? "todo" : "done")
+          handleCheckboxClick(position - 1, isCompleted ? "doing" : "done")
         }
       />
     </Container>

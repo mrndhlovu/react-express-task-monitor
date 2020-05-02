@@ -57,8 +57,11 @@ export const requestUserUpdate = (body) =>
 export const requestUserInvite = (id, email) =>
   axios.patch(`${BOARDS_EP}/id/${id}/invite`, { email }, params);
 
-export const requestNewChecklistItem = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/checklist`, body, params);
+export const requestChecklistTask = (body, id) =>
+  axios.post(`${CARDS_EP}/${id}/checklist-task`, body, params);
+
+export const requestNewChecklist = (body, id) =>
+  axios.patch(`${CARDS_EP}/${id}/create-checklist`, body, params);
 
 export const requestCreateComment = (body, id) =>
   axios.patch(`${CARDS_EP}/${id}/comment`, body, params);

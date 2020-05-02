@@ -120,7 +120,7 @@ export const getProgression = (partialValue, totalValue) =>
 export const getFormattedDate = (date, format, calendar) =>
   calendar ? moment(date).calendar() : moment(date).format(format);
 
-export const checkStringEquality = (mainString, comparison) =>
+export const stringsEqual = (mainString, comparison) =>
   equals(mainString, comparison);
 
 export const findArrayItem = (array, itemId, fieldProp) =>

@@ -14,7 +14,7 @@ import { parseSearchQuery, getQueryString } from "../../utils/urls";
 import {
   findArrayItem,
   emptyFunction,
-  checkStringEquality,
+  stringsEqual,
 } from "../../utils/appUtils";
 import { requestNewBoardList } from "../../apis/apiRequests";
 

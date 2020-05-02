@@ -7,14 +7,18 @@ const UIMessage = ({
   success = false,
   error = false,
   handleDismiss,
+  list,
 }) => {
   return (
     <Message
-      content={message}
+      className="message-box"
+      floating
+      header={message}
       positive={success}
       negative={error}
       onDismiss={handleDismiss}
       size="tiny"
+      list={list}
     />
   );
 };

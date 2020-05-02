@@ -9,7 +9,6 @@ import React, {
 } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
-
 import { Modal, Button, Grid } from "semantic-ui-react";
 
 import {
@@ -17,11 +16,12 @@ import {
   MainContext,
   BoardContext,
 } from "../../utils/contextUtils";
-import { checkDuplicate, emptyFunction } from "../../utils/appUtils";
 import {
-  requestCardUpdate,
-  requestDeleteAttachment,
-} from "../../apis/apiRequests";
+  checkDuplicate,
+  emptyFunction,
+  findArrayItem,
+} from "../../utils/appUtils";
+import { requestCardUpdate } from "../../apis/apiRequests";
 import Attachments from "./Attachments";
 import CardModalActivities from "./CardModalActivities";
 import CardModalDescription from "./CardModalDescription";
@@ -29,6 +29,7 @@ import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
+
 const DueDate = lazy(() => import("./DueDate"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
 
@@ -53,13 +54,13 @@ const StyledIcon = styled(Button)`
 
 const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
   const {
-    handleCardClick,
-    sourceTitle,
-    board,
-    handleBoardUpdate,
-    getSourceList,
     activeCard,
+    board,
+    getSourceList,
+    handleBoardUpdate,
+    handleCardClick,
     handleUploadAttachment,
+    sourceTitle,
   } = useContext(BoardListsContext);
   const { saveBoardChanges, auth } = useContext(BoardContext);
   const { device } = useContext(MainContext);
@@ -67,7 +68,6 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
 
   const [activeCover, setActiveCardCover] = useState(null);
   const [card, setCard] = useState(activeCard);
-  const [checklist, setCheckList] = useState(false);
   const [deleteAttachment, setDeleteAttachment] = useState(null);
   const [hideActivities, setHideActivities] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,8 +82,6 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
 
   const saveCardChanges = (changes) => setCard(changes);
 
-  const handleCreateChecklist = () => setCheckList(true);
-
   const handleMakeCover = (coverUrl) => setNewCover(coverUrl);
 
   const handleDeleteAttachment = (imgUrl) => {
@@ -92,37 +90,23 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
   };
 
   const addCardAttachment = useCallback(
-    (attachment) => {
+    (attachment, callback) => {
       const duplicate = checkDuplicate(
         card.attachments.images,
         attachment.imgUrl
       );
       if (!duplicate) {
-        let newBoard;
         card.attachments.images.push(attachment);
+        !card.cardCover && { ...card, cardCover: attachment.imgUrl };
 
-        newBoard = {
-          ...board,
-          lists: board.lists.map((list) =>
-            list._id === sourceId
-              ? {
-                  ...list,
-                  cards: list.cards.map((cardItem) =>
-                    cardItem._id === card._id
-                      ? {
-                          ...cardItem,
-                          attachments: { ...cardItem.attachments },
-                          cardCover: attachment.imgUrl,
-                        }
-                      : { ...cardItem }
-                  ),
-                }
-              : { ...list }
-          ),
-        };
-        setNewAttachment(newBoard);
-        setNewCover(attachment.imgUrl);
+        const sourceList = findArrayItem(board.lists, sourceId, "_id");
+
+        sourceList.cards.splice(sourceList.cards.indexOf(card), 1, card);
+        board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
+        setNewAttachment(board);
       }
+      callback();
     },
     [card, board, sourceId]
   );
@@ -201,16 +185,20 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
     if (!deleteAttachment) return emptyFunction();
 
     const removeAttachment = async () => {
+      card.attachments.images.splice(
+        card.attachments.images.indexOf(deleteAttachment),
+        1
+      );
+
       const body = {
-        cardId: card._id,
+        newCard: card,
         listId: sourceId,
-        deleteId: deleteAttachment,
       };
 
-      await requestDeleteAttachment(body, id).then((res) => {
+      await requestCardUpdate(body, id).then((res) => {
+        setCard(newCard);
         saveBoardChanges(res.data);
         setIsLoading(false);
-        setNewCover(null);
       });
     };
     removeAttachment();
@@ -249,7 +237,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
           handleCardClick={handleCardClick}
           hasCover={hasCover}
           id={id}
-          isLoading={isLoading}
+          isLoading={isLoading && (newCover || removeCover)}
           sourceId={sourceId}
           saveCardChanges={saveCardChanges}
           saveBoardChanges={saveBoardChanges}
@@ -300,24 +288,30 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                     getSourceList={getSourceList}
                     activeCard={card}
                   />
-                  {(hasChecklist || checklist) && (
-                    <CheckLists
-                      activeCard={card}
-                      handleBoardUpdate={handleBoardUpdate}
-                      board={board}
-                      getSourceList={getSourceList}
-                      sourceId={sourceId}
-                      match={match}
-                      saveBoardChanges={saveBoardChanges}
-                      saveCardChanges={saveCardChanges}
-                      mobile={device.mobile}
-                    />
-                  )}
+                  {hasChecklist &&
+                    card.checklists.map((list, index) => (
+                      <CheckLists
+                        key={list._id}
+                        activeCard={card}
+                        checklistName={list.name}
+                        checklist={list}
+                        handleBoardUpdate={handleBoardUpdate}
+                        board={board}
+                        getSourceList={getSourceList}
+                        sourceId={sourceId}
+                        match={match}
+                        saveBoardChanges={saveBoardChanges}
+                        saveCardChanges={saveCardChanges}
+                        mobile={device.mobile}
+                        id={id}
+                        listIndex={index}
+                      />
+                    ))}
 
                   <Attachments
                     activeCover={activeCover}
                     activeCard={card}
-                    isLoading={isLoading}
+                    isLoading={isLoading && (newAttachment || deleteAttachment)}
                     handleMakeCover={handleMakeCover}
                     handleRemoveCover={handleRemoveCover}
                     handleDeleteAttachment={handleDeleteAttachment}
@@ -346,7 +340,6 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                 boardMembers={board.members}
                 getSourceList={getSourceList}
                 handleBoardUpdate={handleBoardUpdate}
-                handleCreateChecklist={handleCreateChecklist}
                 handleLoadingAttachment={handleLoadingAttachment}
                 handleMakeCover={handleMakeCover}
                 handleRemoveCover={handleRemoveCover}

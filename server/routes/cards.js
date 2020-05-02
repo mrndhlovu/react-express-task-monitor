@@ -2,7 +2,8 @@ const equals = require("validator/lib/equals");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const Board = require("../models/Board");
 const Card = require("../models/Card");
-const CheckListItem = require("../models/CheckListItem");
+const CheckList = require("../models/CheckList");
+const ChecklistTask = require("../models/ChecklistTask");
 const Comment = require("../models/Comment");
 const ObjectID = require("mongodb").ObjectID;
 const router = require("express").Router();
@@ -52,9 +53,9 @@ router.patch("/:boardId/new-card", auth, async (req, res) => {
   }
 });
 
-router.patch("/:boardId/checklist", auth, async (req, res) => {
+router.patch("/:boardId/create-checklist", auth, async (req, res) => {
   const _id = req.params.boardId;
-  const { listItem, cardId, listId } = req.body;
+  const { checklist, cardId, listId } = req.body;
 
   try {
     board = await Board.findOne({ _id, owner: req.user._id });
@@ -64,7 +65,7 @@ router.patch("/:boardId/checklist", auth, async (req, res) => {
       board.validateBoardMember(req.user._id);
     }
 
-    const checkListItem = new CheckListItem({ ...listItem });
+    const checkListItem = new CheckList({ ...checklist });
 
     const sourceList = getSourceList(board.lists, listId);
     const sourceCard = getSourceList(sourceList.cards, cardId);
@@ -88,6 +89,18 @@ router.patch("/:boardId/checklist", auth, async (req, res) => {
   }
 });
 
+router.post("/:boardId/checklist-task", auth, async (req, res) => {
+  const { task } = req.body;
+
+  try {
+    const taskItem = new ChecklistTask({ ...task });
+
+    res.status(203).send(taskItem);
+  } catch (error) {
+    res.status(400).send({ message: "Failed to create checklist task!" });
+  }
+});
+
 router.patch("/:boardId/update-card", auth, async (req, res) => {
   const { newCard, listId } = req.body;
   const { boardId } = req.params;
@@ -105,7 +118,7 @@ router.patch("/:boardId/update-card", auth, async (req, res) => {
 
     res.send(newBoard);
   } catch (error) {
-    res.status(400).send({ message: "Failed to update card cover" });
+    res.status(400).send({ message: "Failed to update card" });
   }
 });
 

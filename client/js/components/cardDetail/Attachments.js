@@ -6,6 +6,7 @@ import { Item, Button, Dropdown } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import { getFormattedDate } from "../../utils/appUtils";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const Container = styled.div``;
 
@@ -27,21 +28,32 @@ const DateWrapper = styled.div`
 
 const AttachmentLink = styled.a`
   color: grey;
-  transition-duration: 600ms;
+  transition-duration: 400ms;
   transition-property: color;
   &:hover {
-  color: #e0e1e2  
+  color: #000  
   }
 
   &:after{
   content:'${(props) => props.content}';
   padding: 0 5px;
+  font-size: 11px
   }
 `;
 
 const StyledDropdownMenu = styled(Dropdown.Menu)`
-  padding: 0 10px 10px 10px !important;
+  padding: 10px 5px !important;
+  max-width: 200px !important;
 `;
+
+const display = {
+  backgroundColor: "#e2dfe4 !important",
+  height: "80px",
+  position: "relative",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
 
 const Attachments = ({
   activeCover,
@@ -56,7 +68,7 @@ const Attachments = ({
   const hasAttachments = images.length > 0;
 
   return isLoading ? (
-    <CardDetailSegment>Loading...</CardDetailSegment>
+    <UIContainer display={display}>Loading...</UIContainer>
   ) : (
     hasAttachments && (
       <CardDetailSegment>
@@ -85,7 +97,7 @@ const Attachments = ({
                     onClick={() => handleAttachmentComment()}
                   />
                   <AttachmentLink>
-                    <Dropdown text="Delete" multiple icon={false}>
+                    <Dropdown as="small" text="Delete" multiple icon={false}>
                       <StyledDropdownMenu>
                         <Dropdown.Header content={deleteAttachmentText} />
                         <Button
@@ -100,18 +112,37 @@ const Attachments = ({
                     </Dropdown>
                   </AttachmentLink>
 
-                  <AttachmentLink
-                    content={
-                      image.imgUrl === activeCover
-                        ? "Remove Cover"
-                        : "Make Cover"
-                    }
-                    onClick={() =>
-                      image.imgUrl === activeCover
-                        ? handleRemoveCover()
-                        : handleMakeCover(image.imgUrl)
-                    }
-                  />
+                  <AttachmentLink>
+                    <Dropdown
+                      as="small"
+                      text={
+                        image.imgUrl === activeCover
+                          ? "Remove Cover"
+                          : "Make Cover"
+                      }
+                      multiple
+                      icon={false}
+                    >
+                      <StyledDropdownMenu>
+                        <Button
+                          content={
+                            image.imgUrl === activeCover
+                              ? "Remove Cover"
+                              : "Make Cover"
+                          }
+                          color="red"
+                          fluid
+                          icon=""
+                          size="tiny"
+                          onClick={() =>
+                            image.imgUrl === activeCover
+                              ? handleRemoveCover()
+                              : handleMakeCover(image.imgUrl)
+                          }
+                        />
+                      </StyledDropdownMenu>
+                    </Dropdown>
+                  </AttachmentLink>
                 </AttachmentCtaWrapper>
               </Container>
             </Item>

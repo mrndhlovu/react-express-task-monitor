@@ -35,12 +35,15 @@ const CreateInput = ({
   id,
   hideIcon = false,
   width = "250px",
+  fluid = false,
+  positive = true,
 }) => {
   return (
     <Fragment>
       <TextAreaWrapper width={width}>
         <StyledCardContent extra>
           <StyledInput
+            id={id}
             autoFocus
             defaultValue={defaultValue}
             id={id}
@@ -51,10 +54,11 @@ const CreateInput = ({
       </TextAreaWrapper>
       <ButtonsWrapper>
         <Button
-          positive
+          positive={positive}
           size="tiny"
           content={buttonText}
           onClick={() => handleCreateClick()}
+          fluid={fluid}
         />
         {!hideIcon && (
           <UIWrapper>

@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-import { checkStringEquality } from "../../utils/appUtils";
+import { stringsEqual } from "../../utils/appUtils";
 import { Dropdown, Header } from "semantic-ui-react";
 import UIContainer from "./UIContainer";
 
@@ -24,9 +24,9 @@ const DropdownList = ({
   hasCards,
   current,
 }) => {
-  const isBoardsDropdown = checkStringEquality(header, "Board");
-  const isListDropdown = checkStringEquality(header, "List");
-  const isPositionDropdown = checkStringEquality(header, "Position");
+  const isBoardsDropdown = stringsEqual(header, "Board");
+  const isListDropdown = stringsEqual(header, "List");
+  const isPositionDropdown = stringsEqual(header, "Position");
 
   return (
     <UIContainer

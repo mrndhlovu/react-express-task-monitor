@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 import { Modal } from "semantic-ui-react";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 
 import AddCover from "./AddCover";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const ButtonWrapper = styled.div`
   position: absolute;
@@ -25,9 +25,18 @@ const CoverContainer = styled(Modal.Header)`
   transition-duration: 600ms !important;
 `;
 
+const style = {
+  backgroundColor: "#e2dfe4 !important",
+  height: "160px",
+  position: "relative",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+};
+
 const ModalImageCover = ({ cardCover, isLoading, ...props }) => {
   return isLoading ? (
-    <CardDetailSegment>Loading...</CardDetailSegment>
+    <UIContainer display={style}>Loading...</UIContainer>
   ) : (
     cardCover && (
       <CoverContainer cover={cardCover}>

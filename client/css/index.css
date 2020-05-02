@@ -102,3 +102,15 @@ ui.form,
 .ui.sidebar {
   border-radius: 3px !important;
 }
+
+.message-box {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.item-complete {
+  text-decoration: line-through;
+}

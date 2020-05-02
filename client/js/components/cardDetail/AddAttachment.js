@@ -4,7 +4,7 @@ import isURL from "validator/lib/isURL";
 
 import { Input, Button } from "semantic-ui-react";
 
-import { emptyFunction } from "../../utils/appUtils";
+import { emptyFunction, resetForm } from "../../utils/appUtils";
 import { requestUpload } from "../../apis/apiRequests";
 import AttachmentOption from "../sharedComponents/AttachmentOption";
 import DropdownButton from "../sharedComponents/DropdownButton";
@@ -22,8 +22,10 @@ const StyledInput = styled.input`
   margin-left: -68px;
 `;
 
-const StyledSmall = styled.small`
-  padding-left: 3px;
+const StyledSmall = styled.h6`
+  padding-left: 10px;
+  font-size: 12px;
+  margin: 2px;
 `;
 
 const AddAttachment = ({
@@ -32,9 +34,7 @@ const AddAttachment = ({
   mobile,
 }) => {
   const [attachment, setAttachment] = useState(null);
-  const [error, setError] = useState(false);
-  const [update, setUpdate] = useState(null);
-  const [message, setMessage] = useState(null);
+  const [message, setMessage] = useState({ header: null, list: [] });
 
   const handleUpload = useCallback(
     (e) => {
@@ -49,81 +49,88 @@ const AddAttachment = ({
             const { imgUrl, uploadDate, success, message } = response.data;
             if (!success) {
               handleLoadingAttachment(false);
-              return setMessage(message);
+              return setMessage({ ...message, header: message });
             }
-            const uploadData = { imgUrl, uploadDate, name: file.name };
-            setUpdate(uploadData);
+            const imageData = { imgUrl, uploadDate, name: file.name };
+            addCardAttachment(imageData);
             handleLoadingAttachment(false);
           })
-          .catch((error) => setMessage(error.message));
+          .catch((error) => setMessage({ ...message, header: error.message }));
       };
       upload();
     },
     [handleLoadingAttachment]
   );
 
-  useEffect(() => {
-    if (!update) return emptyFunction();
-
-    if (update) addCardAttachment(update);
-    setUpdate(null);
-  }, [update, addCardAttachment]);
-
   const handleChange = (e) => setAttachment(e.target.value);
 
-  const handleAttachUrl = () => {
+  const handleAttachClick = () => {
     const url = isURL(attachment);
+    if (!url) return setMessage({ ...message, header: "Invalid link!" });
+    const allowedMedia = ["png", "jpg", "gif"];
+    const imageType = attachment.split(".").pop();
 
-    console.log("url: ", url);
-    if (!url) return setError(!error);
+    if (!allowedMedia.includes(imageType))
+      setMessage({
+        ...message,
+        header: "Invalid image link!",
+        list: ["At the moment only .png and .jpeg images are supported"],
+      });
+    const name = `link-attachment-${attachment.split("/").pop()}`;
+
+    const imageData = {
+      imgUrl: attachment,
+      uploadDate: Date.now,
+      name,
+    };
+
+    addCardAttachment(imageData, () => {
+      setAttachment(null);
+      resetForm("attachment-link");
+    });
   };
 
   return (
     <DropdownButton icon="attach" buttonText="Attachment" header="Attach From">
-      <UIContainer padding="0">
-        {message && (
-          <UIMessage
-            error={true}
-            handleDismiss={() => setMessage(false)}
-            message={message}
-          />
+      <UIContainer width="300px" padding="0">
+        {message.header && (
+          <UIWrapper>
+            <UIMessage
+              error={true}
+              handleDismiss={() => setMessage(false)}
+              message={message.header}
+              list={message.list}
+            />
+          </UIWrapper>
         )}
         <AttachmentOption>
           <span>{mobile ? "Phone" : "Computer"}</span>
           <StyledInput type="file" onChange={(e) => handleUpload(e)} />
         </AttachmentOption>
-        <AttachmentOption>
+        {/* <AttachmentOption>
           <span>Google Drive</span>
-        </AttachmentOption>
+        </AttachmentOption> */}
         <UIDivider />
         <UIWrapper padding="15px">
           <StyledSmall>Attach a link</StyledSmall>
-
-          <Input
-            size="tiny"
-            focus
-            placeholder="Paste a link here..."
-            onChange={(e) => handleChange(e)}
-            fluid
-          />
-
-          {error && (
-            <UIContainer>
-              <Message
-                size="tiny"
-                compact
-                error
-                content="Invalid url"
-                onDismiss={() => setError(false)}
-              />
-            </UIContainer>
-          )}
+          <UIWrapper>
+            <Input
+              id="attachment-link"
+              size="tiny"
+              focus
+              placeholder="Paste a link here..."
+              onChange={(e) => handleChange(e)}
+              fluid
+            />
+          </UIWrapper>
 
           <UIContainer>
             <Button
+              disabled={!attachment}
+              positive
               content="Attach"
               size="tiny"
-              onClick={() => handleAttachUrl()}
+              onClick={() => handleAttachClick()}
             />
           </UIContainer>
         </UIWrapper>
