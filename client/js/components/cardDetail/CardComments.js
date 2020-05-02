@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment, lazy, Suspense } from "react";
 import { emptyFunction, resetForm } from "../../utils/appUtils";
 import { requestCreateComment } from "../../apis/apiRequests";
 import CardCommentInput from "../sharedComponents/CardCommentInput";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const Comment = lazy(() => import("./Comment"));
 
@@ -43,24 +44,24 @@ const CardComments = ({
   }, [newComment, id, sourceId, activeCard, saveCardChanges]);
 
   return (
-    <Fragment>
+    <>
       <CardCommentInput saveComment={saveComment} {...props} />
-
-      {activeCard.comments.map((comment) => (
-        <Suspense fallback={<div>Loading...</div>}>
-          <Comment
-            key={comment._id}
-            comment={comment}
-            getSourceList={getSourceList}
-            sourceId={sourceId}
-            activeCard={activeCard}
-            handleBoardUpdate={handleBoardUpdate}
-            board={board}
-            saveCardChanges={saveCardChanges}
-          />
-        </Suspense>
-      ))}
-    </Fragment>
+      <Suspense fallback={<div>Loading...</div>}>
+        {activeCard.comments.map((comment) => (
+          <UIContainer key={comment._id} padding="10px 0">
+            <Comment
+              comment={comment}
+              getSourceList={getSourceList}
+              sourceId={sourceId}
+              activeCard={activeCard}
+              handleBoardUpdate={handleBoardUpdate}
+              board={board}
+              saveCardChanges={saveCardChanges}
+            />
+          </UIContainer>
+        ))}
+      </Suspense>
+    </>
   );
 };
 

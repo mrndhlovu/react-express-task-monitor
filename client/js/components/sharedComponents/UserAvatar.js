@@ -22,7 +22,7 @@ const StyledButton = styled.div`
   }
 `;
 
-const UserAvatar = ({ userInitials = "M", padding = "14px", fontSize }) => (
+const UserAvatar = ({ userInitials = "M", padding = "17px", fontSize }) => (
   <StyledButton padding={padding}>
     <Span fontSize={fontSize}>{userInitials}</Span>
   </StyledButton>

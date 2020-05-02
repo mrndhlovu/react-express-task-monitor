@@ -3,17 +3,18 @@ import styled from "styled-components";
 
 import { Button } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
+import UIContainer from "../sharedComponents/UIContainer";
 
-const Container = styled.div`
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-`;
+const display = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  padding: "0 0 10px 0",
+};
 
 const ActivitiesHeader = ({ handleShowDetails, hideButton }) => {
   return (
-    <Container>
+    <UIContainer display={display}>
       <CardDetailHeader description="Activities" icon="sort amount down" />
 
       {!hideButton && (
@@ -22,10 +23,9 @@ const ActivitiesHeader = ({ handleShowDetails, hideButton }) => {
           floated="right"
           size="tiny"
           content="Show Details"
-          compact
         />
       )}
-    </Container>
+    </UIContainer>
   );
 };
 

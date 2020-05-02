@@ -4,12 +4,12 @@ import styled from "styled-components";
 import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import UserAvatar from "../sharedComponents/UserAvatar";
+import UIContainer from "../sharedComponents/UIContainer";
 
-const StyledActivitiesContainer = styled.div`
-  display: flex;
-  justify-content: flex-start;
-  padding: 10px;
-`;
+const display = {
+  display: "flex",
+  justifyContent: "flex-start",
+};
 
 const StyledSpan = styled.span`
   font-size: 11px;
@@ -31,13 +31,16 @@ const Activities = ({ board, user }) => {
         const time = getFormattedDate(activity.createdAt, "LLL");
 
         return (
-          <StyledActivitiesContainer key={activity.createdAt}>
-            <UserAvatar userInitials={getUserInitials(user)} />
+          <UIContainer display={display} key={activity.createdAt}>
+            <UserAvatar
+              padding="18px !important"
+              userInitials={getUserInitials(user)}
+            />
             <Detail>
               {activity.activity} <br />
               <StyledSpan>{time}</StyledSpan>
             </Detail>
-          </StyledActivitiesContainer>
+          </UIContainer>
         );
       })}
     </CardDetailSegment>

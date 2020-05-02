@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { Form, Button, TextArea } from "semantic-ui-react";
 import UserAvatar from "./UserAvatar";
 import { getUserInitials } from "../../utils/appUtils";
+import UIWrapper from "./UIWrapper";
 
 const Container = styled.div`
   display: grid;
@@ -13,10 +14,9 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  padding-left: 9%;
+  margin-left: 9%;
 `;
 
-const AvatarContainer = styled.div``;
 const FormWrapper = styled.div`
   margin-left: 20px;
 `;
@@ -39,9 +39,9 @@ const CardCommentInput = ({ comment, saveComment, user }) => {
   return (
     <Fragment>
       <Container>
-        <AvatarContainer>
-          <UserAvatar userInitials={getUserInitials(user)} />
-        </AvatarContainer>
+        <UIWrapper padding="10px 0 10px 10px">
+          <UserAvatar padding="18px" userInitials={getUserInitials(user)} />
+        </UIWrapper>
         <FormWrapper>
           <Form>
             <Form.Field>
