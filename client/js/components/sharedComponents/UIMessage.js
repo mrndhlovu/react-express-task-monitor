@@ -19,6 +19,7 @@ const UIMessage = ({
       onDismiss={handleDismiss}
       size="tiny"
       list={list}
+      key="list"
     />
   );
 };

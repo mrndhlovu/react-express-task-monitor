@@ -11,11 +11,7 @@ import {
 import CreateItemForm from "../sharedComponents/CreateItemForm";
 import ListGrid from "./ListGrid";
 import { parseSearchQuery, getQueryString } from "../../utils/urls";
-import {
-  findArrayItem,
-  emptyFunction,
-  stringsEqual,
-} from "../../utils/appUtils";
+import { findArrayItem, emptyFunction } from "../../utils/appUtils";
 import { requestNewBoardList } from "../../apis/apiRequests";
 
 const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));

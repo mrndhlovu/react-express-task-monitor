@@ -31,12 +31,12 @@ const MainContainer = ({ children, history }) => {
   const [visible, setVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+  const [auth, setAuth] = useState(null);
   const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
+  const [color, setColor] = useState(null);
   const [search, setSearch] = useState(false);
   const [update, setUpdate] = useState(null);
-  const [color, setColor] = useState(null);
-  const [auth, setAuth] = useState(null);
 
   const { device, dimensions } = useDimensions();
 

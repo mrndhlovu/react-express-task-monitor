@@ -36,7 +36,7 @@ const UserSchema = new mongoose.Schema(
       minlength: 7,
       validate(value) {
         if (value.toLowerCase().includes("password"))
-          throw new Error(`Password should not be 'password'`);
+          throw new Error(`Password should not include 'password'`);
       },
     },
     starred: {
@@ -122,10 +122,10 @@ UserSchema.methods.getAuthToken = async function () {
 UserSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
-  if (!user) throw new Error("Unable to login");
+  if (!user) throw new Error("Login error: check your email or password.");
 
   const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error("Unable to login");
+  if (!isMatch) throw new Error("Login error: check your email or password.");
   return user;
 };
 

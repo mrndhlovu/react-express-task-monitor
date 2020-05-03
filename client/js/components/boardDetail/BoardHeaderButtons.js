@@ -6,9 +6,9 @@ import { Dropdown, Button, Icon, List, Input } from "semantic-ui-react";
 
 import { ACCESS_LEVELS } from "../../constants/constants";
 import { BoardContext } from "../../utils/contextUtils";
-import MessageAlert from "../sharedComponents/MessageAlert";
 import NavButton from "../sharedComponents/NavButton";
 import UIContainer from "../sharedComponents/UIContainer";
+import UIMessage from "../sharedComponents/UIMessage";
 
 const StyledDiv = styled.div`
   justify-self: ${(props) => (props.mobile ? "center" : "end")};
@@ -116,10 +116,10 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
           <StyledDropdownMenu>
             {error ? (
               <Dropdown.Header>
-                <MessageAlert
+                <UIMessage
                   message={error}
-                  open={true}
-                  close={() => setError(null)}
+                  error={true}
+                  handleDismiss={() => setError(null)}
                 />
               </Dropdown.Header>
             ) : (

@@ -1,41 +1,36 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Form, Grid, Icon, Button } from "semantic-ui-react";
+import { Icon, Button } from "semantic-ui-react";
 
-import OtherSignupOptionButton from "./OtherSignupOptionButton";
-import MessageAlert from "./MessageAlert";
+import SocialAuthButton from "./SocialAuthButton";
+import UIContainer from "./UIContainer";
 import UIDivider from "./UIDivider";
-
-const FormContainer = styled.div`
-  align-items: center;
-  background-color: #fafbfc;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  justify-content: center;
-  margin-top: -5%;
-  position: relative;
-`;
+import UIMessage from "./UIMessage";
 
 const StyledHeader = styled.div`
-  font-size: 25px;
   color: #0079bf;
-  width: max-content;
+  font-family: Poppins, sans-serif;
+  font-size: 25px;
   transition-duration: 500ms;
-  &::after {
-    content: "Task Monitor";
-    font-family: "Shadows Into Light Two", cursive;
-  }
+  width: max-content;
+  position: absolute;
+  top: 16%
+}
 `;
 
-const HeaderContainer = styled.div``;
-
-const StyledFormColumn = styled(Grid.Column)`
-  min-width: 350px;
+const FormWrapper = styled.form`
+  background: #fff;
+  border-radius: 2px;
+  border: 1px solid #22242626;
+  box-shadow: 0 1px 2px 0 #22242626;
+  padding: 1em 1em;
+  width: 340px;
+  top: 25%;
+  position: fixed;
 `;
 
-const Subheader = styled.div`
+const Subheader = styled.h4`
   color: ${(props) => (props.footer ? "#1154cd" : "#5e6c83")};
   cursor: ${(props) => props.footer && "pointer"};
   font-family: "Poppins";
@@ -59,81 +54,64 @@ const StyledButton = styled(Button)`
   font-weight: 100 !important;
 `;
 
-const StyledSegment = styled.div`
-  background: #fff;
-  border-radius: 0.28571429rem;
-  border: 1px solid #22242626;
-  box-shadow: 0 1px 2px 0 #22242626;
-  margin: 3rem 0;
-  padding: 1em 1em;
-  position: relative;
-`;
-
 const AuthFormWrapper = ({
-  children,
   buttonText,
+  children,
+  clearError,
+  disabled,
+  error,
+  handleClick,
   headText,
   history,
-  handleClick,
-  error,
-  clearError,
   loading,
-  disabled,
 }) => {
-  const signup = history.location.pathname === "/signup";
-  const suggestion = signup
+  const onSignupPage = history.location.pathname === "/signup";
+  const authCta = onSignupPage
     ? "Already have an account? Log in"
     : "Can't log in? Sign up for an account";
 
   return (
-    <FormContainer>
-      <MessageAlert
-        open={error}
-        close={clearError}
-        error={true}
-        message={error}
-      />
+    <UIContainer className="auth-page">
+      <StyledHeader>
+        <Icon name="bullseye" size="large" />
+        Task Monitor
+      </StyledHeader>
 
-      <HeaderContainer>
-        <StyledHeader>
-          <Icon name="bullseye" size="large" />
-        </StyledHeader>
-      </HeaderContainer>
+      <FormWrapper id="authForm">
+        {error && (
+          <UIMessage
+            error={true}
+            handleDismiss={() => clearError()}
+            list={[error.list]}
+          />
+        )}
 
-      <StyledFormColumn>
-        <Form size="large" id="authForm">
-          <StyledSegment>
-            <Subheader>{headText} </Subheader>
-            {children}
-            <StyledButton
-              fluid
-              loading={loading}
-              disabled={disabled}
-              size="large"
-              content={buttonText}
-              onClick={() => handleClick()}
-            />
-            <UIDivider content="OR" horizontal={true} />
-            <OtherSignupOptionButton
-              buttonText="Continue with Google"
-              icon="google"
-            />
+        <Subheader>{headText} </Subheader>
+        {children}
+        <StyledButton
+          fluid
+          loading={loading}
+          disabled={disabled}
+          size="large"
+          content={buttonText}
+          onClick={() => handleClick()}
+        />
+        <UIDivider content="OR" horizontal={true} />
+        <SocialAuthButton buttonText="Continue with Google" icon="google" />
 
-            <OtherSignupOptionButton
-              buttonText="Continue with Microsoft"
-              icon="microsoft"
-            />
-            <UIDivider />
-            <Subheader
-              footer={true}
-              onClick={() => history.push(signup ? "/login" : "/signup")}
-            >
-              {suggestion}
-            </Subheader>
-          </StyledSegment>
-        </Form>
-      </StyledFormColumn>
-    </FormContainer>
+        <SocialAuthButton
+          buttonText="Continue with Microsoft"
+          icon="microsoft"
+        />
+        <UIDivider />
+        <Subheader
+          footer={true}
+          onClick={() => history.push(onSignupPage ? "/login" : "/signup")}
+        >
+          {authCta}
+        </Subheader>
+      </FormWrapper>
+    </UIContainer>
   );
 };
 

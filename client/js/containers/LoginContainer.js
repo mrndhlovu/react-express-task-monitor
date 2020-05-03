@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
 import { requestAuthLogin } from "../apis/apiRequests";
-import { resetForm, emptyFunction } from "../utils/appUtils";
+import { resetForm, emptyFunction, stringsEqual } from "../utils/appUtils";
 import LoginPage from "../components/auth/LoginPage";
 
 const LoginContainer = ({ history, location }) => {
@@ -21,7 +21,7 @@ const LoginContainer = ({ history, location }) => {
 
     setCredentials({
       ...credentials,
-      [type === "text" ? "password" : type]: value,
+      [stringsEqual(type, "text") ? "password" : type]: value,
     });
   };
 
@@ -53,7 +53,7 @@ const LoginContainer = ({ history, location }) => {
   return (
     <LoginPage
       clearError={clearError}
-      error={error}
+      error={error && { list: error }}
       handleLoginClick={() => setLoading(true)}
       history={history}
       loading={loading}

@@ -12,11 +12,11 @@ padding: 10px;
 text-align : center;
 width: 100%;
 &:after{
-    content: '${props => props.content}'
+    content: '${(props) => props.content}'
 }
 `;
 
-const OtherSignupOptionButton = ({ icon, buttonText }) => {
+const SocialAuthButton = ({ icon, buttonText }) => {
   return (
     <StyledSegment content={buttonText}>
       <Icon name={icon} />
@@ -24,4 +24,4 @@ const OtherSignupOptionButton = ({ icon, buttonText }) => {
   );
 };
 
-export default OtherSignupOptionButton;
+export default SocialAuthButton;

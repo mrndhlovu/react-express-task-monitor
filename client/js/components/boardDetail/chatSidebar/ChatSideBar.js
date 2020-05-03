@@ -22,7 +22,7 @@ import { getRootUrl } from "../../../utils/urls";
 import RoomSelector from "./RoomSelector";
 import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
 import Thread from "./Thread";
-import MessageAlert from "../../sharedComponents/MessageAlert";
+import UIMessage from "../../sharedComponents/UIMessage";
 
 const InputWrapper = styled.div`
   width: 100%;
@@ -141,10 +141,10 @@ const ChatSideBar = ({ openChat }) => {
         onlineCount={onlineCount}
       />
       {error && (
-        <MessageAlert
+        <UIMessage
           message={error}
-          open={true}
-          close={() => setError(null)}
+          error={true}
+          handleDismiss={() => setError(null)}
         />
       )}
       {room && (

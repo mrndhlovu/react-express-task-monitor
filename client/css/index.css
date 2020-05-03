@@ -114,3 +114,13 @@ ui.form,
 .item-complete {
   text-decoration: line-through;
 }
+
+.auth-page {
+  align-items: center;
+  background-color: #fafbfc;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-items: center;
+  position: relative;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { Form, Icon } from "semantic-ui-react";
 import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
+import UIFormInput from "../sharedComponents/UIFormInput";
 
 const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
   const [type, setType] = useState("password");
@@ -14,7 +14,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
       handleClick={handleLoginClick}
       {...rest}
     >
-      <Form.Input
+      <UIFormInput
         fluid
         placeholder="Email"
         type="email"
@@ -23,15 +23,13 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
         defaultValue={env === "development" ? "test@testing.com" : ""}
       />
 
-      <Form.Input
+      <UIFormInput
         fluid
-        icon={
-          <Icon
-            name={type === "password" ? "eye" : "hide"}
-            link
-            onClick={() => setType(type === "password" ? "text" : "password")}
-          />
-        }
+        iconProps={{
+          name: type === "password" ? "eye" : "hide",
+          link: true,
+          onClick: () => setType(type === "password" ? "text" : "password"),
+        }}
         defaultValue={env === "development" ? "testing123" : ""}
         placeholder="Password"
         type={type}

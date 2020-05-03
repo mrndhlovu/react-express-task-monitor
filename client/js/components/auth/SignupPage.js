@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 
-import { Form } from "semantic-ui-react";
 import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
+import UIFormInput from "../sharedComponents/UIFormInput";
 
 const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
+  const [type, setType] = useState("password");
+
   return (
     <AuthFormWrapper
       buttonText="Sign Up"
@@ -11,14 +13,14 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
       handleClick={handleSignupClick}
       {...otherProps}
     >
-      <Form.Input
+      <UIFormInput
         fluid
         placeholder="Email"
         type="email"
         id="emailFormField"
         onChange={(e) => onHandleChange(e)}
       />
-      <Form.Input
+      <UIFormInput
         fluid
         placeholder="Enter full name"
         id="fnameFormField"
@@ -26,11 +28,15 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         onChange={(e) => onHandleChange(e)}
       />
 
-      <Form.Input
+      <UIFormInput
         fluid
-        icon="eye"
+        iconProps={{
+          name: type === "password" ? "eye" : "hide",
+          link: true,
+          onClick: () => setType(type === "password" ? "text" : "password"),
+        }}
         placeholder="Create password"
-        type="password"
+        type={type}
         id="passwordFormField"
         onChange={(e) => onHandleChange(e)}
       />

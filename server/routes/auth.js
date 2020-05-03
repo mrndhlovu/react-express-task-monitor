@@ -19,7 +19,7 @@ router.post("/signup", async (req, res) => {
 
     res.status(201).send(user);
   } catch (error) {
-    res.status(400).send();
+    res.status(400).send(error.message);
   }
 });
 
@@ -37,11 +37,7 @@ router.post("/login", async (req, res) => {
     res.append("Set-Cookie", "access_token=" + token + ";");
     res.send(user);
   } catch (error) {
-    res
-      .status(400)
-      .send(
-        "Login attempt failed please check email or password and try agin!"
-      );
+    res.status(400).send(error.message);
   }
 });
 
@@ -50,7 +46,7 @@ router.get("/users/me", auth, async (req, res) => {
     const data = { data: req.user };
     res.send(data);
   } catch (error) {
-    res.status(400).send("Fail to get user profile!");
+    res.status(400).send(error.message);
   }
 });
 

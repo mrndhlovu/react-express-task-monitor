@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
 import { requestAuthSignup } from "../apis/apiRequests";
-import { resetForm } from "../utils/appUtils";
+import { resetForm, stringsEqual } from "../utils/appUtils";
 import SignupPage from "../components/auth/SignupPage";
 
 const SignupContainer = ({ history }) => {
@@ -21,7 +21,7 @@ const SignupContainer = ({ history }) => {
 
     setCredentials({
       ...credentials,
-      [type === "text" ? "fname" : type]: value,
+      [stringsEqual(type, "text") ? "fname" : type]: value,
     });
   };
 
@@ -53,7 +53,7 @@ const SignupContainer = ({ history }) => {
       onHandleChange={onHandleChange}
       handleSignupClick={() => setLoading(true)}
       history={history}
-      error={error}
+      error={error && { list: error }}
       clearError={clearError}
       loading={loading}
       disabled={
