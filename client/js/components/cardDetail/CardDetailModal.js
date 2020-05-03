@@ -29,6 +29,7 @@ import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
+import { useAuth } from "../../utils/hookUtils";
 
 const DueDate = lazy(() => import("./DueDate"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
@@ -62,7 +63,8 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
     handleUploadAttachment,
     sourceTitle,
   } = useContext(BoardListsContext);
-  const { saveBoardChanges, auth } = useContext(BoardContext);
+  const { saveBoardChanges } = useContext(BoardContext);
+  const { user } = useAuth();
   const { device } = useContext(MainContext);
   const { id } = match.params;
 
@@ -327,7 +329,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                     id={id}
                     sourceId={sourceId}
                     saveCardChanges={saveCardChanges}
-                    user={auth.data.data.fname}
+                    user={user.fname}
                   />
                 </LeftSideContent>
               </ModalContent>

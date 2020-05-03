@@ -22,6 +22,7 @@ import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
 import Board from "../components/boardDetail/Board";
 import BoardHeader from "../components/boardDetail/BoardHeader";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import { useAuth } from "../utils/hookUtils";
 
 const StyledContainer = styled.div`
   height: 100vh;
@@ -37,9 +38,10 @@ const ContentDiv = styled.div`
   width: 100%;
 `;
 
-const BoardContainer = ({ match, history, auth }) => {
+const BoardContainer = ({ match, history }) => {
   const { id } = match.params;
   const { device, getNavData } = useContext(MainContext);
+  const { auth, user } = useAuth();
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
@@ -49,7 +51,7 @@ const BoardContainer = ({ match, history, auth }) => {
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
   const [updatedField, setUpdatedField] = useState(null);
-  const [user, setUser] = useState(null);
+
   const [showMobileMenu, setShowMobileMenu] = useState();
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
@@ -110,12 +112,6 @@ const BoardContainer = ({ match, history, auth }) => {
   };
 
   useEffect(() => {
-    if (auth.authenticated) {
-      setUser(auth.data.data);
-    }
-  }, [auth]);
-
-  useEffect(() => {
     if (!starred && !unStarred) return emptyFunction();
 
     const updateUser = async () => {
@@ -170,7 +166,7 @@ const BoardContainer = ({ match, history, auth }) => {
       };
 
       await requestBoardUpdate(newId ? newId : id, update).then((res) => {
-        getNavData(null, res.data.styleProperties.color);
+        getNavData(res.data.styleProperties.color);
         if (callback) callback();
       });
     };
@@ -184,7 +180,7 @@ const BoardContainer = ({ match, history, auth }) => {
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then((res) => {
-          getNavData(auth.data.data, res.data.styleProperties.color);
+          getNavData(res.data.styleProperties.color);
           return setBoard(res.data);
         })
         .catch((error) => history.push("/"));

@@ -1,39 +1,14 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 
-import {
-  requestBoardList,
-  userInfo,
-  requestAuthLogout,
-} from "../apis/apiRequests";
-const isClient = typeof window !== "undefined";
+import { requestBoardList, requestAuthLogout } from "../apis/apiRequests";
+import { MainContext } from "./contextUtils";
 
 export const useAuth = () => {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState(null);
-  const { hash } = window.location;
-  const onLoginOrSignupPage = hash === "#/signup" || hash === "#/login";
-
-  useEffect(() => {
-    if (onLoginOrSignupPage) return;
-
-    setLoading(true);
-    const fetchData = async () =>
-      await userInfo().then(
-        (res) => {
-          setAuthenticated(true);
-          setUser(res.data);
-          setLoading(false);
-        },
-        (error) => {
-          setLoading(false);
-        }
-      );
-
-    fetchData();
-  }, [onLoginOrSignupPage]);
-
-  return [authenticated, user, loading];
+  const {
+    auth: { data: data },
+    auth,
+  } = useContext(MainContext);
+  return { auth, user: data.data };
 };
 
 export const useRenderCount = () => {
@@ -53,20 +28,25 @@ export const useFetch = (history) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       await requestBoardList()
         .then((res) => {
-          setData(res.data);
-          setLoading(false);
+          if (isMounted) {
+            setData(res.data);
+            setLoading(false);
+          }
         })
-        .catch((error) => {
+        .catch(async (error) => {
           setLoading(false);
-          requestAuthLogout();
-          history.push("/login");
+          await requestAuthLogout().then(() => history.push("/login"));
         });
     };
 
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, [history]);
 
   return [data, loading];

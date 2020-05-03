@@ -11,6 +11,7 @@ import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UIContainer from "../sharedComponents/UIContainer";
+import { useAuth } from "../../utils/hookUtils";
 
 const style = {
   width: "800px",
@@ -22,7 +23,8 @@ const BoardMenu = ({
   handleDeleteBoard,
   showSideBar,
 }) => {
-  const { board, handleShowMenuClick, auth } = useContext(BoardContext);
+  const { board, handleShowMenuClick } = useContext(BoardContext);
+  const { user } = useAuth();
   const { device, setShowMobileMenu } = useContext(MainContext);
   const [activities, setActivities] = useState(false);
 
@@ -39,7 +41,7 @@ const BoardMenu = ({
         {device.mobile && (
           <BoardHeaderButtons
             mobile={device.mobile}
-            isStarred={auth.data.data.starred.includes(board._id)}
+            isStarred={user.starred.includes(board._id)}
           />
         )}
 
@@ -78,7 +80,7 @@ const BoardMenu = ({
 
         {activities && (
           <Fragment>
-            <Activities board={board} user={auth.data.data.fname} />
+            <Activities board={board} user={user.fname} />
           </Fragment>
         )}
       </SideBarWrapper>

@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
+import { MainContext } from "../../utils/contextUtils";
 import HomeSideMenu from "../home/HomeSideMenu";
 import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
-import UIWrapper from "../sharedComponents/UIWrapper";
 import UIDivider from "../sharedComponents/UIDivider";
+import UIWrapper from "../sharedComponents/UIWrapper";
+import { useAuth } from "../../utils/hookUtils";
 
 const wrapperStyle = {
   background: "#026aa7",
@@ -29,7 +31,9 @@ const Span = styled.span`
   padding: 10px 0;
 `;
 
-const MobileSideMenu = ({ visible, setVisible, user, history }) => {
+const MobileSideMenu = ({ visible, setVisible, history }) => {
+  const { fname, email } = useAuth().user;
+
   return (
     <SideBarWrapper
       direction="left"
@@ -44,11 +48,11 @@ const MobileSideMenu = ({ visible, setVisible, user, history }) => {
         <NavUserAvatar
           callback={() => setVisible()}
           pointing="left"
-          userName={user.fname}
+          userName={fname}
           history={history}
         />
-        <Span>{user.fname}</Span>
-        <small>{user.email}</small>
+        <Span>{fname}</Span>
+        <small>{email}</small>
       </UIWrapper>
       <HomeSideMenu />
       <UIDivider margin="0" />

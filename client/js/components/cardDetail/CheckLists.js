@@ -19,6 +19,7 @@ import ProgressBar from "./ProgressBar";
 import ChecklistItem from "./ChecklistItem";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import _debounce from "debounce";
 
 const display = {
   display: "grid",
@@ -184,24 +185,24 @@ const CheckLists = ({
 
           activeCard.checklists.splice(listIndex, 1, checklist);
           const body = { newCard: activeCard, listId: sourceId };
-          createList(body);
+          return _debounce(createList(body), 1000);
         } catch (error) {}
       });
     };
     const createList = async (body) => {
       await requestCardUpdate(body, id).then((res) => {
         try {
-          const sourceList = findArrayItem(res.data.lists, sourceId, "_id");
-          let newCard = findArrayItem(sourceList.cards, activeCard._id, "_id");
+          const newList = findArrayItem(res.data.lists, sourceId, "_id");
+          let newCard = findArrayItem(newList.cards, activeCard._id, "_id");
+          saveCardChanges(newCard);
 
           saveBoardChanges(res.data);
-          saveCardChanges(newCard);
         } catch (error) {}
       });
     };
 
     getTaskItem();
-    setDone(false);
+    _debounce(setDone(false), 1000);
     resetForm("checklist-item");
     setTask(null);
   }, [

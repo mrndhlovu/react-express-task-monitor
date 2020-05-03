@@ -45,10 +45,12 @@ const UIFormInput = ({
   name,
   defaultValue,
   iconProps,
+  autoFocus,
 }) => {
   return (
     <InputWrapper>
       <FormInput
+        autoFocus={autoFocus}
         placeholder={placeholder}
         id={id}
         type={type}

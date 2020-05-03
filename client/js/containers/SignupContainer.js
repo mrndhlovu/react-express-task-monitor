@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 import { requestAuthSignup } from "../apis/apiRequests";
-import { resetForm, stringsEqual } from "../utils/appUtils";
+import { resetForm } from "../utils/appUtils";
 import SignupPage from "../components/auth/SignupPage";
+import { useAuth } from "../utils/hookUtils";
 
 const SignupContainer = ({ history }) => {
+  const { auth } = useAuth();
+
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -16,13 +19,9 @@ const SignupContainer = ({ history }) => {
   });
 
   const onHandleChange = (e) => {
-    const value = e.target.value;
-    const type = e.target.type;
+    const { value, name } = e.target;
 
-    setCredentials({
-      ...credentials,
-      [stringsEqual(type, "text") ? "fname" : type]: value,
-    });
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const clearError = () => {
@@ -39,7 +38,6 @@ const SignupContainer = ({ history }) => {
           localStorage.setItem("user", JSON.stringify(res.data));
           if (res.status === 201) {
             history.push("/");
-            window.location.reload();
           }
         })
         .catch((error) => setError(error.response.data));
@@ -48,10 +46,15 @@ const SignupContainer = ({ history }) => {
     setLoading(false);
   }, [history, loading, credentials]);
 
+  if (auth.authenticated) return <Redirect to="/" />;
+
   return (
     <SignupPage
       onHandleChange={onHandleChange}
-      handleSignupClick={() => setLoading(true)}
+      handleSignupClick={(e) => {
+        e.preventDefault();
+        setLoading(true);
+      }}
       history={history}
       error={error && { list: error }}
       clearError={clearError}

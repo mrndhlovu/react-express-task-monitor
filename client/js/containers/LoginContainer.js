@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 import { requestAuthLogin } from "../apis/apiRequests";
-import { resetForm, emptyFunction, stringsEqual } from "../utils/appUtils";
+import { resetForm, emptyFunction } from "../utils/appUtils";
+import { useAuth } from "../utils/hookUtils";
 import LoginPage from "../components/auth/LoginPage";
 
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
 
+  const { auth } = useAuth();
   const [credentials, setCredentials] = useState({
     password: null,
     email: null,
@@ -16,13 +18,9 @@ const LoginContainer = ({ history, location }) => {
   const [loading, setLoading] = useState(false);
 
   const onHandleChange = (e) => {
-    const value = e.target.value;
-    const type = e.target.type;
+    const { value, name } = e.target;
 
-    setCredentials({
-      ...credentials,
-      [stringsEqual(type, "text") ? "password" : type]: value,
-    });
+    setCredentials({ ...credentials, [name]: value });
   };
 
   const clearError = () => {
@@ -32,29 +30,33 @@ const LoginContainer = ({ history, location }) => {
 
   useEffect(() => {
     if (!loading) return emptyFunction();
-    setLoading(true);
+
     const login = async () => {
       await requestAuthLogin(credentials)
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
-
           setLoading(false);
-          if (res.status === 200) {
-            history.push(`${from.pathname}`);
-            window.location.reload();
-          }
+          history.push(`${from.pathname}`);
+          window.location.reload();
         })
-        .catch((error) => setError(error.response.data));
+        .catch((error) => {
+          setLoading(false);
+          setError(error.response.data);
+        });
     };
     login();
-    setLoading(false);
-  }, [loading, history, from, credentials]);
+  }, [loading, credentials, from, history]);
+
+  if (auth.authenticated) return <Redirect to={`${from.pathname}`} />;
 
   return (
     <LoginPage
       clearError={clearError}
       error={error && { list: error }}
-      handleLoginClick={() => setLoading(true)}
+      handleLoginClick={(e) => {
+        e.preventDefault();
+        setLoading(true);
+      }}
       history={history}
       loading={loading}
       onHandleChange={onHandleChange}

@@ -4,6 +4,7 @@ import { withRouter } from "react-router-dom";
 
 import { getCurrentUser } from "../actions/AuthActions";
 import MainContainer from "./MainContainer";
+import { getAuth } from "../selectors/authSelectors";
 
 class AppContainer extends Component {
   componentDidMount() {
@@ -14,8 +15,16 @@ class AppContainer extends Component {
   }
 
   render() {
-    return <MainContainer>{this.props.children}</MainContainer>;
+    return (
+      <MainContainer auth={{ ...this.props.auth }}>
+        {this.props.children}
+      </MainContainer>
+    );
   }
 }
 
-export default connect(null, { getCurrentUser })(withRouter(AppContainer));
+const mapStateToProps = (state) => ({ auth: getAuth(state) });
+
+export default connect(mapStateToProps, { getCurrentUser })(
+  withRouter(AppContainer)
+);

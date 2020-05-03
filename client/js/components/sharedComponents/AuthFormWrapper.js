@@ -77,7 +77,7 @@ const AuthFormWrapper = ({
         Task Monitor
       </StyledHeader>
 
-      <FormWrapper id="authForm">
+      <FormWrapper id="authForm" onSubmit={(e) => handleClick(e)}>
         {error && (
           <UIMessage
             error={true}
@@ -94,7 +94,6 @@ const AuthFormWrapper = ({
           disabled={disabled}
           size="large"
           content={buttonText}
-          onClick={() => handleClick()}
         />
         <UIDivider content="OR" horizontal={true} />
         <SocialAuthButton buttonText="Continue with Google" icon="google" />

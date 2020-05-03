@@ -15,17 +15,19 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
     >
       <UIFormInput
         fluid
+        id="emailFormField"
+        name="email"
+        onChange={(e) => onHandleChange(e)}
         placeholder="Email"
         type="email"
-        id="emailFormField"
-        onChange={(e) => onHandleChange(e)}
       />
       <UIFormInput
         fluid
-        placeholder="Enter full name"
         id="fnameFormField"
-        type="text"
+        name="fname"
         onChange={(e) => onHandleChange(e)}
+        placeholder="Enter full name"
+        type="text"
       />
 
       <UIFormInput
@@ -35,10 +37,11 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
           link: true,
           onClick: () => setType(type === "password" ? "text" : "password"),
         }}
+        id="passwordFormField"
+        name="password"
+        onChange={(e) => onHandleChange(e)}
         placeholder="Create password"
         type={type}
-        id="passwordFormField"
-        onChange={(e) => onHandleChange(e)}
       />
     </AuthFormWrapper>
   );

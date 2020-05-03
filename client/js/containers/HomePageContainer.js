@@ -1,21 +1,20 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
 import { emptyFunction } from "../utils/appUtils";
-import { HomepageContext, MainContext } from "../utils/contextUtils";
+import { HomepageContext } from "../utils/contextUtils";
 import { requestUserUpdate } from "../apis/apiRequests";
-import { useFetch } from "../utils/hookUtils";
+import { useFetch, useAuth } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
-const HomePageContainer = ({ history, auth }) => {
+const HomePageContainer = ({ history }) => {
   const [data, loading] = useFetch(history);
+  const { user } = useAuth();
 
   const [boards, setBoards] = useState([]);
-  const [user, setUser] = useState(null);
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
-  const { getNavData } = useContext(MainContext);
 
   const handleBoardStarClick = (id, starClicked) => {
     if (starClicked) {
@@ -30,11 +29,6 @@ const HomePageContainer = ({ history, auth }) => {
   };
 
   useEffect(() => {
-    setUser(auth.data.data);
-    auth.authenticated && getNavData(auth.data.data);
-  }, [auth, getNavData]);
-
-  useEffect(() => {
     if (!starred && !unStarred) return emptyFunction();
 
     const updateUser = async () => {
@@ -46,7 +40,7 @@ const HomePageContainer = ({ history, auth }) => {
       });
     };
 
-    updateUser();
+    user && updateUser();
 
     return () => {
       setStarred(false);
@@ -56,7 +50,6 @@ const HomePageContainer = ({ history, auth }) => {
 
   useEffect(() => {
     if (!data) return;
-
     setBoards(data);
   }, [data]);
 
@@ -66,11 +59,6 @@ const HomePageContainer = ({ history, auth }) => {
         boards,
         loading,
         handleBoardStarClick,
-        auth: {
-          authenticated: auth.authenticated,
-          user: auth.data.data,
-          isLoading: auth.isLoading,
-        },
       }}
     >
       <HomePage />

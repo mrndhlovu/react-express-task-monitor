@@ -15,16 +15,15 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
       {...rest}
     >
       <UIFormInput
-        fluid
+        autoFocus={true}
         placeholder="Email"
         type="email"
+        name="email"
         onChange={(e) => onHandleChange(e)}
-        autoFocus
         defaultValue={env === "development" ? "test@testing.com" : ""}
       />
 
       <UIFormInput
-        fluid
         iconProps={{
           name: type === "password" ? "eye" : "hide",
           link: true,
@@ -32,6 +31,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
         }}
         defaultValue={env === "development" ? "testing123" : ""}
         placeholder="Password"
+        name="password"
         type={type}
         onChange={(e) => onHandleChange(e)}
       />

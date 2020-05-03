@@ -26,12 +26,11 @@ const style = {
   width: "100vw",
 };
 
-const MainContainer = ({ children, history }) => {
+const MainContainer = ({ children, history, auth }) => {
   const isHomePage = history.location.pathname === "/";
   const [visible, setVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const [auth, setAuth] = useState(null);
   const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
   const [color, setColor] = useState(null);
@@ -48,13 +47,7 @@ const MainContainer = ({ children, history }) => {
 
   const getNavigationBoards = (data) => setUpdate(data);
 
-  const getNavData = useMemo(
-    () => (auth, color) => {
-      auth && setAuth(auth);
-      color && setColor(color);
-    },
-    []
-  );
+  const getNavData = useMemo(() => (color) => color && setColor(color), []);
 
   useEffect(() => {
     history.location.pathname === "/" && setColor(null);
@@ -98,17 +91,15 @@ const MainContainer = ({ children, history }) => {
       <UIContainer display={style}>
         <Sidebar.Pushable>
           <Fragment>
-            {auth && (
+            {auth.authenticated && (
               <Fragment>
                 <NavHeader
                   color={color ? color : DEFAULT_NAV_COLOR}
                   setVisible={() => setVisible(!visible)}
-                  user={auth}
                 />
                 <MobileSideMenu
                   visible={visible}
                   setVisible={() => setVisible(!visible)}
-                  user={auth}
                   history={history}
                 />
               </Fragment>

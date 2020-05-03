@@ -1,6 +1,5 @@
 import React, { useState, Fragment, useContext, useEffect } from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
 
 import { Dropdown, Icon } from "semantic-ui-react";
 
@@ -30,7 +29,7 @@ const LeftNavButtons = ({ history, results, value }) => {
   const [boards, setBoards] = useState(null);
 
   useEffect(() => {
-    setBoards(data);
+    data && setBoards(data);
   }, [data]);
 
   return (
@@ -72,4 +71,4 @@ const LeftNavButtons = ({ history, results, value }) => {
   );
 };
 
-export default withRouter(LeftNavButtons);
+export default LeftNavButtons;

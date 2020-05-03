@@ -10,12 +10,12 @@ import UIDivider from "../sharedComponents/UIDivider";
 
 const initialMsgState = { success: false, error: false, text: null };
 
-const PersonalInfo = ({ user, device }) => {
-  const [username, setUserName] = useState(null);
+const PersonalInfo = ({ user }) => {
   const [bio, setBio] = useState(null);
-  const [save, setSave] = useState(false);
   const [loading, setLoading] = useState(false);
   const [msg, setMsg] = useState(initialMsgState);
+  const [save, setSave] = useState(false);
+  const [username, setUserName] = useState(null);
 
   useEffect(() => {
     if (!save) return emptyFunction();
@@ -51,7 +51,7 @@ const PersonalInfo = ({ user, device }) => {
         <UIMessage
           success={msg.success}
           error={msg.error}
-          message={msg.text}
+          list={[msg.text]}
           handleDismiss={() => setMsg(initialMsgState)}
           size="tiny"
         />

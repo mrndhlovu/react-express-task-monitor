@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 
-import UIContainer from "../sharedComponents/UIContainer";
 import { MainContext } from "../../utils/contextUtils";
+import { useAuth } from "../../utils/hookUtils";
 import TabPaneHeader from "./TabPaneHeader";
 import TabProfileContent from "./TabProfileContent";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const displayStyle = {
   height: "97vh",
@@ -11,13 +12,9 @@ const displayStyle = {
   flexDirection: "column",
 };
 
-const UserProfile = ({ auth }) => {
-  const [user, setUser] = useState(null);
-  const { getNavData, device } = useContext(MainContext);
-  useEffect(() => {
-    setUser(auth.data.data);
-    auth.authenticated && getNavData(auth.data.data);
-  }, [auth, getNavData]);
+const UserProfile = () => {
+  const { device } = useContext(MainContext);
+  const { user } = useAuth();
 
   return (
     <UIContainer padding="0" display={displayStyle}>

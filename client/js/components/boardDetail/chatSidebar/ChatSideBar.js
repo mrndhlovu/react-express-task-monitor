@@ -23,6 +23,7 @@ import RoomSelector from "./RoomSelector";
 import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
 import Thread from "./Thread";
 import UIMessage from "../../sharedComponents/UIMessage";
+import { useAuth } from "../../../utils/hookUtils";
 
 const InputWrapper = styled.div`
   width: 100%;
@@ -40,7 +41,7 @@ const FormWrapper = styled.div`
 `;
 
 const ChatSideBar = ({ openChat }) => {
-  const { fname } = useContext(BoardContext).auth.data.data;
+  const { fname } = useAuth().user;
   const { board, handleBoardUpdate } = useContext(BoardContext);
   const name = getFormattedString(fname);
 
