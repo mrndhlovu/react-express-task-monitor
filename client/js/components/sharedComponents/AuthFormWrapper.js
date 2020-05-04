@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Icon, Button } from "semantic-ui-react";
 
+import { stringsEqual } from "../../utils/appUtils";
 import SocialAuthButton from "./SocialAuthButton";
 import UIContainer from "./UIContainer";
 import UIDivider from "./UIDivider";
@@ -30,6 +31,17 @@ const FormWrapper = styled.form`
   position: fixed;
 `;
 
+const StyledSmall = styled.small`
+  position: absolute;
+  cursor: pointer;
+  bottom: 10px;
+  left: 13%;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 const Subheader = styled.h4`
   color: ${(props) => (props.footer ? "#1154cd" : "#5e6c83")};
   cursor: ${(props) => props.footer && "pointer"};
@@ -40,6 +52,7 @@ const Subheader = styled.h4`
   text-align: center;
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
+  margin-top: 0;
 
   &:hover {
     text-decoration: ${(props) => props.signup && "underline"};
@@ -64,11 +77,15 @@ const AuthFormWrapper = ({
   headText,
   history,
   loading,
+  socialButtons = true,
+  authCta,
+  redirect,
 }) => {
-  const onSignupPage = history.location.pathname === "/signup";
-  const authCta = onSignupPage
-    ? "Already have an account? Log in"
-    : "Can't log in? Sign up for an account";
+  const isLoginPage = stringsEqual(history.location.pathname, "/login");
+  const resetPasswordPage = stringsEqual(
+    history.location.pathname,
+    "/reset-password"
+  );
 
   return (
     <UIContainer className="auth-page">
@@ -88,6 +105,7 @@ const AuthFormWrapper = ({
 
         <Subheader>{headText} </Subheader>
         {children}
+
         <StyledButton
           fluid
           loading={loading}
@@ -95,20 +113,31 @@ const AuthFormWrapper = ({
           size="large"
           content={buttonText}
         />
-        <UIDivider content="OR" horizontal={true} />
-        <SocialAuthButton buttonText="Continue with Google" icon="google" />
 
-        <SocialAuthButton
-          buttonText="Continue with Microsoft"
-          icon="microsoft"
-        />
-        <UIDivider />
-        <Subheader
-          footer={true}
-          onClick={() => history.push(onSignupPage ? "/login" : "/signup")}
-        >
-          {authCta}
-        </Subheader>
+        {!resetPasswordPage && <UIDivider content="OR" horizontal={true} />}
+        {socialButtons && (
+          <>
+            <SocialAuthButton buttonText="Continue with Google" icon="google" />
+
+            <SocialAuthButton
+              buttonText="Continue with Microsoft"
+              icon="microsoft"
+            />
+
+            <UIDivider />
+          </>
+        )}
+
+        {!resetPasswordPage && (
+          <Subheader footer={true} onClick={() => history.push(redirect)}>
+            {authCta}
+          </Subheader>
+        )}
+        {isLoginPage && (
+          <StyledSmall onClick={() => history.push("/recovery")}>
+            Forgot password!
+          </StyledSmall>
+        )}
       </FormWrapper>
     </UIContainer>
   );

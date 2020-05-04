@@ -2,16 +2,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { getCurrentUser } from "../actions/AuthActions";
-import MainContainer from "./MainContainer";
 import { getAuth } from "../selectors/authSelectors";
+import { getCurrentUser } from "../actions/AuthActions";
+import { stringsEqual } from "../utils/appUtils";
+import MainContainer from "./MainContainer";
 
 class AppContainer extends Component {
   componentDidMount() {
     const { pathname } = this.props.location;
-    const authPage = pathname === "/login" || pathname === "/signup";
+    const isProtectedRoute =
+      pathname.split("/").includes("id") || stringsEqual(pathname, "/");
 
-    !authPage && this.props.getCurrentUser();
+    isProtectedRoute && this.props.getCurrentUser();
   }
 
   render() {

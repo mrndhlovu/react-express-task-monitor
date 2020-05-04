@@ -11,6 +11,8 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
       buttonText="Sign Up"
       headText="Sign up for your account"
       handleClick={handleSignupClick}
+      authCta="Already have an account? Log in"
+      redirect="/login"
       {...otherProps}
     >
       <UIFormInput

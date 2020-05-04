@@ -12,6 +12,8 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
       buttonText="Log In"
       headText="Log in to continue to : Task Monitor"
       handleClick={handleLoginClick}
+      authCta="Can't log in? Sign up for an account"
+      redirect="/signup"
       {...rest}
     >
       <UIFormInput

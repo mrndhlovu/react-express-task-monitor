@@ -54,6 +54,14 @@ export const userInfo = () =>
 export const requestUserUpdate = (body) =>
   axios.patch(`${AUTH_EP}/update`, body, params);
 
+export const requestEmailRecovery = (body) => {
+  return axios.patch(`${AUTH_EP}/recover-password`, body, params);
+};
+
+export const requestUpdatePassword = (body) => {
+  return axios.patch(`${AUTH_EP}/update-password`, body, params);
+};
+
 export const requestUserInvite = (id, email) =>
   axios.patch(`${BOARDS_EP}/id/${id}/invite`, { email }, params);
 

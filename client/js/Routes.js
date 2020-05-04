@@ -25,6 +25,22 @@ const UserProfileContainer = (props) => (
   </DynamicImport>
 );
 
+const EmailRecoveryContainer = (props) => (
+  <DynamicImport load={() => import("./containers/EmailRecoveryContainer")}>
+    {(Component) =>
+      !Component ? <UILoadingSpinner /> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+
+const ResetPasswordContainer = (props) => (
+  <DynamicImport load={() => import("./containers/ResetPasswordContainer")}>
+    {(Component) =>
+      !Component ? <UILoadingSpinner /> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+
 const LoginContainer = (props) => (
   <DynamicImport load={() => import("./containers/LoginContainer")}>
     {(Component) =>
@@ -92,6 +108,19 @@ const Routes = () => {
         path="/login"
         render={(props) => <LoginContainer key="login" {...props} />}
       />
+
+      <Route
+        path="/recovery"
+        render={(props) => <EmailRecoveryContainer key="recovery" {...props} />}
+      />
+
+      <Route
+        path="/reset-password"
+        render={(props) => (
+          <ResetPasswordContainer key="reset-password" {...props} />
+        )}
+      />
+
       <Route
         path="/signup"
         render={(props) => <SignupContainer key="signup" {...props} />}

@@ -62,6 +62,30 @@ router.post("/logout", auth, async (req, res) => {
   }
 });
 
+router.post("/recover-password", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(
+      (token) => token.token !== req.token
+    );
+    await req.user.save();
+    res.send();
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
+router.post("/update-password", auth, async (req, res) => {
+  try {
+    req.user.tokens = req.user.tokens.filter(
+      (token) => token.token !== req.token
+    );
+    await req.user.save();
+    res.send();
+  } catch (error) {
+    res.status(500).send();
+  }
+});
+
 router.post("/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];

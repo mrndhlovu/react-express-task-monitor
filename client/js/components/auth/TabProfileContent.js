@@ -2,9 +2,9 @@ import React from "react";
 
 import { Tab } from "semantic-ui-react";
 
-import UIContainer from "../sharedComponents/UIContainer";
 import PersonalInfo from "./PersonalInfo";
 import TabContainer from "../sharedComponents/TabContainer";
+import UIContainer from "../sharedComponents/UIContainer";
 
 const TabProfileContent = ({ user, device }) => {
   const displayStyle = {
@@ -33,13 +33,17 @@ const TabProfileContent = ({ user, device }) => {
     {
       menuItem: "Settings",
       render: () => (
-        <Tab.Pane className="tab-container">Tab 2 Content</Tab.Pane>
+        <TabContainer mobile={device.mobile}>
+          <Tab.Pane className="tab-container">Settings</Tab.Pane>
+        </TabContainer>
       ),
     },
     {
-      menuItem: "Billing",
+      menuItem: "Recovery",
       render: () => (
-        <Tab.Pane className="tab-container">Tab 3 Content</Tab.Pane>
+        <TabContainer mobile={device.mobile}>
+          <Tab.Pane className="tab-container">Tab 3 Content</Tab.Pane>
+        </TabContainer>
       ),
     },
   ];

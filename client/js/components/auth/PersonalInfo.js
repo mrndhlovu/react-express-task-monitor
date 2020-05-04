@@ -4,9 +4,9 @@ import { Header, Form, TextArea, Button } from "semantic-ui-react";
 
 import { emptyFunction } from "../../utils/appUtils";
 import { requestUserUpdate } from "../../apis/apiRequests";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UIMessage from "../sharedComponents/UIMessage";
 import UIDivider from "../sharedComponents/UIDivider";
+import UIMessage from "../sharedComponents/UIMessage";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const initialMsgState = { success: false, error: false, text: null };
 
