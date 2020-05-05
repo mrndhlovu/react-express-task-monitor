@@ -19,7 +19,7 @@ const BoardWrapper = styled.div`
 
 const Board = () => {
   const {
-    handleColorPick,
+    handleSelectedColor,
     handleDeleteBoard,
     showSideBar,
     handleShowMenuClick,
@@ -48,7 +48,7 @@ const Board = () => {
         <BackGroundColors
           showColorPicker={showColorPicker}
           handleChangeColorClick={handleChangeColorClick}
-          handleColorPick={handleColorPick}
+          handleSelectedColor={handleSelectedColor}
         />
 
         {openChat && (

@@ -23,7 +23,7 @@ const colorStyle = {
 const BackGroundColors = ({
   showColorPicker,
   handleChangeColorClick,
-  handleColorPick,
+  handleSelectedColor,
 }) => {
   return (
     <SideBarWrapper
@@ -39,7 +39,7 @@ const BackGroundColors = ({
             <UIWrapper
               display={{ ...colorStyle, backgroundColor: color }}
               color={color}
-              onClick={() => handleColorPick(color)}
+              handleClick={() => handleSelectedColor(color)}
             />
           </UIContainer>
         ))}

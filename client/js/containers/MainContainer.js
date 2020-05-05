@@ -36,6 +36,7 @@ const MainContainer = ({ children, history, auth }) => {
   const [color, setColor] = useState(null);
   const [search, setSearch] = useState(false);
   const [update, setUpdate] = useState(null);
+  const [create, setCreate] = useState(false);
 
   const { device, dimensions } = useDimensions();
 
@@ -43,7 +44,10 @@ const MainContainer = ({ children, history, auth }) => {
     setSearch(e.target.value);
   }, []);
 
-  const makeNewBoard = (update) => setBoard(update);
+  const makeNewBoard = (update) => {
+    setCreate(true);
+    setBoard(update);
+  };
 
   const getNavigationBoards = (data) => setUpdate(data);
 
@@ -54,16 +58,17 @@ const MainContainer = ({ children, history, auth }) => {
   }, [history]);
 
   useEffect(() => {
-    if (!board) return emptyFunction();
+    if (!create) return emptyFunction();
     const createBoard = async () => {
-      requestNewBoard(board).then((res) => {
+      await requestNewBoard(board).then((res) => {
         try {
           setBoard(res.data);
-          history.push(`/boards/id/${res.data._id}`);
+          return history.push(`/boards/id/${res.data._id}`);
         } catch (error) {}
       });
     };
     createBoard();
+    setCreate(false);
   }, [board, history]);
 
   useEffect(() => {

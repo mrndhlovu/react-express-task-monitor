@@ -92,7 +92,7 @@ const BoardContainer = ({ match, history }) => {
     updateUser();
   }, [history, id, user]);
 
-  const handleColorPick = (color) => {
+  const handleSelectedColor = (color) => {
     const newBoard = {
       ...board,
       styleProperties: { ...board.styleProperties, color },
@@ -198,7 +198,7 @@ const BoardContainer = ({ match, history }) => {
         changeBoardAccessLevel,
         handleBoardStarClick,
         handleBoardUpdate,
-        handleColorPick,
+        handleSelectedColor,
         handleDeleteBoard,
         handleInviteClick,
         handleShowMenuClick,

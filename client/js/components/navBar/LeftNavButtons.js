@@ -66,7 +66,7 @@ const LeftNavButtons = ({ history, results, value }) => {
         </Dropdown.Menu>
       </StyledButton>
 
-      <SearchBar isLoading={isLoading} results={results} value={value} />
+      {/* <SearchBar isLoading={isLoading} results={results} value={value} /> */}
     </StyledDiv>
   );
 };
