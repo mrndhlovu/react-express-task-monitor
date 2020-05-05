@@ -162,6 +162,7 @@ const AccountSettings = ({ history }) => {
             content="Yes delete my account."
             negative
             floated="right"
+            size="tiny"
           />
         )}
       </UIWrapper>

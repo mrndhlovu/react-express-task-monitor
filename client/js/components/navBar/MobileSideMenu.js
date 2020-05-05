@@ -15,12 +15,12 @@ const wrapperStyle = {
   height: "20%",
   display: "flex",
   flexDirection: "column",
-  alignItems: "end",
+  alignItems: "start",
 };
 
 const style = {
   position: "relative,",
-  width: "62vw",
+  width: "66vw",
   height: "100vh",
   padding: 0,
 };

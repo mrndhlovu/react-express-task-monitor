@@ -16,7 +16,7 @@ const TabProfileContent = ({ user, device }) => {
   };
 
   const style = [
-    `margin-left: ${device.mobile ? "2% !important;" : "41% !important;"}`,
+    `margin-left: ${device.mobile ? "1% !important;" : "41% !important;"}`,
     `margin-right: ${device.mobile ? "2% !important;" : "41% !important;"}`,
     "width: 0%;",
     "border-bottom: 1px solid grey !important;",
@@ -34,7 +34,7 @@ const TabProfileContent = ({ user, device }) => {
       ),
     },
     {
-      menuItem: "Account Settings",
+      menuItem: "Settings",
       render: () => (
         <TabContainer mobile={device.mobile}>
           <Tab.Pane className="tab-container">
