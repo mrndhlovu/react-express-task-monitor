@@ -59,7 +59,7 @@ const AccountSettings = ({ history }) => {
             text: res.data.message,
             success: false,
           });
-          _debounce(window.location.reload(), 2000);
+          _debounce(window.location.reload(), 3000);
         })
         .catch((error) => {
           setDeleteAccount(false);

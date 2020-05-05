@@ -37,7 +37,7 @@ const SignupContainer = ({ history }) => {
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
           if (res.status === 201) {
-            history.push("/");
+            window.location.reload();
           }
         })
         .catch((error) => setError(error.response.data));

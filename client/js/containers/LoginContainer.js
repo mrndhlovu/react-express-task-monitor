@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
+import _debounce from "debounce";
 
 import { requestAuthLogin } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
 import { useAuth } from "../utils/hookUtils";
 import LoginPage from "../components/auth/LoginPage";
-import _debounce from "debounce";
 
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
@@ -15,7 +15,7 @@ const LoginContainer = ({ history, location }) => {
     password: null,
     email: null,
   });
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState({ text: null, success: null });
   const [loading, setLoading] = useState(false);
 
   const onHandleChange = (e) => {
@@ -25,7 +25,7 @@ const LoginContainer = ({ history, location }) => {
   };
 
   const clearError = () => {
-    setError(null);
+    setMessage({ text: null, success: null });
     resetForm("authForm");
   };
 
@@ -33,18 +33,18 @@ const LoginContainer = ({ history, location }) => {
     if (!loading) return emptyFunction();
     const redirect = () => {
       history.push(`${from.pathname}`);
-      setLoading(false);
       window.location.reload();
     };
     const login = async () => {
       await requestAuthLogin(credentials)
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
-          _debounce(redirect(), 2000);
+          setMessage({ text: "Success", success: true });
+          _debounce(redirect(), 3000);
         })
         .catch((error) => {
           setLoading(false);
-          setError(error.response.data);
+          setMessage({ text: error.response.data, success: false });
         });
     };
     login();
@@ -55,7 +55,7 @@ const LoginContainer = ({ history, location }) => {
   return (
     <LoginPage
       clearError={clearError}
-      error={error && { list: error }}
+      message={message}
       handleLoginClick={(e) => {
         e.preventDefault();
         setLoading(true);
@@ -63,7 +63,10 @@ const LoginContainer = ({ history, location }) => {
       history={history}
       loading={loading}
       onHandleChange={onHandleChange}
-      disabled={!credentials.password || !credentials.email}
+      positive={message.success}
+      error={!message.success}
+      message={message.text && message.text}
+      handleDismiss={() => clearError()}
     />
   );
 };
