@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Tab } from "semantic-ui-react";
 
 import PersonalInfo from "./PersonalInfo";
 import TabContainer from "../sharedComponents/TabContainer";
 import UIContainer from "../sharedComponents/UIContainer";
+import ChangePassword from "./ChangePassword";
 
 const TabProfileContent = ({ user, device }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+
   const displayStyle = {
     marginTop: "-43px",
     height: "80vh",
@@ -34,7 +37,9 @@ const TabProfileContent = ({ user, device }) => {
       menuItem: "Settings",
       render: () => (
         <TabContainer mobile={device.mobile}>
-          <Tab.Pane className="tab-container">Settings</Tab.Pane>
+          <Tab.Pane className="tab-container">
+            <ChangePassword />
+          </Tab.Pane>
         </TabContainer>
       ),
     },
@@ -56,8 +61,9 @@ const TabProfileContent = ({ user, device }) => {
     >
       <Tab
         className="tab-header"
-        as={"div"}
-        defaultActiveIndex={0}
+        as="div"
+        defaultActiveIndex={activeIndex}
+        onTabChange={() => setActiveIndex()}
         panes={panes}
       />
     </UIContainer>

@@ -205,7 +205,11 @@ router.patch("/update", auth, async (req, res) => {
     await req.user.save();
 
     res.send(req.user);
-  } catch (error) {}
+  } catch (error) {
+    return res.status(400).send({
+      message: error.message,
+    });
+  }
 });
 
 module.exports = router;
