@@ -168,12 +168,12 @@ router.post("/logoutAll", auth, async (req, res) => {
   }
 });
 
-router.delete("/delete", auth, async (req, res) => {
+router.delete("/delete-account", auth, async (req, res) => {
   try {
     await req.user.remove();
-    res.send(req.user);
+    res.send({ message: "Account deleted" });
   } catch (error) {
-    res.status(500).send();
+    return res.status(400).send({ error: "Failed to delete account." });
   }
 });
 
@@ -205,7 +205,11 @@ router.patch("/update", auth, async (req, res) => {
     await req.user.save();
 
     res.send(req.user);
-  } catch (error) {}
+  } catch (error) {
+    return res.status(400).send({
+      message: error.message,
+    });
+  }
 });
 
 module.exports = router;

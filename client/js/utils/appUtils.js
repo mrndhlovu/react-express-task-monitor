@@ -26,7 +26,11 @@ export const getLocation = () => window.location;
 
 export const checkDuplicate = (collection, item) => collection.includes(item);
 
-export const resetForm = (id) => (document.getElementById(id).value = "");
+export const resetForm = (data) => {
+  if (typeof data === "object")
+    return data.forEach((id) => (document.getElementById(id).value = ""));
+  document.getElementById(data).value = "";
+};
 
 export const getBoard = (boards, id) =>
   boards.find((board) => board._id === id);

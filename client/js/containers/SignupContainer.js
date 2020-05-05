@@ -5,13 +5,13 @@ import { requestAuthSignup } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
 import SignupPage from "../components/auth/SignupPage";
 import { useAuth } from "../utils/hookUtils";
+import _debounce from "debounce";
 
 const SignupContainer = ({ history }) => {
   const { auth } = useAuth();
 
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [message, setMessage] = useState({ text: null, success: null });
   const [credentials, setCredentials] = useState({
     fname: null,
     password: null,
@@ -25,7 +25,7 @@ const SignupContainer = ({ history }) => {
   };
 
   const clearError = () => {
-    setError(null);
+    setMessage({ text: null, success: null });
     resetForm("authForm");
   };
 
@@ -35,12 +35,13 @@ const SignupContainer = ({ history }) => {
       setLoading(true);
       await requestAuthSignup(credentials)
         .then((res) => {
+          setMessage({ text: "Success", success: true });
           localStorage.setItem("user", JSON.stringify(res.data));
-          if (res.status === 201) {
-            history.push("/");
-          }
+          if (res.status === 201) _debounce(window.location.reload(), 3000);
         })
-        .catch((error) => setError(error.response.data));
+        .catch((error) =>
+          setMessage({ text: error.response.data, success: false })
+        );
     };
     handleRedirect();
     setLoading(false);
@@ -56,12 +57,12 @@ const SignupContainer = ({ history }) => {
         setLoading(true);
       }}
       history={history}
-      error={error && { list: error }}
       clearError={clearError}
       loading={loading}
-      disabled={
-        !credentials.email || !credentials.fname || !credentials.password
-      }
+      positive={message.success}
+      error={!message.success}
+      message={message.text && message.text}
+      handleDismiss={() => clearError()}
     />
   );
 };
