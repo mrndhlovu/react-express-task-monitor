@@ -5,7 +5,7 @@ import { Tab } from "semantic-ui-react";
 import PersonalInfo from "./PersonalInfo";
 import TabContainer from "../sharedComponents/TabContainer";
 import UIContainer from "../sharedComponents/UIContainer";
-import ChangePassword from "./ChangePassword";
+import AccountSettings from "./AccountSettings";
 
 const TabProfileContent = ({ user, device }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -24,7 +24,7 @@ const TabProfileContent = ({ user, device }) => {
 
   const panes = [
     {
-      menuItem: "Profile and Visibility",
+      menuItem: "Profile",
       render: () => (
         <TabContainer mobile={device.mobile}>
           <Tab.Pane className="tab-container">
@@ -34,20 +34,20 @@ const TabProfileContent = ({ user, device }) => {
       ),
     },
     {
-      menuItem: "Settings",
+      menuItem: "Account Settings",
       render: () => (
         <TabContainer mobile={device.mobile}>
           <Tab.Pane className="tab-container">
-            <ChangePassword />
+            <AccountSettings />
           </Tab.Pane>
         </TabContainer>
       ),
     },
     {
-      menuItem: "Recovery",
+      menuItem: "Integrations",
       render: () => (
         <TabContainer mobile={device.mobile}>
-          <Tab.Pane className="tab-container">Tab 3 Content</Tab.Pane>
+          <Tab.Pane className="tab-container">Coming soon...</Tab.Pane>
         </TabContainer>
       ),
     },

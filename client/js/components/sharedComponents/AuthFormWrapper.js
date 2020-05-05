@@ -8,6 +8,7 @@ import SocialAuthButton from "./SocialAuthButton";
 import UIContainer from "./UIContainer";
 import UIDivider from "./UIDivider";
 import UIMessage from "./UIMessage";
+import UISmall from "./UISmall";
 
 const StyledHeader = styled.div`
   color: #0079bf;
@@ -31,17 +32,6 @@ const FormWrapper = styled.form`
   position: fixed;
 `;
 
-const StyledSmall = styled.small`
-  position: absolute;
-  cursor: pointer;
-  bottom: 10px;
-  left: 13%;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-
 const Subheader = styled.h4`
   color: ${(props) => (props.footer ? "#1154cd" : "#5e6c83")};
   cursor: ${(props) => props.footer && "pointer"};
@@ -53,6 +43,7 @@ const Subheader = styled.h4`
   transition-duration: 250ms;
   transition-timing-function: ease-in-out;
   margin-top: 0;
+  margin-bottom: 0;
 
   &:hover {
     text-decoration: ${(props) => props.signup && "underline"};
@@ -138,9 +129,9 @@ const AuthFormWrapper = ({
           </Subheader>
         )}
         {isLoginPage && (
-          <StyledSmall onClick={() => history.push("/recovery")}>
+          <UISmall margin="10%" handleClick={() => history.push("/recovery")}>
             Forgot password.
-          </StyledSmall>
+          </UISmall>
         )}
       </FormWrapper>
     </UIContainer>

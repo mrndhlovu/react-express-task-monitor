@@ -58,6 +58,10 @@ export const requestEmailRecovery = (body) => {
   return axios.post(`${AUTH_EP}/recovery`, body, params);
 };
 
+export const requestDeleteAccount = () => {
+  return axios.delete(`${AUTH_EP}/delete-account`, null, params);
+};
+
 export const requestUpdatePassword = (body, token) => {
   return axios.post(`${AUTH_EP}/${token}/update-password`, body);
 };

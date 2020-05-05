@@ -1,23 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router";
+import _debounce from "debounce";
 
 import { Button, Header } from "semantic-ui-react";
 
 import { emptyFunction, stringsEqual, resetForm } from "../../utils/appUtils";
-import { requestUserUpdate } from "../../apis/apiRequests";
+import {
+  requestUserUpdate,
+  requestDeleteAccount,
+} from "../../apis/apiRequests";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIFormInput from "../sharedComponents/UIFormInput";
 import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import UIDivider from "../sharedComponents/UIDivider";
+import UISmall from "../sharedComponents/UISmall";
 
-const ChangePassword = ({ history }) => {
+const AccountSettings = ({ history }) => {
   const [credentials, setCredentials] = useState({
     password: null,
     confirmPassword: null,
   });
+  const [deleteAccount, setDeleteAccount] = useState(false);
   const [message, setMessage] = useState({ text: null, success: null });
-  const [save, setSave] = useState(false);
   const [passwordChanged, setPasswordConfirmed] = useState(false);
+  const [save, setSave] = useState(false);
+  const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   const onHandleChange = (e) => {
     const { value, name } = e.target;
@@ -39,6 +47,33 @@ const ChangePassword = ({ history }) => {
       });
     setSave(true);
   };
+
+  useEffect(() => {
+    if (!deleteAccount) return emptyFunction();
+    const closeAccount = async () => {
+      await requestDeleteAccount()
+        .then((res) => {
+          setDeleteAccount(false);
+          setMessage({
+            ...message,
+            text: res.data.message,
+            success: false,
+          });
+          _debounce(window.location.reload(), 2000);
+        })
+        .catch((error) => {
+          setDeleteAccount(false);
+
+          setMessage({
+            ...message,
+            text: error.response.data.message,
+            success: false,
+          });
+        });
+    };
+
+    closeAccount();
+  }, [deleteAccount]);
 
   useEffect(() => {
     if (!save) return emptyFunction();
@@ -105,8 +140,33 @@ const ChangePassword = ({ history }) => {
           />
         </UIWrapper>
       </form>
+
+      <Header as="h3" content="Delete Account" />
+      <UIDivider />
+      <UIWrapper
+        display={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+        }}
+      >
+        <UISmall
+          position="relative"
+          handleClick={() => setShowDeleteButton(!showDeleteButton)}
+        >
+          {!showDeleteButton ? "Delete Account" : "Cancel"}
+        </UISmall>
+        {showDeleteButton && (
+          <Button
+            onClick={() => setDeleteAccount(true)}
+            content="Yes delete my account."
+            negative
+            floated="right"
+          />
+        )}
+      </UIWrapper>
     </UIContainer>
   );
 };
 
-export default withRouter(ChangePassword);
+export default withRouter(AccountSettings);
