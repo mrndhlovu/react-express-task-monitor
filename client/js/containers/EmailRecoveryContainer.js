@@ -11,18 +11,17 @@ const EmailRecoveryContainer = ({ history, location }) => {
 
   const { auth } = useAuth();
   const [credentials, setCredentials] = useState({ email: null });
-  const [error, setError] = useState(null);
+  const [message, setMessage] = useState({ text: null, success: null });
   const [loading, setLoading] = useState(false);
 
   const onHandleChange = (e) => {
     const { value, name } = e.target;
-
     setCredentials({ ...credentials, [name]: value });
   };
 
   const clearError = () => {
-    setError(null);
-    resetForm("authForm");
+    setMessage({ ...message, text: null, success: null });
+    resetForm("reset-email-input");
   };
 
   useEffect(() => {
@@ -32,12 +31,15 @@ const EmailRecoveryContainer = ({ history, location }) => {
       await requestEmailRecovery(credentials)
         .then((res) => {
           setLoading(false);
-          history.push("/login");
-          window.location.reload();
+          setMessage({ ...message, text: res.data.message, success: true });
         })
         .catch((error) => {
           setLoading(false);
-          setError(error.response.data);
+          setMessage({
+            ...message,
+            text: error.response.data.message,
+            success: false,
+          });
         });
     };
     recoverPassword();
@@ -48,14 +50,14 @@ const EmailRecoveryContainer = ({ history, location }) => {
   return (
     <EmailRecovery
       clearError={clearError}
-      error={error && { list: error }}
-      handleLoginClick={(e) => {
+      handleEmailPassword={(e) => {
         e.preventDefault();
         setLoading(true);
       }}
       history={history}
       loading={loading}
       onHandleChange={onHandleChange}
+      message={message}
       disabled={!credentials.email}
     />
   );

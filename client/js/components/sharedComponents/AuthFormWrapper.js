@@ -73,6 +73,7 @@ const AuthFormWrapper = ({
   clearError,
   disabled,
   error,
+  positive,
   handleClick,
   headText,
   history,
@@ -80,6 +81,8 @@ const AuthFormWrapper = ({
   socialButtons = true,
   authCta,
   redirect,
+  message,
+  passwordChanged,
 }) => {
   const isLoginPage = stringsEqual(history.location.pathname, "/login");
   const resetPasswordPage = stringsEqual(
@@ -95,11 +98,12 @@ const AuthFormWrapper = ({
       </StyledHeader>
 
       <FormWrapper id="authForm" onSubmit={(e) => handleClick(e)}>
-        {error && (
+        {message && (
           <UIMessage
-            error={true}
-            handleDismiss={() => clearError()}
-            list={[error.list]}
+            success={positive}
+            error={error}
+            handleDismiss={clearError}
+            list={[message]}
           />
         )}
 
@@ -128,14 +132,14 @@ const AuthFormWrapper = ({
           </>
         )}
 
-        {!resetPasswordPage && (
+        {!resetPasswordPage && !passwordChanged && (
           <Subheader footer={true} onClick={() => history.push(redirect)}>
             {authCta}
           </Subheader>
         )}
         {isLoginPage && (
           <StyledSmall onClick={() => history.push("/recovery")}>
-            Forgot password!
+            Forgot password.
           </StyledSmall>
         )}
       </FormWrapper>

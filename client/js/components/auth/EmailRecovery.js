@@ -3,18 +3,27 @@ import React from "react";
 import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
 import UIFormInput from "../sharedComponents/UIFormInput";
 
-const EmailRecovery = ({ onHandleChange, handleEmailPassword, ...rest }) => {
+const EmailRecovery = ({
+  handleEmailPassword,
+  message,
+  onHandleChange,
+  ...rest
+}) => {
   return (
     <AuthFormWrapper
-      buttonText="Email Password"
-      headText="Recover Password"
-      handleClick={handleEmailPassword}
-      socialButtons={false}
       authCta="Log in"
+      buttonText="Email Password"
+      error={!message.success}
+      handleClick={handleEmailPassword}
+      headText="Reset Password"
+      message={message.text}
+      positive={message.success}
       redirect="/login"
+      socialButtons={false}
       {...rest}
     >
       <UIFormInput
+        id="reset-email-input"
         autoFocus={true}
         placeholder="Email"
         type="email"

@@ -55,11 +55,11 @@ export const requestUserUpdate = (body) =>
   axios.patch(`${AUTH_EP}/update`, body, params);
 
 export const requestEmailRecovery = (body) => {
-  return axios.patch(`${AUTH_EP}/recover-password`, body, params);
+  return axios.post(`${AUTH_EP}/recovery`, body, params);
 };
 
-export const requestUpdatePassword = (body) => {
-  return axios.patch(`${AUTH_EP}/update-password`, body, params);
+export const requestUpdatePassword = (body, token) => {
+  return axios.post(`${AUTH_EP}/${token}/update-password`, body);
 };
 
 export const requestUserInvite = (id, email) =>

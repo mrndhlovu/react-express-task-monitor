@@ -6,7 +6,7 @@ const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const lastViewed = require("../utils/middleware/boardMiddleWare")
   .viewedRecentMiddleWare;
 const { sendInvitationEmail } = require("../utils/middleware/emailMiddleware");
-const { CLIENT_URL } = require("../utils/config");
+const { ROOT_URL } = require("../utils/config");
 const ObjectID = require("mongodb").ObjectID;
 
 router.get("/", auth, async (req, res) => {
@@ -78,7 +78,7 @@ router.delete("/:boardId/delete-board", auth, async (req, res) => {
 router.patch("/id/:boardId/invite", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { email } = req.body;
-  const redirectLink = `${CLIENT_URL}/#/boards/id/${_id}?via=invite`;
+  const redirectLink = `${ROOT_URL}/#/boards/id/${_id}?via=invite`;
 
   const DEFAULT_ACCESS_LEVELS = { private: false, public: false, team: false };
   try {

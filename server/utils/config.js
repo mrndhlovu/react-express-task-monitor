@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 const S3_BUCKET = process.env.AWS_BUCKET_NAME;
 const allowedFileTypes = ["image/jpeg", "image/png"];
 const TOKEN_SIGNATURE = process.env.TOKEN_SIGNATURE;
-const CLIENT_URL =
+const ROOT_URL =
   process.env.LOCAL_URL || `https://moneat.herokuapp.com:${PORT}`;
 
 module.exports = {
@@ -23,7 +23,7 @@ module.exports = {
   AWS_ID_POOL,
   AWS_REGION,
   AWS_SECRET_ACCESS_KEY,
-  CLIENT_URL,
+  ROOT_URL,
   CONNECTION_URI,
   LOCAL_MONGO_DB,
   PORT,

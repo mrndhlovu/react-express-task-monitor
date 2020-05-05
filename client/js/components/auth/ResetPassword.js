@@ -8,23 +8,28 @@ const ResetPassword = ({
   handleSaveClick,
   passwordChanged,
   history,
+  message,
   ...rest
 }) => {
   return (
     <AuthFormWrapper
-      buttonText={passwordChanged ? "Continue" : "Save"}
-      headText={passwordChanged ? "Password changed" : "New Password"}
-      handleClick={passwordChanged ? () => history.push("/") : handleSaveClick}
-      socialButtons={false}
       authCta="Log in"
-      redirect="/login"
-      passwordChanged={passwordChanged}
+      buttonText={passwordChanged ? "Continue" : "Save"}
+      error={!message.success}
+      handleClick={passwordChanged ? () => history.push("/") : handleSaveClick}
+      headText={passwordChanged ? "Password updated" : "Update password"}
       history={history}
+      message={message.text}
+      passwordChanged={passwordChanged}
+      positive={message.success}
+      redirect="/login"
+      socialButtons={false}
       {...rest}
     >
       {!passwordChanged && (
         <>
           <UIFormInput
+            id="password-input"
             autoFocus={true}
             placeholder="Password"
             type="password"
@@ -32,10 +37,10 @@ const ResetPassword = ({
             onChange={(e) => onHandleChange(e)}
           />
           <UIFormInput
-            autoFocus={true}
+            id="password-confirm-input"
             placeholder="Confirm password"
             type="password"
-            name="password"
+            name="confirmPassword"
             onChange={(e) => onHandleChange(e)}
           />
         </>

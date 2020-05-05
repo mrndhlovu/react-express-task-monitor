@@ -5,6 +5,7 @@ import { requestAuthLogin } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
 import { useAuth } from "../utils/hookUtils";
 import LoginPage from "../components/auth/LoginPage";
+import _debounce from "debounce";
 
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
@@ -30,14 +31,16 @@ const LoginContainer = ({ history, location }) => {
 
   useEffect(() => {
     if (!loading) return emptyFunction();
-
+    const redirect = () => {
+      history.push(`${from.pathname}`);
+      setLoading(false);
+      window.location.reload();
+    };
     const login = async () => {
       await requestAuthLogin(credentials)
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
-          setLoading(false);
-          history.push(`${from.pathname}`);
-          window.location.reload();
+          _debounce(redirect(), 2000);
         })
         .catch((error) => {
           setLoading(false);

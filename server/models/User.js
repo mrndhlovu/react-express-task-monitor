@@ -72,6 +72,12 @@ const UserSchema = new mongoose.Schema(
         },
       },
     ],
+    resetPasswordToken: {
+      type: String,
+    },
+    resetPasswordExpires: {
+      type: Date,
+    },
   },
   {
     timestamps: true,
@@ -129,18 +135,21 @@ UserSchema.statics.findByCredentials = async (email, password) => {
   return user;
 };
 
-UserSchema.methods.generatePasswordReset = function () {
-  this.resetPasswordToken = crypto.randomBytes(20).toString("hex");
-  this.resetPasswordExpires = Date.now() + 3600000; //expires in an hour
-};
+UserSchema.pre("save", function (next) {
+  var user = this;
+  var SALT_FACTOR = 12;
 
-UserSchema.pre("save", async function (next) {
-  const user = this;
+  if (!user.isModified("password")) return next();
 
-  if (user.isModified("password"))
-    user.password = await bcrypt.hash(user.password, 8);
+  bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+    if (err) return next(err);
 
-  next();
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) return next(err);
+      user.password = hash;
+      next();
+    });
+  });
 });
 
 UserSchema.pre("remove", async function (next) {

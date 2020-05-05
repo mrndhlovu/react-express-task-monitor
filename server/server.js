@@ -6,7 +6,7 @@ import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 
-import { CLIENT_URL, PORT } from "./utils/config";
+import { ROOT_URL, PORT } from "./utils/config";
 import { routesConfig } from "./utils/middleware/routesMiddleware";
 import { socketConfig } from "./utils/middleware/socketIoMiddleware";
 import cookieParser from "cookie-parser";
@@ -26,7 +26,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: CLIENT_URL,
+    origin: ROOT_URL,
     credentials: true,
   })
 );
