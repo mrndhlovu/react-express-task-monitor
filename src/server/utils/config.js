@@ -2,6 +2,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const environment = process.env.DEVELOPMENT ? "development" : "production";
+const isDevelopment = environment === "development";
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
 const S_GRID_API_KEY = process.env.SEND_GRID_API_KEY;
 const AWS_ID_POOL = process.env.AWS_ID_POOL;
@@ -30,4 +31,5 @@ module.exports = {
   S_GRID_API_KEY,
   S3_BUCKET,
   TOKEN_SIGNATURE,
+  isDevelopment,
 };

@@ -7,26 +7,19 @@ const shared = require("./webpack.shared");
 const webpack = require("webpack");
 
 module.exports = merge(shared, {
-  entry: {
-    main: [
-      "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
-      "./client/index.js",
-    ],
+  devServer: {
+    port: 3000,
+    contentBase: ["/public"],
+    inline: true,
+    hot: true,
   },
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
-    ],
-  },
+
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./client/html/template.html",
+      template: "./src/assets/static-assets/template.html",
       filename: "./index.html",
       excludeChunks: ["server"],
-      favicon: "./client/html/favicon.ico",
+      favicon: "./src/assets/static-assets/favicon.ico",
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),

@@ -16,6 +16,7 @@ const StyledContainer = styled.div`
 const BoardsSummary = () => {
   const { makeNewBoard, device } = useContext(MainContext);
   const { boards } = useContext(HomepageContext);
+  console.log("boards: ", boards);
   const { user } = useAuth();
 
   const hasBoards = boards.length > 0;

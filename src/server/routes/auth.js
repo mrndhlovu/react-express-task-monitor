@@ -1,7 +1,7 @@
+const { ROOT_URL } = require("../utils/config.js");
+const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const router = require("express").Router();
 const User = require("../models/User");
-const auth = require("../utils/middleware/authMiddleware").authMiddleware;
-const { ROOT_URL } = require("../utils/config.js");
 const {
   sendWelcomeEmail,
   sendResetPasswordEmail,
@@ -179,6 +179,9 @@ router.delete("/delete-account", auth, async (req, res) => {
 
 router.patch("/update", auth, async (req, res) => {
   const updates = Object.keys(req.body);
+
+  console.log("upes: ", updates);
+
   const allowedUpdates = [
     "fname",
     "email",

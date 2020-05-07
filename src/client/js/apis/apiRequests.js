@@ -1,12 +1,12 @@
 import axios from "axios";
 
 import {
-  BOARDS_EP,
-  UPLOAD_EP,
-  params,
-  CARDS_EP,
   AUTH_EP,
+  BOARDS_EP,
+  CARDS_EP,
   IMAGES_EP,
+  params,
+  UPLOAD_EP,
 } from "../utils/urls";
 
 export const requestNewBoard = (board) =>

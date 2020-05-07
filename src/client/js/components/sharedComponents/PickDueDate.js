@@ -1,10 +1,10 @@
 import React, { Fragment, lazy, Suspense, useState } from "react";
 import styled from "styled-components";
-import "react-datepicker/dist/react-datepicker.css";
+
+import { Button, Message } from "semantic-ui-react";
 
 const DatePicker = lazy(() => import("react-datepicker"));
 
-import { Button, Message } from "semantic-ui-react";
 import UIDivider from "./UIDivider";
 
 const Container = styled.div`
