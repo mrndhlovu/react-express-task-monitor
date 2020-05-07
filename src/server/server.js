@@ -1,6 +1,6 @@
 import "./utils/mongooseDB";
 import "@babel/polyfill";
-import config from "../webpack.dev.config.js";
+import config from "../../webpack.dev.config";
 import cors from "cors";
 import webpack from "webpack";
 import webpackDevMiddleware from "webpack-dev-middleware";
@@ -33,6 +33,7 @@ app.use(
 
 app.use(
   webpackDevMiddleware(compiler, {
+    noInfo: true,
     publicPath: config.output.publicPath,
   })
 );

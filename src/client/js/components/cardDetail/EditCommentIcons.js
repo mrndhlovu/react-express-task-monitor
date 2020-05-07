@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import styled from "styled-components";
-import "emoji-mart/css/emoji-mart.css";
+
 import { Picker, Emoji } from "emoji-mart";
 
 const DropdownButton = lazy(() => import("../sharedComponents/DropdownButton"));

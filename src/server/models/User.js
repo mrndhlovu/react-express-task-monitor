@@ -1,9 +1,12 @@
 const { TOKEN_SIGNATURE } = require("../utils/config");
 const bcrypt = require("bcrypt");
-const Board = require("../models/Board");
+const Board = require("./Board");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 const isEmail = require("validator/lib/isEmail");
+const {
+  sendPasswordChangeConfirmation,
+} = require("../utils/middleware/emailMiddleware");
 
 const UserSchema = new mongoose.Schema(
   {
@@ -147,6 +150,7 @@ UserSchema.pre("save", function (next) {
     bcrypt.hash(user.password, salt, function (err, hash) {
       if (err) return next(err);
       user.password = hash;
+      sendPasswordChangeConfirmation(user.email, user.fname);
       next();
     });
   });

@@ -1,15 +1,11 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const shared = require("./webpack.shared");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = merge(shared, {
-  entry: {
-    main: "./client/index.js",
-  },
   devtool: "source-map",
   optimization: {
     minimize: true,
@@ -25,7 +21,7 @@ module.exports = merge(shared, {
       name: true,
       cacheGroups: {
         vendors: {
-          test: /[\\/]node_modules[\\/]/, // this is what you are looking for
+          test: /[\\/]node_modules[\\/]/,
           priority: -10,
         },
         default: {
@@ -36,35 +32,12 @@ module.exports = merge(shared, {
       },
     },
   },
-  module: {
-    rules: [
-      {
-        test: /\.jpg$/,
-        use: [{ loader: "url-loader" }],
-      },
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          "css-loader",
-        ],
-      },
-    ],
-  },
   plugins: [
     new HtmlWebPackPlugin({
-      template: "./client/html/template.html",
+      template: "./src/assets/static-assets/template.html",
       filename: "./index.html",
-      favicon: "./client/html/favicon.ico",
+      favicon: "./src/assets/static-assets/favicon.ico",
     }),
-    new MiniCssExtractPlugin({
-      filename: "[name].[hash].bundle.css",
-      chunkFilename: "[id].[hash].css",
-    }),
-    new CleanWebpackPlugin({
-      cleanOnceBeforeBuildPatterns: ["**/*", "!server.js"],
-    }),
+    new CleanWebpackPlugin(),
   ],
 });

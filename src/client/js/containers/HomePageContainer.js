@@ -50,7 +50,7 @@ const HomePageContainer = ({ history }) => {
 
   useEffect(() => {
     if (!data) return;
-    setBoards(data);
+    data && setBoards(data);
   }, [data]);
 
   return data && boards && !loading ? (
