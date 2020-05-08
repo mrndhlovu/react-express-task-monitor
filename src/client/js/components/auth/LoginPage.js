@@ -9,11 +9,13 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
 
   return (
     <AuthFormWrapper
+      dataTestId="login-page"
       buttonText="Log In"
       headText="Log in to continue to : Task Monitor"
       handleClick={handleLoginClick}
       authCta="Can't log in? Sign up for an account"
       redirect="/signup"
+      ctaTestId="signup-link"
       {...rest}
     >
       <UIFormInput

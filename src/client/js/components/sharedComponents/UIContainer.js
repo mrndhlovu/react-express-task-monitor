@@ -19,9 +19,11 @@ const UIContainer = ({
   display,
   className,
   nested,
+  dataTestId,
 }) => {
   return (
     <Container
+      data-test-id={dataTestId}
       nested={nested}
       className={className}
       padding={padding}

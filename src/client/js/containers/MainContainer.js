@@ -93,7 +93,7 @@ const MainContainer = ({ children, history, auth }) => {
         setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
       }}
     >
-      <UIContainer display={style}>
+      <UIContainer dataTestId="app-container" display={style}>
         <Sidebar.Pushable>
           <Fragment>
             {auth.authenticated && (

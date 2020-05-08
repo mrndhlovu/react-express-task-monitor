@@ -8,6 +8,7 @@ const UIMessage = ({
   error = false,
   handleDismiss,
   list,
+  dataTestId,
 }) => {
   return (
     <Message
@@ -17,6 +18,7 @@ const UIMessage = ({
       positive={success}
       negative={error}
       onDismiss={handleDismiss}
+      data-test-id={dataTestId}
       size="tiny"
       list={list}
       key="list"

@@ -8,10 +8,6 @@
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
     "@sendgrid/mail": "^6.5.5",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.4.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@types/styled-components": "^4.4.2",
     "async": "^3.2.0",
     "aws-sdk": "^2.619.0",
     "axios": "^0.19.0",
@@ -27,7 +23,6 @@
     "express": "^4.17.1",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.2.0",
-    "jest": "^25.4.0",
     "js-cookie": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
@@ -46,7 +41,6 @@
     "react-redux": "^7.1.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "^3.4.0",
     "react-scroll-to-bottom": "^1.3.2",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
@@ -65,7 +59,9 @@
     "yarn": "^1.22.0"
   },
   "scripts": {
-    "test": "jest",
+    "lint": "eslint src",
+    "test": "eslint src && jest",
+    "bend": "jest",
     "coverage": "jest --coverage",
     "dev": "rm -rf build && webpack --mode development --config webpack.server.config.js && webpack-dev-server --hot --mode development --config webpack.dev.config.js",
     "prod": "rm -rf build && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
@@ -74,8 +70,16 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
-      "\\.(gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
+      "\\.(css|less|scss)$": "<rootDir>/assetsTransformer.js"
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/src/tests/setupTests.js"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "eslint src && jest"
     }
   },
   "devDependencies": {
@@ -85,9 +89,19 @@
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
     "@babel/runtime": "^7.9.2",
+    "babel-eslint": "^10.1.0",
     "babel-loader": "^8.0.6",
     "clean-webpack-plugin": "^3.0.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "eslint": "5.16.0",
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-import": "2.17.1",
+    "eslint-plugin-jsx-a11y": "6.2.1",
+    "eslint-plugin-react": "7.12.4",
+    "fetch-mock": "7.3.1",
     "file-loader": "^6.0.0",
+    "jest": "24.7.1",
     "mini-css-extract-plugin": "^0.9.0",
     "node-sass": "^4.14.1",
     "redux-devtools-extension": "^2.13.8",
