@@ -6,7 +6,6 @@ import { Dropdown, Icon } from "semantic-ui-react";
 import { MainContext } from "../../utils/contextUtils";
 import { useFetch } from "../../utils/hookUtils";
 import NavButton from "../sharedComponents/NavButton";
-import SearchBar from "./SearchBar";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -21,7 +20,7 @@ const StyledSpan = styled.span`
   color: ${(props) => props.color};
 `;
 
-const LeftNavButtons = ({ history, results, value }) => {
+const LeftNavButtons = ({ history }) => {
   const { isLoading, device } = useContext(MainContext);
   const [data] = useFetch(history);
 

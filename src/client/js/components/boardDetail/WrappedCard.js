@@ -30,25 +30,23 @@ const WrappedCard = ({
 }) => {
   const [showEditButton, setShowEditButton] = useState(false);
 
-  const styles = () => {
-    return {
-      transform: isDragging && "translate3d(10px, 15px, 0)",
-      backgroundColor: !isDragging && "#fff",
-      borderRadius: "2px",
-      boxShadow: !isDragging && "#0f1e4259",
-      marginTop: "7px",
-      minHeight: "20px",
-      position: isDragging ? "absolute" : "relative",
-      opacity: isDragging ? 0 : 1,
-      zIndex: 0,
-    };
+  const styles = {
+    transform: isDragging && "translate3d(10px, 15px, 0)",
+    background: !isDragging && "#fff",
+    borderRadius: "3px",
+    boxShadow: !isDragging && "0 1px 0 #091e4240",
+    marginTop: "7px",
+    minHeight: "20px",
+    position: isDragging ? "absolute" : "relative",
+    opacity: isDragging ? 0 : 1,
+    zIndex: 0,
   };
 
   const wrappedCardItem = (
     <div>
       {isOverCard && <DropTargetPlaceholder />}
       <div
-        style={styles()}
+        style={styles}
         onMouseEnter={() => setShowEditButton(true)}
         onMouseLeave={() => setShowEditButton(false)}
       >

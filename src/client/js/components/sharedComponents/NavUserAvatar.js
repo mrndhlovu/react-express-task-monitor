@@ -13,7 +13,7 @@ const NavUserAvatar = ({
   callback = () => {},
 }) => {
   const handleLogOut = async () => {
-    await requestAuthLogout().then((res) => {
+    await requestAuthLogout().then(() => {
       localStorage.removeItem("user");
       window.location.reload();
     });

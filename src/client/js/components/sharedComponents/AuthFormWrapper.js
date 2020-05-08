@@ -74,6 +74,7 @@ const AuthFormWrapper = ({
   redirect,
   message,
   passwordChanged,
+  dataTestId,
 }) => {
   const isLoginPage = stringsEqual(history.location.pathname, "/login");
   const resetPasswordPage = stringsEqual(
@@ -82,15 +83,16 @@ const AuthFormWrapper = ({
   );
 
   return (
-    <UIContainer className="auth-page">
+    <UIContainer dataTestId={dataTestId} className="auth-page">
       <StyledHeader>
         <Icon name="bullseye" size="large" />
         Task Monitor
       </StyledHeader>
 
-      <FormWrapper id="authForm" onSubmit={(e) => handleClick(e)}>
+      <FormWrapper data-test-id="login-form" id="authForm">
         {message && (
           <UIMessage
+            dataTestId={positive ? "success-alert-message" : "error--message"}
             success={positive}
             error={error}
             handleDismiss={clearError}
@@ -107,6 +109,8 @@ const AuthFormWrapper = ({
           disabled={disabled}
           size="large"
           content={buttonText}
+          data-test-id="primary-auth-button"
+          onClick={(e) => handleClick(e)}
         />
 
         {!resetPasswordPage && <UIDivider content="OR" horizontal={true} />}
@@ -124,12 +128,20 @@ const AuthFormWrapper = ({
         )}
 
         {!resetPasswordPage && !passwordChanged && (
-          <Subheader footer={true} onClick={() => history.push(redirect)}>
+          <Subheader
+            data-test-id="form-subheader"
+            footer={true}
+            onClick={() => history.push(redirect)}
+          >
             {authCta}
           </Subheader>
         )}
         {isLoginPage && (
-          <UISmall margin="10%" handleClick={() => history.push("/recovery")}>
+          <UISmall
+            dataTestId="forgot-password-link"
+            margin="10%"
+            handleClick={() => history.push("/recovery")}
+          >
             Forgot password.
           </UISmall>
         )}

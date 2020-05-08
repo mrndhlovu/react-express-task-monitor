@@ -41,7 +41,6 @@ const socketConfig = (server) => {
 
     socket.on("sendMessage", (message, callback) => {
       const user = getCurrentUser(socket.id);
-      console.log("user: ", { ...user });
 
       if (!user) return callback("User not found");
 

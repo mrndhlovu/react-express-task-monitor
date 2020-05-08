@@ -13,8 +13,8 @@ import { Button } from "semantic-ui-react";
 const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
-  padding: 5px 5px;
   justify-content: space-between;
+  padding-left: 5px;
 `;
 
 const ListHeader = ({
@@ -86,7 +86,7 @@ const ListHeader = ({
 
   return (
     <HeaderWrapper>
-      <EditableHeader type="listHeader" title={title} />
+      <EditableHeader type="listHeader" title={title} sourceId={listId} />
 
       <DropdownButton
         icon="ellipsis horizontal"
@@ -94,9 +94,9 @@ const ListHeader = ({
         button
         fluid={false}
         direction={mobile ? "left" : "right"}
-        size="tiny"
         header={header}
         callback={() => handleClose()}
+        color="transparent"
       >
         <UIContainer width="fit-content">
           {hideCopyList &&

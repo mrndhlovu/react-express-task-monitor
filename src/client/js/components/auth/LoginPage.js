@@ -9,6 +9,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
 
   return (
     <AuthFormWrapper
+      dataTestId="login-page"
       buttonText="Log In"
       headText="Log in to continue to : Task Monitor"
       handleClick={handleLoginClick}
@@ -36,6 +37,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
         name="password"
         type={type}
         onChange={(e) => onHandleChange(e)}
+        dataTestId="password-input-field"
       />
     </AuthFormWrapper>
   );

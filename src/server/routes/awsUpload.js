@@ -4,7 +4,7 @@ const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 
 const singleFileUpload = upload.single("image");
 
-router.post("/image", auth, (req, res, err) => {
+router.post("/image", auth, (req, res) => {
   singleFileUpload(req, res, (err) => {
     if (err) return res.json({ message: err.message, success: false });
     return res.json({

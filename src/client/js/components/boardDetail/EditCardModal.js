@@ -27,11 +27,6 @@ const defaultLayout = {
   left: "-15%",
 };
 
-const StyledEditButton = styled(Button)`
-  font-size: 13px !important;
-  font-weight: 500 !important;
-`;
-
 const Wrapper = styled.div`
   ${(props) => (props.mobile ? { ...mobileLayout } : { ...defaultLayout })};
 `;

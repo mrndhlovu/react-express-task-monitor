@@ -46,7 +46,6 @@ const CreateInput = ({
             id={id}
             autoFocus
             defaultValue={defaultValue}
-            id={id}
             onChange={(e) => handleChange(e)}
             placeholder={placeholder}
           />

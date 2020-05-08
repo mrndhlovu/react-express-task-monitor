@@ -11,7 +11,7 @@ import UIWrapper from "./UIWrapper";
 const StyledButton = styled.div`
   text-align: left !important;
   background-color: #ebecf0 !important;
-  padding: 5px 5px !important;
+  padding: 5px !important;
   border-radius: 3px;
   color: grey !important;
   outline: none !important;
@@ -39,8 +39,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const StyledContainer = styled.div`
-  padding-top: 10px;
   min-width: 243px;
+  margin-top: 6%;
 `;
 
 const CreateCard = ({
@@ -64,12 +64,13 @@ const CreateCard = ({
 
     const card = { title: newCard };
     const createCard = async () =>
-      await requestCreateNewCard({ card, listId: targetList.listId }, id)
-        .then((res) => {
+      await requestCreateNewCard({ card, listId: targetList.listId }, id).then(
+        (res) => {
           setNewCard("");
           saveBoardChanges(res.data);
-        })
-        .catch((error) => {});
+        }
+      );
+
     createCard();
     setSave(false);
     resetForm("create-card-input");

@@ -5,7 +5,6 @@ import { requestUpdatePassword } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
 import { useAuth } from "../utils/hookUtils";
 import ResetPassword from "../components/auth/ResetPassword";
-import _debounce from "debounce";
 
 const ResetPasswordContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };

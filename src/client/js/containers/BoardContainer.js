@@ -81,7 +81,7 @@ const BoardContainer = ({ match, history }) => {
       user.starred.splice(user.starred.indexOf(id), 1);
     requestBoardDelete(id);
     const updateUser = async () => {
-      await requestUserUpdate({ starred: user.starred }).then((res) => {
+      await requestUserUpdate({ starred: user.starred }).then(() => {
         try {
           history.push("/");
         } catch (error) {
@@ -115,12 +115,7 @@ const BoardContainer = ({ match, history }) => {
     if (!starred && !unStarred) return emptyFunction();
 
     const updateUser = async () => {
-      await requestUserUpdate({ starred: user.starred }).then((res) => {
-        try {
-        } catch (error) {
-          alert(error.message);
-        }
-      });
+      await requestUserUpdate({ starred: user.starred });
       return () => {
         setStarred(false);
         setUnStarred(false);
@@ -135,7 +130,7 @@ const BoardContainer = ({ match, history }) => {
     setLoading(true);
     const inviteUser = async () => {
       await requestUserInvite(id, invite)
-        .then((res) => {
+        .then(() => {
           setInviteDone(true);
           setLoading(false);
           setInvite(null);
@@ -183,7 +178,7 @@ const BoardContainer = ({ match, history }) => {
           getNavData(res.data.styleProperties.color);
           return setBoard(res.data);
         })
-        .catch((error) => history.push("/"));
+        .catch(() => history.push("/"));
 
     auth.authenticated && fetchData();
   }, [board, updatedField, id, history, getNavData, auth]);

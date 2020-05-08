@@ -82,7 +82,7 @@ const AccountSettings = ({ history }) => {
       const body = { password: credentials.confirmPassword };
 
       await requestUserUpdate(body)
-        .then((res) => {
+        .then(() => {
           setSave(false);
           setPasswordConfirmed(true);
           setMessage({ ...message, text: "Password  updated", success: true });

@@ -20,21 +20,16 @@ const ListSegment = styled(Segment)`
   display: flex;
   flex-direction: column;
   max-height: 100%;
+  margin: 0 !important;
   position: relative;
   white-space: normal;
   border-radius: px !important;
-  padding: 4px 7px !important;
+  padding: 6px !important;
 `;
 
 const CardsContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
-`;
-
-const CreateCardInputWrapper = styled.div`
-  background-color: #ebecf0 !important;
-  position: sticky;
-  bottom: 0;
 `;
 
 const List = ({
@@ -96,13 +91,12 @@ const List = ({
             {...otherProps}
           />
         </CardsContainer>
-        <CreateCardInputWrapper>
-          <CreateCard
-            targetList={{ position, listId: _id }}
-            activeList={activeList === _id}
-            {...otherProps}
-          />
-        </CreateCardInputWrapper>
+
+        <CreateCard
+          targetList={{ position, listId: _id }}
+          activeList={activeList === _id}
+          {...otherProps}
+        />
       </ListSegment>
     </div>
   );

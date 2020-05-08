@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import isURL from "validator/lib/isURL";
 
 import { Input, Button } from "semantic-ui-react";
 
-import { emptyFunction, resetForm } from "../../utils/appUtils";
+import { resetForm } from "../../utils/appUtils";
 import { requestUpload } from "../../apis/apiRequests";
 import AttachmentOption from "../sharedComponents/AttachmentOption";
 import DropdownButton from "../sharedComponents/DropdownButton";

@@ -25,31 +25,40 @@ const TabProfileContent = ({ user, device }) => {
   const panes = [
     {
       menuItem: "Profile",
-      render: () => (
-        <TabContainer mobile={device.mobile}>
-          <Tab.Pane className="tab-container">
-            <PersonalInfo user={user} device={device} />
-          </Tab.Pane>
-        </TabContainer>
-      ),
+      pane: {
+        key: "tab1",
+        content: (
+          <TabContainer mobile={device.mobile}>
+            <Tab.Pane className="tab-container">
+              <PersonalInfo user={user} device={device} />
+            </Tab.Pane>
+          </TabContainer>
+        ),
+      },
     },
     {
       menuItem: "Settings",
-      render: () => (
-        <TabContainer mobile={device.mobile}>
-          <Tab.Pane className="tab-container">
-            <AccountSettings />
-          </Tab.Pane>
-        </TabContainer>
-      ),
+      pane: {
+        key: "tab2",
+        content: (
+          <TabContainer mobile={device.mobile}>
+            <Tab.Pane className="tab-container">
+              <AccountSettings />
+            </Tab.Pane>
+          </TabContainer>
+        ),
+      },
     },
     {
       menuItem: "Integrations",
-      render: () => (
-        <TabContainer mobile={device.mobile}>
-          <Tab.Pane className="tab-container">Coming soon...</Tab.Pane>
-        </TabContainer>
-      ),
+      pane: {
+        key: "tab3",
+        content: (
+          <TabContainer mobile={device.mobile}>
+            <Tab.Pane className="tab-container">Coming soon...</Tab.Pane>
+          </TabContainer>
+        ),
+      },
     },
   ];
 
@@ -61,6 +70,7 @@ const TabProfileContent = ({ user, device }) => {
     >
       <Tab
         className="tab-header"
+        renderActiveOnly={false}
         as="div"
         defaultActiveIndex={activeIndex}
         onTabChange={() => setActiveIndex()}

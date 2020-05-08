@@ -85,7 +85,6 @@ const ChatSideBar = ({ openChat }) => {
 
   const saveMessage = useCallback(
     (newMessage, room) => {
-      console.log("newMessage: ", newMessage);
       if (newMessage.room) {
         board.comments.push({ ...newMessage });
         handleBoardUpdate(board, "comments");

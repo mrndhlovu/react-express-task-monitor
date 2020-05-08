@@ -38,28 +38,30 @@ const InputWrapper = styled.div`
 `;
 
 const UIFormInput = ({
-  placeholder,
-  id,
-  type,
-  onChange,
-  name,
+  autoFocus,
+  dataTestId,
   defaultValue,
   iconProps,
-  autoFocus,
+  id,
+  name,
+  onChange,
+  placeholder,
+  type,
 }) => {
   return (
     <InputWrapper>
       <FormInput
         autoFocus={autoFocus}
-        placeholder={placeholder}
+        data-test-id={dataTestId}
+        defaultValue={defaultValue}
         id={id}
-        type={type}
         name={name}
         onChange={onChange}
-        defaultValue={defaultValue}
+        placeholder={placeholder}
+        type={type}
       />
 
-      <Icon {...iconProps} />
+      <Icon {...iconProps} data-test-id="password-input-field-eye-icon" />
     </InputWrapper>
   );
 };

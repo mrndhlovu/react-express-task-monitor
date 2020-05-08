@@ -7,6 +7,7 @@ const TabContainer = ({ children, mobile }) => {
     display: "flex",
     flexDirection: "column",
     margin: mobile ? "0 10px" : "0 39%",
+    height: "73vh",
   };
 
   return <UIWrapper display={displayStyle}>{children}</UIWrapper>;
