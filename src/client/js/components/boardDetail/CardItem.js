@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -10,6 +10,7 @@ import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
 import EditCardModal from "./EditCardModal";
 import Assignees from "../sharedComponents/Assignees";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -92,7 +93,7 @@ const CardItem = ({
   }, [card, deleteCard, sourceListId, handleBoardUpdate, board, updateBoard]);
 
   return (
-    <Fragment>
+    <UIWrapper display={{ position: "relative" }} padding="0">
       <ContentWrapper
         onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
       >
@@ -145,7 +146,7 @@ const CardItem = ({
         handleBoardUpdate={handleBoardUpdate}
         hasDueDate={hasDueDate}
       />
-    </Fragment>
+    </UIWrapper>
   );
 };
 

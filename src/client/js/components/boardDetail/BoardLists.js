@@ -24,7 +24,7 @@ const StyledListContainer = styled.div`
 `;
 
 const BoardLists = ({ history }) => {
-  const { board, handleBoardUpdate, id, saveBoardChanges } = useContext(
+  let { board, handleBoardUpdate, id, saveBoardChanges } = useContext(
     BoardContext
   );
   const { mobile } = useContext(MainContext).device;
@@ -50,7 +50,6 @@ const BoardLists = ({ history }) => {
   const [showInputField, setShowInputField] = useState(false);
   const [sourceId, setSourceId] = useState(undefined);
   const [sourceTitle, setSourceTitle] = useState("");
-  const [update, setUpdate] = useState("");
 
   const getSourceList = (id, target) => findArrayItem(lists, id, target);
   const handleAddList = (event) => setNewListName(event.target.value);
@@ -89,15 +88,7 @@ const BoardLists = ({ history }) => {
     setActiveList(listId);
   };
 
-  const getFilteredBoard = (filterId) => {
-    return {
-      ...board,
-      lists: [...lists.filter((list) => list._id !== filterId)],
-    };
-  };
-
   const updateBoard = (data, action) => {
-    setUpdate(data.lists);
     handleBoardUpdate(data, "lists", activity || action);
     setActivity(null);
   };
@@ -125,23 +116,18 @@ const BoardLists = ({ history }) => {
 
     lists.splice(lists.indexOf(dropTargetList), 1, dropTargetList);
 
-    setUpdate(lists);
+    handleDrop(lists);
     setActivity("movedCard");
   };
 
-  const moveCardToNewPosition = () => {
+  const moveCardToNewPosition = (cards, sourceId) => {
     let sourceList = getSourceList(sourceId, "_id");
-    const card = findArrayItem(sourceList.cards, dragCardId, "_id");
 
-    const dropTarget = findArrayItem(sourceList.cards, dropProps.cardId, "_id");
-
-    sourceList.cards.splice(sourceList.cards.indexOf(card), 1);
-    sourceList.cards.splice(sourceList.cards.indexOf(dropTarget), 0, card);
+    sourceList = { ...sourceList, cards };
 
     lists.splice(lists.indexOf(sourceList), 1, sourceList);
 
-    setUpdate(lists);
-    setDragCardId(dragCardId);
+    handleDrop(lists);
   };
 
   const updateDropTargetId = (listId, cardId) => {
@@ -170,7 +156,7 @@ const BoardLists = ({ history }) => {
       0,
       sourceList
     );
-    setUpdate(lists);
+    handleDrop(lists);
   };
 
   const handleCardClick = (card, sourceId, listTitle) => {
@@ -186,13 +172,11 @@ const BoardLists = ({ history }) => {
     history.push(`${pathname}?modal-open=true`);
   };
 
-  const handleDrop = () => {
-    const isValidData = update[0];
-    const updatedList = {
-      ...board,
-      lists: isValidData ? update : lists,
-    };
-    isValidData && updateBoard(updatedList);
+  const handleDrop = (updates) => {
+    const isValidData = updates[0];
+    board = { ...board, lists: isValidData ? updates : lists };
+
+    isValidData && updateBoard(board);
 
     setDropProps({ ...dropProps, listId: null, cardId: null });
     setDragCardId(undefined);
@@ -207,7 +191,6 @@ const BoardLists = ({ history }) => {
     boardId: id,
     closeAddCardOption: () => setActiveList(""),
     dragCardId,
-    getFilteredBoard,
     getSourceList,
     handleAddCardName,
     handleBoardUpdate,
@@ -222,6 +205,7 @@ const BoardLists = ({ history }) => {
     sourceTitle,
     updateBoard,
     saveBoardChanges,
+    moveCardToNewPosition,
   };
 
   return (

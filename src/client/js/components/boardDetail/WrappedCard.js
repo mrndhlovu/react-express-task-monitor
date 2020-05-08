@@ -1,32 +1,20 @@
-import React, { memo, useState } from "react";
-import _debounce from "debounce";
+import React, { memo, useState, useRef } from "react";
 
-import { DragSource, DropTarget } from "react-dnd";
-import flow from "lodash/flow";
+import { useDrag, useDrop } from "react-dnd";
 
 import { Types } from "../../constants/constants";
 import CardItem from "./CardItem";
-import styled from "styled-components";
-
-const DropTargetPlaceholder = styled.div`
-  margin-top: 7px;
-  min-height: 50px;
-  background: #bababc;
-  max-width: 256px;
-  width: 100%;
-  border-radius: 2px;
-`;
 
 const WrappedCard = ({
   card,
-  connectDragSource,
-  connectDropTarget,
-  isDragging,
+  cardPosition,
+  index,
+  isLast,
   isOverCard,
-  sourceListId,
   listPosition,
   listTitle,
-  isLast,
+  sortCards,
+  sourceListId,
 }) => {
   const [showEditButton, setShowEditButton] = useState(false);
 
@@ -38,70 +26,63 @@ const WrappedCard = ({
     marginTop: "7px",
     minHeight: "20px",
     position: isDragging ? "absolute" : "relative",
-    opacity: isDragging ? 0 : 1,
     zIndex: 0,
   };
 
-  const wrappedCardItem = (
-    <div>
-      {isOverCard && <DropTargetPlaceholder />}
-      <div
-        style={styles}
-        onMouseEnter={() => setShowEditButton(true)}
-        onMouseLeave={() => setShowEditButton(false)}
-      >
-        <CardItem
-          isOverCard={isOverCard}
-          card={card}
-          sourceListId={sourceListId}
-          listPosition={listPosition}
-          sourceTitle={listTitle}
-          isLast={isLast}
-          showEditButton={showEditButton}
-        />
-      </div>
+  const ref = useRef(null);
+  const [, drop] = useDrop({
+    accept: Types.CARD,
+    hover(item, monitor) {
+      if (!ref.current) return;
+
+      const dragIndex = item.index;
+      const hoverIndex = { card: index, list: listPosition };
+
+      if (dragIndex === hoverIndex.card) return;
+
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+
+      if (dragIndex < hoverIndex.card && hoverClientY < hoverMiddleY) return;
+      if (dragIndex > hoverIndex.card && hoverClientY > hoverMiddleY) return;
+
+      sortCards(dragIndex, hoverIndex);
+      item.index = hoverIndex.card;
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: Types.CARD, cardPosition, listPosition, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  const opacity = isDragging ? 0 : 1;
+  drag(drop(ref));
+
+  const dragCardItem = (
+    <div
+      ref={ref}
+      style={{ ...styles, opacity }}
+      onMouseEnter={() => setShowEditButton(true)}
+      onMouseLeave={() => setShowEditButton(false)}
+    >
+      <CardItem
+        isOverCard={isOverCard}
+        card={card}
+        sourceListId={sourceListId}
+        listPosition={listPosition}
+        sourceTitle={listTitle}
+        isLast={isLast}
+        showEditButton={showEditButton}
+      />
     </div>
   );
 
-  return connectDragSource(connectDropTarget(wrappedCardItem));
+  return dragCardItem;
 };
 
-const source = {
-  beginDrag(props) {
-    const { sourceListId, card } = props;
-    props.handleStartDrag(sourceListId, card._id);
-
-    return {};
-  },
-  endDrag(props, monitor) {
-    if (!monitor.didDrop()) return;
-
-    return props.handleDrop();
-  },
-};
-
-const target = {
-  hover(props, monitor) {
-    const { sourceListId, card } = props;
-
-    if (!monitor.isOver({ shallow: false })) return;
-    _debounce(props.updateDropTargetId(sourceListId, card._id), 400);
-
-    return;
-  },
-};
-
-const collect = (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
-});
-
-const cardCollect = (connect, monitor) => ({
-  isOverCard: monitor.isOver({ shallow: true }),
-  connectDropTarget: connect.dropTarget(),
-});
-
-export default flow(
-  DragSource(Types.LIST, source, collect),
-  DropTarget(Types.LIST, target, cardCollect)
-)(memo(WrappedCard));
+export default memo(WrappedCard);
