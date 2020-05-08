@@ -21,13 +21,7 @@ const Container = styled.section`
   margin-right: 5px;
 `;
 
-const CardModalSidebar = ({
-  hasDueDate,
-  hasMembers,
-  hasChecklist,
-  hasCover,
-  ...props
-}) => {
+const CardModalSidebar = ({ hasDueDate, hasCover, ...props }) => {
   return (
     <Container>
       <StyledHeader content="ADD TO CARD" />

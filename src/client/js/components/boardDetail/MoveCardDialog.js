@@ -102,7 +102,7 @@ const MoveCardDialog = ({
       handleBoardUpdate(originalBoard, "lists", null, () => {
         handleBoardUpdate(board, "lists", null, null, board._id);
 
-        _debounce(history.push(`/boards/id/${targetBoard._id}`), 500);
+        _debounce(history.push(`/boards/id/${targetId}`), 500);
       });
       setMove(false);
     } else if (listChanged) {

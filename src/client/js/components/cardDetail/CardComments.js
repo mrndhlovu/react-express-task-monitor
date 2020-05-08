@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment, lazy, Suspense } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 
 import { emptyFunction, resetForm } from "../../utils/appUtils";
 import { requestCreateComment } from "../../apis/apiRequests";
@@ -32,11 +32,8 @@ const CardComments = ({
     const createComment = async () => {
       await requestCreateComment(body, id).then((res) => {
         setNewComment(null);
-        try {
-          saveCardChanges(res.data);
-          resetForm("comment-input");
-          console.log("comment: ", res.data);
-        } catch (error) {}
+        saveCardChanges(res.data);
+        resetForm("comment-input");
       });
     };
 

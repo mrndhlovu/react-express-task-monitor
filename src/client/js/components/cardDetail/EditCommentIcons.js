@@ -49,9 +49,7 @@ const EditCommentIcons = ({
             <Emoji
               emoji={{ id: emoji.id }}
               size={16}
-              onClick={(emoji, event) =>
-                handleEmojiClick(emoji, commentId, "remove")
-              }
+              onClick={(emoji) => handleEmojiClick(emoji, commentId, "remove")}
             />
           </EmojiWrapper>
         ))
@@ -66,7 +64,7 @@ const EditCommentIcons = ({
           >
             <Picker
               set="apple"
-              onSelect={(emoji, event) => handleEmojiClick(emoji, commentId)}
+              onSelect={(emoji) => handleEmojiClick(emoji, commentId)}
             />
           </DropdownButton>
         </Suspense>

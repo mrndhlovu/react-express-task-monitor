@@ -81,7 +81,7 @@ BoardSchema.methods.validateBoardMember = async function (userId) {
   const isValidBoardMember = board.members.includes(userId);
 
   if (!isValidBoardMember)
-    return res.status(400).send({ message: "Access to the board is denied!" });
+    return new Error({ message: "Access to the board is denied!" });
   await board.populate("owner").execPopulate();
 };
 

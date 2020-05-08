@@ -1,7 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-
-import { MainContext } from "../../utils/contextUtils";
 import HomeSideMenu from "../home/HomeSideMenu";
 import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";

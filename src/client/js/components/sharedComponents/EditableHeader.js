@@ -2,7 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 
 import { Header, Input } from "semantic-ui-react";
-import { MainContext, BoardContext } from "../../utils/contextUtils";
+
+import { BoardContext } from "../../utils/contextUtils";
+import { findArrayItem, stringsEqual } from "../../utils/appUtils";
 
 const StyledHeader = styled(Header)`
   font-size: 14px !important;
@@ -20,12 +22,12 @@ const EditHeader = styled(Input)`
   width: 95%;
 `;
 
-const EditableHeader = ({ title, type, cardPosition, sourceId }) => {
+const EditableHeader = ({ title, type, sourceId }) => {
   const { handleBoardUpdate, board } = useContext(BoardContext);
-  const { getSourceList } = useContext(MainContext);
+  let sourceList = findArrayItem(board.lists, sourceId, "_id");
 
   const [editable, setEditable] = useState(false);
-  const [newTitle, setNewTitle] = useState(title);
+  const [newTitle, setNewTitle] = useState(null);
   const [newBoard, setNewBoard] = useState(null);
 
   const handleChange = (e) => {
@@ -37,35 +39,11 @@ const EditableHeader = ({ title, type, cardPosition, sourceId }) => {
       case "boardTitle":
         setNewBoard({ ...board, title: newTitle });
         break;
-
-      case "cardTitle":
-        const sourceList = getSourceList(sourceId, "_id");
-        const cards = [];
-        const updatedList = [];
-
-        sourceList.cards.map((card) =>
-          cards.push(
-            card._id === cardPosition ? { ...card, title: newTitle } : card
-          )
-        );
-
-        board.lists.map((list) =>
-          updatedList.push(list._id === sourceId ? { ...list, cards } : list)
-        );
-
-        setNewBoard({ ...board, lists: updatedList });
-        break;
-
       case "listHeader":
-        const newList = [];
-        board.lists.map((list) =>
-          newList.push(
-            list._id === sourceId ? { ...list, title: newTitle } : list
-          )
-        );
-        setNewBoard({ ...board, lists: newList });
+        sourceList.title = newTitle;
+        board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+        setNewBoard({ ...board });
         break;
-
       default:
         break;
     }
@@ -75,7 +53,10 @@ const EditableHeader = ({ title, type, cardPosition, sourceId }) => {
 
   useEffect(() => {
     if (!newBoard) return;
-    handleBoardUpdate(newBoard, "title", "boardHeader");
+    handleBoardUpdate(
+      newBoard,
+      stringsEqual(type, "boardTitle") ? "title" : "lists"
+    );
     setNewBoard(null);
   }, [newBoard, handleBoardUpdate]);
 

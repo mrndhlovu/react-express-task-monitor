@@ -51,7 +51,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
 
   const handleChange = (e) => setInviteEmail(e.target.value);
 
-  const validateEmail = (e) => {
+  const validateEmail = () => {
     const validEmail = isEmail(inviteEmail);
 
     if (!validEmail) return setError("Email provided is invalid");

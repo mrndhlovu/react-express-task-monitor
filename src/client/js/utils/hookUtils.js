@@ -11,18 +11,6 @@ export const useAuth = () => {
   return { auth, user: data.data };
 };
 
-export const useRenderCount = () => {
-  const [renderCount, setRenderCount] = useState(0);
-
-  let count = 0;
-  useEffect(() => {
-    count++;
-    setRenderCount(count);
-  }, [renderCount, count]);
-
-  return renderCount;
-};
-
 export const useFetch = (history) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,9 +25,9 @@ export const useFetch = (history) => {
             setLoading(false);
           }
         })
-        .catch(async (error) => {
+        .catch(() => {
           setLoading(false);
-          await requestAuthLogout().then(() => history.push("/login"));
+          requestAuthLogout().then(() => history.push("/login"));
         });
     };
 
@@ -51,8 +39,6 @@ export const useFetch = (history) => {
 
   return [data, loading];
 };
-
-export const useSocket = (location) => {};
 
 export const useDimensions = () => {
   const INITIAL_STATE = {

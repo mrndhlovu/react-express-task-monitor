@@ -75,7 +75,6 @@ const AuthFormWrapper = ({
   message,
   passwordChanged,
   dataTestId,
-  ctaTestId,
 }) => {
   const isLoginPage = stringsEqual(history.location.pathname, "/login");
   const resetPasswordPage = stringsEqual(
@@ -110,7 +109,7 @@ const AuthFormWrapper = ({
           disabled={disabled}
           size="large"
           content={buttonText}
-          data-test-id="login-button"
+          data-test-id="primary-auth-button"
           onClick={(e) => handleClick(e)}
         />
 
@@ -130,7 +129,7 @@ const AuthFormWrapper = ({
 
         {!resetPasswordPage && !passwordChanged && (
           <Subheader
-            data-test-id={ctaTestId}
+            data-test-id="form-subheader"
             footer={true}
             onClick={() => history.push(redirect)}
           >

@@ -6,7 +6,7 @@ import UILoadingSpinner from "./components/sharedComponents/UILoadingSpinner";
 class DynamicImport extends Component {
   state = { component: null };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this.props
       .load()
       .then((mod) => this.setState(() => ({ component: mod.default })));

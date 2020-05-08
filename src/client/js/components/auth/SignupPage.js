@@ -8,6 +8,7 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
 
   return (
     <AuthFormWrapper
+      dataTestId="signup-form"
       buttonText="Sign Up"
       headText="Sign up for your account"
       handleClick={handleSignupClick}
@@ -44,6 +45,7 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         onChange={(e) => onHandleChange(e)}
         placeholder="Create password"
         type={type}
+        dataTestId="password-form-input"
       />
     </AuthFormWrapper>
   );

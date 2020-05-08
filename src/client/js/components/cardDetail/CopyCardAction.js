@@ -24,15 +24,12 @@ const CopyCardAction = ({ activeCard, id, sourceId, saveBoardChanges }) => {
       };
 
       delete card._id;
-      console.log("newCard: ", card);
 
       const body = { card, listId: sourceId };
 
       await requestCreateNewCard(body, id).then((res) => {
-        try {
-          setMessage(true);
-          saveBoardChanges(res.body);
-        } catch (error) {}
+        setMessage(true);
+        saveBoardChanges(res.body);
       });
     };
 

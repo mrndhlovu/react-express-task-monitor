@@ -179,25 +179,21 @@ const CheckLists = ({
     const getTaskItem = async () => {
       const data = { task: { description: task } };
       await requestChecklistTask(data, id).then((res) => {
-        try {
-          checklist = { ...checklist, archived: false, status: "doing" };
-          checklist.tasks.push(res.data);
+        checklist = { ...checklist, archived: false, status: "doing" };
+        checklist.tasks.push(res.data);
 
-          activeCard.checklists.splice(listIndex, 1, checklist);
-          const body = { newCard: activeCard, listId: sourceId };
-          return _debounce(createList(body), 1000);
-        } catch (error) {}
+        activeCard.checklists.splice(listIndex, 1, checklist);
+        const body = { newCard: activeCard, listId: sourceId };
+        return _debounce(createList(body), 1000);
       });
     };
     const createList = async (body) => {
       await requestCardUpdate(body, id).then((res) => {
-        try {
-          const newList = findArrayItem(res.data.lists, sourceId, "_id");
-          let newCard = findArrayItem(newList.cards, activeCard._id, "_id");
-          saveCardChanges(newCard);
+        const newList = findArrayItem(res.data.lists, sourceId, "_id");
+        let newCard = findArrayItem(newList.cards, activeCard._id, "_id");
+        saveCardChanges(newCard);
 
-          saveBoardChanges(res.data);
-        } catch (error) {}
+        saveBoardChanges(res.data);
       });
     };
 

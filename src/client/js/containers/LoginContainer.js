@@ -55,7 +55,6 @@ const LoginContainer = ({ history, location }) => {
   return (
     <LoginPage
       clearError={clearError}
-      message={message}
       handleLoginClick={(e) => {
         e.preventDefault();
         setLoading(true);

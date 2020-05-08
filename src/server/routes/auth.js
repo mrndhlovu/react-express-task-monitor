@@ -112,14 +112,14 @@ router.post("/recovery", (req, res) => {
             success: true,
             message: `Link to reset your password was sent to ${user.email} with further instructions.`,
           });
-        else return done(err);
+        else return done();
       },
     ],
     (err) => res.status(422).json({ message: err })
   );
 });
 
-router.post("/:token/update-password", (req, res, next) => {
+router.post("/:token/update-password", (req, res) => {
   const { password, confirmPassword } = req.body;
   const { token } = req.params;
 
@@ -179,8 +179,6 @@ router.delete("/delete-account", auth, async (req, res) => {
 
 router.patch("/update", auth, async (req, res) => {
   const updates = Object.keys(req.body);
-
-  console.log("upes: ", updates);
 
   const allowedUpdates = [
     "fname",

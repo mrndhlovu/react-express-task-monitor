@@ -15,7 +15,7 @@ const HeadWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const SideBarHeader = ({ handleClose, header = "Board", inverted }) => {
+const SideBarHeader = ({ handleClose, header = "Board" }) => {
   return (
     <UIContainer>
       <HeadWrapper>

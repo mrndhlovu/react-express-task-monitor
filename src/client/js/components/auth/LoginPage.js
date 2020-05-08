@@ -15,7 +15,6 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
       handleClick={handleLoginClick}
       authCta="Can't log in? Sign up for an account"
       redirect="/signup"
-      ctaTestId="signup-link"
       {...rest}
     >
       <UIFormInput
@@ -38,6 +37,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
         name="password"
         type={type}
         onChange={(e) => onHandleChange(e)}
+        dataTestId="password-input-field"
       />
     </AuthFormWrapper>
   );

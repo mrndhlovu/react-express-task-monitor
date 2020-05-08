@@ -198,7 +198,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
       };
 
       await requestCardUpdate(body, id).then((res) => {
-        setCard(newCard);
+        setCard(body.newCard);
         saveBoardChanges(res.data);
         setIsLoading(false);
       });

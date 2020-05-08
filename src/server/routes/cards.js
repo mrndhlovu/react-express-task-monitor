@@ -56,7 +56,7 @@ router.patch("/:boardId/new-card", auth, async (req, res) => {
 router.patch("/:boardId/create-checklist", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { checklist, cardId, listId } = req.body;
-
+  let board;
   try {
     board = await Board.findOne({ _id, owner: req.user._id });
 
@@ -159,7 +159,7 @@ router.patch("/:boardId/delete-attachment", async (req, res) => {
 router.patch("/:boardId/comment", auth, async (req, res) => {
   const _id = req.params.boardId;
   const { comment, cardId, listId } = req.body;
-
+  let board;
   try {
     board = await Board.findOne({ _id, owner: req.user._id });
 

@@ -5,7 +5,7 @@ import { findByDataTestId, mockCallBack } from "../../utils";
 import LoginPage from "../../../client/js/components/auth/LoginPage";
 
 const DEFAULT_PROPS = {
-  history: { push: () => "/", location: { pathname: "/" } },
+  history: { push: () => "/", location: { pathname: "/login" } },
 };
 
 describe("LoginPage", () => {
@@ -27,7 +27,10 @@ describe("LoginPage", () => {
 
   it("it should load login form", async () => {
     loginForm = findByDataTestId(wrapper, "login-form").first();
-    const loginButton = findByDataTestId(loginForm, "login-button").first();
+    const loginButton = findByDataTestId(
+      loginForm,
+      "primary-auth-button"
+    ).first();
 
     wrapper.setProps({
       handleClick: mockCallBack,
@@ -44,13 +47,35 @@ describe("LoginPage", () => {
   });
 
   it("should click render correct text on button, show 'Forgot Password' link and signup option ", () => {
-    forgotPasswordLink = findByDataTestId(loginForm, "forgot-password-link");
-    const signUpOption = findByDataTestId(loginForm, "signup-link").first();
+    forgotPasswordLink = findByDataTestId(
+      loginForm,
+      "forgot-password-link"
+    ).first();
+
+    const signUpOption = findByDataTestId(loginForm, "form-subheader").first();
 
     signUpOption.simulate("click");
 
-    expect(forgotPasswordLink).toBeDefined();
+    expect(forgotPasswordLink.length).toBe(1);
+    expect(forgotPasswordLink.text()).toBe("Forgot password.");
     expect(signUpOption).toBeDefined();
     expect(mockCallBack).toHaveBeenCalled();
+  });
+
+  it("should click on eye icon and  from", () => {
+    const passwordFormField = findByDataTestId(
+      loginForm,
+      "password-input-field"
+    ).first();
+
+    const passwordFormFieldIcon = findByDataTestId(
+      loginForm,
+      "password-input-field-eye-icon"
+    ).first();
+
+    passwordFormFieldIcon.simulate("click");
+
+    expect(mockCallBack).toHaveBeenCalled();
+    expect(passwordFormField.prop("type")).toBe("password");
   });
 });

@@ -61,10 +61,8 @@ const MainContainer = ({ children, history, auth }) => {
     if (!create) return emptyFunction();
     const createBoard = async () => {
       await requestNewBoard(board).then((res) => {
-        try {
-          setBoard(res.data);
-          return history.push(`/boards/id/${res.data._id}`);
-        } catch (error) {}
+        setBoard(res.data);
+        return history.push(`/boards/id/${res.data._id}`);
       });
     };
     createBoard();

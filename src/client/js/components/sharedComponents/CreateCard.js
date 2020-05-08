@@ -64,12 +64,13 @@ const CreateCard = ({
 
     const card = { title: newCard };
     const createCard = async () =>
-      await requestCreateNewCard({ card, listId: targetList.listId }, id)
-        .then((res) => {
+      await requestCreateNewCard({ card, listId: targetList.listId }, id).then(
+        (res) => {
           setNewCard("");
           saveBoardChanges(res.data);
-        })
-        .catch((error) => {});
+        }
+      );
+
     createCard();
     setSave(false);
     resetForm("create-card-input");

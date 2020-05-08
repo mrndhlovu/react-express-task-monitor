@@ -5,7 +5,6 @@ import { requestNewBoardList } from "../../apis/apiRequests";
 import { withRouter } from "react-router";
 
 const CopyListDialog = ({
-  board,
   close,
   getSourceList,
   listPosition,
