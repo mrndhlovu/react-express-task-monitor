@@ -10,10 +10,11 @@ const StyledWrapper = styled.div`
 const Container = styled.div`
   width: 272px;
   min-height: 30px;
-  background-color: #ffffff3d;
+  background: #ffffff3d;
   align-content: center;
   display: grid;
   border-radius: 3px;
+  margin: 0 4px;
 `;
 
 const Span = styled.div`

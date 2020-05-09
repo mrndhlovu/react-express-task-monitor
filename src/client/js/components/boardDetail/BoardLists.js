@@ -1,6 +1,14 @@
-import React, { useContext, useState, lazy, Suspense, useEffect } from "react";
+import React, {
+  useContext,
+  useState,
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+} from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import update from "immutability-helper";
 
 import {
   BoardContext,
@@ -21,6 +29,7 @@ const StyledListContainer = styled.div`
   vertical-align: top;
   overflow-x: auto;
   overflow-y: hidden;
+  height: 100%;
 `;
 
 const BoardLists = ({ history }) => {
@@ -28,8 +37,7 @@ const BoardLists = ({ history }) => {
     BoardContext
   );
   const { mobile } = useContext(MainContext).device;
-
-  const { lists } = board;
+  let { lists } = board;
   const modalOpen = parseSearchQuery(getQueryString(history.location))[
     "modal-open"
   ];
@@ -40,12 +48,9 @@ const BoardLists = ({ history }) => {
   const [activity, setActivity] = useState(null);
   const [createList, setCreateList] = useState(false);
   const [dragCardId, setDragCardId] = useState("");
-  const [draggingList, setDraggingList] = useState(false);
-  const [dropProps, setDropProps] = useState({ listId: null, cardId: null });
   const [hideCardDetail, setHideCardDetail] = useState(true);
   const [newCardName, setNewCardName] = useState("");
   const [newListName, setNewListName] = useState("");
-  const [reorderCards, setReorderCards] = useState(false);
   const [showAddCardInput, setShowAddCardInput] = useState(false);
   const [showInputField, setShowInputField] = useState(false);
   const [sourceId, setSourceId] = useState(undefined);
@@ -54,8 +59,6 @@ const BoardLists = ({ history }) => {
   const getSourceList = (id, target) => findArrayItem(lists, id, target);
   const handleAddList = (event) => setNewListName(event.target.value);
   const handleOnChange = (event) => setNewCardName(event.target.value);
-  const updateDragOption = () => setDraggingList(!draggingList);
-  const updateSourceId = (id) => setSourceId(id);
 
   const handleCreateList = () => {
     setCreateList(true);
@@ -72,10 +75,8 @@ const BoardLists = ({ history }) => {
         try {
           saveBoardChanges(res.data);
         } catch (error) {
-          return () => {
-            setCreateList(false);
-            setNewListName("");
-          };
+          setCreateList(false);
+          setNewListName("");
         }
       });
     };
@@ -93,71 +94,43 @@ const BoardLists = ({ history }) => {
     setActivity(null);
   };
 
-  const handleMoveCardToNewList = () => {
-    let sourceList = getSourceList(sourceId, "_id");
-    const dropTargetList = findArrayItem(lists, dropProps.listId, "_id");
-    const card = findArrayItem(sourceList.cards, dragCardId, "_id");
-
-    const dropTargetCard = findArrayItem(
-      sourceList.cards,
-      dropProps.cardId,
-      "_id"
-    );
-
-    sourceList.cards.splice(sourceList.cards.indexOf(card), 1);
-
-    lists.splice(lists.indexOf(sourceList), 1, sourceList);
-
-    dropTargetList.cards.splice(
-      dropTargetList.cards.indexOf(dropTargetCard),
-      0,
-      card
-    );
-
-    lists.splice(lists.indexOf(dropTargetList), 1, dropTargetList);
-
-    handleDrop(lists);
-    setActivity("movedCard");
+  const relocateCard = (cards, sourceId) => {
+    console.log("relocateCard -> cards", cards, sourceId);
   };
 
-  const moveCardToNewPosition = (cards, sourceId) => {
-    let sourceList = getSourceList(sourceId, "_id");
+  const moveCard = useCallback(
+    (dragIndex, hover, sourceId) => {
+      let list = getSourceList(sourceId, "_id");
+      const { cardIndex } = hover;
 
-    sourceList = { ...sourceList, cards };
+      const dragCard = list.cards[dragIndex];
+      const cards = update(list.cards, {
+        $splice: [
+          [dragIndex, 1],
+          [cardIndex, 0, dragCard],
+        ],
+      });
+      list = { ...list, cards };
+      lists.splice(lists.indexOf(list), 1, list);
+      handleDrop(lists);
+    },
 
-    lists.splice(lists.indexOf(sourceList), 1, sourceList);
+    [lists]
+  );
 
-    handleDrop(lists);
-  };
-
-  const updateDropTargetId = (listId, cardId) => {
-    listId && setDropProps({ ...dropProps, listId });
-    cardId && setDropProps({ ...dropProps, cardId });
-
-    if (dropProps.listId === sourceId) setReorderCards(true);
-    else setReorderCards(false);
-  };
-
-  const handleStartDrag = (listId, cardId) => {
-    setDragCardId(cardId);
-    updateSourceId(listId);
-    updateDropTargetId(listId, cardId);
-  };
-
-  const reOrderList = () => {
-    const sourceList = getSourceList(sourceId, "_id");
-    const dropTarget = getSourceList(dropProps.listId, "_id");
-    const moveForward = lists.indexOf(sourceList) < lists.indexOf(dropTarget);
-
-    lists.splice(lists.indexOf(sourceList), 1);
-
-    lists.splice(
-      moveForward ? lists.indexOf(dropTarget) + 1 : lists.indexOf(dropTarget),
-      0,
-      sourceList
-    );
-    handleDrop(lists);
-  };
+  const moveList = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragList = lists[dragIndex];
+      const updatedLists = update(lists, {
+        $splice: [
+          [dragIndex, 1],
+          [hoverIndex, 0, dragList],
+        ],
+      });
+      handleDrop(updatedLists);
+    },
+    [lists]
+  );
 
   const handleCardClick = (card, sourceId, listTitle) => {
     const { pathname } = history.location;
@@ -178,10 +151,8 @@ const BoardLists = ({ history }) => {
 
     isValidData && updateBoard(board);
 
-    setDropProps({ ...dropProps, listId: null, cardId: null });
     setDragCardId(undefined);
     setSourceId(undefined);
-    setReorderCards(false);
   };
 
   const context = {
@@ -196,33 +167,26 @@ const BoardLists = ({ history }) => {
     handleBoardUpdate,
     handleCardClick,
     handleOnChange,
-    handleStartDrag,
     hideCardDetail,
-    lists,
     mobile,
     newCardName,
     showAddCardInput,
     sourceTitle,
     updateBoard,
     saveBoardChanges,
-    moveCardToNewPosition,
+    moveCard,
   };
 
   return (
     <BoardListsContext.Provider value={context}>
       <StyledListContainer className="lists-container">
         <ListGrid
-          draggingList={draggingList}
-          handleMoveCardToNewList={handleMoveCardToNewList}
-          handleDrop={handleDrop}
-          reOrderList={reOrderList}
+          relocateCard={relocateCard}
+          moveCard={moveCard}
+          moveList={moveList}
           sourceId={sourceId}
-          updateDragOption={updateDragOption}
-          updateDropTargetId={updateDropTargetId}
-          updateSourceId={updateSourceId}
-          reorderCards={reorderCards}
-          moveCardToNewPosition={moveCardToNewPosition}
-          getSourceList={getSourceList}
+          lists={lists}
+          mobile={mobile}
         />
 
         <CreateItemForm

@@ -1,5 +1,6 @@
 import moment from "moment";
 import equals from "validator/lib/equals";
+import update from "immutability-helper";
 
 export const allowedUpdates = [
   "title",

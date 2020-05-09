@@ -1,14 +1,11 @@
-import React, { useContext, memo } from "react";
+import React, { useContext, useRef } from "react";
 import styled from "styled-components";
-import { debounce } from "debounce";
 
-import flow from "lodash/flow";
-
-import { DragSource, DropTarget } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 
 import { Segment } from "semantic-ui-react";
 
-import { BoardListsContext, MainContext } from "../../utils/contextUtils";
+import { BoardListsContext } from "../../utils/contextUtils";
 import { Types } from "../../constants/constants";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
@@ -21,7 +18,6 @@ const ListSegment = styled(Segment)`
   flex-direction: column;
   max-height: 100%;
   margin: 0 !important;
-  position: relative;
   white-space: normal;
   border-radius: px !important;
   padding: 6px !important;
@@ -32,15 +28,7 @@ const CardsContainer = styled.div`
   overflow-x: hidden;
 `;
 
-const List = ({
-  connectDragSource,
-  connectDropTarget,
-  list,
-  isDragging,
-  isOverCurrent,
-  position,
-  ...rest
-}) => {
+const List = ({ index, list, mobile, moveList, position, ...rest }) => {
   const {
     showListActions,
     activeList,
@@ -50,43 +38,64 @@ const List = ({
     saveBoardChanges,
     ...otherProps
   } = useContext(BoardListsContext);
-  const { mobile } = useContext(MainContext).device;
-
-  const { title, cards, _id } = list;
 
   const styles = {
-    minWidth: "272px",
-    verticalAlign: "top",
-    marginRight: "8px",
-    visibility: isDragging && "hidden",
-    opacity: isDragging ? 0 : 1,
-    whiteSpace: "nowrap",
-    height: mobile ? "91vh" : "92vh",
-    transform: isOverCurrent && "translate3d(0, 10px, 0)",
-    WebkitTransform: "transform",
+    display: isDragging ? "hidden" : "block",
   };
 
+  const ref = useRef(null);
+  const [, drop] = useDrop({
+    accept: Types.LIST,
+    hover(item, monitor) {
+      if (!ref.current) return;
+
+      const dragIndex = item.index;
+      const hoverIndex = index;
+
+      if (dragIndex === hoverIndex) return;
+
+      const hoverBoundingRect = ref.current.getBoundingClientRect();
+
+      const hoverMiddleX = hoverBoundingRect.bottom / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientX = clientOffset.x;
+
+      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) return;
+
+      moveList(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    item: { type: Types.LIST, position, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  const opacity = isDragging ? 0 : 1;
+  drag(drop(ref));
+
   const wrappedList = (
-    <div style={styles}>
+    <div ref={ref} style={{ ...styles, opacity }}>
       <ListSegment>
         <ListHeader
           board={board}
           getSourceList={getSourceList}
           handleBoardUpdate={handleBoardUpdate}
-          listId={_id}
+          listId={list._id}
           listPosition={position}
           mobile={mobile}
           saveBoardChanges={saveBoardChanges}
           showListActions={showListActions}
-          title={title}
+          title={list.title}
         />
 
         <CardsContainer className="card-list">
           <CardsWrapper
-            listCards={cards}
-            sourceListId={_id}
+            cards={list.cards}
+            sourceListId={list._id}
             listPosition={position}
-            listTitle={title}
+            listTitle={list.title}
             getSourceList={getSourceList}
             {...rest}
             {...otherProps}
@@ -94,63 +103,15 @@ const List = ({
         </CardsContainer>
 
         <CreateCard
-          targetList={{ position, listId: _id }}
-          activeList={activeList === _id}
+          targetList={{ position, listId: list._id }}
+          activeList={activeList === list._id}
           {...otherProps}
         />
       </ListSegment>
     </div>
   );
 
-  return connectDragSource(connectDropTarget(wrappedList));
+  return wrappedList;
 };
 
-const target = {
-  drop(props) {
-    const { draggingList, reorderCards } = props;
-    if (draggingList) return props.reOrderList();
-    if (reorderCards) return props.moveCardToNewPosition();
-
-    return props.handleMoveCardToNewList();
-  },
-  hover(props, monitor) {
-    const { list } = props;
-
-    if (!monitor.isOver({ shallow: false })) return;
-
-    debounce(props.updateDropTargetId(list._id), 500);
-
-    return {};
-  },
-};
-
-const source = {
-  beginDrag(props) {
-    const { list } = props;
-    props.updateSourceId(list._id);
-
-    props.updateDragOption();
-
-    return {};
-  },
-  endDrag(props) {
-    props.updateDragOption();
-
-    return props.handleDrop();
-  },
-};
-
-const collect = (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  isDragging: monitor.isDragging(),
-});
-
-const sortCollect = (connect, monitor) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOverCurrent: monitor.isOver({ shallow: true }),
-});
-
-export default flow(
-  DragSource(Types.LIST, source, collect),
-  DropTarget(Types.LIST, target, sortCollect)
-)(memo(List));
+export default List;

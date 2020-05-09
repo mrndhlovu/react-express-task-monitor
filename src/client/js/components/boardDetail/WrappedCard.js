@@ -13,7 +13,7 @@ const WrappedCard = ({
   isOverCard,
   listPosition,
   listTitle,
-  sortCards,
+  moveCard,
   sourceListId,
 }) => {
   const [showEditButton, setShowEditButton] = useState(false);
@@ -36,9 +36,9 @@ const WrappedCard = ({
       if (!ref.current) return;
 
       const dragIndex = item.index;
-      const hoverIndex = { card: index, list: listPosition };
+      const hoverIndex = { cardIndex: index, listIndex: listPosition };
 
-      if (dragIndex === hoverIndex.card) return;
+      if (dragIndex === hoverIndex.cardIndex) return;
 
       const hoverBoundingRect = ref.current.getBoundingClientRect();
 
@@ -47,11 +47,13 @@ const WrappedCard = ({
       const clientOffset = monitor.getClientOffset();
       const hoverClientY = clientOffset.y - hoverBoundingRect.top;
 
-      if (dragIndex < hoverIndex.card && hoverClientY < hoverMiddleY) return;
-      if (dragIndex > hoverIndex.card && hoverClientY > hoverMiddleY) return;
+      if (dragIndex < hoverIndex.cardIndex && hoverClientY < hoverMiddleY)
+        return;
+      if (dragIndex > hoverIndex.cardIndex && hoverClientY > hoverMiddleY)
+        return;
 
-      sortCards(dragIndex, hoverIndex);
-      item.index = hoverIndex.card;
+      moveCard(dragIndex, hoverIndex, sourceListId);
+      item.index = hoverIndex.cardIndex;
     },
   });
   const [{ isDragging }, drag] = useDrag({
