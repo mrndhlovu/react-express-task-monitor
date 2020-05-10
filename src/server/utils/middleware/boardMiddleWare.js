@@ -23,7 +23,8 @@ const viewedRecentMiddleWare = async (req, res, next) => {
     else if (isStarred && viewedRecent)
       user.viewedRecent.splice(user.viewedRecent.indexOf(_id), 1);
 
-    user.viewedRecent.slice(0, 4);
+    const recent = user.viewedRecent.splice(0, 4);
+    user.viewedRecent = recent;
 
     user.save();
     req.user = user;
