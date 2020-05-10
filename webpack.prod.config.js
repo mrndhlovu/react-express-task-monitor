@@ -38,6 +38,8 @@ module.exports = merge(shared, {
       filename: "./index.html",
       favicon: "./src/assets/static-assets/favicon.ico",
     }),
-    new CleanWebpackPlugin(),
+    new CleanWebpackPlugin({
+      cleanOnceBeforeBuildPatterns: ["**/*", "!server.js"],
+    }),
   ],
 });
