@@ -66,6 +66,7 @@ module.exports = {
             loader: "sass-loader",
             options: {
               sourceMap: isDevelopment,
+              includePaths: [path.resolve("../node_modules")],
             },
           },
         ],
@@ -80,6 +81,7 @@ module.exports = {
             loader: "sass-loader",
             options: {
               sourceMap: isDevelopment,
+              includePaths: [path.resolve("../node_modules")],
             },
           },
         ],
