@@ -19,7 +19,7 @@ const viewedRecentMiddleWare = async (req, res, next) => {
     const viewedRecent = user.viewedRecent.includes(_id);
 
     const shouldAddToRecentViewed = !viewedRecent && !isStarred;
-    if (shouldAddToRecentViewed) user.viewedRecent.splice(0, 0, _id);
+    if (shouldAddToRecentViewed) user.viewedRecent.unshift(_id);
     else if (isStarred && viewedRecent)
       user.viewedRecent.splice(user.viewedRecent.indexOf(_id), 1);
 

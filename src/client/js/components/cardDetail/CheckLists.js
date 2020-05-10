@@ -8,10 +8,7 @@ import {
   findArrayItem,
   stringsEqual,
 } from "../../utils/appUtils";
-import {
-  requestCardUpdate,
-  requestChecklistTask,
-} from "../../apis/apiRequests";
+import { requestChecklistTask } from "../../apis/apiRequests";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CreateInput from "../sharedComponents/CreateInput";
@@ -19,7 +16,6 @@ import ProgressBar from "./ProgressBar";
 import ChecklistItem from "./ChecklistItem";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import _debounce from "debounce";
 
 const display = {
   display: "grid",
@@ -40,7 +36,7 @@ const wrapperStyle = {
 const CheckLists = ({
   activeCard,
   board,
-  checklist,
+  checkItem,
   checklistName,
   getSourceList,
   handleBoardUpdate,
@@ -57,6 +53,7 @@ const CheckLists = ({
   const [removeChecklist, setRemoveChecklist] = useState(false);
   const [task, setTask] = useState(null);
   const [hideCompleted, setHideCompleted] = useState(false);
+  let [checklist, setChecklist] = useState(checkItem);
 
   const { id } = match.params;
   const sourceList = getSourceList(sourceId, "_id");
@@ -176,29 +173,23 @@ const CheckLists = ({
   useEffect(() => {
     if (!done) return emptyFunction();
 
-    const getTaskItem = async () => {
-      const data = { task: { description: task } };
-      await requestChecklistTask(data, id).then((res) => {
-        checklist = { ...checklist, archived: false, status: "doing" };
-        checklist.tasks.push(res.data);
+    const getTaskItem = () => {
+      const data = {
+        task,
+        cardId: activeCard._id,
+        checkListId: checklist._id,
+        listId: sourceId,
+      };
 
-        activeCard.checklists.splice(listIndex, 1, checklist);
-        const body = { newCard: activeCard, listId: sourceId };
-        return _debounce(createList(body), 1000);
-      });
-    };
-    const createList = async (body) => {
-      await requestCardUpdate(body, id).then((res) => {
-        const newList = findArrayItem(res.data.lists, sourceId, "_id");
-        let newCard = findArrayItem(newList.cards, activeCard._id, "_id");
-        saveCardChanges(newCard);
-
-        saveBoardChanges(res.data);
+      requestChecklistTask(data, id).then((res) => {
+        setChecklist(res.data.checklist);
+        saveCardChanges(res.data.card);
+        saveBoardChanges(res.data.board);
       });
     };
 
     getTaskItem();
-    _debounce(setDone(false), 1000);
+    setDone(false);
     resetForm("checklist-item");
     setTask(null);
   }, [
@@ -210,6 +201,7 @@ const CheckLists = ({
     saveBoardChanges,
     saveCardChanges,
     listIndex,
+    task,
   ]);
 
   return (
@@ -251,16 +243,18 @@ const CheckLists = ({
           Everything in this list is complete!
         </UIContainer>
       ) : (
-        checklist.tasks.map((task, index) => (
-          <ChecklistItem
-            handleCheckboxClick={handleCheckboxClick}
-            item={task}
-            key={task._id}
-            isLoading={isLoading}
-            position={index + 1}
-            isCompleted={stringsEqual(task.status, "done")}
-          />
-        ))
+        <UIWrapper>
+          {checklist.tasks.map((task, index) => (
+            <ChecklistItem
+              handleCheckboxClick={handleCheckboxClick}
+              item={task}
+              key={task._id}
+              isLoading={isLoading}
+              position={index + 1}
+              isCompleted={stringsEqual(task.status, "done")}
+            />
+          ))}
+        </UIWrapper>
       )}
 
       {createItem ? (
@@ -271,6 +265,7 @@ const CheckLists = ({
           handleChange={handleChange}
           handleCreateClick={handleAddClick}
           id="checklist-item"
+          width="100%"
         />
       ) : (
         <Button

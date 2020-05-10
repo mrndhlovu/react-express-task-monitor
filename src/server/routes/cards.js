@@ -19,7 +19,7 @@ const updateBoardLists = (id, newLists) =>
     }
   );
 
-const getSourceList = (lists, id) => {
+const getSource = (lists, id) => {
   const listId = new ObjectID(id);
   const sourceList = lists.filter((list) => listId.equals(list._id));
   return sourceList[0];
@@ -38,7 +38,7 @@ router.patch("/:boardId/new-card", auth, async (req, res) => {
     }
 
     const newCard = new Card({ ...card });
-    const sourceList = getSourceList(board.lists, listId);
+    const sourceList = getSource(board.lists, listId);
     sourceList.cards.push(newCard);
 
     board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
@@ -67,8 +67,8 @@ router.patch("/:boardId/create-checklist", auth, async (req, res) => {
 
     const checkListItem = new CheckList({ ...checklist });
 
-    const sourceList = getSourceList(board.lists, listId);
-    const sourceCard = getSourceList(sourceList.cards, cardId);
+    const sourceList = getSource(board.lists, listId);
+    const sourceCard = getSource(sourceList.cards, cardId);
 
     sourceCard.checklists.push(checkListItem);
 
@@ -90,14 +90,44 @@ router.patch("/:boardId/create-checklist", auth, async (req, res) => {
 });
 
 router.post("/:boardId/checklist-task", auth, async (req, res) => {
-  const { task } = req.body;
+  const { boardId } = req.params;
+  const { task, cardId, listId, checkListId } = req.body;
 
   try {
-    const taskItem = new ChecklistTask({ ...task });
+    const taskItems = task.split("\n");
+    const board = await Board.findById({ _id: boardId });
+    const sourceList = getSource(board.lists, listId);
+    const sourceCard = getSource(sourceList.cards, cardId);
+    let checklist = getSource(sourceCard.checklists, checkListId);
+    let data;
 
-    res.status(203).send(taskItem);
+    taskItems.map(async (item, index) => {
+      const taskItem = new ChecklistTask({ description: item });
+
+      checklist = { ...checklist, archived: false, status: "doing" };
+      checklist.tasks.push(taskItem);
+
+      sourceCard.checklists.splice(
+        sourceCard.checklists.indexOf(checklist),
+        1,
+        checklist
+      );
+
+      sourceList.cards.splice(
+        sourceList.cards.indexOf(sourceCard),
+        1,
+        sourceCard
+      );
+      board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
+      const newBoard = await updateBoardLists(boardId, board.lists);
+
+      data = { board: newBoard, checklist, card: sourceCard };
+
+      if (index + 1 === taskItems.length) return res.status(203).send(data);
+    });
   } catch (error) {
-    res.status(400).send({ message: "Failed to create checklist task!" });
+    res.status(400).send({ message: error.message });
   }
 });
 
@@ -108,8 +138,8 @@ router.patch("/:boardId/update-card", auth, async (req, res) => {
   try {
     const board = await Board.findById({ _id: boardId });
 
-    const sourceList = getSourceList(board.lists, listId);
-    const sourceCard = getSourceList(sourceList.cards, newCard._id);
+    const sourceList = getSource(board.lists, listId);
+    const sourceCard = getSource(sourceList.cards, newCard._id);
 
     sourceList.cards.splice(sourceList.cards.indexOf(sourceCard), 1, newCard);
     board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
@@ -128,8 +158,8 @@ router.patch("/:boardId/delete-attachment", async (req, res) => {
 
   try {
     const board = await Board.findById({ _id: boardId });
-    const sourceList = getSourceList(board.lists, listId);
-    let sourceCard = getSourceList(sourceList.cards, cardId);
+    const sourceList = getSource(board.lists, listId);
+    let sourceCard = getSource(sourceList.cards, cardId);
 
     sourceCard.attachments.images.map((image, index) =>
       equals(image.imgUrl, deleteId)
@@ -175,8 +205,8 @@ router.patch("/:boardId/comment", auth, async (req, res) => {
 
     newComment.save();
 
-    const sourceList = getSourceList(board.lists, listId);
-    const sourceCard = getSourceList(sourceList.cards, cardId);
+    const sourceList = getSource(board.lists, listId);
+    const sourceCard = getSource(sourceList.cards, cardId);
 
     sourceCard.comments.push(newComment);
 

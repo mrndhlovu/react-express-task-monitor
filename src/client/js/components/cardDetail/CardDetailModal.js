@@ -296,7 +296,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                         key={list._id}
                         activeCard={card}
                         checklistName={list.name}
-                        checklist={list}
+                        checkItem={list}
                         handleBoardUpdate={handleBoardUpdate}
                         board={board}
                         getSourceList={getSourceList}
