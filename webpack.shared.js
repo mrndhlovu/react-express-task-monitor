@@ -5,7 +5,7 @@ const { isDevelopment, environment } = require("./src/server/utils/config");
 
 module.exports = {
   entry: {
-    main: ["./src/client/index.js"],
+    main: ["./src/client/index.js", "./src/assets/scss/style.scss"],
   },
   output: {
     path: path.join(__dirname, "./build"),
@@ -66,7 +66,6 @@ module.exports = {
             loader: "sass-loader",
             options: {
               sourceMap: isDevelopment,
-              includePaths: [path.resolve("../node_modules")],
             },
           },
         ],
@@ -81,7 +80,6 @@ module.exports = {
             loader: "sass-loader",
             options: {
               sourceMap: isDevelopment,
-              includePaths: [path.resolve("../node_modules")],
             },
           },
         ],
