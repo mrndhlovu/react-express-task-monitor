@@ -8,6 +8,7 @@
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-transform-runtime": "7.9.0",
     "@babel/polyfill": "7.8.7",
+    "@babel/preset-env": "7.5.5",
     "@sendgrid/mail": "6.5.5",
     "async": "3.2.0",
     "aws-sdk": "2.619.0",
