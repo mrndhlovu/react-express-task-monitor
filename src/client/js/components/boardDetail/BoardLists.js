@@ -94,8 +94,8 @@ const BoardLists = ({ history }) => {
     setActivity(null);
   };
 
-  const relocateCard = (cards, sourceId) => {
-    console.log("relocateCard -> cards", cards, sourceId);
+  const relocateCard = () => {
+    return;
   };
 
   const moveCard = useCallback(
