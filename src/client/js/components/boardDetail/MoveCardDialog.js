@@ -47,13 +47,14 @@ const MoveCardDialog = ({
     const isBoardsDropdown = stringsEqual(dropDownId, "Board");
     const isListDropdown = stringsEqual(dropDownId, "List");
     const isPositionDropdown = stringsEqual(dropDownId, "Position");
+    const boardHasLists = isBoardsDropdown && selection.lists.length > 0;
 
     if (isBoardsDropdown)
       return setMoveDestination({
         ...moveDestination,
         board: selection,
-        targetId: selection.lists[0]._id,
-        position,
+        targetId: boardHasLists ? selection.lists[0]._id : 0,
+        position: 0,
       });
     if (isListDropdown)
       return setMoveDestination({
@@ -71,6 +72,7 @@ const MoveCardDialog = ({
 
   useEffect(() => {
     if (!move) return emptyFunction();
+
     const { board, targetId, position } = moveDestination;
 
     const removeCardFromSource = () => {
@@ -170,6 +172,21 @@ const MoveCardDialog = ({
         content="Move"
         compact
         onClick={() => setMove(true)}
+      />
+      <Button
+        disabled={!boardChanged && !listChanged && !cardPositionChanged}
+        floated="right"
+        content="Reset"
+        negative={boardChanged || listChanged || cardPositionChanged}
+        compact
+        onClick={() =>
+          setMoveDestination({
+            board: originalBoard,
+            card: originalCard,
+            targetId: sourceListId,
+            position: 1,
+          })
+        }
       />
     </Fragment>
   );

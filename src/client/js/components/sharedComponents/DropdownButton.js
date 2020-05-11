@@ -42,8 +42,9 @@ const DropdownButton = ({
   const [open, setOpen] = useState(false);
 
   const handleClose = (callback) => {
-    setOpen(false);
-    return callback();
+    callback();
+
+    return setOpen(false);
   };
 
   return (
@@ -64,7 +65,7 @@ const DropdownButton = ({
       text={buttonText}
       direction={direction}
       pointing={pointing}
-      onBlur={() => handleClose(callback)}
+      onBlur={() => (closeOnSelect ? handleClose(callback) : () => {})}
     >
       <Dropdown.Menu
         className="sidebar-dropdown-button"

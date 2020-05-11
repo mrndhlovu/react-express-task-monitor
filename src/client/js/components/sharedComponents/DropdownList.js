@@ -36,7 +36,7 @@ const DropdownList = ({
       <Header content={header} as="h5" />
       {hasList || isBoardsDropdown ? (
         <Dropdown
-          text={title || `${position}`}
+          text={title || `${position === 0 ? 1 : position}`}
           pointing="left"
           icon=""
           className="link item"
