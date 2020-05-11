@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 
 import {
   emptyFunction,
@@ -58,6 +58,17 @@ const CheckLists = ({
   const { id } = match.params;
   const sourceList = getSourceList(sourceId, "_id");
 
+  const updatedChanges = () => {
+    sourceList.cards.splice(
+      sourceList.cards.indexOf(activeCard),
+      1,
+      activeCard
+    );
+    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
+    handleBoardUpdate(board, "lists");
+  };
+
   const deleteChecklist = () => setRemoveChecklist(true);
   const handleChange = (e) => setTask(e.target.value);
   const handleAddClick = () => setDone(true);
@@ -70,20 +81,31 @@ const CheckLists = ({
     []
   );
 
+  const handleDeleteChecklistItem = (item) => {
+    checklist.tasks.splice(checklist.tasks.indexOf(item), 1);
+    setChecklist(checklist);
+
+    updatedChanges();
+  };
+
+  const handleEditChecklist = (item) => {
+    checklist.tasks.splice(checklist.tasks.indexOf(item), 1);
+    setChecklist(checklist);
+
+    activeCard.checklists.splice(
+      activeCard.checklists.indexOf(checklist),
+      1,
+      checklist
+    );
+
+    updatedChanges();
+  };
+
   useEffect(() => {
     if (!removeChecklist) return emptyFunction();
-
     activeCard.checklists.splice(listIndex, 1);
-    saveCardChanges(activeCard);
 
-    sourceList.cards.splice(
-      sourceList.cards.indexOf(activeCard),
-      1,
-      activeCard
-    );
-    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-
-    handleBoardUpdate(board, "lists", "removeChecklist");
+    updatedChanges();
 
     return () => {
       setRemoveChecklist(false);
@@ -103,18 +125,9 @@ const CheckLists = ({
   useEffect(() => {
     if (!hideCompleted) return emptyFunction();
     checklist = { ...checklist, archived: checklist.archived ? false : true };
-
     activeCard.checklists.splice(listIndex, 1, checklist);
-    saveCardChanges(activeCard);
+    updatedChanges();
 
-    sourceList.cards.splice(
-      sourceList.cards.indexOf(activeCard),
-      1,
-      activeCard
-    );
-    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-
-    handleBoardUpdate(board, "lists", "updatedChecklist");
     setHideCompleted(false);
   }, [
     board,
@@ -143,16 +156,8 @@ const CheckLists = ({
       else checklist = { ...checklist, status: "doing" };
 
       activeCard.checklists.splice(listIndex, 1, checklist);
-      saveCardChanges(activeCard);
 
-      sourceList.cards.splice(
-        sourceList.cards.indexOf(activeCard),
-        1,
-        activeCard
-      );
-      board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-
-      handleBoardUpdate(board, "lists", "updatedChecklist");
+      updatedChanges();
     };
     handleCheckBox();
     setChecked(null);
@@ -243,18 +248,35 @@ const CheckLists = ({
           Everything in this list is complete!
         </UIContainer>
       ) : (
-        <UIWrapper>
-          {checklist.tasks.map((task, index) => (
+        checklist.tasks.map((task, index) => (
+          <UIWrapper className="checklist-item-wrap" key={task._id}>
             <ChecklistItem
               handleCheckboxClick={handleCheckboxClick}
               item={task}
-              key={task._id}
               isLoading={isLoading}
               position={index + 1}
               isCompleted={stringsEqual(task.status, "done")}
+              handleEditChecklist={handleEditChecklist}
             />
-          ))}
-        </UIWrapper>
+            <div className="checklist-edit-wrap">
+              <Icon
+                className="ellipsis"
+                circular
+                link
+                size="small"
+                name="ellipsis horizontal"
+              />
+              <Icon
+                className="bin"
+                circular
+                link
+                size="small"
+                name="trash alternate outline"
+                onClick={() => handleDeleteChecklistItem(task)}
+              />
+            </div>
+          </UIWrapper>
+        ))
       )}
 
       {createItem ? (

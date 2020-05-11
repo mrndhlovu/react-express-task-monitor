@@ -133,3 +133,25 @@ ui.form,
   justify-items: center;
   position: relative;
 }
+
+.checklist-item-wrap {
+  display: flex;
+  justify-content: space-between;
+  padding: 0;
+}
+
+.checklist-edit-wrap {
+  display: flex;
+}
+
+.checklist-item-wrap:hover {
+  color: gainsboro;
+}
+
+.ellipsis:hover {
+  color: #bcbdbd;
+}
+
+.bin:hover {
+  color: gray;
+}

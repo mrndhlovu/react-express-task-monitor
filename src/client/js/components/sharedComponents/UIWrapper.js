@@ -5,9 +5,20 @@ const Container = styled.div`
   padding: ${(props) => props.padding}px;
   ${(props) => props.display};
 `;
-const UIWrapper = ({ padding = "10", display, children, handleClick }) => {
+const UIWrapper = ({
+  padding = "10",
+  display,
+  children,
+  handleClick,
+  className,
+}) => {
   return (
-    <Container padding={padding} display={display} onClick={handleClick}>
+    <Container
+      className={className}
+      padding={padding}
+      display={display}
+      onClick={handleClick}
+    >
       {children}
     </Container>
   );
