@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 
-import { Button, Icon } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 import {
   emptyFunction,
@@ -8,7 +8,10 @@ import {
   findArrayItem,
   stringsEqual,
 } from "../../utils/appUtils";
-import { requestChecklistTask } from "../../apis/apiRequests";
+import {
+  requestChecklistTask,
+  requestCreateNewCard,
+} from "../../apis/apiRequests";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CreateInput from "../sharedComponents/CreateInput";
@@ -16,6 +19,8 @@ import ProgressBar from "./ProgressBar";
 import ChecklistItem from "./ChecklistItem";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import DropdownButton from "../sharedComponents/DropdownButton";
+import UIButton from "./UIButton";
 
 const display = {
   display: "grid",
@@ -64,9 +69,13 @@ const CheckLists = ({
       1,
       activeCard
     );
+    updateLists();
+  };
+
+  const updateLists = (newBoard) => {
     board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-    handleBoardUpdate(board, "lists");
+    handleBoardUpdate(newBoard ? newBoard : board, "lists");
   };
 
   const deleteChecklist = () => setRemoveChecklist(true);
@@ -88,17 +97,14 @@ const CheckLists = ({
     updatedChanges();
   };
 
-  const handleEditChecklist = (item) => {
-    checklist.tasks.splice(checklist.tasks.indexOf(item), 1);
-    setChecklist(checklist);
-
-    activeCard.checklists.splice(
-      activeCard.checklists.indexOf(checklist),
-      1,
-      checklist
-    );
-
-    updatedChanges();
+  const handleConvertToCard = (item) => {
+    const card = { title: item.description };
+    handleDeleteChecklistItem(item);
+    setTimeout(async () => {
+      await requestCreateNewCard({ card, listId: sourceId }, id).then((res) => {
+        saveBoardChanges(res.data);
+      });
+    }, 2000);
   };
 
   useEffect(() => {
@@ -256,24 +262,28 @@ const CheckLists = ({
               isLoading={isLoading}
               position={index + 1}
               isCompleted={stringsEqual(task.status, "done")}
-              handleEditChecklist={handleEditChecklist}
             />
             <div className="checklist-edit-wrap">
-              <Icon
-                className="ellipsis"
-                circular
-                link
-                size="small"
-                name="ellipsis horizontal"
-              />
-              <Icon
-                className="bin"
-                circular
-                link
-                size="small"
-                name="trash alternate outline"
-                onClick={() => handleDeleteChecklistItem(task)}
-              />
+              <DropdownButton
+                className="checklist-edit-ellipsis"
+                labeled={false}
+                icon="ellipsis horizontal"
+                header="Item Actions"
+                width="200px"
+              >
+                <div className="checklist-item-actions">
+                  <UIButton
+                    content="Convert to card"
+                    fluid={true}
+                    onClick={() => handleConvertToCard(task)}
+                  />
+                  <UIButton
+                    content="Delete"
+                    fluid={true}
+                    onClick={() => handleDeleteChecklistItem(task)}
+                  />
+                </div>
+              </DropdownButton>
             </div>
           </UIWrapper>
         ))

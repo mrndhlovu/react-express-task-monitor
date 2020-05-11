@@ -37,6 +37,7 @@ const DropdownButton = ({
   closeOnSelect = false,
   hasHeader = true,
   pointing,
+  className,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -50,7 +51,7 @@ const DropdownButton = ({
       upward={upward}
       lazyLoad
       button={button}
-      className="icon"
+      className={`${className} icon`}
       color={color}
       compact
       floating

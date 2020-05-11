@@ -142,16 +142,18 @@ ui.form,
 
 .checklist-edit-wrap {
   display: flex;
+  align-items: baseline;
 }
 
-.checklist-item-wrap:hover {
-  color: gainsboro;
+.checklist-item-actions {
+  width: 300px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
 }
 
-.ellipsis:hover {
-  color: #bcbdbd;
-}
-
-.bin:hover {
-  color: gray;
+.uibutton:hover {
+  background-color: #2224261a !important;
+  text-align: "left" !important;
 }
