@@ -4,7 +4,7 @@ import isURL from "validator/lib/isURL";
 
 import { Input, Button } from "semantic-ui-react";
 
-import { resetForm } from "../../utils/appUtils";
+import { resetForm, findArrayItem } from "../../utils/appUtils";
 import { requestUpload } from "../../apis/apiRequests";
 import AttachmentOption from "../sharedComponents/AttachmentOption";
 import DropdownButton from "../sharedComponents/DropdownButton";
@@ -12,6 +12,10 @@ import UIDivider from "../sharedComponents/UIDivider";
 import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UIContainer from "../sharedComponents/UIContainer";
+import {
+  ALLOWED_IMAGE_TYPES,
+  ALLOWED_DOCUMENT_TYPES,
+} from "../../constants/constants";
 
 const StyledInput = styled.input`
   margin: 0;
@@ -29,9 +33,10 @@ const StyledSmall = styled.h6`
 `;
 
 const AddAttachment = ({
-  addCardAttachment,
+  editAttachments,
   handleLoadingAttachment,
   mobile,
+  activeCard,
 }) => {
   const [attachment, setAttachment] = useState(null);
   const [message, setMessage] = useState({ header: null, list: [] });
@@ -52,12 +57,12 @@ const AddAttachment = ({
               return setMessage({ ...message, header: message });
             }
             const imageData = { imgUrl, uploadDate, name: file.name };
-            addCardAttachment(imageData);
+            editAttachments(imageData, "image");
             handleLoadingAttachment(false);
           })
           .catch((error) => setMessage({ ...message, header: error.message }));
       };
-      upload();
+      file && upload();
     },
     [handleLoadingAttachment]
   );
@@ -67,27 +72,57 @@ const AddAttachment = ({
   const handleAttachClick = () => {
     const url = isURL(attachment);
     if (!url) return setMessage({ ...message, header: "Invalid link!" });
-    const allowedMedia = ["png", "jpg", "gif"];
-    const imageType = attachment.split(".").pop();
 
-    if (!allowedMedia.includes(imageType))
-      setMessage({
-        ...message,
-        header: "Invalid image link!",
-        list: ["At the moment only .png and .jpeg images are supported"],
-      });
-    const name = `link-attachment-${attachment.split("/").pop()}`;
+    const uploadType = attachment.split(".").pop();
 
-    const imageData = {
-      imgUrl: attachment,
-      uploadDate: Date.now,
-      name,
+    let attachmentData = {
+      uploadDate: Date.now(),
+      name: ALLOWED_IMAGE_TYPES.includes(uploadType)
+        ? `img-attachment-${attachment.split("/").pop()}`
+        : `${attachment}`,
     };
 
-    addCardAttachment(imageData, () => {
-      setAttachment(null);
-      resetForm("attachment-link");
-    });
+    resetForm("attachment-link");
+
+    if (ALLOWED_DOCUMENT_TYPES.includes(uploadType)) {
+      attachmentData = {
+        ...attachmentData,
+        document: attachment,
+      };
+
+      return editAttachments(attachmentData, "document", () =>
+        setAttachment(null)
+      );
+    }
+
+    if (ALLOWED_IMAGE_TYPES.includes(uploadType)) {
+      attachmentData = {
+        ...attachmentData,
+        imgUrl: attachment,
+      };
+
+      const duplicate =
+        findArrayItem(activeCard.attachments.images, attachment, "imgUrl") !==
+        undefined;
+
+      if (duplicate) {
+        return setMessage({
+          ...message,
+          header: "Duplicate!",
+          list: ["You have this link is your attachments!"],
+        });
+      }
+      return editAttachments(attachmentData, "image", () =>
+        setAttachment(null)
+      );
+    }
+
+    attachmentData = {
+      ...attachmentData,
+      url: attachment,
+    };
+
+    return editAttachments(attachmentData, "url", () => setAttachment(null));
   };
 
   return (

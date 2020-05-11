@@ -75,12 +75,14 @@ const DropdownButton = ({
           <Fragment>
             <HeaderWrapper>
               <Header size="small" as={as} content={header} />
-              <Icon
-                size="large"
-                link
-                name="close"
-                onClick={() => handleClose(callback)}
-              />
+              {!closeOnSelect && (
+                <Icon
+                  size="large"
+                  link
+                  name="close"
+                  onClick={() => handleClose(callback)}
+                />
+              )}
             </HeaderWrapper>
             <UIDivider />
           </Fragment>

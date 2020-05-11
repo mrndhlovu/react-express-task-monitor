@@ -23,7 +23,7 @@ const AddCardCheckList = ({
     if (!add) return emptyFunction();
     const checkChecklist = async () => {
       const body = {
-        checklist: { name: checklist },
+        checklist: { name: checklist ? checklist : "Checklist" },
         cardId: activeCard._id,
         listId: sourceId,
       };
@@ -83,6 +83,7 @@ const AddCardCheckList = ({
           handleChange={(e) => setChecklist(e.target.value)}
           handleCreateClick={() => setAdd(true)}
           hideIcon={true}
+          defaultValue="Checklist"
           id="new-checklist"
           placeholder="Checklist name"
         />

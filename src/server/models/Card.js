@@ -13,6 +13,7 @@ const CardSchema = mongoose.Schema(
       default: {
         images: [],
         documents: [],
+        urls: [],
       },
     },
     archived: {

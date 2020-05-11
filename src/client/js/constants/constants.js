@@ -3,12 +3,12 @@ export const INITIAL_STATE = {
   data: {},
   dataReceived: false,
   hasError: false,
-  isLoading: false
+  isLoading: false,
 };
 
 export const Types = {
   LIST: "list",
-  CARD: "card"
+  CARD: "card",
 };
 
 export const allowed = [
@@ -17,21 +17,21 @@ export const allowed = [
   "styleProperties",
   "permission",
   "category",
-  "accessLevel"
+  "accessLevel",
 ];
 
 export const ACCESS_LEVELS = [
   {
     option: "Private",
     icon: "lock",
-    description: "Only board members can see this board."
+    description: "Only board members can see this board.",
   },
   {
     option: "Public",
     icon: "world",
-    description: "All members can see this board."
+    description: "All members can see this board.",
   },
-  { option: "Team", icon: "users", description: "Anyone can see this board" }
+  { option: "Team", icon: "users", description: "Anyone can see this board" },
 ];
 
 export const PERMISSIONS = { private: false, public: false, team: false };
@@ -45,7 +45,7 @@ export const bgColors = [
   "#cd5991",
   "#58bf6b",
   "#32aecc",
-  "#828c90"
+  "#828c90",
 ];
 
 export const listMenuOptions = [
@@ -53,7 +53,7 @@ export const listMenuOptions = [
   { key: 2, value: "Copy List" },
   { key: 3, value: "Move All Cards in This List" },
   { key: 4, value: "Delete All Lists" },
-  { key: 5, value: "Delete List" }
+  { key: 5, value: "Delete List" },
 ];
 
 export const DEFAULT_NAV_COLOR = "#026aa7";
@@ -63,12 +63,12 @@ export const ADD_TO_CARD_OPTIONS = [
   { key: 2, value: "Labels", icon: "tags" },
   { key: 3, value: "Checklist", icon: "check square" },
   { key: 4, value: "Due Date", icon: "clock" },
-  { key: 5, value: "Attachment", icon: "attach" }
+  { key: 5, value: "Attachment", icon: "attach" },
 ];
 
 export const CARD_ACTIONS = [
   { key: 1, value: "Move", icon: "move" },
-  { key: 2, value: "Copy", icon: "copy outline" }
+  { key: 2, value: "Copy", icon: "copy outline" },
 ];
 
 export const NEW_CARD_TEMPLATE = {
@@ -76,15 +76,12 @@ export const NEW_CARD_TEMPLATE = {
   position: "",
   attachments: {
     images: [],
-    documents: []
+    documents: [],
   },
   cardCover: "",
   comments: [],
-  activities: []
+  activities: [],
 };
-
-export const deleteAttachmentText =
-  "Deleting an attachment is permanent. There is no undo.";
 
 export const BOARD_ACTIVITIES = {
   boardHeader: "changed board header to",
@@ -96,7 +93,7 @@ export const BOARD_ACTIVITIES = {
   movedCard: "moved this card from",
   addChecklist: "added Checklist to this card",
   deletedCard: "deleted card",
-  deletedList: "deleted list"
+  deletedList: "deleted list",
 };
 
 export const SUGGESTED_COVERS = [
@@ -108,5 +105,16 @@ export const SUGGESTED_COVERS = [
   "Business",
   "Minimal",
   "Space",
-  "Animals"
+  "Animals",
+];
+
+export const ALLOWED_IMAGE_TYPES = ["png", "jpg", "gif", "jpeg"];
+export const ALLOWED_DOCUMENT_TYPES = [
+  "pdf",
+  "doc",
+  "docx",
+  "ppt",
+  "pptx",
+  "xlsx",
+  "xls",
 ];

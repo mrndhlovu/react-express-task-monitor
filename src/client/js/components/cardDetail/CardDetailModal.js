@@ -17,9 +17,9 @@ import {
   BoardContext,
 } from "../../utils/contextUtils";
 import {
-  checkDuplicate,
   emptyFunction,
   findArrayItem,
+  getAttachmentType,
 } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
 import Attachments from "./Attachments";
@@ -27,9 +27,12 @@ import CardModalActivities from "./CardModalActivities";
 import CardModalDescription from "./CardModalDescription";
 import CardModalSidebar from "./CardModalSidebar";
 import ModalHeader from "./ModalHeader";
+import CardDetailHeader from "../sharedComponents/CardDetailHeader";
+import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
 import { useAuth } from "../../utils/hookUtils";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const DueDate = lazy(() => import("./DueDate"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
@@ -86,29 +89,43 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
 
   const handleMakeCover = (coverUrl) => setNewCover(coverUrl);
 
-  const handleDeleteAttachment = (imgUrl) => {
-    setDeleteAttachment(imgUrl);
-    setIsLoading(true);
-  };
+  const editAttachments = useCallback(
+    (attachment, type, callback, remove) => {
+      setIsLoading(true);
+      switch (type) {
+        case "image":
+          if (remove) {
+            card.attachments.images.splice(
+              card.attachments.images.indexOf(attachment)
+            );
+          } else card.attachments.images.push(attachment);
 
-  const addCardAttachment = useCallback(
-    (attachment, callback) => {
-      const duplicate = checkDuplicate(
-        card.attachments.images,
-        attachment.imgUrl
-      );
-      if (!duplicate) {
-        card.attachments.images.push(attachment);
-        !card.cardCover && { ...card, cardCover: attachment.imgUrl };
-
-        const sourceList = findArrayItem(board.lists, sourceId, "_id");
-
-        sourceList.cards.splice(sourceList.cards.indexOf(card), 1, card);
-        board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-
-        setNewAttachment(board);
+          break;
+        case "url":
+          if (remove) {
+            card.attachments.urls.splice(
+              card.attachments.urls.indexOf(attachment)
+            );
+          } else card.attachments.urls.push(attachment);
+          break;
+        case "document":
+          if (remove) {
+            card.attachments.documents.splice(
+              card.attachments.documents.indexOf(attachment)
+            );
+          } else card.attachments.documents.push(attachment);
+          break;
+        default:
+          break;
       }
-      callback();
+      const sourceList = findArrayItem(board.lists, sourceId, "_id");
+
+      sourceList.cards.splice(sourceList.cards.indexOf(card), 1, card);
+      board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+
+      setNewAttachment(board);
+
+      callback;
     },
     [card, board, sourceId]
   );
@@ -118,6 +135,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
 
     handleBoardUpdate(newAttachment, "lists", "addAttachment");
     setNewAttachment(false);
+    setIsLoading(false);
   }, [handleBoardUpdate, newAttachment]);
 
   const handleLoadingAttachment = (loading) => {
@@ -309,15 +327,30 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                         listIndex={index}
                       />
                     ))}
-
-                  <Attachments
-                    activeCover={activeCover}
-                    activeCard={card}
-                    isLoading={isLoading && (newAttachment || deleteAttachment)}
-                    handleMakeCover={handleMakeCover}
-                    handleRemoveCover={handleRemoveCover}
-                    handleDeleteAttachment={handleDeleteAttachment}
-                  />
+                  <CardDetailSegment>
+                    <UIWrapper>
+                      <div className="div-flex">
+                        <CardDetailHeader
+                          icon="attach"
+                          description="Attachments"
+                        />
+                      </div>
+                      {Object.keys(activeCard.attachments).map((key) => (
+                        <Attachments
+                          key={key}
+                          type={getAttachmentType(key)}
+                          activeCover={activeCover}
+                          attachment={activeCard.attachments[key]}
+                          isLoading={
+                            isLoading && (newAttachment || deleteAttachment)
+                          }
+                          handleMakeCover={handleMakeCover}
+                          handleRemoveCover={handleRemoveCover}
+                          editAttachments={editAttachments}
+                        />
+                      ))}
+                    </UIWrapper>
+                  </CardDetailSegment>
 
                   <CardModalActivities
                     activeCard={card}
@@ -337,7 +370,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
             <Grid.Column width={4}>
               <CardModalSidebar
                 activeCard={card}
-                addCardAttachment={addCardAttachment}
+                editAttachments={editAttachments}
                 board={board}
                 boardMembers={board.members}
                 getSourceList={getSourceList}

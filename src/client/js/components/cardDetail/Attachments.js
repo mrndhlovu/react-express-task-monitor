@@ -1,18 +1,12 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 
-import { deleteAttachmentText } from "../../constants/constants";
-import { Item, Button, Dropdown } from "semantic-ui-react";
-import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import { Item, Button, Dropdown, Icon } from "semantic-ui-react";
+
 import { getFormattedDate } from "../../utils/appUtils";
 import UIContainer from "../sharedComponents/UIContainer";
 
 const Container = styled.div``;
-
-const HeaderWrapper = styled.div`
-  display: flex;
-`;
 
 const AttachmentName = styled.div`
   padding: 10px 0 10px 15px;
@@ -57,66 +51,89 @@ const display = {
 
 const Attachments = ({
   activeCover,
-  activeCard,
-  handleAttachmentComment,
-  handleDeleteAttachment,
   handleRemoveCover,
   handleMakeCover,
+  attachment,
   isLoading,
+  editAttachments,
+  type,
 }) => {
-  const { images } = activeCard.attachments;
-  const hasAttachments = images.length > 0;
+  const hasAttachment = attachment.length > 0;
 
   return isLoading ? (
     <UIContainer display={display}>Loading...</UIContainer>
   ) : (
-    hasAttachments && (
-      <CardDetailSegment>
-        <HeaderWrapper>
-          <CardDetailHeader icon="attach" description="Attachments" />
-        </HeaderWrapper>
-        <Item.Group divided>
-          {images.map((image, index) => (
-            <Item key={index}>
+    hasAttachment && (
+      <Item.Group divided>
+        {attachment.map((item, index) => (
+          <Item key={index}>
+            {type === "image" ? (
+              <Item.Image
+                className="attachment-thumbnail"
+                size="tiny"
+                src={item.imgUrl}
+              />
+            ) : (
+              <div className="attachment-thumbnail-wrap">
+                <a
+                  className="attachment-link"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={item.name}
+                >
+                  <span className="attachment-link-span">LINK</span>
+                </a>
+              </div>
+            )}
+
+            <Container>
               <AttachmentName>
-                <Item.Image size="tiny" src={image.imgUrl} />
+                <Item.Content verticalAlign="middle">
+                  {type === "image" ? (
+                    item.name
+                  ) : (
+                    <a
+                      className="attachment-link-text"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      href={item.name}
+                    >
+                      {item.name}
+                      <Icon
+                        name="long arrow alternate right"
+                        className="redirect-icon"
+                      />
+                    </a>
+                  )}
+                </Item.Content>
+                <DateWrapper>
+                  Added {getFormattedDate(item.uploadDate, "LL")}
+                </DateWrapper>
               </AttachmentName>
-              <Container>
-                <AttachmentName>
-                  <Item.Content verticalAlign="middle">
-                    {image.name}
-                  </Item.Content>
-                  <DateWrapper>
-                    Added {getFormattedDate(image.uploadDate, "LL")}
-                  </DateWrapper>
-                </AttachmentName>
 
-                <AttachmentCtaWrapper>
-                  <AttachmentLink
-                    content="Comment"
-                    onClick={() => handleAttachmentComment()}
-                  />
-                  <AttachmentLink>
-                    <Dropdown as="small" text="Delete" multiple icon={false}>
-                      <StyledDropdownMenu>
-                        <Dropdown.Header content={deleteAttachmentText} />
-                        <Button
-                          content="Delete Attachment?"
-                          color="red"
-                          fluid
-                          icon=""
-                          size="tiny"
-                          onClick={() => handleDeleteAttachment(image.imgUrl)}
-                        />
-                      </StyledDropdownMenu>
-                    </Dropdown>
-                  </AttachmentLink>
+              <AttachmentCtaWrapper>
+                <AttachmentLink>
+                  <Dropdown as="small" text="Delete" multiple icon={false}>
+                    <StyledDropdownMenu>
+                      <Dropdown.Header content="Delete Attachment?" />
+                      <Button
+                        content="Yes delete attachment!"
+                        color="red"
+                        fluid
+                        icon=""
+                        size="tiny"
+                        onClick={() => editAttachments(item, type, null, true)}
+                      />
+                    </StyledDropdownMenu>
+                  </Dropdown>
+                </AttachmentLink>
 
+                {type === "image" && (
                   <AttachmentLink>
                     <Dropdown
                       as="small"
                       text={
-                        image.imgUrl === activeCover
+                        item.imgUrl === activeCover
                           ? "Remove Cover"
                           : "Make Cover"
                       }
@@ -124,31 +141,38 @@ const Attachments = ({
                       icon={false}
                     >
                       <StyledDropdownMenu>
+                        <Dropdown.Header
+                          content={
+                            item.imgUrl === activeCover
+                              ? "Remove Cover?"
+                              : "Make Cover?"
+                          }
+                        />
                         <Button
                           content={
-                            image.imgUrl === activeCover
-                              ? "Remove Cover"
-                              : "Make Cover"
+                            item.imgUrl === activeCover
+                              ? "Yes remove cover!"
+                              : "Yes make cover!"
                           }
                           color="red"
                           fluid
                           icon=""
                           size="tiny"
                           onClick={() =>
-                            image.imgUrl === activeCover
-                              ? handleRemoveCover()
-                              : handleMakeCover(image.imgUrl)
+                            item.imgUrl === activeCover
+                              ? handleRemoveCover(item.imgUrl)
+                              : handleMakeCover(item.imgUrl)
                           }
                         />
                       </StyledDropdownMenu>
                     </Dropdown>
                   </AttachmentLink>
-                </AttachmentCtaWrapper>
-              </Container>
-            </Item>
-          ))}
-        </Item.Group>
-      </CardDetailSegment>
+                )}
+              </AttachmentCtaWrapper>
+            </Container>
+          </Item>
+        ))}
+      </Item.Group>
     )
   );
 };

@@ -157,3 +157,58 @@ ui.form,
   background-color: #2224261a !important;
   text-align: "left" !important;
 }
+
+.attachment-link {
+  background-position: 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 3px;
+  margin-top: -40px;
+  text-align: center;
+  text-decoration: none;
+  z-index: 1;
+  width: 100%;
+}
+
+.attachment-link-text {
+  font-weight: 700;
+  color: #172b4d;
+}
+
+.attachment-link-span {
+  background-color: #091e420a;
+  color: #5e6c84;
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  height: 100%;
+  line-height: 80px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: 112px;
+}
+.attachment-thumbnail,
+.attachment-thumbnail-wrap {
+  height: 80px !important;
+  width: 112px !important;
+  border-top: 0 !important;
+}
+
+.image-attachment-container {
+  margin-bottom: 10px;
+}
+
+.div-flex {
+  display: flex;
+}
+
+.attachment-thumbnail img {
+  height: 80px !important;
+  width: 100%;
+}
+
+.redirect-icon {
+  transform: rotate(-42deg);
+  padding-left: 10px;
+}
