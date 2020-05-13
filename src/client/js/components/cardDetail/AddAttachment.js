@@ -44,23 +44,24 @@ const AddAttachment = ({
   const handleUpload = useCallback(
     (e) => {
       const file = e.target.files[0];
+      const { type } = file;
+      const uploadType = type.split("/").shift();
       const data = new FormData();
-      data.append("image", file);
+      data.append(uploadType, file);
 
       const upload = async () => {
         handleLoadingAttachment(true);
-        await requestUpload(data)
-          .then((response) => {
-            const { imgUrl, uploadDate, success, message } = response.data;
-            if (!success) {
-              handleLoadingAttachment(false);
-              return setMessage({ ...message, header: message });
-            }
-            const imageData = { imgUrl, uploadDate, name: file.name };
-            editAttachments(imageData, "image");
+        await requestUpload(uploadType, data)
+          .then((res) => {
+            editAttachments(
+              { ...res.data },
+              uploadType === "image" ? uploadType : "document"
+            );
             handleLoadingAttachment(false);
           })
-          .catch((error) => setMessage({ ...message, header: error.message }));
+          .catch((error) => {
+            setMessage({ ...message, header: error.response.data.message });
+          });
       };
       file && upload();
     },

@@ -1,10 +1,12 @@
-import React, { memo } from "react";
+import React, { memo, useState, Suspense, lazy } from "react";
 import styled from "styled-components";
 
 import { Item, Button, Dropdown, Icon } from "semantic-ui-react";
 
 import { getFormattedDate } from "../../utils/appUtils";
 import UIContainer from "../sharedComponents/UIContainer";
+
+const DocumentModal = lazy(() => import("./DocumentModal"));
 
 const Container = styled.div``;
 
@@ -24,8 +26,9 @@ const AttachmentLink = styled.a`
   color: grey;
   transition-duration: 400ms;
   transition-property: color;
+  
   &:hover {
-  color: #000  
+  color: #000;
   }
 
   &:after{
@@ -59,6 +62,7 @@ const Attachments = ({
   type,
 }) => {
   const hasAttachment = attachment.length > 0;
+  const [openDocument, setOpenDocument] = useState(null);
 
   return isLoading ? (
     <UIContainer display={display}>Loading...</UIContainer>
@@ -71,7 +75,7 @@ const Attachments = ({
               <Item.Image
                 className="attachment-thumbnail"
                 size="tiny"
-                src={item.imgUrl}
+                src={item.image}
               />
             ) : (
               <div className="attachment-thumbnail-wrap">
@@ -81,7 +85,9 @@ const Attachments = ({
                   target="_blank"
                   href={item.name}
                 >
-                  <span className="attachment-link-span">LINK</span>
+                  <span className="attachment-link-span">
+                    {type === "url" ? "LINK" : item.name.split(".").pop()}
+                  </span>
                 </a>
               </div>
             )}
@@ -91,6 +97,19 @@ const Attachments = ({
                 <Item.Content verticalAlign="middle">
                   {type === "image" ? (
                     item.name
+                  ) : type === "document" ? (
+                    <a
+                      className="attachment-link-text"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      onClick={() => setOpenDocument(item)}
+                    >
+                      {item.name}
+                      <Icon
+                        name="long arrow alternate right"
+                        className="redirect-icon"
+                      />
+                    </a>
                   ) : (
                     <a
                       className="attachment-link-text"
@@ -133,7 +152,7 @@ const Attachments = ({
                     <Dropdown
                       as="small"
                       text={
-                        item.imgUrl === activeCover
+                        item.image === activeCover
                           ? "Remove Cover"
                           : "Make Cover"
                       }
@@ -143,14 +162,14 @@ const Attachments = ({
                       <StyledDropdownMenu>
                         <Dropdown.Header
                           content={
-                            item.imgUrl === activeCover
+                            item.image === activeCover
                               ? "Remove Cover?"
                               : "Make Cover?"
                           }
                         />
                         <Button
                           content={
-                            item.imgUrl === activeCover
+                            item.image === activeCover
                               ? "Yes remove cover!"
                               : "Yes make cover!"
                           }
@@ -159,9 +178,9 @@ const Attachments = ({
                           icon=""
                           size="tiny"
                           onClick={() =>
-                            item.imgUrl === activeCover
-                              ? handleRemoveCover(item.imgUrl)
-                              : handleMakeCover(item.imgUrl)
+                            item.image === activeCover
+                              ? handleRemoveCover(item.image)
+                              : handleMakeCover(item.image)
                           }
                         />
                       </StyledDropdownMenu>
@@ -172,6 +191,12 @@ const Attachments = ({
             </Container>
           </Item>
         ))}
+        <Suspense fallback={<div>Loading...</div>}>
+          <DocumentModal
+            file={openDocument}
+            setOpenDocument={setOpenDocument}
+          />
+        </Suspense>
       </Item.Group>
     )
   );

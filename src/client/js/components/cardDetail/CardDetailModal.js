@@ -22,7 +22,7 @@ import {
   getAttachmentType,
 } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
-import Attachments from "./Attachments";
+
 import CardModalActivities from "./CardModalActivities";
 import CardModalDescription from "./CardModalDescription";
 import CardModalSidebar from "./CardModalSidebar";
@@ -34,6 +34,7 @@ import CheckLists from "./CheckLists";
 import { useAuth } from "../../utils/hookUtils";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
+const Attachments = lazy(() => import("./Attachments"));
 const DueDate = lazy(() => import("./DueDate"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
 
@@ -335,20 +336,22 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                           description="Attachments"
                         />
                       </div>
-                      {Object.keys(activeCard.attachments).map((key) => (
-                        <Attachments
-                          key={key}
-                          type={getAttachmentType(key)}
-                          activeCover={activeCover}
-                          attachment={activeCard.attachments[key]}
-                          isLoading={
-                            isLoading && (newAttachment || deleteAttachment)
-                          }
-                          handleMakeCover={handleMakeCover}
-                          handleRemoveCover={handleRemoveCover}
-                          editAttachments={editAttachments}
-                        />
-                      ))}
+                      <Suspense fallback={<div>Loading...</div>}>
+                        {Object.keys(activeCard.attachments).map((key) => (
+                          <Attachments
+                            key={key}
+                            type={getAttachmentType(key)}
+                            activeCover={activeCover}
+                            attachment={activeCard.attachments[key]}
+                            isLoading={
+                              isLoading && (newAttachment || deleteAttachment)
+                            }
+                            handleMakeCover={handleMakeCover}
+                            handleRemoveCover={handleRemoveCover}
+                            editAttachments={editAttachments}
+                          />
+                        ))}
+                      </Suspense>
                     </UIWrapper>
                   </CardDetailSegment>
 

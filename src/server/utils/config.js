@@ -12,7 +12,12 @@ const CONNECTION_URI = process.env.MONGODB_URI;
 const LOCAL_MONGO_DB = process.env.LOCAL_MONGO_DB;
 const PORT = process.env.PORT || 3000;
 const S3_BUCKET = process.env.AWS_BUCKET_NAME;
-const allowedFileTypes = ["image/jpeg", "image/png"];
+const allowedFileTypes = [
+  "image/jpg",
+  "image/jpeg",
+  "image/png",
+  "application/pdf",
+];
 const TOKEN_SIGNATURE = process.env.TOKEN_SIGNATURE;
 const ROOT_URL =
   process.env.LOCAL_URL || `https://moneat.herokuapp.com:${PORT}`;

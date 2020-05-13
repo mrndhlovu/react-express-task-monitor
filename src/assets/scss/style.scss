@@ -212,3 +212,14 @@ ui.form,
   transform: rotate(-42deg);
   padding-left: 10px;
 }
+
+.document-modal {
+  width: fit-content !important;
+}
+.doc-modal-menu-wrap {
+  position: absolute;
+  bottom: 10px;
+  width: 94%;
+  display: flex;
+  justify-content: center;
+}
