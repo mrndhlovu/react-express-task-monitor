@@ -191,12 +191,14 @@ const Attachments = ({
             </Container>
           </Item>
         ))}
-        <Suspense fallback={<div>Loading...</div>}>
-          <DocumentModal
-            file={openDocument}
-            setOpenDocument={setOpenDocument}
-          />
-        </Suspense>
+        {openDocument && (
+          <Suspense fallback={<div>Loading...</div>}>
+            <DocumentModal
+              file={openDocument}
+              setOpenDocument={setOpenDocument}
+            />
+          </Suspense>
+        )}
       </Item.Group>
     )
   );

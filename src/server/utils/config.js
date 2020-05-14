@@ -17,6 +17,9 @@ const allowedFileTypes = [
   "image/jpeg",
   "image/png",
   "application/pdf",
+  "application/vnd.oasis.opendocument.text",
+  "text/plain",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 const TOKEN_SIGNATURE = process.env.TOKEN_SIGNATURE;
 const ROOT_URL =

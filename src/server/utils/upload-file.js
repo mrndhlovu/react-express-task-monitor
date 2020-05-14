@@ -6,7 +6,7 @@ const {
   AWS_REGION,
   AWS_SECRET_ACCESS_KEY,
   AWS_ACCESS_KEY_ID,
-  allowedFileTypes
+  allowedFileTypes,
 } = require("./config");
 
 const s3 = new AWS.S3();
@@ -14,13 +14,13 @@ const s3 = new AWS.S3();
 s3.config.update({
   region: AWS_REGION,
   accessKeyId: AWS_ACCESS_KEY_ID,
-  secretAccessKey: AWS_SECRET_ACCESS_KEY
+  secretAccessKey: AWS_SECRET_ACCESS_KEY,
 });
 
 const fileFilter = (req, file, cb) => {
   const { mimetype } = file;
   if (allowedFileTypes.includes(mimetype)) return cb(null, true);
-  cb(new Error("Only image attachments allowed at this moment"));
+  cb(new Error("File type cannot be uploaded!"));
 };
 
 const upload = multer({
@@ -39,8 +39,8 @@ const upload = multer({
         file.originalname,
         file.originalname + "-" + Date.now() + file.originalname
       );
-    }
-  })
+    },
+  }),
 });
 
 module.exports = upload;

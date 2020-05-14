@@ -213,13 +213,40 @@ ui.form,
   padding-left: 10px;
 }
 
-.document-modal {
-  width: fit-content !important;
-}
-.doc-modal-menu-wrap {
-  position: absolute;
-  bottom: 10px;
-  width: 94%;
+.doc-page-buttons {
+  align-items: baseline;
+  align-items: center;
+  background: #d4d4d5 !important;
+  border-radius: 3px;
+  bottom: 1%;
   display: flex;
-  justify-content: center;
+  height: 80px;
+  justify-content: space-around;
+  position: fixed;
+  width: 100%;
+}
+
+.doc-page-buttons > i {
+  font-size: 20px !important;
+}
+
+.document-view-wrap {
+  width: fit-content !important;
+  background: transparent !important;
+  margin: 5vh 0 0 0 !important;
+  padding-bottom: 5% !important;
+}
+
+.document-view-wrap::after {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.document-content {
+  width: fit-content !important;
+  background: transparent !important;
+}
+.page-tracker {
+  padding: 5px;
 }
