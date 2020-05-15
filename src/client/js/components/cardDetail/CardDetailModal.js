@@ -23,20 +23,21 @@ import {
 } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
 
-import CardModalActivities from "./CardModalActivities";
-import CardModalDescription from "./CardModalDescription";
-import CardModalSidebar from "./CardModalSidebar";
-import ModalHeader from "./ModalHeader";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
 import { useAuth } from "../../utils/hookUtils";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const Attachments = lazy(() => import("./Attachments"));
 const DueDate = lazy(() => import("./DueDate"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
+const CardModalActivities = lazy(() => import("./CardModalActivities"));
+const UIWrapper = lazy(() => import("../sharedComponents/UIWrapper"));
+const ModalHeader = lazy(() => import("./ModalHeader"));
+const CardModalSidebar = lazy(() => import("./CardModalSidebar"));
+const CardModalDescription = lazy(() => import("./CardModalDescription"));
 
 const ModalContent = styled(Modal.Content)``;
 
@@ -251,7 +252,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
         </ButtonWrapper>
       }
     >
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<UILoadingSpinner />}>
         <ModalImageCover
           activeCard={card}
           cardCover={activeCover}
@@ -267,20 +268,21 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
         />
       </Suspense>
       <Container>
-        <ModalHeader
-          title={card.title}
-          cardPosition={card._id}
-          sourceId={sourceId}
-          sourceTitle={sourceTitle}
-          cardCover={card.cardCover}
-        />
-
+        <Suspense fallback={<UILoadingSpinner />}>
+          <ModalHeader
+            title={card.title}
+            cardPosition={card._id}
+            sourceId={sourceId}
+            sourceTitle={sourceTitle}
+            cardCover={card.cardCover}
+          />
+        </Suspense>
         <Grid columns={2} divided stackable>
           <Grid.Row stretched>
             <Grid.Column width={12}>
               <ModalContent image>
                 <LeftSideContent>
-                  <Suspense fallback={<div>Loading...</div>}>
+                  <Suspense fallback={<UILoadingSpinner />}>
                     {card.dueDate && card.dueDate.date && (
                       <DueDate
                         activeCard={card}
@@ -336,7 +338,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                           description="Attachments"
                         />
                       </div>
-                      <Suspense fallback={<div>Loading...</div>}>
+                      <Suspense fallback={<UILoadingSpinner />}>
                         {Object.keys(activeCard.attachments).map((key) => (
                           <Attachments
                             key={key}
@@ -354,19 +356,22 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                       </Suspense>
                     </UIWrapper>
                   </CardDetailSegment>
-
-                  <CardModalActivities
-                    activeCard={card}
-                    handleBoardUpdate={handleBoardUpdate}
-                    board={board}
-                    getSourceList={getSourceList}
-                    handleShowDetails={() => setHideActivities(!hideActivities)}
-                    hideActivities={hideActivities}
-                    id={id}
-                    sourceId={sourceId}
-                    saveCardChanges={saveCardChanges}
-                    user={user.fname}
-                  />
+                  <Suspense fallback={<UILoadingSpinner />}>
+                    <CardModalActivities
+                      activeCard={card}
+                      handleBoardUpdate={handleBoardUpdate}
+                      board={board}
+                      getSourceList={getSourceList}
+                      handleShowDetails={() =>
+                        setHideActivities(!hideActivities)
+                      }
+                      hideActivities={hideActivities}
+                      id={id}
+                      sourceId={sourceId}
+                      saveCardChanges={saveCardChanges}
+                      user={user.fname}
+                    />
+                  </Suspense>
                 </LeftSideContent>
               </ModalContent>
             </Grid.Column>

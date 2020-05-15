@@ -4,6 +4,8 @@ import React, {
   useCallback,
   useMemo,
   useContext,
+  lazy,
+  Suspense,
 } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -18,11 +20,11 @@ import {
   requestUserUpdate,
 } from "../apis/apiRequests";
 
+const Board = lazy(import("../components/boardDetail/Board"));
 import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
-import Board from "../components/boardDetail/Board";
+import { useAuth } from "../utils/hookUtils";
 import BoardHeader from "../components/boardDetail/BoardHeader";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
-import { useAuth } from "../utils/hookUtils";
 
 const StyledContainer = styled.div`
   height: 100vh;
@@ -209,8 +211,9 @@ const BoardContainer = ({ match, history }) => {
       <StyledContainer bgColor={board.styleProperties.color}>
         <ContentDiv mobile={device.mobile}>
           {!device.mobile && <BoardHeader user={user} />}
-
-          <Board />
+          <Suspense fallback={<UILoadingSpinner />}>
+            <Board />
+          </Suspense>
         </ContentDiv>
       </StyledContainer>
     </BoardContext.Provider>

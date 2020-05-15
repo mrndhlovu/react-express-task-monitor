@@ -15,6 +15,7 @@ const S3_BUCKET = process.env.AWS_BUCKET_NAME;
 const allowedFileTypes = [
   "image/jpg",
   "image/jpeg",
+  "image/gif",
   "image/png",
   "application/pdf",
   "application/vnd.oasis.opendocument.text",

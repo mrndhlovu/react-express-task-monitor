@@ -1,12 +1,33 @@
-import React, { memo, useState, Suspense, lazy } from "react";
+import React, { memo, useState, Component } from "react";
 import styled from "styled-components";
 
 import { Item, Button, Dropdown, Icon } from "semantic-ui-react";
 
 import { getFormattedDate } from "../../utils/appUtils";
 import UIContainer from "../sharedComponents/UIContainer";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const DocumentModal = lazy(() => import("./DocumentModal"));
+class DynamicImport extends Component {
+  state = { component: null };
+
+  UNSAFE_componentWillMount() {
+    this.props
+      .load()
+      .then((mod) => this.setState(() => ({ component: mod.default })));
+  }
+
+  render() {
+    return this.props.children(this.state.component);
+  }
+}
+
+const DocumentModal = (props) => (
+  <DynamicImport load={() => import("./DocumentModal")}>
+    {(Component) =>
+      !Component ? <UILoadingSpinner /> : <Component {...props} />
+    }
+  </DynamicImport>
+);
 
 const Container = styled.div``;
 
@@ -63,6 +84,7 @@ const Attachments = ({
 }) => {
   const hasAttachment = attachment.length > 0;
   const [openDocument, setOpenDocument] = useState(null);
+  const [fileType, setFiletType] = useState(null);
 
   return isLoading ? (
     <UIContainer display={display}>Loading...</UIContainer>
@@ -102,7 +124,10 @@ const Attachments = ({
                       className="attachment-link-text"
                       rel="noopener noreferrer"
                       target="_blank"
-                      onClick={() => setOpenDocument(item)}
+                      onClick={() => {
+                        setOpenDocument(item);
+                        setFiletType(item.name.split(".").pop());
+                      }}
                     >
                       {item.name}
                       <Icon
@@ -192,12 +217,11 @@ const Attachments = ({
           </Item>
         ))}
         {openDocument && (
-          <Suspense fallback={<div>Loading...</div>}>
-            <DocumentModal
-              file={openDocument}
-              setOpenDocument={setOpenDocument}
-            />
-          </Suspense>
+          <DocumentModal
+            file={openDocument}
+            setOpenDocument={setOpenDocument}
+            fileType={fileType}
+          />
         )}
       </Item.Group>
     )

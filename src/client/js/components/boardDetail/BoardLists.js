@@ -1,6 +1,5 @@
-import React, { useContext, useState, lazy, Suspense, useEffect } from "react";
+import React, { useContext, useState, Suspense, lazy, useEffect } from "react";
 import styled from "styled-components";
-import { withRouter } from "react-router-dom";
 
 import {
   BoardContext,
@@ -13,8 +12,9 @@ import ListGrid from "./ListGrid";
 import { parseSearchQuery, getQueryString } from "../../utils/urls";
 import { findArrayItem, emptyFunction } from "../../utils/appUtils";
 import { requestNewBoardList } from "../../apis/apiRequests";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));
+const CardDetailModal = lazy(import("../cardDetail/CardDetailModal"));
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -252,7 +252,7 @@ const BoardLists = ({ history }) => {
         />
 
         {modalOpen && !hideCardDetail && (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<UILoadingSpinner />}>
             <CardDetailModal
               sourceId={sourceId}
               history={history}
