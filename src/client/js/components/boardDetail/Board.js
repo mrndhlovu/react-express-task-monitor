@@ -5,11 +5,11 @@ import { Sidebar } from "semantic-ui-react";
 
 import { BoardContext, MainContext } from "../../utils/contextUtils";
 
-const BackGroundColors = lazy(import("./BackGroundColors"));
-const BoardLists = lazy(import("./BoardLists"));
-const BoardMenu = lazy(import("./BoardMenu"));
-const ChatIcon = lazy(import("./ChatIcon"));
-const ChatSideBar = lazy(import("./chatSidebar/ChatSideBar"));
+const BackGroundColors = lazy(() => import("./BackGroundColors"));
+const BoardLists = lazy(() => import("./BoardLists"));
+const BoardMenu = lazy(() => import("./BoardMenu"));
+const ChatIcon = lazy(() => import("./ChatIcon"));
+const ChatSideBar = lazy(() => import("./chatSidebar/ChatSideBar"));
 
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 

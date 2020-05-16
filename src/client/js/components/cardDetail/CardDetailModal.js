@@ -31,13 +31,13 @@ import { useAuth } from "../../utils/hookUtils";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const Attachments = lazy(() => import("./Attachments"));
-const DueDate = lazy(() => import("./DueDate"));
-const ModalImageCover = lazy(() => import("./ModalImageCover"));
 const CardModalActivities = lazy(() => import("./CardModalActivities"));
-const UIWrapper = lazy(() => import("../sharedComponents/UIWrapper"));
-const ModalHeader = lazy(() => import("./ModalHeader"));
-const CardModalSidebar = lazy(() => import("./CardModalSidebar"));
 const CardModalDescription = lazy(() => import("./CardModalDescription"));
+const CardModalSidebar = lazy(() => import("./CardModalSidebar"));
+const DueDate = lazy(() => import("./DueDate"));
+const ModalHeader = lazy(() => import("./ModalHeader"));
+const ModalImageCover = lazy(() => import("./ModalImageCover"));
+const UIWrapper = lazy(() => import("../sharedComponents/UIWrapper"));
 
 const ModalContent = styled(Modal.Content)``;
 
@@ -266,9 +266,8 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
           handleRemoveCover={handleRemoveCover}
           handleMakeCover={handleMakeCover}
         />
-      </Suspense>
-      <Container>
-        <Suspense fallback={<UILoadingSpinner />}>
+
+        <Container>
           <ModalHeader
             title={card.title}
             cardPosition={card._id}
@@ -276,13 +275,12 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
             sourceTitle={sourceTitle}
             cardCover={card.cardCover}
           />
-        </Suspense>
-        <Grid columns={2} divided stackable>
-          <Grid.Row stretched>
-            <Grid.Column width={12}>
-              <ModalContent image>
-                <LeftSideContent>
-                  <Suspense fallback={<UILoadingSpinner />}>
+
+          <Grid columns={2} divided stackable>
+            <Grid.Row stretched>
+              <Grid.Column width={12}>
+                <ModalContent image>
+                  <LeftSideContent>
                     {card.dueDate && card.dueDate.date && (
                       <DueDate
                         activeCard={card}
@@ -293,52 +291,52 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                         saveCardChanges={saveCardChanges}
                       />
                     )}
-                  </Suspense>
-                  {hasLabel && (
-                    <CardLabels
+
+                    {hasLabel && (
+                      <CardLabels
+                        board={board}
+                        handleBoardUpdate={handleBoardUpdate}
+                        activeCard={card}
+                        sourceId={sourceId}
+                        getSourceList={getSourceList}
+                      />
+                    )}
+
+                    <CardModalDescription
                       board={board}
                       handleBoardUpdate={handleBoardUpdate}
-                      activeCard={card}
                       sourceId={sourceId}
                       getSourceList={getSourceList}
+                      activeCard={card}
                     />
-                  )}
-
-                  <CardModalDescription
-                    board={board}
-                    handleBoardUpdate={handleBoardUpdate}
-                    sourceId={sourceId}
-                    getSourceList={getSourceList}
-                    activeCard={card}
-                  />
-                  {hasChecklist &&
-                    card.checklists.map((list, index) => (
-                      <CheckLists
-                        key={list._id}
-                        activeCard={card}
-                        checklistName={list.name}
-                        checkItem={list}
-                        handleBoardUpdate={handleBoardUpdate}
-                        board={board}
-                        getSourceList={getSourceList}
-                        sourceId={sourceId}
-                        match={match}
-                        saveBoardChanges={saveBoardChanges}
-                        saveCardChanges={saveCardChanges}
-                        mobile={device.mobile}
-                        id={id}
-                        listIndex={index}
-                      />
-                    ))}
-                  <CardDetailSegment>
-                    <UIWrapper>
-                      <div className="div-flex">
-                        <CardDetailHeader
-                          icon="attach"
-                          description="Attachments"
+                    {hasChecklist &&
+                      card.checklists.map((list, index) => (
+                        <CheckLists
+                          key={list._id}
+                          activeCard={card}
+                          checklistName={list.name}
+                          checkItem={list}
+                          handleBoardUpdate={handleBoardUpdate}
+                          board={board}
+                          getSourceList={getSourceList}
+                          sourceId={sourceId}
+                          match={match}
+                          saveBoardChanges={saveBoardChanges}
+                          saveCardChanges={saveCardChanges}
+                          mobile={device.mobile}
+                          id={id}
+                          listIndex={index}
                         />
-                      </div>
-                      <Suspense fallback={<UILoadingSpinner />}>
+                      ))}
+                    <CardDetailSegment>
+                      <UIWrapper>
+                        <div className="div-flex">
+                          <CardDetailHeader
+                            icon="attach"
+                            description="Attachments"
+                          />
+                        </div>
+
                         {Object.keys(activeCard.attachments).map((key) => (
                           <Attachments
                             key={key}
@@ -353,10 +351,9 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                             editAttachments={editAttachments}
                           />
                         ))}
-                      </Suspense>
-                    </UIWrapper>
-                  </CardDetailSegment>
-                  <Suspense fallback={<UILoadingSpinner />}>
+                      </UIWrapper>
+                    </CardDetailSegment>
+
                     <CardModalActivities
                       activeCard={card}
                       handleBoardUpdate={handleBoardUpdate}
@@ -371,37 +368,37 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                       saveCardChanges={saveCardChanges}
                       user={user.fname}
                     />
-                  </Suspense>
-                </LeftSideContent>
-              </ModalContent>
-            </Grid.Column>
-            <Grid.Column width={4}>
-              <CardModalSidebar
-                activeCard={card}
-                editAttachments={editAttachments}
-                board={board}
-                boardMembers={board.members}
-                getSourceList={getSourceList}
-                handleBoardUpdate={handleBoardUpdate}
-                handleLoadingAttachment={handleLoadingAttachment}
-                handleMakeCover={handleMakeCover}
-                handleRemoveCover={handleRemoveCover}
-                handleUploadAttachment={handleUploadAttachment}
-                hasChecklist={hasChecklist}
-                hasCover={hasCover}
-                hasDueDate={card.dueDate && card.dueDate.date}
-                hasMembers={hasMembers}
-                sourceId={sourceId}
-                mobile={device.mobile}
-                saveBoardChanges={saveBoardChanges}
-                saveCardChanges={saveCardChanges}
-                id={id}
-                history={history}
-              />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
+                  </LeftSideContent>
+                </ModalContent>
+              </Grid.Column>
+              <Grid.Column width={4}>
+                <CardModalSidebar
+                  activeCard={card}
+                  editAttachments={editAttachments}
+                  board={board}
+                  boardMembers={board.members}
+                  getSourceList={getSourceList}
+                  handleBoardUpdate={handleBoardUpdate}
+                  handleLoadingAttachment={handleLoadingAttachment}
+                  handleMakeCover={handleMakeCover}
+                  handleRemoveCover={handleRemoveCover}
+                  handleUploadAttachment={handleUploadAttachment}
+                  hasChecklist={hasChecklist}
+                  hasCover={hasCover}
+                  hasDueDate={card.dueDate && card.dueDate.date}
+                  hasMembers={hasMembers}
+                  sourceId={sourceId}
+                  mobile={device.mobile}
+                  saveBoardChanges={saveBoardChanges}
+                  saveCardChanges={saveCardChanges}
+                  id={id}
+                  history={history}
+                />
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Container>
+      </Suspense>
     </Modal>
   );
 };

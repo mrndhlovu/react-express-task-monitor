@@ -13,8 +13,9 @@ import { parseSearchQuery, getQueryString } from "../../utils/urls";
 import { findArrayItem, emptyFunction } from "../../utils/appUtils";
 import { requestNewBoardList } from "../../apis/apiRequests";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import { withRouter } from "react-router";
 
-const CardDetailModal = lazy(import("../cardDetail/CardDetailModal"));
+const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));
 
 const StyledListContainer = styled.div`
   display: flex;
