@@ -66,6 +66,11 @@ const Attachments = ({
   const [openDocument, setOpenDocument] = useState(null);
   const [fileType, setFiletType] = useState(null);
 
+  const handleClick = (item) => {
+    setOpenDocument(item);
+    setFiletType(item.name.split(".").pop());
+  };
+
   return isLoading ? (
     <UIContainer display={display}>Loading...</UIContainer>
   ) : (
@@ -78,14 +83,14 @@ const Attachments = ({
                 className="attachment-thumbnail"
                 size="tiny"
                 src={item.image}
+                onClick={() => handleClick(item)}
               />
             ) : (
               <div className="attachment-thumbnail-wrap">
                 <a
                   className="attachment-link"
                   rel="noopener noreferrer"
-                  target="_blank"
-                  href={item.name}
+                  onClick={() => handleClick(item)}
                 >
                   <span className="attachment-link-span">
                     {type === "url" ? "LINK" : item.name.split(".").pop()}
@@ -96,39 +101,16 @@ const Attachments = ({
 
             <Container>
               <AttachmentName>
-                <Item.Content verticalAlign="middle">
-                  {type === "image" ? (
-                    item.name
-                  ) : type === "document" ? (
-                    <a
-                      className="attachment-link-text"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      onClick={() => {
-                        setOpenDocument(item);
-                        setFiletType(item.name.split(".").pop());
-                      }}
-                    >
-                      {item.name}
-                      <Icon
-                        name="long arrow alternate right"
-                        className="redirect-icon"
-                      />
-                    </a>
-                  ) : (
-                    <a
-                      className="attachment-link-text"
-                      rel="noopener noreferrer"
-                      target="_blank"
-                      href={item.name}
-                    >
-                      {item.name}
-                      <Icon
-                        name="long arrow alternate right"
-                        className="redirect-icon"
-                      />
-                    </a>
-                  )}
+                <Item.Content
+                  verticalAlign="middle"
+                  className="attachment-link-text"
+                  onClick={() => handleClick(item)}
+                >
+                  {item.name}
+                  <Icon
+                    name="long arrow alternate right"
+                    className="redirect-icon"
+                  />
                 </Item.Content>
                 <DateWrapper>
                   Added {getFormattedDate(item.uploadDate, "LL")}
@@ -199,6 +181,8 @@ const Attachments = ({
         {openDocument && (
           <Suspense fallback={<UILoadingSpinner />}>
             <DocumentModal
+              handleMakeCover={handleMakeCover}
+              editAttachments={editAttachments}
               file={openDocument}
               setOpenDocument={setOpenDocument}
               fileType={fileType}

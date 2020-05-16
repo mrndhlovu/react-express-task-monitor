@@ -1,50 +1,63 @@
-import React, { useState, useEffect } from "react";
-import pdfjsLib from "pdfjs-dist";
+import React, { useState, useEffect, lazy, Suspense } from "react";
 
-import { Modal, Icon } from "semantic-ui-react";
+const Document = lazy(() => import("react-pdf/dist/Document"));
+const Page = lazy(() => import("react-pdf/dist/Page"));
 
-import { emptyFunction } from "../../utils/appUtils";
+import { Modal } from "semantic-ui-react";
+
+import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
+import { emptyFunction, stringsEqual } from "../../utils/appUtils";
+import DocumentPreviewButtons from "./DocumentPreviewButtons";
+import ImagePreviewButtons from "./ImagePreviewButtons";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
-const DocumentModal = ({ file, setOpenDocument }) => {
+const DocumentModal = ({
+  file,
+  fileType,
+  setOpenDocument,
+  handleMakeCover,
+  editAttachments,
+}) => {
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
-  const [docItem, setDocItem] = useState(null);
+
   const [scale, setScale] = useState(1);
 
   const lastPage = pageNumber === numPages;
   const firstPage = pageNumber === 1;
-  const url = file.document;
+  const url = file.document || file.image;
 
-  const renderDocument = (page) => {
-    const canvas = document.getElementById("doc-canvas"),
-      viewport = page.getViewport({ scale });
+  const renderDocument = () => {
+    if (stringsEqual(fileType, "pdf")) {
+      return (
+        <div>
+          <Suspense fallback={<UILoadingSpinner />}>
+            <Document
+              file={url}
+              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
+            >
+              <Page scale={scale} pageNumber={pageNumber} />
+            </Document>
+          </Suspense>
+        </div>
+      );
+    }
 
-    canvas.height = viewport.height;
-    canvas.width = viewport.width;
-
-    const canvasContext = canvas.getContext("2d");
-
-    return page.render({ canvasContext, viewport }).promise.then(() => {
-      setIsLoading(false);
-    });
+    if (stringsEqual(fileType, ALLOWED_IMAGE_TYPES)) {
+      return (
+        <UIWrapper className="image-preview">
+          <img src={url}></img>
+        </UIWrapper>
+      );
+    }
   };
-
-  useEffect(() => {
-    if (!docItem) return emptyFunction();
-    docItem.getPage(pageNumber).then((page) => {
-      renderDocument(page);
-    });
-  }, [docItem, pageNumber, scale]);
 
   useEffect(() => {
     if (!file) return emptyFunction();
 
-    pdfjsLib.getDocument(url).promise.then((doc) => {
-      setDocItem(doc);
-      setNumPages(doc.numPages);
-    });
+    setIsLoading(false);
 
     return () => {
       setNumPages(null);
@@ -60,31 +73,35 @@ const DocumentModal = ({ file, setOpenDocument }) => {
       onClose={() => setOpenDocument(null)}
       centered={false}
     >
-      <Modal.Content className="document-content">
-        <canvas id="doc-canvas" />
-        {isLoading && "Loading..."}
-      </Modal.Content>
-      {!isLoading && (
-        <UIWrapper className="doc-page-buttons">
-          <Icon link name="zoom-out" onClick={() => setScale(scale - 0.25)} />
-          <Icon
-            link={!firstPage}
-            disabled={firstPage}
-            name="arrow left"
-            onClick={() => setPageNumber(firstPage ? 1 : pageNumber - 1)}
-          />
-          <span className="page-tracker">
-            {`Page ${pageNumber} of ${numPages}`}
-          </span>
-          <Icon
-            link={!lastPage}
-            disabled={lastPage}
-            name="arrow right"
-            onClick={() => setPageNumber(lastPage ? numPages : pageNumber + 1)}
-          />
-          <Icon link name="zoom-in" onClick={() => setScale(scale + 0.25)} />
-        </UIWrapper>
-      )}
+      <div className="modal-content-wrapper">
+        <Modal.Content className="document-content">
+          {renderDocument()}
+          {isLoading && "Loading..."}
+        </Modal.Content>
+
+        {!isLoading && (
+          <UIWrapper className="doc-page-buttons">
+            {stringsEqual(fileType, "pdf") && (
+              <DocumentPreviewButtons
+                setScale={setScale}
+                pageNumber={pageNumber}
+                scale={scale}
+                setPageNumber={setPageNumber}
+                firstPage={firstPage}
+                lastPage={lastPage}
+                numPages={numPages}
+              />
+            )}
+            {stringsEqual(fileType, ALLOWED_IMAGE_TYPES) && (
+              <ImagePreviewButtons
+                handleMakeCover={handleMakeCover}
+                editAttachments={editAttachments}
+                file={file}
+              />
+            )}
+          </UIWrapper>
+        )}
+      </div>
     </Modal>
   );
 };

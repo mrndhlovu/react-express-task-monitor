@@ -121,9 +121,11 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
           break;
       }
       const sourceList = findArrayItem(board.lists, sourceId, "_id");
+      const cardIndex = sourceList.cards.indexOf(card);
+      const sourceIndex = board.lists.indexOf(sourceList);
 
-      sourceList.cards.splice(sourceList.cards.indexOf(card), 1, card);
-      board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+      sourceList.cards.splice(cardIndex, 1, card);
+      board.lists.splice(sourceIndex, 1, sourceList);
 
       setNewAttachment(board);
 
