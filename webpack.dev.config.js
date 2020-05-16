@@ -9,11 +9,10 @@ const webpack = require("webpack");
 module.exports = merge(shared, {
   devServer: {
     port: 3000,
-    contentBase: ["/public"],
+    contentBase: ["/build"],
     inline: true,
     hot: true,
   },
-
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/assets/static-assets/template.html",
@@ -23,6 +22,7 @@ module.exports = merge(shared, {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
+
     // new BundleAnalyzerPlugin(),
   ],
 });

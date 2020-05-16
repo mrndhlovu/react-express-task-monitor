@@ -1,7 +1,8 @@
-const path = require("path");
-const nodeExternals = require("webpack-node-externals");
-const webpack = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { environment } = require("./src/server/utils/config");
+const nodeExternals = require("webpack-node-externals");
+const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   entry: {
@@ -18,6 +19,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     // new webpack.NoEmitOnErrorsPlugin(),
     // new BundleAnalyzerPlugin(),
+    new CleanWebpackPlugin(),
   ],
   target: "node",
   node: {

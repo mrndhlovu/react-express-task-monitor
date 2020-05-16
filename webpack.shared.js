@@ -1,7 +1,8 @@
-const path = require("path");
+const { isDevelopment, environment } = require("./src/server/utils/config");
 const Dotenv = require("dotenv-webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { isDevelopment, environment } = require("./src/server/utils/config");
+const path = require("path");
+const webpack = require("webpack");
 
 module.exports = {
   entry: {
@@ -10,16 +11,14 @@ module.exports = {
   output: {
     path: path.join(__dirname, "./build"),
     publicPath: "/",
-    filename: isDevelopment
-      ? "[name].bundle.[hash].js"
-      : "[name].[hash].bundle.js",
+    filename: isDevelopment ? "[name].bundle.js" : "[name].[hash].bundle.js",
     hotUpdateChunkFilename: ".hot/[id].[hash].hot-update.js",
     hotUpdateMainFilename: ".hot/[hash].hot-update.json",
   },
   target: "web",
   mode: environment,
   performance: {
-    hints: false,
+    // hints: false,
   },
   module: {
     rules: [
@@ -32,6 +31,7 @@ module.exports = {
       },
       {
         test: /\.html$/,
+
         use: [
           {
             loader: "html-loader",
@@ -86,7 +86,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: [
+          isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+        ],
       },
     ],
   },
@@ -99,5 +102,6 @@ module.exports = {
       filename: isDevelopment ? "[name].css" : "[name].[hash].css",
       chunkFilename: isDevelopment ? "[id].css" : "[id].[hash].css",
     }),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
   ],
 };
