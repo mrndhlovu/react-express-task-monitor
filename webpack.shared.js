@@ -18,7 +18,7 @@ module.exports = {
   target: "web",
   mode: environment,
   performance: {
-    // hints: false,
+    hints: false,
   },
   module: {
     rules: [

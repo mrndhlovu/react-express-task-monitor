@@ -5,9 +5,8 @@ const shared = require("./webpack.shared");
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = merge(shared, {
-  devtool: "source-map",
   optimization: {
-    minimizer: [new TerserPlugin(), new OptimizeCssAssetsPlugin()],
+    minimizer: [new TerserPlugin(), new OptimizeCssAssetsPlugin({})],
     splitChunks: {
       chunks: "all",
       minSize: 30000,
