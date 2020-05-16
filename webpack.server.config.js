@@ -1,12 +1,15 @@
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { environment } = require("./src/server/utils/config");
+const { environment, isDevelopment } = require("./src/server/utils/config");
 const nodeExternals = require("webpack-node-externals");
 const path = require("path");
 const webpack = require("webpack");
 
+const SERVER_PATH = isDevelopment
+  ? "./src/server/server.dev.js"
+  : "./src/server/server.prod.js";
+
 module.exports = {
   entry: {
-    server: ["./src/server/server.js"],
+    server: [SERVER_PATH],
   },
   output: {
     path: path.join(__dirname, "build"),
@@ -19,7 +22,6 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     // new webpack.NoEmitOnErrorsPlugin(),
     // new BundleAnalyzerPlugin(),
-    new CleanWebpackPlugin(),
   ],
   target: "node",
   node: {

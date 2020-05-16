@@ -1,4 +1,4 @@
-import React, { memo, useState, Component } from "react";
+import React, { memo, useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 
 import { Item, Button, Dropdown, Icon } from "semantic-ui-react";
@@ -7,27 +7,7 @@ import { getFormattedDate } from "../../utils/appUtils";
 import UIContainer from "../sharedComponents/UIContainer";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-class DynamicImport extends Component {
-  state = { component: null };
-
-  UNSAFE_componentWillMount() {
-    this.props
-      .load()
-      .then((mod) => this.setState(() => ({ component: mod.default })));
-  }
-
-  render() {
-    return this.props.children(this.state.component);
-  }
-}
-
-const DocumentModal = (props) => (
-  <DynamicImport load={() => import("./DocumentModal")}>
-    {(Component) =>
-      !Component ? <UILoadingSpinner /> : <Component {...props} />
-    }
-  </DynamicImport>
-);
+const DocumentModal = lazy(() => import("./DocumentModal"));
 
 const Container = styled.div``;
 
@@ -217,11 +197,13 @@ const Attachments = ({
           </Item>
         ))}
         {openDocument && (
-          <DocumentModal
-            file={openDocument}
-            setOpenDocument={setOpenDocument}
-            fileType={fileType}
-          />
+          <Suspense fallback={<UILoadingSpinner />}>
+            <DocumentModal
+              file={openDocument}
+              setOpenDocument={setOpenDocument}
+              fileType={fileType}
+            />
+          </Suspense>
         )}
       </Item.Group>
     )

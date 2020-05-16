@@ -1,10 +1,6 @@
 import "./utils/mongooseDB";
 import "@babel/polyfill";
-import config from "../../webpack.dev.config";
 import cors from "cors";
-import webpack from "webpack";
-import webpackDevMiddleware from "webpack-dev-middleware";
-import webpackHotMiddleware from "webpack-hot-middleware";
 
 import { ROOT_URL, PORT } from "./utils/config";
 import { routesConfig } from "./utils/middleware/routesMiddleware";
@@ -17,7 +13,7 @@ import path from "path";
 
 const app = express();
 const server = http.createServer(app);
-const compiler = webpack(config);
+
 const BUILD_DIR = __dirname;
 
 socketConfig(server);
@@ -30,15 +26,6 @@ app.use(
     credentials: true,
   })
 );
-
-app.use(
-  webpackDevMiddleware(compiler, {
-    noInfo: true,
-    publicPath: config.output.publicPath,
-  })
-);
-
-app.use(webpackHotMiddleware(compiler));
 
 app.use(express.static(path.join(BUILD_DIR, "build")));
 
