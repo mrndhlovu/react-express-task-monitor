@@ -1,11 +1,9 @@
-const { environment, isDevelopment } = require("./src/server/utils/config");
+const { environment } = require("./src/server/utils/config");
 const nodeExternals = require("webpack-node-externals");
 const path = require("path");
 const webpack = require("webpack");
 
-const SERVER_PATH = isDevelopment
-  ? "./src/server/server.dev.js"
-  : "./src/server/server.prod.js";
+const SERVER_PATH = "./src/server/server.js";
 
 module.exports = {
   entry: {

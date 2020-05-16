@@ -77,7 +77,7 @@
     "bend": "jest",
     "coverage": "jest --coverage",
     "dev": "rm -rf build && webpack --mode development --config webpack.dev.config.js && webpack --mode development --config webpack.server.config.js",
-    "prod": "rm -rf build && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
+    "prod": "rm -rf build && webpack --mode production --config webpack.dev.config.js && webpack --mode production --config webpack.server.config.js",
     "start": "node ./build/server.js",
     "heroku-postbuild": "yarn run prod"
   },
