@@ -4,6 +4,8 @@ import React, {
   useCallback,
   useMemo,
   useContext,
+  lazy,
+  Suspense,
 } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -18,11 +20,11 @@ import {
   requestUserUpdate,
 } from "../apis/apiRequests";
 
+const Board = lazy(() => import("../components/boardDetail/Board"));
 import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
-import Board from "../components/boardDetail/Board";
+import { useAuth } from "../utils/hookUtils";
 import BoardHeader from "../components/boardDetail/BoardHeader";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
-import { useAuth } from "../utils/hookUtils";
 
 const StyledContainer = styled.div`
   height: 100vh;
@@ -183,37 +185,38 @@ const BoardContainer = ({ match, history }) => {
     auth.authenticated && fetchData();
   }, [board, updatedField, id, history, getNavData, auth]);
 
-  return !board ? (
-    <UILoadingSpinner />
-  ) : (
-    <BoardContext.Provider
-      value={{
-        board,
-        auth,
-        changeBoardAccessLevel,
-        handleBoardStarClick,
-        handleBoardUpdate,
-        handleSelectedColor,
-        handleDeleteBoard,
-        handleInviteClick,
-        handleShowMenuClick,
-        id,
-        inviteDone,
-        loading,
-        saveBoardChanges,
-        showSideBar,
-        showMobileMenu,
-        setShowMobileMenu,
-      }}
-    >
-      <StyledContainer bgColor={board.styleProperties.color}>
-        <ContentDiv mobile={device.mobile}>
-          {!device.mobile && <BoardHeader user={user} />}
-
-          <Board />
-        </ContentDiv>
-      </StyledContainer>
-    </BoardContext.Provider>
+  return (
+    board && (
+      <BoardContext.Provider
+        value={{
+          board,
+          auth,
+          changeBoardAccessLevel,
+          handleBoardStarClick,
+          handleBoardUpdate,
+          handleSelectedColor,
+          handleDeleteBoard,
+          handleInviteClick,
+          handleShowMenuClick,
+          id,
+          inviteDone,
+          loading,
+          saveBoardChanges,
+          showSideBar,
+          showMobileMenu,
+          setShowMobileMenu,
+        }}
+      >
+        <StyledContainer bgColor={board.styleProperties.color}>
+          <ContentDiv mobile={device.mobile}>
+            {!device.mobile && <BoardHeader user={user} />}
+            <Suspense fallback={<UILoadingSpinner />}>
+              <Board />
+            </Suspense>
+          </ContentDiv>
+        </StyledContainer>
+      </BoardContext.Provider>
+    )
   );
 };
 

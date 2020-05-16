@@ -1,10 +1,11 @@
-import React, { memo, useState, Suspense, lazy } from "react";
+import React, { memo, useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 
 import { Item, Button, Dropdown, Icon } from "semantic-ui-react";
 
 import { getFormattedDate } from "../../utils/appUtils";
 import UIContainer from "../sharedComponents/UIContainer";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const DocumentModal = lazy(() => import("./DocumentModal"));
 
@@ -63,6 +64,7 @@ const Attachments = ({
 }) => {
   const hasAttachment = attachment.length > 0;
   const [openDocument, setOpenDocument] = useState(null);
+  const [fileType, setFiletType] = useState(null);
 
   return isLoading ? (
     <UIContainer display={display}>Loading...</UIContainer>
@@ -102,7 +104,10 @@ const Attachments = ({
                       className="attachment-link-text"
                       rel="noopener noreferrer"
                       target="_blank"
-                      onClick={() => setOpenDocument(item)}
+                      onClick={() => {
+                        setOpenDocument(item);
+                        setFiletType(item.name.split(".").pop());
+                      }}
                     >
                       {item.name}
                       <Icon
@@ -191,12 +196,15 @@ const Attachments = ({
             </Container>
           </Item>
         ))}
-        <Suspense fallback={<div>Loading...</div>}>
-          <DocumentModal
-            file={openDocument}
-            setOpenDocument={setOpenDocument}
-          />
-        </Suspense>
+        {openDocument && (
+          <Suspense fallback={<UILoadingSpinner />}>
+            <DocumentModal
+              file={openDocument}
+              setOpenDocument={setOpenDocument}
+              fileType={fileType}
+            />
+          </Suspense>
+        )}
       </Item.Group>
     )
   );

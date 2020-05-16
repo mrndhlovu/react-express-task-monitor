@@ -11,9 +11,11 @@ const UIWrapper = ({
   children,
   handleClick,
   className,
+  id,
 }) => {
   return (
     <Container
+      id={id}
       className={className}
       padding={padding}
       display={display}

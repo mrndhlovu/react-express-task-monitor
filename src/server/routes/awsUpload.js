@@ -22,8 +22,7 @@ router.post("/:type/upload", auth, (req, res) => {
       });
     } catch (error) {
       res.status(400).send({
-        message:
-          "Failed to upload file, only \n [pdf/image] \n file types allowed!",
+        message: "Failed to upload, file type not supported",
       });
     }
   });

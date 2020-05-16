@@ -117,4 +117,5 @@ export const ALLOWED_DOCUMENT_TYPES = [
   "pptx",
   "xlsx",
   "xls",
+  "txt",
 ];

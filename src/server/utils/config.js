@@ -15,8 +15,12 @@ const S3_BUCKET = process.env.AWS_BUCKET_NAME;
 const allowedFileTypes = [
   "image/jpg",
   "image/jpeg",
+  "image/gif",
   "image/png",
   "application/pdf",
+  "application/vnd.oasis.opendocument.text",
+  "text/plain",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 const TOKEN_SIGNATURE = process.env.TOKEN_SIGNATURE;
 const ROOT_URL =
