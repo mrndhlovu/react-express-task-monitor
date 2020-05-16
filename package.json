@@ -4,15 +4,17 @@
   "description": "Task monitor React, Node.js, Express and Webpack",
   "author": "Mduduzi Ndhlovu",
   "license": "MIT",
+  "main": "index.js",
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "7.8.3",
     "@babel/plugin-transform-runtime": "7.9.0",
+    "@babel/core": "7.5.5",
     "@babel/polyfill": "7.8.7",
     "@babel/preset-env": "7.5.5",
     "@babel/preset-react": "7.0.0",
     "@sendgrid/mail": "6.5.5",
     "async": "3.2.0",
-    "aws-sdk": "2.619.0",
+    "aws-sdk": "^2.678.0",
     "axios": "0.19.0",
     "babel-loader": "^8.1.0",
     "bcrypt": "4.0.1",
@@ -73,7 +75,7 @@
     "test": "eslint src && jest",
     "bend": "jest",
     "coverage": "jest --coverage",
-    "dev": "rm -rf build && webpack --mode development --config webpack.server.config.js && webpack-dev-server --hot --mode development --config webpack.dev.config.js",
+    "dev": "rm -rf build && webpack --mode development --config webpack.dev.config.js && webpack --mode development --config webpack.server.config.js",
     "prod": "rm -rf build && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
     "start": "node ./build/server.js",
     "heroku-postbuild": "yarn run prod"
@@ -93,7 +95,6 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "7.5.5",
     "@babel/plugin-transform-runtime": "7.9.0",
     "@babel/runtime": "^7.9.6",
     "babel-eslint": "10.1.0",

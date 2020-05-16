@@ -1,5 +1,6 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge");
 
@@ -7,6 +8,9 @@ const shared = require("./webpack.shared");
 const webpack = require("webpack");
 
 module.exports = merge(shared, {
+  entry: {
+    main: ["webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000"],
+  },
   devServer: {
     port: 3000,
     contentBase: ["/build"],
@@ -22,7 +26,9 @@ module.exports = merge(shared, {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-
+    new CleanWebpackPlugin({
+      // cleanOnceBeforeBuildPatterns: ["**/*", "!server.js"],
+    }),
     // new BundleAnalyzerPlugin(),
   ],
 });
