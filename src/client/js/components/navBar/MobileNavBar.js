@@ -20,7 +20,6 @@ const MobileNavBar = ({
   isHomePage,
   history,
   setShowMobileMenu,
-  mobile,
 }) => {
   return (
     <UIWrapper display={display} padding="2px 0">
@@ -37,7 +36,7 @@ const MobileNavBar = ({
           onClick={setShowMobileMenu}
         />
       ) : (
-        <Logo mobile={mobile} history={history} />
+        <Logo history={history} />
       )}
     </UIWrapper>
   );

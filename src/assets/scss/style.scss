@@ -24,6 +24,17 @@ ui.form,
   border-radius: 2px !important;
 }
 
+.logo-text {
+  font-family: "Poppins";
+  font-size: 20px;
+  color: white;
+  width: fit-content;
+}
+
+.logo-text > h2 {
+  cursor: pointer;
+}
+
 .card-detail-container {
   margin-top: 0px !important;
 }

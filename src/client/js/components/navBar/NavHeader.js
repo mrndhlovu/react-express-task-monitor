@@ -30,7 +30,7 @@ const NavHeader = ({ history, color = "transparent", setVisible }) => {
       {!device.mobile ? (
         <Fragment>
           <LeftNavButtons history={history} />
-          <Logo history={history} mobile={device.mobile} />
+          <Logo history={history} />
           <RightNavButtons history={history} />
         </Fragment>
       ) : (
@@ -39,7 +39,6 @@ const NavHeader = ({ history, color = "transparent", setVisible }) => {
           isHomePage={isHomePage}
           history={history}
           setShowMobileMenu={setShowMobileMenu}
-          mobile={device.mobile}
         />
       )}
     </NavWrapper>
