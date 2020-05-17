@@ -18,7 +18,6 @@ const allowedFileTypes = [
   "image/gif",
   "image/png",
   "application/pdf",
-  "application/vnd.oasis.opendocument.text",
   "text/plain",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
