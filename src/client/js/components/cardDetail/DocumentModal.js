@@ -1,9 +1,10 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
+import mammoth from "mammoth";
 
 const Document = lazy(() => import("react-pdf/dist/Document"));
 const Page = lazy(() => import("react-pdf/dist/Page"));
 
-import { Modal } from "semantic-ui-react";
+import { Modal, Icon } from "semantic-ui-react";
 
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
@@ -34,7 +35,7 @@ const DocumentModal = ({
   const renderDocument = () => {
     if (stringsEqual(fileType, "pdf")) {
       return (
-        <div>
+        <UIWrapper className="pdf-preview">
           <Suspense fallback={<UILoadingSpinner />}>
             <Document
               file={url}
@@ -43,7 +44,7 @@ const DocumentModal = ({
               <Page scale={scale} pageNumber={pageNumber} />
             </Document>
           </Suspense>
-        </div>
+        </UIWrapper>
       );
     }
 
@@ -79,6 +80,32 @@ const DocumentModal = ({
         );
       }
     }
+
+    if (stringsEqual(fileType, ["docx"])) {
+      const jsonFile = new XMLHttpRequest();
+      jsonFile.open("GET", file.document, true);
+      jsonFile.send();
+      jsonFile.responseType = "arraybuffer";
+
+      jsonFile.onreadystatechange = () => {
+        if (jsonFile.readyState === 4 && jsonFile.status === 200) {
+          mammoth
+            .convertToHtml(
+              { arrayBuffer: jsonFile.response },
+              { includeDefaultStyleMap: true }
+            )
+            .then((result) => {
+              const docEl = document.createElement("div");
+              docEl.className = "docx-container";
+              docEl.innerHTML = result.value;
+              document.querySelector(".docx-preview").innerHTML =
+                docEl.outerHTML;
+            })
+
+            .done();
+        }
+      };
+    }
   };
 
   useEffect(() => {
@@ -99,10 +126,14 @@ const DocumentModal = ({
       open={file !== null}
       onClose={() => setOpenDocument(null)}
       centered={false}
+      closeIcon={<Icon className="close-modal" name="close" />}
     >
       <div className="modal-content-wrapper">
         <Modal.Content className="document-content">
           {renderDocument()}
+          {stringsEqual(fileType, ["docx", "odt"]) && (
+            <UIWrapper className="docx-preview" />
+          )}
           {isLoading && "Loading..."}
         </Modal.Content>
 
@@ -130,7 +161,7 @@ const DocumentModal = ({
               />
             )}
 
-            {stringsEqual(fileType, "txt") && (
+            {stringsEqual(fileType, ["txt", "docx"]) && (
               <TextFilePreviewButtons
                 editAttachments={editAttachments}
                 file={file}
