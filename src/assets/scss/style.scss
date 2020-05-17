@@ -35,6 +35,20 @@ ui.form,
   cursor: pointer;
 }
 
+.nav-menu-icon {
+  color: white;
+  font-size: 20px !important;
+  font-weight: 100 !important;
+}
+
+.mobile-navbar {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+  padding: 2px 0;
+  align-items: center;
+}
+
 .card-detail-container {
   margin-top: 0px !important;
 }
@@ -88,8 +102,29 @@ ui.form,
   right: 0;
 }
 
+.board-header {
+  align-items: start;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  left: 2px;
+  max-height: 40px;
+  padding-right: 8px;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
 .boards-container::-webkit-scrollbar {
   display: none;
+}
+
+.chat-icon {
+  position: absolute;
+  bottom: 1%;
+  right: 1%;
+  position: fixed;
+  z-index: 100;
+  color: #fff;
 }
 
 .image-container::-webkit-scrollbar {
@@ -102,13 +137,26 @@ ui.form,
   border: none !important;
 }
 .chat-sidebar {
-  width: 350px !important;
   border-radius: 8px !important;
   border: none !important;
 }
 
+.thread-time,
+.chat-room-counter {
+  color: #000;
+}
+
 .board-menu-sidebar::-webkit-scrollbar {
   display: none;
+}
+
+.board-content {
+  display: grid;
+  height: 96vh;
+  left: 0;
+  position: relative;
+  top: 0%;
+  width: 100%;
 }
 
 .sidebar-activities::-webkit-scrollbar {
@@ -374,5 +422,23 @@ ui.form,
   .docx-container {
     width: 100%;
     padding: 6px;
+  }
+  .logo-text > h2 {
+    font-size: 18px !important;
+  }
+  .board-header {
+    display: none;
+  }
+
+  .board-content {
+    height: 92vh;
+  }
+
+  .chat-icon {
+    bottom: 0%;
+  }
+
+  .chat-sidebar {
+    width: 300px !important;
   }
 }

@@ -18,7 +18,7 @@ const SideBarWrapper = ({
   open,
   handleClose,
   children,
-  inverted,
+  inverted = true,
   header,
   className,
   direction = "right",
@@ -34,10 +34,9 @@ const SideBarWrapper = ({
       animation="overlay"
       direction={direction}
       vertical
-      inverted={inverted}
       visible={open}
       onHide={onHide}
-      className={`${className} ui-sidebar`}
+      className={className}
     >
       <UIContainer display={style ? style : defaultStyles}>
         {hasHeader && (

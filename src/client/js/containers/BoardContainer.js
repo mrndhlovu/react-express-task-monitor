@@ -4,8 +4,6 @@ import React, {
   useCallback,
   useMemo,
   useContext,
-  lazy,
-  Suspense,
 } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
@@ -20,29 +18,19 @@ import {
   requestUserUpdate,
 } from "../apis/apiRequests";
 
-const Board = lazy(() => import("../components/boardDetail/Board"));
 import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
 import { useAuth } from "../utils/hookUtils";
+import Board from "../components/boardDetail/Board";
 import BoardHeader from "../components/boardDetail/BoardHeader";
-import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const StyledContainer = styled.div`
   height: 100vh;
-  background-color: ${(props) => props.bgColor};
-`;
-
-const ContentDiv = styled.div`
-  display: grid;
-  height: ${(props) => (props.mobile ? "92vh" : "96vh")};
-  left: 0;
-  position: relative;
-  top: 0%;
-  width: 100%;
+  background: ${({ bgColor }) => bgColor};
 `;
 
 const BoardContainer = ({ match, history }) => {
   const { id } = match.params;
-  const { device, getNavData } = useContext(MainContext);
+  const { getNavData } = useContext(MainContext);
   const { auth, user } = useAuth();
 
   const [board, setBoard] = useState(null);
@@ -208,12 +196,10 @@ const BoardContainer = ({ match, history }) => {
         }}
       >
         <StyledContainer bgColor={board.styleProperties.color}>
-          <ContentDiv mobile={device.mobile}>
-            {!device.mobile && <BoardHeader user={user} />}
-            <Suspense fallback={<UILoadingSpinner />}>
-              <Board />
-            </Suspense>
-          </ContentDiv>
+          <div className="board-content">
+            <BoardHeader user={user} />
+            <Board />
+          </div>
         </StyledContainer>
       </BoardContext.Provider>
     )

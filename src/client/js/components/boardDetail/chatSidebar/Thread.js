@@ -28,7 +28,9 @@ const Thread = ({ message, isCurrentUserMessage }) => {
         horizontal={true}
         inverted={true}
         content={
-          <StyledSpan>{getFormattedDate(message.time, null, true)}</StyledSpan>
+          <StyledSpan className="thread-time">
+            {getFormattedDate(message.time, null, true)}
+          </StyledSpan>
         }
       />
       <Message isCurrentUserMessage={isCurrentUserMessage}>

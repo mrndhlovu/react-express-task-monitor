@@ -5,6 +5,8 @@ import React, {
   useState,
   useCallback,
   Fragment,
+  Suspense,
+  lazy,
 } from "react";
 import { withRouter } from "react-router-dom";
 import socketIOClient from "socket.io-client";
@@ -19,11 +21,14 @@ import {
 } from "../../../utils/appUtils";
 import { BoardContext } from "../../../utils/contextUtils";
 import { getRootUrl } from "../../../utils/urls";
-import RoomSelector from "./RoomSelector";
-import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
-import Thread from "./Thread";
-import UIMessage from "../../sharedComponents/UIMessage";
 import { useAuth } from "../../../utils/hookUtils";
+
+import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
+import UIMessage from "../../sharedComponents/UIMessage";
+import UILoadingSpinner from "../../sharedComponents/UILoadingSpinner";
+
+const RoomSelector = lazy(() => import("./RoomSelector"));
+const Thread = lazy(() => import("./Thread"));
 
 const InputWrapper = styled.div`
   width: 100%;
@@ -132,14 +137,15 @@ const ChatSideBar = ({ openChat }) => {
       handleClose={() => window.location.reload()}
       header="Comments"
       inverted={true}
-      width="very wide"
       className="chat-sidebar"
     >
-      <RoomSelector
-        handleSelectRoom={handleSelectRoom}
-        room={room}
-        onlineCount={onlineCount}
-      />
+      <Suspense fallback={<UILoadingSpinner />}>
+        <RoomSelector
+          handleSelectRoom={handleSelectRoom}
+          room={room}
+          onlineCount={onlineCount}
+        />
+      </Suspense>
       {error && (
         <UIMessage
           message={error}
@@ -149,34 +155,36 @@ const ChatSideBar = ({ openChat }) => {
       )}
       {room && (
         <Fragment>
-          <FormWrapper>
-            <Form id="chat-form">
-              <TextArea
-                id="message-field"
-                onChange={(e) => handleChange(e)}
-                onKeyDown={(e) =>
-                  e.key === "Enter" ? handleSendChatMessage(e) : null
-                }
-                placeholder="Message"
-                rows={2}
-                type="text"
-              />
-            </Form>
-          </FormWrapper>
-          <InputWrapper>
-            <BoardMessages>
-              {messages.map(
-                (message, index) =>
-                  message.room === room && (
-                    <Thread
-                      key={index}
-                      isCurrentUserMessage={message.user === name}
-                      message={message}
-                    />
-                  )
-              )}
-            </BoardMessages>
-          </InputWrapper>
+          <Suspense fallback={<UILoadingSpinner />}>
+            <FormWrapper>
+              <Form id="chat-form">
+                <TextArea
+                  id="message-field"
+                  onChange={(e) => handleChange(e)}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" ? handleSendChatMessage(e) : null
+                  }
+                  placeholder="Message"
+                  rows={2}
+                  type="text"
+                />
+              </Form>
+            </FormWrapper>
+            <InputWrapper>
+              <BoardMessages>
+                {messages.map(
+                  (message, index) =>
+                    message.room === room && (
+                      <Thread
+                        key={index}
+                        isCurrentUserMessage={message.user === name}
+                        message={message}
+                      />
+                    )
+                )}
+              </BoardMessages>
+            </InputWrapper>
+          </Suspense>
         </Fragment>
       )}
     </SideBarWrapper>

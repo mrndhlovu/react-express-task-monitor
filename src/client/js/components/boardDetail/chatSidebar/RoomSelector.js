@@ -37,9 +37,11 @@ const RoomSelector = ({
       content={
         <Fragment>
           {onlineCount === 0 ? (
-            <span>{getFormattedDate(Date.now(), "LLL")}</span>
+            <span className="chat-room-counter">
+              {getFormattedDate(Date.now(), "LLL")}
+            </span>
           ) : (
-            <span> Online {onlineCount}</span>
+            <span className="chat-room-counter"> Online {onlineCount}</span>
           )}
         </Fragment>
       }

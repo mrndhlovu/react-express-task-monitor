@@ -71,7 +71,6 @@ const Board = () => {
           <Suspense fallback={<UILoadingSpinner />}>
             <ChatIcon
               handleChatsOpen={() => setOpenChat(!openChat)}
-              mobile={device.mobile}
               membersOnline={membersOnline}
             />
           </Suspense>

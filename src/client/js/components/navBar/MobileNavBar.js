@@ -9,11 +9,6 @@ const StyledButton = styled(Button)`
   background: transparent !important;
   padding: 3px 10px !important;
 `;
-const display = {
-  width: "100%",
-  justifyContent: "space-between",
-  display: "flex",
-};
 
 const MobileNavBar = ({
   setVisible,
@@ -22,21 +17,33 @@ const MobileNavBar = ({
   setShowMobileMenu,
 }) => {
   return (
-    <UIWrapper display={display} padding="2px 0">
+    <UIWrapper className="mobile-navbar">
       <StyledButton
         onClick={() => (isHomePage ? setVisible() : history.push("/"))}
-        icon={<Icon name={isHomePage ? "bars" : "arrow left"} size="large" />}
+        icon={
+          <Icon
+            name={isHomePage ? "bars" : "arrow left"}
+            className="nav-menu-icon"
+            size="large"
+          />
+        }
       />
 
-      {!isHomePage ? (
+      <Logo history={history} />
+
+      {!isHomePage && (
         <StyledButton
           floated="right"
           size="tiny"
-          icon={<Icon name="ellipsis vertical" size="large" />}
+          icon={
+            <Icon
+              className="nav-menu-icon"
+              name="ellipsis vertical"
+              size="large"
+            />
+          }
           onClick={setShowMobileMenu}
         />
-      ) : (
-        <Logo history={history} />
       )}
     </UIWrapper>
   );
