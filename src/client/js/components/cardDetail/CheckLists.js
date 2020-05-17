@@ -62,18 +62,16 @@ const CheckLists = ({
 
   const { id } = match.params;
   const sourceList = getSourceList(sourceId, "_id");
+  const sourceIndex = board.lists.indexOf(sourceList);
+  const cardIndex = sourceList.cards.indexOf(activeCard);
 
   const updatedChanges = () => {
-    sourceList.cards.splice(
-      sourceList.cards.indexOf(activeCard),
-      1,
-      activeCard
-    );
+    sourceList.cards.splice(cardIndex, 1, activeCard);
     updateLists();
   };
 
   const updateLists = (newBoard) => {
-    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+    board.lists.splice(sourceIndex, 1, sourceList);
 
     handleBoardUpdate(newBoard ? newBoard : board, "lists");
   };
@@ -131,7 +129,9 @@ const CheckLists = ({
   useEffect(() => {
     if (!hideCompleted) return emptyFunction();
     checklist = { ...checklist, archived: checklist.archived ? false : true };
+    setChecklist(checklist);
     activeCard.checklists.splice(listIndex, 1, checklist);
+
     updatedChanges();
 
     setHideCompleted(false);
@@ -161,6 +161,7 @@ const CheckLists = ({
       if (!inProgress) checklist = { ...checklist, status: "complete" };
       else checklist = { ...checklist, status: "doing" };
 
+      setChecklist(checklist);
       activeCard.checklists.splice(listIndex, 1, checklist);
 
       updatedChanges();
@@ -218,12 +219,10 @@ const CheckLists = ({
   return (
     <CardDetailSegment className="card-checklist">
       <UIContainer className="checklist-header" display={display}>
-        <>
-          <CardDetailHeader
-            description={checklistName}
-            icon="check square outline"
-          />
-        </>
+        <CardDetailHeader
+          description={checklistName}
+          icon="check square outline"
+        />
 
         <UIWrapper display={wrapperStyle}>
           {stringsEqual(checklist.status, "complete") && (

@@ -18,7 +18,6 @@ const CoverContainer = styled(Modal.Header)`
   background-position: center center !important;
   background-repeat: no-repeat !important;
   background-size: contain !important;
-  cursor: pointer !important;
   height: 160px;
   position: relative;
   transition: opacity 85ms !important;

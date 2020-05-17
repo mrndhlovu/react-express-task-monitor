@@ -53,7 +53,7 @@ const DropdownButton = ({
       upward={upward}
       lazyLoad
       button={button}
-      className={`${className} icon`}
+      className={`${className || ""} icon`}
       color={color}
       compact={compact}
       floating

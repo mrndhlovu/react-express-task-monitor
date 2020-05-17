@@ -19,17 +19,16 @@ const AddCover = ({
 }) => {
   const [addCover, setAddCover] = useState(false);
 
-  const handleClose = () => setAddCover(false);
-
   return (
     <DropdownButton
       icon="image"
       buttonText="Cover"
       header="Cover"
-      callback={() => handleClose()}
+      callback={() => setAddCover(false)}
       color={color}
       size={buttonSize}
       upward={upward}
+      className="add-cover-dropdown"
     >
       {!hasCover && !addCover ? (
         <UIContainer width="300px">
