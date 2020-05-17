@@ -5,7 +5,6 @@ import _debounce from "debounce";
 import { Icon, TextArea, Form, Button } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import UIContainer from "../sharedComponents/UIContainer";
 
 const Description = styled.div`
   margin-left: 33px;
@@ -79,7 +78,7 @@ const CardModalDescription = ({
 
   return (
     <CardDetailSegment>
-      <UIContainer>
+      <>
         <DescriptionHeader>
           <CardDetailHeader
             description="Description"
@@ -94,7 +93,7 @@ const CardModalDescription = ({
             floated="right"
           />
         </DescriptionHeader>
-      </UIContainer>
+      </>
       <Description>
         {editing && (
           <Form>

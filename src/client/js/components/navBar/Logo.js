@@ -6,7 +6,7 @@ import { Icon } from "semantic-ui-react";
 const StyledDiv = styled.div`
   cursor: pointer;
   flex: 1;
-  max-width: ${(props) => (props.mobile ? "40%" : "62%")};
+  max-width: ${(props) => (props.mobile ? "40%" : "76%")};
   padding-top: 3px;
   text-align: center;
 `;
@@ -17,8 +17,8 @@ const Header = styled.h2`
 
   &:after {
     content: "Task Monitor";
-    font-size: ${(props) => (props.mobile ? "18px" : "22px")};
-    font-family: "Shadows Into Light Two", cursive;
+    font-size: ${(props) => (props.mobile ? "18px" : "20px")};
+    font-family: "Poppins", cursive;
   }
   &:hover {
     color: #ffffff3d;

@@ -19,6 +19,11 @@ ui.form,
   color: #b8ccf0 !important;
 }
 
+.ui.button {
+  font-weight: 300 !important;
+  border-radius: 2px !important;
+}
+
 .card-detail-container {
   margin-top: 0px !important;
 }
@@ -137,12 +142,20 @@ ui.form,
 .checklist-item-wrap {
   display: flex;
   justify-content: space-between;
-  padding: 0;
+  padding: 5px 0;
 }
 
 .checklist-edit-wrap {
   display: flex;
   align-items: baseline;
+}
+
+.progress-bar-wrap {
+  padding-right: 5px;
+}
+
+.card-checklist {
+  padding-right: 0;
 }
 
 .checklist-item-actions {
@@ -194,6 +207,7 @@ ui.form,
   height: 80px !important;
   width: 112px !important;
   border-top: 0 !important;
+  display: block;
 }
 
 .image-attachment-container {
@@ -297,7 +311,7 @@ ui.form,
   width: 56%;
   background: #fff;
   display: flex;
-  border-radius: 10px;
+  border-radius: 2px;
   flex-direction: column;
   padding: 76px;
   pointer-events: none;
@@ -310,4 +324,44 @@ ui.form,
 
 .move-card-wrapper {
   width: fit-content;
+}
+
+@media only screen and (min-width: 1920px) {
+  .ui.modal {
+    width: 789px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .ui.modal {
+    width: 808px;
+  }
+  .docx-container {
+    width: 70%;
+    padding: 50px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .checklist-header {
+    grid-template-columns: 1fr;
+  }
+  .attachment-thumbnail {
+    margin-left: 0 !important;
+  }
+  .modal-content-wrapper {
+    width: 94vw;
+  }
+
+  .document-view-wrap {
+    padding-bottom: 36% !important;
+  }
+  .doc-page-buttons {
+    width: 96%;
+  }
+
+  .docx-container {
+    width: 100%;
+    padding: 6px;
+  }
 }

@@ -38,7 +38,6 @@ const CardModalSidebar = lazy(() => import("./CardModalSidebar"));
 const DueDate = lazy(() => import("./DueDate"));
 const ModalHeader = lazy(() => import("./ModalHeader"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
-const UIWrapper = lazy(() => import("../sharedComponents/UIWrapper"));
 
 const ModalContent = styled(Modal.Content)``;
 
@@ -332,7 +331,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                         />
                       ))}
                     <CardDetailSegment>
-                      <UIWrapper>
+                      <>
                         <div className="div-flex">
                           <CardDetailHeader
                             icon="attach"
@@ -367,7 +366,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                           compact={false}
                           buttonText="Add an attachment"
                         />
-                      </UIWrapper>
+                      </>
                     </CardDetailSegment>
 
                     <CardModalActivities

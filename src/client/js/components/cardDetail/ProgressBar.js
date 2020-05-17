@@ -1,17 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 
 import { Progress } from "semantic-ui-react";
 
 import { getProgression, stringsEqual } from "../../utils/appUtils";
-
-const Container = styled.div`
-  padding: 0px 15px;
-`;
-
-const PercentLabel = styled.span`
-  font-size: 12px;
-`;
 
 const ProgressBar = ({ checklist }) => {
   let partialValue = 0;
@@ -23,14 +14,14 @@ const ProgressBar = ({ checklist }) => {
   });
   const percent = Math.round(getProgression(partialValue, total));
   return (
-    <Container>
-      <PercentLabel>{percent || 0}%</PercentLabel>
+    <div className="progress-bar-wrap">
+      <span>{percent || 0}%</span>
       <Progress
         percent={percent}
         size="tiny"
         color={stringsEqual(checklist.status, "complete") ? "green" : "grey"}
       />
-    </Container>
+    </div>
   );
 };
 

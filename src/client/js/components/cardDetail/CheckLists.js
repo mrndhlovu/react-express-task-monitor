@@ -27,11 +27,11 @@ const display = {
   gridTemplateColumns: "50% 49%",
   alignItems: "center",
   width: "100%",
-  padding: 0,
+  padding: "0",
 };
 
 const wrapperStyle = {
-  padding: 0,
+  padding: "0",
   display: "flex",
   justifyContent: "flex-end",
   alignItems: "baseline",
@@ -217,15 +217,15 @@ const CheckLists = ({
 
   return (
     <CardDetailSegment className="card-checklist">
-      <UIContainer display={display}>
-        <UIWrapper>
+      <UIContainer className="checklist-header" display={display}>
+        <>
           <CardDetailHeader
             description={checklistName}
             icon="check square outline"
           />
-        </UIWrapper>
+        </>
 
-        <UIWrapper padding="0 10" display={wrapperStyle}>
+        <UIWrapper display={wrapperStyle}>
           {stringsEqual(checklist.status, "complete") && (
             <Button
               onClick={() => setHideCompleted(true)}
@@ -270,6 +270,7 @@ const CheckLists = ({
                 icon="ellipsis horizontal"
                 header="Item Actions"
                 width="200px"
+                size="tiny"
               >
                 <div className="checklist-item-actions">
                   <UIButton
