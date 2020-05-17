@@ -1,17 +1,16 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
 
-const ImagePreviewButtons = ({
+const TextFilePreviewButtons = ({
   editAttachments,
-  handleMakeCover,
-  setOpenDocument,
   file,
+  setOpenDocument,
   type,
 }) => {
   return (
     <>
       <div
-        className="img-preview-edit-buttons"
+        className="txt-preview-edit-buttons"
         onClick={() => {
           editAttachments(file, type, null, true);
           setOpenDocument(false);
@@ -20,15 +19,8 @@ const ImagePreviewButtons = ({
         <Icon name="delete" />
         <span>Delete</span>
       </div>
-      <div
-        className="img-preview-edit-buttons"
-        onClick={() => handleMakeCover(file.image)}
-      >
-        <Icon name="image" />
-        <span>Make cover</span>
-      </div>
     </>
   );
 };
 
-export default ImagePreviewButtons;
+export default TextFilePreviewButtons;

@@ -186,6 +186,7 @@ const Attachments = ({
               file={openDocument}
               setOpenDocument={setOpenDocument}
               fileType={fileType}
+              type={type}
             />
           </Suspense>
         )}

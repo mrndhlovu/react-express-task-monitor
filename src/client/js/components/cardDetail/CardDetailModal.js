@@ -93,33 +93,29 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
 
   const editAttachments = useCallback(
     (attachment, type, callback, remove) => {
+      const attachmentIndex = card.attachments.images.indexOf(attachment);
       setIsLoading(true);
       switch (type) {
         case "image":
           if (remove) {
-            card.attachments.images.splice(
-              card.attachments.images.indexOf(attachment)
-            );
+            card.attachments.images.splice(attachmentIndex, 1);
           } else card.attachments.images.push(attachment);
 
           break;
         case "url":
           if (remove) {
-            card.attachments.urls.splice(
-              card.attachments.urls.indexOf(attachment)
-            );
+            card.attachments.urls.splice(attachmentIndex, 1);
           } else card.attachments.urls.push(attachment);
           break;
         case "document":
           if (remove) {
-            card.attachments.documents.splice(
-              card.attachments.documents.indexOf(attachment)
-            );
+            card.attachments.documents.splice(attachmentIndex, 1);
           } else card.attachments.documents.push(attachment);
           break;
         default:
           break;
       }
+
       const sourceList = findArrayItem(board.lists, sourceId, "_id");
       const cardIndex = sourceList.cards.indexOf(card);
       const sourceIndex = board.lists.indexOf(sourceList);

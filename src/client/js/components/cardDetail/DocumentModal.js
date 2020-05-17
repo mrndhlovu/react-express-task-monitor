@@ -11,10 +11,12 @@ import DocumentPreviewButtons from "./DocumentPreviewButtons";
 import ImagePreviewButtons from "./ImagePreviewButtons";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import TextFilePreviewButtons from "./TextFilePreviewButtons";
 
 const DocumentModal = ({
   file,
   fileType,
+  type,
   setOpenDocument,
   handleMakeCover,
   editAttachments,
@@ -51,6 +53,31 @@ const DocumentModal = ({
           <img src={url}></img>
         </UIWrapper>
       );
+    }
+
+    if (stringsEqual(fileType, "txt")) {
+      let fileText;
+      const rawFile = new XMLHttpRequest();
+      rawFile.open("GET", file.document, false);
+
+      rawFile.onreadystatechange = () => {
+        if (
+          rawFile.readyState === 4 &&
+          (rawFile.status === 200 || rawFile.status == 0)
+        ) {
+          fileText = rawFile.responseText.split("\n");
+        }
+      };
+      rawFile.send(null);
+      if (fileText) {
+        return (
+          <UIWrapper className="txt-preview">
+            {fileText.map((text, index) => (
+              <p key={index}>{text}</p>
+            ))}
+          </UIWrapper>
+        );
+      }
     }
   };
 
@@ -90,6 +117,7 @@ const DocumentModal = ({
                 firstPage={firstPage}
                 lastPage={lastPage}
                 numPages={numPages}
+                type={type}
               />
             )}
             {stringsEqual(fileType, ALLOWED_IMAGE_TYPES) && (
@@ -97,6 +125,17 @@ const DocumentModal = ({
                 handleMakeCover={handleMakeCover}
                 editAttachments={editAttachments}
                 file={file}
+                setOpenDocument={setOpenDocument}
+                type={type}
+              />
+            )}
+
+            {stringsEqual(fileType, "txt") && (
+              <TextFilePreviewButtons
+                editAttachments={editAttachments}
+                file={file}
+                setOpenDocument={setOpenDocument}
+                type={type}
               />
             )}
           </UIWrapper>
