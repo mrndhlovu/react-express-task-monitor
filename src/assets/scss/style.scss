@@ -303,3 +303,7 @@ ui.form,
   pointer-events: none;
   box-shadow: 0px 0px 35px -8px #000000bf;
 }
+
+.card-source > div {
+  text-decoration: underline;
+}

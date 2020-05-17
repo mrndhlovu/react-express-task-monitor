@@ -38,6 +38,7 @@ const DropdownButton = ({
   hasHeader = true,
   pointing,
   className,
+  compact = true,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -54,7 +55,7 @@ const DropdownButton = ({
       button={button}
       className={`${className} icon`}
       color={color}
-      compact
+      compact={compact}
       floating
       fluid={fluid}
       icon={icon}

@@ -37,6 +37,13 @@ const AddAttachment = ({
   handleLoadingAttachment,
   mobile,
   activeCard,
+  upward = false,
+  fluid = true,
+  labeled = true,
+  icon = "attach",
+  direction,
+  compact,
+  buttonText = "Attachment",
 }) => {
   const [attachment, setAttachment] = useState(null);
   const [message, setMessage] = useState({ header: null, list: [] });
@@ -127,7 +134,16 @@ const AddAttachment = ({
   };
 
   return (
-    <DropdownButton icon="attach" buttonText="Attachment" header="Attach From">
+    <DropdownButton
+      labeled={labeled}
+      fluid={fluid}
+      upward={upward}
+      icon={icon}
+      buttonText={buttonText}
+      header="Attach From"
+      direction={direction}
+      compact={compact}
+    >
       <UIContainer width="300px" padding="0">
         {message.header && (
           <UIWrapper>

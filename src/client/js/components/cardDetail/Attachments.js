@@ -55,11 +55,11 @@ const display = {
 
 const Attachments = ({
   activeCover,
-  handleRemoveCover,
-  handleMakeCover,
   attachment,
-  isLoading,
   editAttachments,
+  handleMakeCover,
+  handleRemoveCover,
+  isLoading,
   type,
 }) => {
   const hasAttachment = attachment.length > 0;

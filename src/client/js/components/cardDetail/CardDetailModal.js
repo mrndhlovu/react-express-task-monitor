@@ -29,6 +29,7 @@ import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
 import { useAuth } from "../../utils/hookUtils";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import AddAttachment from "./AddAttachment";
 
 const Attachments = lazy(() => import("./Attachments"));
 const CardModalActivities = lazy(() => import("./CardModalActivities"));
@@ -272,6 +273,10 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
             sourceId={sourceId}
             sourceTitle={sourceTitle}
             cardCover={card.cardCover}
+            originalBoard={board}
+            originalCard={card}
+            history={history}
+            handleBoardUpdate={handleBoardUpdate}
           />
 
           <Grid columns={2} divided stackable>
@@ -349,6 +354,19 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                             editAttachments={editAttachments}
                           />
                         ))}
+                        <AddAttachment
+                          upward={true}
+                          labeled={false}
+                          fluid={false}
+                          icon=""
+                          editAttachments={editAttachments}
+                          mobile={device.mobile}
+                          activeCard={card}
+                          handleLoadingAttachment={handleLoadingAttachment}
+                          direction="right"
+                          compact={false}
+                          buttonText="Add an attachment"
+                        />
                       </UIWrapper>
                     </CardDetailSegment>
 
