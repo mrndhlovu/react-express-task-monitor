@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import { Dropdown } from "semantic-ui-react";
 import MoveCardDialog from "../boardDetail/MoveCardDialog";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import DropdownButton from "../sharedComponents/DropdownButton";
 
 const Container = styled.div`
   position: relative;
@@ -30,26 +30,27 @@ const ModalHeader = ({
         description={title.toUpperCase()}
       />
 
-      <Dropdown
-        as="small"
-        text={`in list ${sourceTitle.toUpperCase()}`}
-        multiple
+      <DropdownButton
+        buttonText={`in list ${sourceTitle.toUpperCase()}`}
         icon={false}
         className="card-source"
-        closeOnChange={false}
+        button={false}
+        labeled={false}
+        fluid={false}
+        color="transparent"
+        header="Move Card"
+        direction="right"
       >
-        <Dropdown.Menu>
-          <UIWrapper>
-            <MoveCardDialog
-              originalBoard={originalBoard}
-              originalCard={originalCard}
-              history={history}
-              sourceListId={sourceId}
-              handleBoardUpdate={handleBoardUpdate}
-            />
-          </UIWrapper>
-        </Dropdown.Menu>
-      </Dropdown>
+        <UIWrapper className="move-card-wrapper">
+          <MoveCardDialog
+            originalBoard={originalBoard}
+            originalCard={originalCard}
+            history={history}
+            sourceListId={sourceId}
+            handleBoardUpdate={handleBoardUpdate}
+          />
+        </UIWrapper>
+      </DropdownButton>
     </Container>
   );
 };
