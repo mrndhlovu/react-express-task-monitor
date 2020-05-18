@@ -3,9 +3,14 @@ import styled from "styled-components";
 
 import { Item, Button, Dropdown, Icon } from "semantic-ui-react";
 
-import { getFormattedDate } from "../../utils/appUtils";
+import {
+  getFormattedDate,
+  stringsEqual,
+  emptyFunction,
+} from "../../utils/appUtils";
 import UIContainer from "../sharedComponents/UIContainer";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 
 const DocumentModal = lazy(() => import("./DocumentModal"));
 
@@ -60,138 +65,142 @@ const Attachments = ({
   handleMakeCover,
   handleRemoveCover,
   isLoading,
-  type,
 }) => {
-  const hasAttachment = attachment.length > 0;
   const [openDocument, setOpenDocument] = useState(null);
-  const [fileType, setFiletType] = useState(null);
+  const { filetype, name, uploadDate, url } = attachment;
+  const isAnImage = ALLOWED_IMAGE_TYPES.includes(filetype);
+  const isActiveCover = isAnImage && stringsEqual(url, activeCover);
 
-  const handleClick = (item) => {
-    setOpenDocument(item);
-    setFiletType(item.name.split(".").pop());
-  };
+  const handleClick = (item) => setOpenDocument(item);
 
   return isLoading ? (
     <UIContainer display={display}>Loading...</UIContainer>
   ) : (
-    hasAttachment && (
-      <Item.Group divided>
-        {attachment.map((item, index) => (
-          <Item key={index}>
-            {type === "image" ? (
-              <Item.Image
-                className="attachment-thumbnail"
-                size="tiny"
-                src={item.image}
-                onClick={() => handleClick(item)}
-              />
+    <Item.Group divided>
+      <Item>
+        {isAnImage ? (
+          <Item.Image
+            className="attachment-thumbnail"
+            size="tiny"
+            src={url}
+            onClick={() => handleClick(attachment)}
+          />
+        ) : (
+          <div className="attachment-thumbnail-wrap">
+            <a
+              className="attachment-link"
+              rel="noopener noreferrer"
+              href={stringsEqual(filetype, "url") ? url : ""}
+              target={stringsEqual(filetype, "url") ? "_blank" : ""}
+              onClick={() =>
+                !stringsEqual(filetype, "url")
+                  ? handleClick(attachment)
+                  : emptyFunction()
+              }
+            >
+              <span className="attachment-link-span">
+                {stringsEqual(filetype, "url") ? "LINK" : filetype}
+              </span>
+            </a>
+          </div>
+        )}
+
+        <Container>
+          <AttachmentName>
+            {stringsEqual(filetype, "url") ? (
+              <a
+                className="attachment-link-text"
+                rel="noopener noreferrer"
+                target="_blank"
+                href={`${url}`}
+              >
+                {name}
+                <Icon
+                  name="long arrow alternate right"
+                  className="redirect-icon"
+                />
+              </a>
             ) : (
-              <div className="attachment-thumbnail-wrap">
-                <a
-                  className="attachment-link"
-                  rel="noopener noreferrer"
-                  onClick={() => handleClick(item)}
-                >
-                  <span className="attachment-link-span">
-                    {type === "url" ? "LINK" : item.name.split(".").pop()}
-                  </span>
-                </a>
-              </div>
+              <Item.Content
+                verticalAlign="middle"
+                className="attachment-link-text"
+                onClick={() => handleClick(attachment)}
+              >
+                {name}
+                <Icon
+                  name="long arrow alternate right"
+                  className="redirect-icon"
+                />
+              </Item.Content>
             )}
 
-            <Container>
-              <AttachmentName>
-                <Item.Content
-                  verticalAlign="middle"
-                  className="attachment-link-text"
-                  onClick={() => handleClick(item)}
-                >
-                  {item.name}
-                  <Icon
-                    name="long arrow alternate right"
-                    className="redirect-icon"
+            <DateWrapper>
+              Added {getFormattedDate(uploadDate, "LL")}
+            </DateWrapper>
+          </AttachmentName>
+
+          <AttachmentCtaWrapper>
+            <AttachmentLink>
+              <Dropdown as="small" text="Delete" multiple icon={false}>
+                <StyledDropdownMenu>
+                  <Dropdown.Header content="Delete Attachment?" />
+                  <Button
+                    content="Yes delete attachment!"
+                    color="red"
+                    fluid
+                    icon=""
+                    size="tiny"
+                    onClick={() => editAttachments(attachment, null, true)}
                   />
-                </Item.Content>
-                <DateWrapper>
-                  Added {getFormattedDate(item.uploadDate, "LL")}
-                </DateWrapper>
-              </AttachmentName>
+                </StyledDropdownMenu>
+              </Dropdown>
+            </AttachmentLink>
 
-              <AttachmentCtaWrapper>
-                <AttachmentLink>
-                  <Dropdown as="small" text="Delete" multiple icon={false}>
-                    <StyledDropdownMenu>
-                      <Dropdown.Header content="Delete Attachment?" />
-                      <Button
-                        content="Yes delete attachment!"
-                        color="red"
-                        fluid
-                        icon=""
-                        size="tiny"
-                        onClick={() => editAttachments(item, type, null, true)}
-                      />
-                    </StyledDropdownMenu>
-                  </Dropdown>
-                </AttachmentLink>
-
-                {type === "image" && (
-                  <AttachmentLink>
-                    <Dropdown
-                      as="small"
-                      text={
-                        item.image === activeCover
-                          ? "Remove Cover"
-                          : "Make Cover"
+            {isAnImage && (
+              <AttachmentLink>
+                <Dropdown
+                  as="small"
+                  text={isActiveCover ? "Remove Cover" : "Make Cover"}
+                  multiple
+                  icon={false}
+                >
+                  <StyledDropdownMenu>
+                    <Dropdown.Header
+                      content={isActiveCover ? "Remove Cover?" : "Make Cover?"}
+                    />
+                    <Button
+                      content={
+                        isActiveCover ? "Yes remove cover!" : "Yes make cover!"
                       }
-                      multiple
-                      icon={false}
-                    >
-                      <StyledDropdownMenu>
-                        <Dropdown.Header
-                          content={
-                            item.image === activeCover
-                              ? "Remove Cover?"
-                              : "Make Cover?"
-                          }
-                        />
-                        <Button
-                          content={
-                            item.image === activeCover
-                              ? "Yes remove cover!"
-                              : "Yes make cover!"
-                          }
-                          color="red"
-                          fluid
-                          icon=""
-                          size="tiny"
-                          onClick={() =>
-                            item.image === activeCover
-                              ? handleRemoveCover(item.image)
-                              : handleMakeCover(item.image)
-                          }
-                        />
-                      </StyledDropdownMenu>
-                    </Dropdown>
-                  </AttachmentLink>
-                )}
-              </AttachmentCtaWrapper>
-            </Container>
-          </Item>
-        ))}
-        {openDocument && (
-          <Suspense fallback={<UILoadingSpinner />}>
-            <DocumentModal
-              handleMakeCover={handleMakeCover}
-              editAttachments={editAttachments}
-              file={openDocument}
-              setOpenDocument={setOpenDocument}
-              fileType={fileType}
-              type={type}
-            />
-          </Suspense>
-        )}
-      </Item.Group>
-    )
+                      color="red"
+                      fluid
+                      icon=""
+                      size="tiny"
+                      onClick={() =>
+                        isActiveCover
+                          ? handleRemoveCover(url)
+                          : handleMakeCover(url)
+                      }
+                    />
+                  </StyledDropdownMenu>
+                </Dropdown>
+              </AttachmentLink>
+            )}
+          </AttachmentCtaWrapper>
+        </Container>
+      </Item>
+
+      {openDocument && (
+        <Suspense fallback={<UILoadingSpinner />}>
+          <DocumentModal
+            handleMakeCover={handleMakeCover}
+            editAttachments={editAttachments}
+            file={openDocument}
+            setOpenDocument={setOpenDocument}
+          />
+        </Suspense>
+      )}
+    </Item.Group>
   );
 };
 

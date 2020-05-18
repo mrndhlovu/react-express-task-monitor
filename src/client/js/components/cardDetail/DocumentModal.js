@@ -10,14 +10,13 @@ import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
 import DocumentPreviewButtons from "./DocumentPreviewButtons";
 import ImagePreviewButtons from "./ImagePreviewButtons";
+import TextFilePreviewButtons from "./TextFilePreviewButtons";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import TextFilePreviewButtons from "./TextFilePreviewButtons";
 
 const DocumentModal = ({
   file,
-  fileType,
-  type,
+
   setOpenDocument,
   handleMakeCover,
   editAttachments,
@@ -30,10 +29,10 @@ const DocumentModal = ({
 
   const lastPage = pageNumber === numPages;
   const firstPage = pageNumber === 1;
-  const url = file.document || file.image;
+  const { url, filetype } = file;
 
   const renderDocument = () => {
-    if (stringsEqual(fileType, "pdf")) {
+    if (stringsEqual(filetype, "pdf")) {
       return (
         <UIWrapper className="pdf-preview">
           <Suspense fallback={<UILoadingSpinner />}>
@@ -48,7 +47,7 @@ const DocumentModal = ({
       );
     }
 
-    if (stringsEqual(fileType, ALLOWED_IMAGE_TYPES)) {
+    if (stringsEqual(filetype, ALLOWED_IMAGE_TYPES)) {
       return (
         <UIWrapper className="image-preview">
           <img src={url}></img>
@@ -56,10 +55,10 @@ const DocumentModal = ({
       );
     }
 
-    if (stringsEqual(fileType, "txt")) {
+    if (stringsEqual(filetype, "txt")) {
       let fileText;
       const rawFile = new XMLHttpRequest();
-      rawFile.open("GET", file.document, false);
+      rawFile.open("GET", file.url, false);
 
       rawFile.onreadystatechange = () => {
         if (
@@ -81,9 +80,9 @@ const DocumentModal = ({
       }
     }
 
-    if (stringsEqual(fileType, ["docx"])) {
+    if (stringsEqual(filetype, ["docx"])) {
       const jsonFile = new XMLHttpRequest();
-      jsonFile.open("GET", file.document, true);
+      jsonFile.open("GET", url, true);
       jsonFile.send();
       jsonFile.responseType = "arraybuffer";
 
@@ -131,7 +130,7 @@ const DocumentModal = ({
       <div className="modal-content-wrapper">
         <Modal.Content className="document-content">
           {renderDocument()}
-          {stringsEqual(fileType, ["docx", "odt"]) && (
+          {stringsEqual(filetype, ["docx", "odt"]) && (
             <UIWrapper className="docx-preview" />
           )}
           {isLoading && "Loading..."}
@@ -139,7 +138,7 @@ const DocumentModal = ({
 
         {!isLoading && (
           <UIWrapper className="doc-page-buttons">
-            {stringsEqual(fileType, "pdf") && (
+            {stringsEqual(filetype, "pdf") && (
               <DocumentPreviewButtons
                 setScale={setScale}
                 pageNumber={pageNumber}
@@ -148,25 +147,22 @@ const DocumentModal = ({
                 firstPage={firstPage}
                 lastPage={lastPage}
                 numPages={numPages}
-                type={type}
               />
             )}
-            {stringsEqual(fileType, ALLOWED_IMAGE_TYPES) && (
+            {stringsEqual(filetype, ALLOWED_IMAGE_TYPES) && (
               <ImagePreviewButtons
                 handleMakeCover={handleMakeCover}
                 editAttachments={editAttachments}
                 file={file}
                 setOpenDocument={setOpenDocument}
-                type={type}
               />
             )}
 
-            {stringsEqual(fileType, ["txt", "docx"]) && (
+            {stringsEqual(filetype, ["txt", "docx"]) && (
               <TextFilePreviewButtons
                 editAttachments={editAttachments}
                 file={file}
                 setOpenDocument={setOpenDocument}
-                type={type}
               />
             )}
           </UIWrapper>

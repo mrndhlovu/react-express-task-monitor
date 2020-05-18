@@ -27,8 +27,12 @@ export const requestBoardUpdate = (id, body) => {
   return axios.patch(`${BOARDS_EP}/${id}/update-board`, { ...body }, params);
 };
 
-export const requestUpload = (type, body) =>
-  axios.post(`${UPLOAD_EP}/${type}/upload`, body, params);
+export const requestUpload = (type, body, boardId, listId, cardId) =>
+  axios.post(
+    `${UPLOAD_EP}/${type}/${boardId}/${listId}/${cardId}/upload`,
+    body,
+    params
+  );
 
 export const requestCreateNewCard = (body, id) =>
   axios.patch(`${CARDS_EP}/${id}/new-card`, body, params);

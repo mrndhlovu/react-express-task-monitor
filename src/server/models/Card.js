@@ -8,13 +8,9 @@ const CardSchema = mongoose.Schema(
       trim: true,
     },
     attachments: {
-      type: Object,
+      type: Array,
       required: true,
-      default: {
-        images: [],
-        documents: [],
-        urls: [],
-      },
+      default: [],
     },
     archived: {
       type: Boolean,

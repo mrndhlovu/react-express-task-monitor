@@ -19,7 +19,7 @@ import {
 import {
   emptyFunction,
   findArrayItem,
-  getAttachmentType,
+  stringsEqual,
 } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
 
@@ -40,13 +40,6 @@ const ModalHeader = lazy(() => import("./ModalHeader"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
 
 const ModalContent = styled(Modal.Content)``;
-
-const ButtonWrapper = styled.div`
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  z-index: 10;
-`;
 
 const LeftSideContent = styled(Modal.Description)``;
 
@@ -85,36 +78,21 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
   const hasLabel = card && card.labels.length !== 0;
   const hasChecklist = card && card.checklists.length !== 0;
   const hasMembers = board && board.members.length !== 0;
-  const hasCover = card && card.cardCover.localeCompare("") !== 0;
+  const hasCover = card && !stringsEqual(card.cardCover, "");
+  const hasAttachments = card && card.attachments.length !== 0;
 
   const saveCardChanges = (changes) => setCard(changes);
 
   const handleMakeCover = (coverUrl) => setNewCover(coverUrl);
 
   const editAttachments = useCallback(
-    (attachment, type, callback, remove) => {
-      const attachmentIndex = card.attachments.images.indexOf(attachment);
+    (attachment, callback, remove) => {
+      const attachmentIndex = card.attachments.indexOf(attachment);
       setIsLoading(true);
-      switch (type) {
-        case "image":
-          if (remove) {
-            card.attachments.images.splice(attachmentIndex, 1);
-          } else card.attachments.images.push(attachment);
 
-          break;
-        case "url":
-          if (remove) {
-            card.attachments.urls.splice(attachmentIndex, 1);
-          } else card.attachments.urls.push(attachment);
-          break;
-        case "document":
-          if (remove) {
-            card.attachments.documents.splice(attachmentIndex, 1);
-          } else card.attachments.documents.push(attachment);
-          break;
-        default:
-          break;
-      }
+      if (remove) {
+        card.attachments.splice(attachmentIndex, 1);
+      } else card.attachments.push(attachment);
 
       const sourceList = findArrayItem(board.lists, sourceId, "_id");
       const cardIndex = sourceList.cards.indexOf(card);
@@ -125,7 +103,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
 
       setNewAttachment(board);
 
-      callback;
+      return callback && callback();
     },
     [card, board, sourceId]
   );
@@ -241,13 +219,12 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
       open={card && modalOpen}
       closeOnRootNodeClick={false}
       closeIcon={
-        <ButtonWrapper>
-          <StyledIcon
-            onClick={() => handleCardClick()}
-            icon="delete"
-            size="tiny"
-          />
-        </ButtonWrapper>
+        <StyledIcon
+          onClick={() => handleCardClick()}
+          icon="delete"
+          size="tiny"
+          className="close-modal-icon"
+        />
       }
     >
       <Suspense fallback={<UILoadingSpinner />}>
@@ -339,33 +316,35 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                           />
                         </div>
 
-                        {Object.keys(activeCard.attachments).map((key) => (
+                        {card.attachments.map((attachment, index) => (
                           <Attachments
-                            key={key}
-                            type={getAttachmentType(key)}
+                            key={index}
                             activeCover={activeCover}
-                            attachment={activeCard.attachments[key]}
+                            attachment={attachment}
                             isLoading={
                               isLoading && (newAttachment || deleteAttachment)
                             }
                             handleMakeCover={handleMakeCover}
                             handleRemoveCover={handleRemoveCover}
                             editAttachments={editAttachments}
+                            history={history}
                           />
                         ))}
-                        <AddAttachment
-                          upward={true}
-                          labeled={false}
-                          fluid={false}
-                          icon=""
-                          editAttachments={editAttachments}
-                          mobile={device.mobile}
-                          activeCard={card}
-                          handleLoadingAttachment={handleLoadingAttachment}
-                          direction="right"
-                          compact={false}
-                          buttonText="Add an attachment"
-                        />
+                        {hasAttachments && (
+                          <AddAttachment
+                            upward={true}
+                            labeled={false}
+                            fluid={false}
+                            icon=""
+                            editAttachments={editAttachments}
+                            mobile={device.mobile}
+                            activeCard={card}
+                            handleLoadingAttachment={handleLoadingAttachment}
+                            direction="right"
+                            compact={false}
+                            buttonText="Add an attachment"
+                          />
+                        )}
                       </>
                     </CardDetailSegment>
 

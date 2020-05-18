@@ -207,6 +207,19 @@ ui.form,
   position: relative;
 }
 
+.ui.button.close-modal-icon {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+  z-index: 10;
+  border-radius: 60px !important;
+  background: #000 !important;
+  opacity: 0.4;
+  color: #fff !important;
+  width: 35px;
+  height: 36px;
+}
+
 .checklist-item-wrap {
   display: flex;
   justify-content: space-between;

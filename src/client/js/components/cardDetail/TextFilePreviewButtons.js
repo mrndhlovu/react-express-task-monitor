@@ -1,18 +1,13 @@
 import React from "react";
 import { Icon } from "semantic-ui-react";
 
-const TextFilePreviewButtons = ({
-  editAttachments,
-  file,
-  setOpenDocument,
-  type,
-}) => {
+const TextFilePreviewButtons = ({ editAttachments, file, setOpenDocument }) => {
   return (
     <>
       <div
         className="txt-preview-edit-buttons"
         onClick={() => {
-          editAttachments(file, type, null, true);
+          editAttachments(file, null, true);
           setOpenDocument(false);
         }}
       >

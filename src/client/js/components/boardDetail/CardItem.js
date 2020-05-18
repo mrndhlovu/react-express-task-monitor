@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { BoardListsContext, BoardContext } from "../../utils/contextUtils";
-import { getFormattedDate } from "../../utils/appUtils";
+import { getFormattedDate, stringsEqual } from "../../utils/appUtils";
 import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
 import EditCardPenIcon from "./EditCardPenIcon";
@@ -57,11 +57,9 @@ const CardItem = ({
   const { saveBoardChanges } = useContext(BoardContext);
 
   const hasLabel = card.labels.length !== 0;
-  const hasAttachments =
-    card.attachments.images.length !== 0 ||
-    card.attachments.documents.length !== 0;
+  const hasAttachments = card.attachments.length !== 0;
   const hasChecklist = card.checklists.length !== 0;
-  const hasDescription = card.shortDescription.localeCompare("") !== 0;
+  const hasDescription = !stringsEqual(card.shortDescription, "");
   const hasComments = card.comments.length !== 0;
   const hasAssignees = card.assignees.length !== 0;
   const hasDueDate = card.dueDate;
@@ -106,7 +104,7 @@ const CardItem = ({
       <BadgeContainer>
         <CardBadge
           icon="attach"
-          content={card.attachments.images.length}
+          content={card.attachments.length}
           hasBadge={hasAttachments}
         />
 

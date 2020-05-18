@@ -34,6 +34,8 @@ const StyledSmall = styled.h6`
 
 const AddAttachment = ({
   editAttachments,
+  saveCardChanges,
+  saveBoardChanges,
   handleLoadingAttachment,
   mobile,
   activeCard,
@@ -43,6 +45,8 @@ const AddAttachment = ({
   icon = "attach",
   direction,
   compact,
+  id,
+  sourceId,
   buttonText = "Attachment",
 }) => {
   const [attachment, setAttachment] = useState(null);
@@ -51,19 +55,19 @@ const AddAttachment = ({
   const handleUpload = useCallback(
     (e) => {
       const file = e.target.files[0];
-      const { type } = file;
-      const uploadType = type.split("/").shift();
+
+      const uploadType = file.type.split("/").shift();
+
       const data = new FormData();
       data.append(uploadType, file);
 
       const upload = async () => {
         handleLoadingAttachment(true);
-        await requestUpload(uploadType, data)
+        await requestUpload(uploadType, data, id, sourceId, activeCard._id)
           .then((res) => {
-            editAttachments(
-              { ...res.data },
-              uploadType === "image" ? uploadType : "document"
-            );
+            const { card, board } = res.data;
+            saveCardChanges(card);
+            saveBoardChanges(board);
             handleLoadingAttachment(false);
           })
           .catch((error) => {
@@ -81,56 +85,36 @@ const AddAttachment = ({
     const url = isURL(attachment);
     if (!url) return setMessage({ ...message, header: "Invalid link!" });
 
-    const uploadType = attachment.split(".").pop();
+    const filetype = attachment.split(".").pop();
+    const allowedFileTypes = [
+      ALLOWED_IMAGE_TYPES,
+      ALLOWED_DOCUMENT_TYPES,
+    ].flat();
 
     let attachmentData = {
       uploadDate: Date.now(),
-      name: ALLOWED_IMAGE_TYPES.includes(uploadType)
+      name: ALLOWED_IMAGE_TYPES.includes(filetype)
         ? `img-attachment-${attachment.split("/").pop()}`
         : `${attachment}`,
-    };
-
-    resetForm("attachment-link");
-
-    if (ALLOWED_DOCUMENT_TYPES.includes(uploadType)) {
-      attachmentData = {
-        ...attachmentData,
-        document: attachment,
-      };
-
-      return editAttachments(attachmentData, "document", () =>
-        setAttachment(null)
-      );
-    }
-
-    if (ALLOWED_IMAGE_TYPES.includes(uploadType)) {
-      attachmentData = {
-        ...attachmentData,
-        imgUrl: attachment,
-      };
-
-      const duplicate =
-        findArrayItem(activeCard.attachments.images, attachment, "imgUrl") !==
-        undefined;
-
-      if (duplicate) {
-        return setMessage({
-          ...message,
-          header: "Duplicate!",
-          list: ["You have this link is your attachments!"],
-        });
-      }
-      return editAttachments(attachmentData, "image", () =>
-        setAttachment(null)
-      );
-    }
-
-    attachmentData = {
-      ...attachmentData,
       url: attachment,
+      filetype: allowedFileTypes.includes(filetype) ? filetype : "url",
     };
 
-    return editAttachments(attachmentData, "url", () => setAttachment(null));
+    const duplicate =
+      findArrayItem(activeCard.attachments, attachment, "url") !== undefined;
+
+    if (duplicate) {
+      return setMessage({
+        ...message,
+        header: "Duplicate!",
+        list: ["You have this link is your attachments!"],
+      });
+    }
+
+    return editAttachments(attachmentData, () => {
+      resetForm("attach-link");
+      setAttachment(null);
+    });
   };
 
   return (
@@ -167,7 +151,7 @@ const AddAttachment = ({
           <StyledSmall>Attach a link</StyledSmall>
           <UIWrapper>
             <Input
-              id="attachment-link"
+              id="attach-link"
               size="tiny"
               focus
               placeholder="Paste a link here..."
