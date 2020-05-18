@@ -6,14 +6,13 @@ const ImagePreviewButtons = ({
   handleMakeCover,
   setOpenDocument,
   file,
-  type,
 }) => {
   return (
     <>
       <div
         className="img-preview-edit-buttons"
         onClick={() => {
-          editAttachments(file, type, null, true);
+          editAttachments(file, null, true);
           setOpenDocument(false);
         }}
       >

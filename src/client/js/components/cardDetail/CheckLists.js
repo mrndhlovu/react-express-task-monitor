@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Button } from "semantic-ui-react";
 
@@ -58,22 +58,20 @@ const CheckLists = ({
   const [removeChecklist, setRemoveChecklist] = useState(false);
   const [task, setTask] = useState(null);
   const [hideCompleted, setHideCompleted] = useState(false);
-  let [checklist, setChecklist] = useState(checkItem);
+  const [checklist, setChecklist] = useState(checkItem);
 
   const { id } = match.params;
   const sourceList = getSourceList(sourceId, "_id");
+  const sourceIndex = board.lists.indexOf(sourceList);
+  const cardIndex = sourceList.cards.indexOf(activeCard);
 
   const updatedChanges = () => {
-    sourceList.cards.splice(
-      sourceList.cards.indexOf(activeCard),
-      1,
-      activeCard
-    );
+    sourceList.cards.splice(cardIndex, 1, activeCard);
     updateLists();
   };
 
   const updateLists = (newBoard) => {
-    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+    board.lists.splice(sourceIndex, 1, sourceList);
 
     handleBoardUpdate(newBoard ? newBoard : board, "lists");
   };
@@ -82,13 +80,10 @@ const CheckLists = ({
   const handleChange = (e) => setTask(e.target.value);
   const handleAddClick = () => setDone(true);
 
-  const handleCheckboxClick = useMemo(
-    () => (id, status) => {
-      setChecked({ id, status });
-      setIsLoading(true);
-    },
-    []
-  );
+  const handleCheckboxClick = (id, status) => {
+    setChecked({ id, status });
+    setIsLoading(true);
+  };
 
   const handleDeleteChecklistItem = (item) => {
     checklist.tasks.splice(checklist.tasks.indexOf(item), 1);
@@ -130,8 +125,10 @@ const CheckLists = ({
 
   useEffect(() => {
     if (!hideCompleted) return emptyFunction();
-    checklist = { ...checklist, archived: checklist.archived ? false : true };
+    checklist.archived = !checklist.archived;
+    setChecklist(checklist);
     activeCard.checklists.splice(listIndex, 1, checklist);
+
     updatedChanges();
 
     setHideCompleted(false);
@@ -149,8 +146,8 @@ const CheckLists = ({
   useEffect(() => {
     if (!checked) return emptyFunction();
     const handleCheckBox = () => {
-      let targetTask = findArrayItem(checklist.tasks, checked.id);
-      targetTask = { ...targetTask, status: checked.status };
+      const targetTask = findArrayItem(checklist.tasks, checked.id);
+      targetTask.status = checked.status;
 
       checklist.tasks.splice(checked.id, 1, targetTask);
 
@@ -158,9 +155,10 @@ const CheckLists = ({
         stringsEqual(task.status, "doing")
       );
 
-      if (!inProgress) checklist = { ...checklist, status: "complete" };
-      else checklist = { ...checklist, status: "doing" };
+      if (!inProgress) checklist.status = "complete";
+      else checklist.status = "doing";
 
+      setChecklist(checklist);
       activeCard.checklists.splice(listIndex, 1, checklist);
 
       updatedChanges();
@@ -218,12 +216,10 @@ const CheckLists = ({
   return (
     <CardDetailSegment className="card-checklist">
       <UIContainer className="checklist-header" display={display}>
-        <>
-          <CardDetailHeader
-            description={checklistName}
-            icon="check square outline"
-          />
-        </>
+        <CardDetailHeader
+          description={checklistName}
+          icon="check square outline"
+        />
 
         <UIWrapper display={wrapperStyle}>
           {stringsEqual(checklist.status, "complete") && (

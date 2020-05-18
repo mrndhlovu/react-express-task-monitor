@@ -1,21 +1,9 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
-import BoardHeaderButtons from "./BoardHeaderButtons";
 import { BoardContext, MainContext } from "../../utils/contextUtils";
+import BoardHeaderButtons from "./BoardHeaderButtons";
 import EditableHeader from "../sharedComponents/EditableHeader";
-
-const HeaderContainer = styled.div`
-  align-items: ${(props) => (props.mobile ? "center" : "start")};
-  display: grid;
-  grid-template-columns: ${(props) => (props.mobile ? "1fr" : "1fr 2fr")};
-  left: 2px;
-  max-height: 40px;
-  padding-right: 8px;
-  position: absolute;
-  top: 0;
-  width: 100vw;
-`;
 
 const TitleWrapper = styled.div`
   align-self: auto;
@@ -31,7 +19,7 @@ const BoardHeader = ({ user }) => {
   const { mobile } = device;
 
   return (
-    <HeaderContainer mobile={mobile}>
+    <div className="board-header">
       <TitleWrapper mobile={mobile}>
         <EditableHeader type="boardTitle" title={board.title} />
       </TitleWrapper>
@@ -42,7 +30,7 @@ const BoardHeader = ({ user }) => {
           handleShowMenuClick={handleShowMenuClick}
         />
       )}
-    </HeaderContainer>
+    </div>
   );
 };
 

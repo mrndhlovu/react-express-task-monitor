@@ -19,11 +19,13 @@ const NavButton = ({
   id,
   redirect,
   float,
+  className,
 }) => {
   const { mobile } = useContext(MainContext).device;
 
   return mobile && !forceText ? (
     <StyledButton
+      className={className}
       size="tiny"
       onClick={redirect}
       float={float}
@@ -37,7 +39,7 @@ const NavButton = ({
   ) : (
     <StyledButton
       id={id}
-      className="ui"
+      className={`${className} ui`}
       size="tiny"
       onClick={redirect}
       content={buttonText}

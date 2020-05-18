@@ -10,7 +10,7 @@
 .ui,
 ui.form,
 #root {
-  font-family: Poppins, sans-serif !important;
+  font-family: "Poppins", "sans-serif" !important;
   letter-spacing: 0.4px;
 }
 
@@ -22,6 +22,31 @@ ui.form,
 .ui.button {
   font-weight: 300 !important;
   border-radius: 2px !important;
+}
+
+.logo-text {
+  font-family: "Poppins";
+  font-size: 20px;
+  color: white;
+  width: fit-content;
+}
+
+.logo-text > h2 {
+  cursor: pointer;
+}
+
+.nav-menu-icon {
+  color: white;
+  font-size: 20px !important;
+  font-weight: 100 !important;
+}
+
+.mobile-navbar {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+  padding: 2px 0;
+  align-items: center;
 }
 
 .card-detail-container {
@@ -77,27 +102,138 @@ ui.form,
   right: 0;
 }
 
+.board-header {
+  align-items: start;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  left: 2px;
+  max-height: 40px;
+  padding-right: 8px;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}
+
 .boards-container::-webkit-scrollbar {
   display: none;
+}
+
+.ui.labeled.icon.button.add-cover-dropdown {
+  padding-left: 40px !important;
+  padding-right: 10px !important;
+}
+
+.chat-icon {
+  position: absolute;
+  bottom: 1%;
+  right: 1%;
+  position: fixed;
+  z-index: 100;
+  color: #fff;
 }
 
 .image-container::-webkit-scrollbar {
   display: none;
 }
 
-.board-menu-sidebar {
-  width: 280px !important;
-  border-radius: 8px !important;
-  border: none !important;
+.activities-wrap {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: baseline;
 }
-.chat-sidebar {
+
+.board-header-button {
+  color: #fff !important;
+}
+
+.board-menu-sidebar {
   width: 350px !important;
   border-radius: 8px !important;
   border: none !important;
 }
+.chat-sidebar {
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.thread-time,
+.chat-room-counter {
+  color: #000;
+}
 
 .board-menu-sidebar::-webkit-scrollbar {
   display: none;
+}
+
+.board-creator {
+  font-weight: 800;
+}
+
+.board-creator-details {
+  display: flex;
+  padding-top: 20px;
+  font-size: 17px;
+  align-items: center;
+}
+
+.board-creator-small {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+}
+
+.board-creator-small > span {
+  font-weight: 800;
+}
+
+.sidebar-activities-wrap {
+  max-height: 45vh;
+  overflow-x: hidden;
+}
+.board-delete-button-wrap {
+  position: fixed;
+  bottom: 0;
+  padding-bottom: 5%;
+  width: 95%;
+  background: #fff;
+}
+
+.board-content {
+  display: grid;
+  height: 96vh;
+  left: 0;
+  position: relative;
+  top: 0%;
+  width: 100%;
+}
+
+.ui-textarea-wrap {
+  height: 100px;
+}
+
+.ui-textarea {
+  width: 100%;
+  height: 100%;
+  background: #eee;
+  border-radius: 3px;
+  padding: 5px;
+  font-weight: 500;
+  border: none;
+}
+
+.sidebar-board-description {
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.sidebar-board-description > span {
+  padding-left: 15px;
+  font-weight: 800;
 }
 
 .sidebar-activities::-webkit-scrollbar {
@@ -137,6 +273,19 @@ ui.form,
   height: 100vh;
   justify-items: center;
   position: relative;
+}
+
+.ui.button.close-modal-icon {
+  position: absolute;
+  top: 6px;
+  right: 5px;
+  z-index: 10;
+  border-radius: 60px !important;
+  background: #000 !important;
+  opacity: 0.4;
+  color: #fff !important;
+  width: 35px;
+  height: 36px;
 }
 
 .checklist-item-wrap {
@@ -363,5 +512,27 @@ ui.form,
   .docx-container {
     width: 100%;
     padding: 6px;
+  }
+  .logo-text > h2 {
+    font-size: 18px !important;
+  }
+  .board-header {
+    display: none;
+  }
+
+  .board-content {
+    height: 92vh;
+  }
+
+  .chat-icon {
+    bottom: 0%;
+  }
+
+  .chat-sidebar {
+    width: 300px !important;
+  }
+
+  .board-menu-sidebar {
+    width: 280px !important;
   }
 }

@@ -134,9 +134,3 @@ export const findArrayItem = (array, itemId, fieldProp) =>
   array.filter((item, index) =>
     fieldProp ? equals(item[fieldProp], itemId) : index === itemId
   )[0];
-
-export const getAttachmentType = (string) => {
-  let type = string.split("");
-  type.pop();
-  return type.join("");
-};

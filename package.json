@@ -101,6 +101,8 @@
     "@babel/plugin-transform-runtime": "7.9.0",
     "@babel/runtime": "7.9.6",
     "babel-eslint": "10.1.0",
+    "babel-plugin-transform-semantic-ui-react-imports": "^1.4.1",
+    "copy-webpack-plugin": "^6.0.1",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
     "eslint": "5.16.0",

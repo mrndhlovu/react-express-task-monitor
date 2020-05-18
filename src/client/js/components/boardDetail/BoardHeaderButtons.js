@@ -65,7 +65,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
 
   return (
     <StyledDiv mobile={mobile}>
-      <StyledButton size="tiny">
+      <StyledButton className="board-header-button" size="tiny">
         {!mobile && <Icon name={permission.icon} />}
         <Dropdown icon={false} text={permission.option}>
           <StyledDropdownMenu>
@@ -103,7 +103,6 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
         iconName="star outline"
         buttonColor={isStarred ? "yellow" : "grey"}
         redirect={() => handleBoardStarClick()}
-        buttonText="Star"
         forceText={true}
       />
       <StyledButton size="tiny">
@@ -112,6 +111,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
           icon={false}
           closeOnChange={false}
           direction="left"
+          className="board-header-button"
         >
           <StyledDropdownMenu>
             {error ? (
@@ -144,6 +144,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
       </StyledButton>
       {!mobile && (
         <NavButton
+          className="board-header-button"
           iconName={!mobile ? "ellipsis horizontal" : false}
           size="tiny"
           buttonText="Show Menu"

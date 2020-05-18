@@ -14,11 +14,10 @@ const ButtonWrapper = styled.div`
 
 const CoverContainer = styled(Modal.Header)`
   background-color: #e2dfe4 !important;
-  background-image: url(${(props) => props.cover}) !important;
+  background-image: url(${({ cover }) => cover}) !important;
   background-position: center center !important;
   background-repeat: no-repeat !important;
   background-size: contain !important;
-  cursor: pointer !important;
   height: 160px;
   position: relative;
   transition: opacity 85ms !important;
@@ -39,7 +38,7 @@ const ModalImageCover = ({ cardCover, isLoading, ...props }) => {
     <UIContainer display={style}>Loading...</UIContainer>
   ) : (
     cardCover && (
-      <CoverContainer cover={cardCover}>
+      <CoverContainer className="modal-cover" cover={cardCover}>
         <ButtonWrapper>
           <AddCover
             upward={false}
