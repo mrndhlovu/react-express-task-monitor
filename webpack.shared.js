@@ -3,6 +3,7 @@ const Dotenv = require("dotenv-webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const webpack = require("webpack");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   entry: {
@@ -14,6 +15,29 @@ module.exports = {
     filename: isDevelopment ? "[name].bundle.js" : "[name].[hash].bundle.js",
     hotUpdateChunkFilename: ".hot/[id].[hash].hot-update.js",
     hotUpdateMainFilename: ".hot/[hash].hot-update.json",
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      minSize: 30000,
+      maxSize: 0,
+      minChunks: 1,
+      maxAsyncRequests: 5,
+      maxInitialRequests: 3,
+      automaticNameDelimiter: "~",
+      name: true,
+      cacheGroups: {
+        vendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
   },
   target: "web",
   mode: environment,
@@ -102,6 +126,7 @@ module.exports = {
       filename: isDevelopment ? "[name].css" : "[name].[hash].css",
       chunkFilename: isDevelopment ? "[id].css" : "[id].[hash].css",
     }),
+    new CleanWebpackPlugin({}),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
   ],
 };

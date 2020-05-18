@@ -1,6 +1,5 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const merge = require("webpack-merge");
 
@@ -26,9 +25,7 @@ module.exports = merge(shared, {
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new CleanWebpackPlugin({
-      // cleanOnceBeforeBuildPatterns: ["**/*", "!server.js"],
-    }),
+
     // new BundleAnalyzerPlugin(),
   ],
 });

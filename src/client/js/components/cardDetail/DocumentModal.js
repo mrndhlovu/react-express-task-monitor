@@ -1,9 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import mammoth from "mammoth";
 
-const Document = lazy(() => import("react-pdf/dist/Document"));
-const Page = lazy(() => import("react-pdf/dist/Page"));
-
 import { Modal, Icon } from "semantic-ui-react";
 
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
@@ -11,8 +8,11 @@ import { emptyFunction, stringsEqual } from "../../utils/appUtils";
 import DocumentPreviewButtons from "./DocumentPreviewButtons";
 import ImagePreviewButtons from "./ImagePreviewButtons";
 import TextFilePreviewButtons from "./TextFilePreviewButtons";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+
+const TextPreview = lazy(() => import("./TextPreview"));
+const PDFPreview = lazy(() => import("./PDFPreview.js"));
 
 const DocumentModal = ({
   file,
@@ -32,20 +32,18 @@ const DocumentModal = ({
   const { url, filetype } = file;
 
   const renderDocument = () => {
-    if (stringsEqual(filetype, "pdf")) {
+    if (stringsEqual(filetype, "pdf"))
       return (
-        <UIWrapper className="pdf-preview">
-          <Suspense fallback={<UILoadingSpinner />}>
-            <Document
-              file={url}
-              onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-            >
-              <Page scale={scale} pageNumber={pageNumber} />
-            </Document>
-          </Suspense>
-        </UIWrapper>
+        <Suspense fallback={<UILoadingSpinner />}>
+          <PDFPreview
+            numPages={numPages}
+            scale={scale}
+            file={file}
+            setNumPages={setNumPages}
+            pageNumber={pageNumber}
+          />
+        </Suspense>
       );
-    }
 
     if (stringsEqual(filetype, ALLOWED_IMAGE_TYPES)) {
       return (
@@ -55,30 +53,12 @@ const DocumentModal = ({
       );
     }
 
-    if (stringsEqual(filetype, "txt")) {
-      let fileText;
-      const rawFile = new XMLHttpRequest();
-      rawFile.open("GET", file.url, false);
-
-      rawFile.onreadystatechange = () => {
-        if (
-          rawFile.readyState === 4 &&
-          (rawFile.status === 200 || rawFile.status == 0)
-        ) {
-          fileText = rawFile.responseText.split("\n");
-        }
-      };
-      rawFile.send(null);
-      if (fileText) {
-        return (
-          <UIWrapper className="txt-preview">
-            {fileText.map((text, index) => (
-              <p key={index}>{text}</p>
-            ))}
-          </UIWrapper>
-        );
-      }
-    }
+    if (stringsEqual(filetype, "txt"))
+      return (
+        <Suspense fallback={<UILoadingSpinner />}>
+          <TextPreview file={file} />
+        </Suspense>
+      );
 
     if (stringsEqual(filetype, ["docx"])) {
       const jsonFile = new XMLHttpRequest();
