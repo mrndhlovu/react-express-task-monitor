@@ -5,15 +5,6 @@ import { Sidebar, Menu } from "semantic-ui-react";
 import SideBarHeader from "../home/SideBarHeader";
 import UIContainer from "./UIContainer";
 
-const defaultStyles = {
-  backgroundColor: "#eee",
-  display: "flex",
-  flexDirection: "column",
-  padding: "10px",
-  width: "100%",
-  height: "100%",
-};
-
 const SideBarWrapper = ({
   open,
   handleClose,
@@ -22,7 +13,6 @@ const SideBarWrapper = ({
   header,
   className,
   direction = "right",
-  style,
   hasHeader = true,
   icon,
   onHide,
@@ -38,7 +28,7 @@ const SideBarWrapper = ({
       onHide={onHide}
       className={className}
     >
-      <UIContainer display={style ? style : defaultStyles}>
+      <UIContainer>
         {hasHeader && (
           <SideBarHeader
             handleClose={handleClose}

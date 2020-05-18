@@ -136,12 +136,22 @@ ui.form,
   display: none;
 }
 
+.activities-wrap {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
 .board-header-button {
   color: #fff !important;
 }
 
 .board-menu-sidebar {
-  width: 280px !important;
+  width: 350px !important;
   border-radius: 8px !important;
   border: none !important;
 }
@@ -159,6 +169,39 @@ ui.form,
   display: none;
 }
 
+.board-creator {
+  font-weight: 800;
+}
+
+.board-creator-details {
+  display: flex;
+  padding-top: 20px;
+  font-size: 17px;
+  align-items: center;
+}
+
+.board-creator-small {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+}
+
+.board-creator-small > span {
+  font-weight: 800;
+}
+
+.sidebar-activities-wrap {
+  max-height: 45vh;
+  overflow-x: hidden;
+}
+.board-delete-button-wrap {
+  position: fixed;
+  bottom: 0;
+  padding-bottom: 5%;
+  width: 95%;
+  background: #fff;
+}
+
 .board-content {
   display: grid;
   height: 96vh;
@@ -166,6 +209,31 @@ ui.form,
   position: relative;
   top: 0%;
   width: 100%;
+}
+
+.ui-textarea-wrap {
+  height: 100px;
+}
+
+.ui-textarea {
+  width: 100%;
+  height: 100%;
+  background: #eee;
+  border-radius: 3px;
+  padding: 5px;
+  font-weight: 500;
+  border: none;
+}
+
+.sidebar-board-description {
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.sidebar-board-description > span {
+  padding-left: 15px;
+  font-weight: 800;
 }
 
 .sidebar-activities::-webkit-scrollbar {
@@ -462,5 +530,9 @@ ui.form,
 
   .chat-sidebar {
     width: 300px !important;
+  }
+
+  .board-menu-sidebar {
+    width: 280px !important;
   }
 }

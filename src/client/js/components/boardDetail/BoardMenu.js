@@ -10,18 +10,13 @@ import DropdownButton from "../sharedComponents/DropdownButton";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import UIContainer from "../sharedComponents/UIContainer";
 import { useAuth } from "../../utils/hookUtils";
-
-const style = {
-  width: "800px",
-  padding: 0,
-};
 
 const BoardMenu = ({
   handleChangeColorClick,
   handleDeleteBoard,
   showSideBar,
+  setShowAboutCard,
 }) => {
   const { board, handleShowMenuClick } = useContext(BoardContext);
   const { user } = useAuth();
@@ -29,62 +24,65 @@ const BoardMenu = ({
   const [activities, setActivities] = useState(false);
 
   return (
-    <UIContainer display={style}>
-      <SideBarWrapper
-        handleClose={device.mobile ? setShowMobileMenu : handleShowMenuClick}
-        open={showSideBar}
-        header={board.title}
-        className="board-menu-sidebar"
-      >
-        <UIDivider margin="0" hidden={true} />
+    <SideBarWrapper
+      handleClose={device.mobile ? setShowMobileMenu : handleShowMenuClick}
+      open={showSideBar}
+      header={board.title}
+      className="board-menu-sidebar"
+    >
+      <UIDivider margin="0" hidden={true} />
 
-        {device.mobile && (
-          <BoardHeaderButtons
-            mobile={device.mobile}
-            isStarred={user.starred.includes(board._id)}
-          />
-        )}
+      {device.mobile && (
+        <BoardHeaderButtons
+          mobile={device.mobile}
+          isStarred={user.starred.includes(board._id)}
+        />
+      )}
 
-        <Menu.Item as="a" onClick={() => handleChangeColorClick()}>
-          About this board
-        </Menu.Item>
+      <Menu.Item as="a" onClick={setShowAboutCard}>
+        About this board
+      </Menu.Item>
 
-        <Menu.Item as="a" onClick={() => handleChangeColorClick()}>
-          Change Background
-        </Menu.Item>
+      <Menu.Item as="a" onClick={() => handleChangeColorClick()}>
+        Change Background
+      </Menu.Item>
 
-        <UIDivider margin="0" />
-        <div>
-          <DropdownButton
-            upward={true}
-            icon="trash alternate"
-            hasHeader={false}
-            closeOnSelect={true}
-            buttonText="Delete board"
-          >
-            <UIWrapper>
-              <Button
-                negative
-                content="Delete"
-                compact
-                fluid
-                onClick={() => handleDeleteBoard()}
-              />
-            </UIWrapper>
-          </DropdownButton>
-        </div>
-
+      <Menu.Item as="a">
         <ActivitiesHeader
           handleShowDetails={() => setActivities(!activities)}
         />
+        <div className="sidebar-activities-wrap">
+          {activities && (
+            <Fragment>
+              <Activities board={board} user={user.fname} />
+            </Fragment>
+          )}
+        </div>
+      </Menu.Item>
 
-        {activities && (
-          <Fragment>
-            <Activities board={board} user={user.fname} />
-          </Fragment>
-        )}
-      </SideBarWrapper>
-    </UIContainer>
+      <div className="board-delete-button-wrap">
+        <UIDivider />
+        <DropdownButton
+          upward={true}
+          icon="trash alternate"
+          hasHeader={false}
+          closeOnSelect={true}
+          buttonText="Delete board"
+          compact={false}
+          floated="right"
+        >
+          <UIWrapper>
+            <Button
+              negative
+              content="Delete"
+              compact
+              fluid
+              onClick={() => handleDeleteBoard()}
+            />
+          </UIWrapper>
+        </DropdownButton>
+      </div>
+    </SideBarWrapper>
   );
 };
 

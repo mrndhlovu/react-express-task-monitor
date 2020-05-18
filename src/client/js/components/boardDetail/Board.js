@@ -12,6 +12,7 @@ const ChatIcon = lazy(() => import("./ChatIcon"));
 const ChatSideBar = lazy(() => import("./chatSidebar/ChatSideBar"));
 
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import AboutBoard from "./AboutBoard";
 
 const BoardWrapper = styled.div`
   padding-left: ${(props) => (props.mobile ? "3px" : "7px")};
@@ -32,6 +33,7 @@ const Board = () => {
   const [membersOnline, setMembersOnline] = useState(0);
   const [openChat, setOpenChat] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showAboutCard, setShowAboutCard] = useState(false);
 
   const handleChangeColorClick = () => setShowColorPicker(!showColorPicker);
   const handleClose = () => setOpenChat(false);
@@ -48,6 +50,7 @@ const Board = () => {
             showSideBar={showSideBar || showMobileMenu}
             handleShowMenuClick={handleShowMenuClick}
             handleChangeColorClick={handleChangeColorClick}
+            setShowAboutCard={() => setShowAboutCard(!showAboutCard)}
             handleDeleteBoard={handleDeleteBoard}
           />
         </Suspense>
@@ -56,6 +59,13 @@ const Board = () => {
             showColorPicker={showColorPicker}
             handleChangeColorClick={handleChangeColorClick}
             handleSelectedColor={handleSelectedColor}
+          />
+        </Suspense>
+
+        <Suspense fallback={<UILoadingSpinner />}>
+          <AboutBoard
+            setShowAboutCard={() => setShowAboutCard(!showAboutCard)}
+            showAboutCard={showAboutCard}
           />
         </Suspense>
         {openChat && (
