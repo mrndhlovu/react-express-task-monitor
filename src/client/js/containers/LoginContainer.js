@@ -6,8 +6,9 @@ import { requestAuthLogin } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
 import { useAuth } from "../utils/hookUtils";
 import LoginPage from "../components/auth/LoginPage";
+import withNotification from "../HOC/withNotification";
 
-const LoginContainer = ({ history, location }) => {
+const LoginContainer = ({ history, location, notify }) => {
   const { from } = location.state || { from: { pathname: "/" } };
 
   const { auth } = useAuth();
@@ -15,18 +16,12 @@ const LoginContainer = ({ history, location }) => {
     password: null,
     email: null,
   });
-  const [message, setMessage] = useState({ text: null, success: null });
   const [loading, setLoading] = useState(false);
 
   const onHandleChange = (e) => {
     const { value, name } = e.target;
 
     setCredentials({ ...credentials, [name]: value });
-  };
-
-  const clearError = () => {
-    setMessage({ text: null, success: null });
-    resetForm("authForm");
   };
 
   useEffect(() => {
@@ -39,12 +34,21 @@ const LoginContainer = ({ history, location }) => {
       await requestAuthLogin(credentials)
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
-          setMessage({ text: "Success", success: true });
+          notify("Success", true);
           _debounce(redirect(), 3000);
         })
         .catch((error) => {
           setLoading(false);
-          setMessage({ text: error.response.data, success: false });
+          notify({
+            message: error.response.data,
+            cb: () => {
+              setCredentials({
+                password: null,
+                email: null,
+              });
+              resetForm("authForm");
+            },
+          });
         });
     };
     login();
@@ -54,7 +58,6 @@ const LoginContainer = ({ history, location }) => {
 
   return (
     <LoginPage
-      clearError={clearError}
       handleLoginClick={(e) => {
         e.preventDefault();
         setLoading(true);
@@ -62,12 +65,8 @@ const LoginContainer = ({ history, location }) => {
       history={history}
       loading={loading}
       onHandleChange={onHandleChange}
-      positive={message.success}
-      error={!message.success}
-      message={message.text && message.text}
-      handleDismiss={() => clearError()}
     />
   );
 };
 
-export default withRouter(LoginContainer);
+export default withRouter(withNotification(LoginContainer));

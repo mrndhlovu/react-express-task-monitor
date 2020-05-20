@@ -7,7 +7,6 @@ import { stringsEqual } from "../../utils/appUtils";
 import SocialAuthButton from "./SocialAuthButton";
 import UIContainer from "./UIContainer";
 import UIDivider from "./UIDivider";
-import UIMessage from "./UIMessage";
 import UISmall from "./UISmall";
 
 const StyledHeader = styled.div`
@@ -61,10 +60,7 @@ const StyledButton = styled(Button)`
 const AuthFormWrapper = ({
   buttonText,
   children,
-  clearError,
   disabled,
-  error,
-  positive,
   handleClick,
   headText,
   history,
@@ -72,7 +68,6 @@ const AuthFormWrapper = ({
   socialButtons = true,
   authCta,
   redirect,
-  message,
   passwordChanged,
   dataTestId,
 }) => {
@@ -90,16 +85,6 @@ const AuthFormWrapper = ({
       </StyledHeader>
 
       <FormWrapper data-test-id="login-form" id="authForm">
-        {message && (
-          <UIMessage
-            dataTestId={positive ? "success-alert-message" : "error--message"}
-            success={positive}
-            error={error}
-            handleDismiss={clearError}
-            list={[message]}
-          />
-        )}
-
         <Subheader>{headText} </Subheader>
         {children}
 
