@@ -1,15 +1,20 @@
 import React, { useState } from "react";
 
 import UIMessage from "../components/sharedComponents/UIMessage";
+import { emptyFunction } from "../utils/appUtils";
 
-const INITIAL_STATE = { reason: null, message: null, status: false, cb: null };
+const INITIAL_STATE = {
+  reason: null,
+  message: null,
+  status: false,
+  cb: emptyFunction,
+};
 
 const withNotification = (WrappedComponent) => (props) => {
   const [alert, setAlert] = useState(INITIAL_STATE);
 
-  const handleAlert = ({ message, success, reason, cb }) => {
-    setAlert({ ...INITIAL_STATE, message, reason, success, cb });
-  };
+  const handleAlert = (newState) => setAlert({ ...INITIAL_STATE, ...newState });
+
   return (
     <>
       {alert.message && (
@@ -17,17 +22,14 @@ const withNotification = (WrappedComponent) => (props) => {
           message={alert.reason}
           handleDismiss={() => {
             setAlert(INITIAL_STATE);
-            alert.cb && alert.cb();
+            return alert.cb();
           }}
           list={[alert.message]}
           error={!alert.success}
           success={alert.success}
         />
       )}
-      <WrappedComponent
-        notify={(data) => handleAlert({ ...data })}
-        {...props}
-      />
+      <WrappedComponent notify={(data) => handleAlert(data)} {...props} />
     </>
   );
 };

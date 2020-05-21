@@ -13,11 +13,8 @@ const EmailRecovery = ({
     <AuthFormWrapper
       authCta="Log in"
       buttonText="Email Password"
-      error={!message.success}
       handleClick={handleEmailPassword}
       headText="Reset Password"
-      message={message.text}
-      positive={message.success}
       redirect="/login"
       socialButtons={false}
       {...rest}

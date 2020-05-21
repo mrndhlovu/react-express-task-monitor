@@ -38,7 +38,6 @@ const LoginContainer = ({ history, location, notify }) => {
           _debounce(redirect(), 3000);
         })
         .catch((error) => {
-          setLoading(false);
           notify({
             message: error.response.data,
             cb: () => {
@@ -49,6 +48,8 @@ const LoginContainer = ({ history, location, notify }) => {
               resetForm("authForm");
             },
           });
+
+          setLoading(false);
         });
     };
     login();

@@ -5,15 +5,12 @@ import { Header, Form, TextArea, Button } from "semantic-ui-react";
 import { emptyFunction } from "../../utils/appUtils";
 import { requestUserUpdate } from "../../apis/apiRequests";
 import UIDivider from "../sharedComponents/UIDivider";
-import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import withNotification from "../../HOC/withNotification";
 
-const initialMsgState = { success: false, error: false, text: null };
-
-const PersonalInfo = ({ user }) => {
+const PersonalInfo = ({ user, notify }) => {
   const [bio, setBio] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [msg, setMsg] = useState(initialMsgState);
   const [save, setSave] = useState(false);
   const [username, setUserName] = useState(null);
 
@@ -29,13 +26,9 @@ const PersonalInfo = ({ user }) => {
       await requestUserUpdate(body).then(() => {
         try {
           setLoading(false);
-          setMsg({ ...msg, success: true, text: "Saved" });
+          notify({ success: true, message: "Saved" });
         } catch (error) {
-          setMsg({
-            ...msg,
-            error: true,
-            text: "Failed to save please try again.",
-          });
+          notify({ message: "Failed to save changes please try again." });
           setLoading(false);
         }
       });
@@ -43,19 +36,10 @@ const PersonalInfo = ({ user }) => {
 
     saveChanges();
     setSave(false);
-  }, [save, username, bio, requestUserUpdate, msg]);
+  }, [save, username, bio, requestUserUpdate, notify]);
 
   return (
     <>
-      {msg.text && (
-        <UIMessage
-          success={msg.success}
-          error={msg.error}
-          list={[msg.text]}
-          handleDismiss={() => setMsg(initialMsgState)}
-          size="tiny"
-        />
-      )}
       <Header as="h3" content="Manage your personal information" />
       <Header as="h5" content="About" />
       <UIDivider />
@@ -79,7 +63,7 @@ const PersonalInfo = ({ user }) => {
           <Button
             loading={loading}
             size="small"
-            content={msg.success ? "Done" : "Save"}
+            content="Done"
             fluid
             positive
             onClick={() => setSave(true)}
@@ -90,4 +74,4 @@ const PersonalInfo = ({ user }) => {
   );
 };
 
-export default PersonalInfo;
+export default withNotification(PersonalInfo);

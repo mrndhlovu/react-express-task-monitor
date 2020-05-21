@@ -75,8 +75,8 @@ router.post("/recovery", (req, res) => {
     [
       (done) => {
         User.findOne({ email }).exec((err, user) => {
-          if (!user) done(`User ${email} that not found.`);
-          done(err, user);
+          if (!user) done(`User with email ${email} was not found.`);
+          else done(err, user);
         });
       },
       (user, done) => {
@@ -97,7 +97,7 @@ router.post("/recovery", (req, res) => {
           done(err, token, new_user);
         });
       },
-      (token, user, done) => {
+      async (token, user, done) => {
         const emailConfig = {
           redirectLink: `${ROOT_URL}/?#/reset-password/`,
           token,
@@ -143,7 +143,10 @@ router.post("/:token/update-password", (req, res) => {
 
       await user.save();
 
-      const mailSent = sendPasswordChangeConfirmation(user.email, user.fname);
+      const mailSent = await sendPasswordChangeConfirmation(
+        user.email,
+        user.fname
+      );
 
       if (mailSent)
         return res.json({
@@ -152,7 +155,7 @@ router.post("/:token/update-password", (req, res) => {
         });
       else
         return res.status(400).send({
-          error: "Unable to confirmation for changing your password.",
+          error: "Unable to send confirmation for changing your password.",
         });
     }
   );
