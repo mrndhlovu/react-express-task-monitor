@@ -15,7 +15,7 @@ const AddCardCheckList = ({
   sourceId,
 }) => {
   const [add, setAdd] = useState(false);
-  const [buttonText, setButtonText] = useState("Add");
+  const [close, setClose] = useState(false);
   const [checklist, setChecklist] = useState(null);
   const [message, setMessage] = useState({ header: null, lists: [] });
 
@@ -34,7 +34,7 @@ const AddCardCheckList = ({
           activeCard = findArrayItem(sourceList.cards, activeCard._id, "_id");
           saveCardChanges(activeCard);
           saveBoardChanges(res.data);
-          setButtonText("Done");
+          setClose(true);
           resetForm("new-checklist");
           setChecklist(null);
         } catch (error) {
@@ -61,13 +61,21 @@ const AddCardCheckList = ({
     id,
   ]);
 
+  useEffect(() => {
+    return () => {
+      setTimeout(() => {
+        setClose(false);
+      }, 500);
+    };
+  });
+
   return (
     <DropdownButton
       buttonText="Checklist"
-      callback={() => setButtonText("Add")}
       closeOnSelect={true}
       header="Add Checklist"
       icon="check square outline"
+      close={close}
     >
       <UIContainer padding="5px 10px" width="300px">
         {message.header && (
@@ -79,7 +87,7 @@ const AddCardCheckList = ({
           />
         )}
         <CreateInput
-          buttonText={buttonText}
+          buttonText="Add"
           handleChange={(e) => setChecklist(e.target.value)}
           handleCreateClick={() => setAdd(true)}
           hideIcon={true}

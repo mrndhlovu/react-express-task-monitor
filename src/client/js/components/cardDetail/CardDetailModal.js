@@ -226,17 +226,18 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
                           />
                         </div>
 
-                        {card.attachments.map((attachment, index) => (
-                          <Attachments
-                            key={index}
-                            activeCover={card.cardCover}
-                            attachment={attachment}
-                            handleMakeCover={handleMakeCover}
-                            handleRemoveCover={handleRemoveCover}
-                            editAttachments={editAttachments}
-                            history={history}
-                          />
-                        ))}
+                        {hasAttachments &&
+                          card.attachments.map((attachment, index) => (
+                            <Attachments
+                              key={index}
+                              activeCover={card.cardCover}
+                              attachment={attachment}
+                              handleMakeCover={handleMakeCover}
+                              handleRemoveCover={handleRemoveCover}
+                              editAttachments={editAttachments}
+                              history={history}
+                            />
+                          ))}
                         {stringsEqual(isLoading, "attachment") && (
                           <UIWrapper className="loading-attachment-placeholder">
                             Loading...

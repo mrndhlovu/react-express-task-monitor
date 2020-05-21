@@ -139,8 +139,9 @@ router.patch("/:boardId/update-card", auth, async (req, res) => {
     const board = await Board.findById({ _id: boardId });
 
     const sourceList = getSource(board.lists, listId);
-    const cardIndex = sourceList.cards.indexOf(newCard);
     const sourceIndex = board.lists.indexOf(sourceList);
+    const sourceCard = getSource(sourceList.cards, newCard._id);
+    const cardIndex = sourceList.cards.indexOf(sourceCard);
 
     sourceList.cards.splice(cardIndex, 1, newCard);
     board.lists.splice(sourceIndex, 1, sourceList);

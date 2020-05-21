@@ -16,12 +16,7 @@ const ButtonWrapper = styled.div`
   padding: 10px 10px;
 `;
 
-const PickDueDate = ({
-  startDate,
-  setStartDate,
-  handleAddClick,
-  handleRemoveClick,
-}) => {
+const PickDueDate = ({ startDate, setStartDate, handleUpdateDueDate }) => {
   const [message, setMessage] = useState(false);
 
   return (
@@ -59,7 +54,7 @@ const PickDueDate = ({
                 positive
                 onClick={() => {
                   setMessage(true);
-                  handleAddClick();
+                  handleUpdateDueDate();
                 }}
               />
               <Button
@@ -67,7 +62,7 @@ const PickDueDate = ({
                 compact
                 negative
                 floated="right"
-                onClick={() => handleRemoveClick()}
+                onClick={() => handleUpdateDueDate(true)}
               />
             </ButtonWrapper>
           </>

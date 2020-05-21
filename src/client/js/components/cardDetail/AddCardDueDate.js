@@ -1,66 +1,50 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 
 import DropdownButton from "../sharedComponents/DropdownButton";
+import { requestCardUpdate } from "../../apis/apiRequests";
 
 const PickDueDate = lazy(() => import("../sharedComponents/PickDueDate"));
 
 const AddCardDueDate = ({
   activeCard,
-  board,
-  sourceId,
-  handleBoardUpdate,
-  getSourceList,
   saveCardChanges,
+  saveBoardChanges,
   color,
+  id,
+  sourceId,
 }) => {
-  const [dueDate, setDueDate] = useState(false);
-  const [removeDueDate, setRemoveDueDate] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+  const [updated, setUpdated] = useState(false);
 
-  const sourceList = getSourceList(sourceId, "_id");
-
-  const handleAddClick = () => setDueDate(true);
-  const handleRemoveClick = () => setRemoveDueDate(true);
-
-  useEffect(() => {
+  const handleUpdateDueDate = async (removeDate) => {
     let newCard;
 
-    if (removeDueDate) {
+    if (removeDate) {
       newCard = {
         ...activeCard,
         dueDate: "",
       };
-    }
-
-    if (dueDate) {
+    } else {
       newCard = {
         ...activeCard,
         dueDate: { date: `${startDate}`, complete: false },
       };
     }
 
-    if (removeDueDate || dueDate) {
+    await requestCardUpdate({ newCard, listId: sourceId }, id).then((res) => {
       saveCardChanges(newCard);
-      sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
-      board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+      saveBoardChanges(res.data);
+      setUpdated(true);
+    });
+  };
 
-      handleBoardUpdate(board, "lists", "dueDate");
-    }
-
+  useEffect(() => {
     return () => {
-      setDueDate(false);
-      setRemoveDueDate(false);
+      setTimeout(() => {
+        setUpdated(false);
+      }, 500);
     };
-  }, [
-    handleBoardUpdate,
-    board,
-    activeCard,
-    dueDate,
-    removeDueDate,
-    sourceList,
-    startDate,
-    saveCardChanges,
-  ]);
+  });
 
   return (
     <DropdownButton
@@ -68,12 +52,12 @@ const AddCardDueDate = ({
       buttonText="Due Date"
       header="Change Due Date."
       color={color}
+      close={updated}
     >
       <Suspense fallback={<div>Loading...</div>}>
         <PickDueDate
           startDate={startDate}
-          handleRemoveClick={handleRemoveClick}
-          handleAddClick={handleAddClick}
+          handleUpdateDueDate={handleUpdateDueDate}
           setStartDate={setStartDate}
         />
       </Suspense>

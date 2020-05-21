@@ -2,29 +2,46 @@ import React, { Fragment } from "react";
 import styled from "styled-components";
 
 import UserAvatar from "./UserAvatar";
-import { getUserInitials } from "../../utils/appUtils";
+import { getUserInitials, findArrayItem } from "../../utils/appUtils";
+import { Icon } from "semantic-ui-react";
 
 const BoardMember = styled.div`
   display: flex;
   align-items: center;
   padding: 10px;
   cursor: pointer;
+  display: flex;
+  justify-content: space-around;
 `;
 const Span = styled.span`
   font-size: 10px;
   font-weight: 700;
-  padding-left: 10px;
+  padding: 0 10px;
 `;
 
-const BoardMembersList = ({ boardMembers, handleClick }) => {
+const BoardMembersList = ({
+  boardMembers,
+  handleBoardMemberClick,
+  activeCard,
+}) => {
+  const hasAssignees =
+    activeCard.assignees !== undefined && activeCard.assignees.length !== 0;
+
   return (
     <Fragment>
       {boardMembers.map((member) => (
-        <BoardMember key={member.id} onClick={() => handleClick(member)}>
+        <BoardMember
+          key={member.id}
+          onClick={() => handleBoardMemberClick(member)}
+        >
           <UserAvatar userInitials={getUserInitials(member.fname)} />
           <Span>
             {member.fname} {member.isAdmin && "(Admin)"}
           </Span>
+          {hasAssignees &&
+            findArrayItem(activeCard.assignees, member.id, "id") && (
+              <Icon name="check" size="small" />
+            )}
         </BoardMember>
       ))}
     </Fragment>

@@ -192,7 +192,8 @@ const EditCardModal = ({
           >
             <BoardMembersList
               boardMembers={board.members}
-              handleClick={handleChangeMembers}
+              handleBoardMemberClick={handleChangeMembers}
+              activeCard={card}
             />
           </EditCardButton>
 
