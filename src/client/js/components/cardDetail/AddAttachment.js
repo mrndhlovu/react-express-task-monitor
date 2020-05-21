@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import isURL from "validator/lib/isURL";
 
@@ -51,6 +51,15 @@ const AddAttachment = ({
 }) => {
   const [attachment, setAttachment] = useState(null);
   const [message, setMessage] = useState({ header: null, list: [] });
+  const [close, setClose] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      setTimeout(() => {
+        setClose(false);
+      }, 500);
+    };
+  });
 
   const handleUpload = useCallback(
     (e) => {
@@ -62,16 +71,18 @@ const AddAttachment = ({
       data.append(uploadType, file);
 
       const upload = async () => {
-        handleLoadingAttachment(true);
+        handleLoadingAttachment("attachment");
         await requestUpload(uploadType, data, id, sourceId, activeCard._id)
           .then((res) => {
             const { card, board } = res.data;
             saveCardChanges(card);
             saveBoardChanges(board);
-            handleLoadingAttachment(false);
+            handleLoadingAttachment("");
+            setClose(true);
           })
           .catch((error) => {
             setMessage({ ...message, header: error.response.data.message });
+            handleLoadingAttachment("");
           });
       };
       file && upload();
@@ -107,13 +118,14 @@ const AddAttachment = ({
       return setMessage({
         ...message,
         header: "Duplicate!",
-        list: ["You have this link is your attachments!"],
+        list: "You have this link is your attachments!",
       });
     }
 
     return editAttachments(attachmentData, () => {
       resetForm("attach-link");
       setAttachment(null);
+      setClose(true);
     });
   };
 
@@ -127,15 +139,15 @@ const AddAttachment = ({
       header="Attach From"
       direction={direction}
       compact={compact}
+      close={close}
     >
       <UIContainer width="300px" padding="0">
         {message.header && (
-          <UIWrapper>
+          <UIWrapper className="attachment-alert">
             <UIMessage
               error={true}
               handleDismiss={() => setMessage(false)}
-              message={message.header}
-              list={message.list}
+              list={[message.header]}
             />
           </UIWrapper>
         )}

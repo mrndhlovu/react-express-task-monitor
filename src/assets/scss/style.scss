@@ -50,7 +50,7 @@ ui.form,
 }
 
 .card-detail-container {
-  margin-top: 0px !important;
+  margin-top: 3% !important;
 }
 
 .ui.modal > .close {
@@ -261,12 +261,26 @@ ui.form,
   word-wrap: break-word;
   width: 100%;
   position: fixed !important;
-  top: 4%;
+  top: 3%;
   z-index: 9999999 !important;
+}
+
+.loading-attachment-placeholder {
+  background: #e2dfe4 !important;
+  height: 80px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ui.dimmer {
   background-color: rgba(0, 0, 0, 0.64) !important;
+}
+
+.attachment-alert {
+  position: relative;
+  padding: 0;
 }
 
 .message-box > div > ul {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
@@ -20,9 +20,18 @@ const ModalHeader = ({
   originalBoard,
   originalCard,
   sourceId,
-  handleBoardUpdate,
-  history,
+  ...otherProps
 }) => {
+  const [close, setClose] = useState(false);
+
+  useEffect(() => {
+    return () => {
+      setTimeout(() => {
+        setClose(false);
+      }, 500);
+    };
+  });
+
   return (
     <Container>
       <CardDetailHeader
@@ -40,14 +49,15 @@ const ModalHeader = ({
         color="transparent"
         header="Move Card"
         direction="right"
+        close={close}
       >
         <UIWrapper className="move-card-wrapper">
           <MoveCardDialog
             originalBoard={originalBoard}
             originalCard={originalCard}
-            history={history}
             sourceListId={sourceId}
-            handleBoardUpdate={handleBoardUpdate}
+            setClose={() => setClose(true)}
+            {...otherProps}
           />
         </UIWrapper>
       </DropdownButton>

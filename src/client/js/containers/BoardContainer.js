@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-  useContext,
-} from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -46,14 +40,17 @@ const BoardContainer = ({ match, history }) => {
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
-  const handleBoardUpdate = useMemo(
-    () => (changes, fieldId = "lists", activity, callback, newId) => {
-      if (!changes) return setBoard(null);
-      saveBoardChanges(changes);
-      setUpdatedField({ fieldId, activity, callback, newId });
-    },
-    []
-  );
+  const handleBoardUpdate = (
+    changes,
+    fieldId = "lists",
+    activity,
+    callback,
+    newId
+  ) => {
+    if (!changes) return setBoard(null);
+    saveBoardChanges(changes);
+    setUpdatedField({ fieldId, activity, callback, newId });
+  };
 
   const saveBoardChanges = (changes) => setBoard(changes);
 
