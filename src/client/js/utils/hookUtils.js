@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef, useContext } from "react";
 
 import { requestBoardList, requestAuthLogout } from "../apis/apiRequests";
-import { MainContext } from "./contextUtils";
+import { MainContext, AlertContext } from "./contextUtils";
 
 export const useAuth = () => {
   const {
@@ -9,6 +9,11 @@ export const useAuth = () => {
     auth,
   } = useContext(MainContext);
   return { auth, user: data.data };
+};
+
+export const useAlert = () => {
+  const { notify } = useContext(AlertContext);
+  return { notify };
 };
 
 export const useFetch = (history) => {

@@ -19,7 +19,7 @@ const UIMessage = ({
       className="message-box"
       floating
       header={message}
-      positive={success}
+      warning={success}
       negative={error}
       data-test-id={dataTestId || "notification"}
       size="tiny"

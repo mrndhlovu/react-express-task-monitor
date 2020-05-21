@@ -3,12 +3,12 @@ import { withRouter, Redirect } from "react-router-dom";
 
 import { requestUpdatePassword } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
-import { useAuth } from "../utils/hookUtils";
+import { useAuth, useAlert } from "../utils/hookUtils";
 import ResetPassword from "../components/auth/ResetPassword";
-import withNotification from "../HOC/withNotification";
 
-const ResetPasswordContainer = ({ history, location, notify }) => {
+const ResetPasswordContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
+  const { notify } = useAlert();
 
   const { auth } = useAuth();
   const [credentials, setCredentials] = useState({
@@ -74,4 +74,4 @@ const ResetPasswordContainer = ({ history, location, notify }) => {
   );
 };
 
-export default withRouter(withNotification(ResetPasswordContainer));
+export default withRouter(ResetPasswordContainer);

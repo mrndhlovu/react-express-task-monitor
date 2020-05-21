@@ -4,11 +4,13 @@ import { Header, Form, TextArea, Button } from "semantic-ui-react";
 
 import { emptyFunction } from "../../utils/appUtils";
 import { requestUserUpdate } from "../../apis/apiRequests";
+import { useAlert } from "../../utils/hookUtils";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import withNotification from "../../HOC/withNotification";
 
-const PersonalInfo = ({ user, notify }) => {
+const PersonalInfo = ({ user }) => {
+  const { notify } = useAlert();
+
   const [bio, setBio] = useState(null);
   const [loading, setLoading] = useState(false);
   const [save, setSave] = useState(false);
@@ -74,4 +76,4 @@ const PersonalInfo = ({ user, notify }) => {
   );
 };
 
-export default withNotification(PersonalInfo);
+export default PersonalInfo;

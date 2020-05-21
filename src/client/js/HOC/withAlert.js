@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import UIMessage from "../components/sharedComponents/UIMessage";
 import { emptyFunction } from "../utils/appUtils";
+import { AlertContext } from "../utils/contextUtils";
 
 const INITIAL_STATE = {
   reason: null,
@@ -10,13 +11,13 @@ const INITIAL_STATE = {
   cb: emptyFunction,
 };
 
-const withNotification = (WrappedComponent) => (props) => {
+const withAlert = (WrappedComponent) => (props) => {
   const [alert, setAlert] = useState(INITIAL_STATE);
 
   const handleAlert = (newState) => setAlert({ ...INITIAL_STATE, ...newState });
 
   return (
-    <>
+    <AlertContext.Provider value={{ notify: (data) => handleAlert(data) }}>
       {alert.message && (
         <UIMessage
           message={alert.reason}
@@ -29,9 +30,9 @@ const withNotification = (WrappedComponent) => (props) => {
           success={alert.success}
         />
       )}
-      <WrappedComponent notify={(data) => handleAlert(data)} {...props} />
-    </>
+      <WrappedComponent {...props} />
+    </AlertContext.Provider>
   );
 };
 
-export default withNotification;
+export default withAlert;

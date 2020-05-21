@@ -259,6 +259,10 @@ ui.form,
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
   word-wrap: break-word;
+  width: 100%;
+  position: absolute !important;
+  top: 4%;
+  z-index: 100;
 }
 
 .message-box > div > ul {

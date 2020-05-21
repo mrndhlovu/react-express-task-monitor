@@ -7,6 +7,7 @@ import Backend from "react-dnd-html5-backend";
 import BaseRouter from "./Routes";
 import AppContainer from "./containers/AppContainer";
 import store from "./store";
+import withAlert from "./HOC/withAlert";
 
 const App = () => {
   return (
@@ -21,4 +22,4 @@ const App = () => {
     </Provider>
   );
 };
-export default App;
+export default withAlert(App);

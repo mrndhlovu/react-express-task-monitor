@@ -4,12 +4,12 @@ import { withRouter, Redirect } from "react-router-dom";
 import _debounce from "debounce";
 import { requestAuthSignup } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
-import { useAuth } from "../utils/hookUtils";
+import { useAuth, useAlert } from "../utils/hookUtils";
 import SignupPage from "../components/auth/SignupPage";
-import withNotification from "../HOC/withNotification";
 
-const SignupContainer = ({ history, notify }) => {
+const SignupContainer = ({ history }) => {
   const { auth } = useAuth();
+  const { notify } = useAlert();
 
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
@@ -60,4 +60,4 @@ const SignupContainer = ({ history, notify }) => {
   );
 };
 
-export default withRouter(withNotification(SignupContainer));
+export default withRouter(SignupContainer);

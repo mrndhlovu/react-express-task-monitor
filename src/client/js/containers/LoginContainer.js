@@ -4,12 +4,12 @@ import _debounce from "debounce";
 
 import { requestAuthLogin } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
-import { useAuth } from "../utils/hookUtils";
+import { useAuth, useAlert } from "../utils/hookUtils";
 import LoginPage from "../components/auth/LoginPage";
-import withNotification from "../HOC/withNotification";
 
-const LoginContainer = ({ history, location, notify }) => {
+const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
+  const { notify } = useAlert();
 
   const { auth } = useAuth();
   const [credentials, setCredentials] = useState({
@@ -70,4 +70,4 @@ const LoginContainer = ({ history, location, notify }) => {
   );
 };
 
-export default withRouter(withNotification(LoginContainer));
+export default withRouter(LoginContainer);

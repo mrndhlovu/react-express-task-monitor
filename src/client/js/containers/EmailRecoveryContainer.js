@@ -3,12 +3,12 @@ import { withRouter, Redirect } from "react-router-dom";
 
 import { requestEmailRecovery } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
-import { useAuth } from "../utils/hookUtils";
+import { useAuth, useAlert } from "../utils/hookUtils";
 import EmailRecovery from "../components/auth/EmailRecovery";
-import withNotification from "../HOC/withNotification";
 
-const EmailRecoveryContainer = ({ history, location, notify }) => {
+const EmailRecoveryContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
+  const { notify } = useAlert();
 
   const { auth } = useAuth();
   const [credentials, setCredentials] = useState({ email: null });
@@ -19,10 +19,10 @@ const EmailRecoveryContainer = ({ history, location, notify }) => {
     setCredentials({ ...credentials, [name]: value });
   };
 
-  const clearMsg = () => {
+  const clearMsg = (redirect) => {
     setCredentials({ email: null });
     resetForm("reset-email-input");
-    history.push("/login");
+    redirect && history.push("/login");
   };
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const EmailRecoveryContainer = ({ history, location, notify }) => {
           notify({
             message: res.data.message,
             success: true,
-            cb: () => clearMsg(),
+            cb: () => clearMsg(true),
           });
         })
         .catch((error) => {
@@ -65,4 +65,4 @@ const EmailRecoveryContainer = ({ history, location, notify }) => {
   );
 };
 
-export default withRouter(withNotification(EmailRecoveryContainer));
+export default withRouter(EmailRecoveryContainer);

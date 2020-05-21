@@ -3,12 +3,7 @@ import React from "react";
 import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
 import UIFormInput from "../sharedComponents/UIFormInput";
 
-const EmailRecovery = ({
-  handleEmailPassword,
-  message,
-  onHandleChange,
-  ...rest
-}) => {
+const EmailRecovery = ({ handleEmailPassword, onHandleChange, ...rest }) => {
   return (
     <AuthFormWrapper
       authCta="Log in"
