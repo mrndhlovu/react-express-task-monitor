@@ -16,7 +16,6 @@ const PDFPreview = lazy(() => import("./PDFPreview.js"));
 
 const DocumentModal = ({
   file,
-
   setOpenDocument,
   handleMakeCover,
   editAttachments,

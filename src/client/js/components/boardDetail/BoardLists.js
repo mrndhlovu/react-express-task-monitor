@@ -219,7 +219,6 @@ const BoardLists = ({ history }) => {
     newCardName,
     showAddCardInput,
     updateBoard,
-    saveBoardChanges,
   };
 
   return (

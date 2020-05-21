@@ -139,50 +139,17 @@ router.patch("/:boardId/update-card", auth, async (req, res) => {
     const board = await Board.findById({ _id: boardId });
 
     const sourceList = getSource(board.lists, listId);
-    const sourceCard = getSource(sourceList.cards, newCard._id);
+    const cardIndex = sourceList.cards.indexOf(newCard);
+    const sourceIndex = board.lists.indexOf(sourceList);
 
-    sourceList.cards.splice(sourceList.cards.indexOf(sourceCard), 1, newCard);
-    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
+    sourceList.cards.splice(cardIndex, 1, newCard);
+    board.lists.splice(sourceIndex, 1, sourceList);
 
-    const newBoard = await updateBoardLists(boardId, board.lists);
+    await updateBoardLists(boardId, board.lists);
 
-    res.send(newBoard);
+    res.send(board);
   } catch (error) {
     res.status(400).send({ message: "Failed to update card" });
-  }
-});
-
-router.patch("/:boardId/delete-attachment", async (req, res) => {
-  const { cardId, listId, deleteId } = req.body;
-  const { boardId } = req.params;
-
-  try {
-    const board = await Board.findById({ _id: boardId });
-    const sourceList = getSource(board.lists, listId);
-    let sourceCard = getSource(sourceList.cards, cardId);
-
-    sourceCard.attachments.images.map((image, index) =>
-      equals(image.imgUrl, deleteId)
-        ? sourceCard.attachments.images.splice(index, 1)
-        : { ...image }
-    );
-
-    if (equals(sourceCard.cardCover, deleteId))
-      sourceCard = { ...sourceCard, cardCover: "" };
-
-    sourceList.cards.splice(
-      sourceList.cards.indexOf(sourceCard),
-      1,
-      sourceCard
-    );
-
-    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-
-    const newBoard = await updateBoardLists(boardId, board.lists);
-
-    res.send(newBoard);
-  } catch (error) {
-    res.status(400).send({ message: "Failed to delete card attachment" });
   }
 });
 

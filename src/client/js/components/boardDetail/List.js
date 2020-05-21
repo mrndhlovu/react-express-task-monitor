@@ -8,7 +8,11 @@ import { DragSource, DropTarget } from "react-dnd";
 
 import { Segment } from "semantic-ui-react";
 
-import { BoardListsContext, MainContext } from "../../utils/contextUtils";
+import {
+  BoardListsContext,
+  MainContext,
+  BoardContext,
+} from "../../utils/contextUtils";
 import { Types } from "../../constants/constants";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
@@ -47,9 +51,9 @@ const List = ({
     getSourceList,
     handleBoardUpdate,
     board,
-    saveBoardChanges,
     ...otherProps
   } = useContext(BoardListsContext);
+  const { saveBoardChanges } = useContext(BoardContext);
   const { mobile } = useContext(MainContext).device;
 
   const { title, cards, _id } = list;

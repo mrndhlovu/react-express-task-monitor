@@ -21,7 +21,7 @@ const ImagePreviewButtons = ({
       </div>
       <div
         className="img-preview-edit-buttons"
-        onClick={() => handleMakeCover(file.image)}
+        onClick={() => handleMakeCover(file.url)}
       >
         <Icon name="image" />
         <span>Make cover</span>
