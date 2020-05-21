@@ -11,7 +11,7 @@ const UIMessage = ({
   dataTestId,
 }) => {
   setTimeout(() => {
-    handleDismiss();
+    handleDismiss && handleDismiss();
   }, 3000);
 
   return (

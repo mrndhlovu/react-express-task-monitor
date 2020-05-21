@@ -27,7 +27,7 @@ import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
-import { useAuth } from "../../utils/hookUtils";
+import { useAuth, useAlert } from "../../utils/hookUtils";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import AddAttachment from "./AddAttachment";
 
@@ -51,7 +51,7 @@ const StyledIcon = styled(Button)`
   border-radius: 50px !important;
 `;
 
-const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
+const CardDetailModal = ({ listId, match, modalOpen, history }) => {
   const {
     activeCard,
     board,
@@ -59,11 +59,11 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
     handleBoardUpdate,
     handleCardClick,
     handleUploadAttachment,
-    sourceTitle,
   } = useContext(BoardListsContext);
   const { saveBoardChanges } = useContext(BoardContext);
   const { user } = useAuth();
   const { device } = useContext(MainContext);
+  const { notify } = useAlert();
   const { id } = match.params;
 
   const [activeCover, setActiveCardCover] = useState(null);
@@ -74,12 +74,14 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
   const [newAttachment, setNewAttachment] = useState(null);
   const [newCover, setNewCover] = useState(null);
   const [removeCover, setRemoveCover] = useState(false);
+  const [sourceId, setSourceId] = useState(listId);
 
   const hasLabel = card && card.labels.length !== 0;
   const hasChecklist = card && card.checklists.length !== 0;
   const hasMembers = board && board.members.length !== 0;
   const hasCover = card && !stringsEqual(card.cardCover, "");
   const hasAttachments = card && card.attachments.length !== 0;
+  const sourceList = findArrayItem(board.lists, sourceId, "_id");
 
   const saveCardChanges = (changes) => setCard(changes);
 
@@ -94,7 +96,6 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
         card.attachments.splice(attachmentIndex, 1);
       } else card.attachments.push(attachment);
 
-      const sourceList = findArrayItem(board.lists, sourceId, "_id");
       const cardIndex = sourceList.cards.indexOf(card);
       const sourceIndex = board.lists.indexOf(sourceList);
 
@@ -247,7 +248,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
             title={card.title}
             cardPosition={card._id}
             sourceId={sourceId}
-            sourceTitle={sourceTitle}
+            sourceTitle={sourceList.title}
             cardCover={card.cardCover}
             originalBoard={board}
             originalCard={card}
@@ -387,6 +388,8 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                   saveCardChanges={saveCardChanges}
                   id={id}
                   history={history}
+                  notify={notify}
+                  setSourceId={setSourceId}
                 />
               </Grid.Column>
             </Grid.Row>

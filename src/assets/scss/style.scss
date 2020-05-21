@@ -260,9 +260,13 @@ ui.form,
   white-space: -o-pre-wrap;
   word-wrap: break-word;
   width: 100%;
-  position: absolute !important;
+  position: fixed !important;
   top: 4%;
-  z-index: 100;
+  z-index: 9999999 !important;
+}
+
+.ui.dimmer {
+  background-color: rgba(0, 0, 0, 0.64) !important;
 }
 
 .message-box > div > ul {

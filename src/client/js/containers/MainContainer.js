@@ -18,6 +18,7 @@ import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
 import UIContainer from "../components/sharedComponents/UIContainer";
+import withAlert from "../HOC/withAlert";
 
 const style = {
   padding: "0",
@@ -116,4 +117,4 @@ const MainContainer = ({ children, history, auth }) => {
   );
 };
 
-export default withRouter(MainContainer);
+export default withRouter(withAlert(MainContainer));

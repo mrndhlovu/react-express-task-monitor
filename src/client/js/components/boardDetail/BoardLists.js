@@ -1,5 +1,6 @@
 import React, { useContext, useState, Suspense, lazy, useEffect } from "react";
 import styled from "styled-components";
+import { withRouter } from "react-router";
 
 import {
   BoardContext,
@@ -13,7 +14,6 @@ import { parseSearchQuery, getQueryString } from "../../utils/urls";
 import { findArrayItem, emptyFunction } from "../../utils/appUtils";
 import { requestNewBoardList } from "../../apis/apiRequests";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import { withRouter } from "react-router";
 
 const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));
 
@@ -50,7 +50,6 @@ const BoardLists = ({ history }) => {
   const [showAddCardInput, setShowAddCardInput] = useState(false);
   const [showInputField, setShowInputField] = useState(false);
   const [sourceId, setSourceId] = useState(undefined);
-  const [sourceTitle, setSourceTitle] = useState("");
   const [update, setUpdate] = useState("");
 
   const getSourceList = (id, target) => findArrayItem(lists, id, target);
@@ -174,13 +173,12 @@ const BoardLists = ({ history }) => {
     setUpdate(lists);
   };
 
-  const handleCardClick = (card, sourceId, listTitle) => {
+  const handleCardClick = (card, sourceId) => {
     const { pathname } = history.location;
 
     if (sourceId) {
       setActiveCard(card);
       setSourceId(sourceId);
-      setSourceTitle(listTitle);
     }
     setHideCardDetail(!hideCardDetail);
     if (!hideCardDetail) return history.push(`${pathname}?modal-open=false`);
@@ -220,7 +218,6 @@ const BoardLists = ({ history }) => {
     mobile,
     newCardName,
     showAddCardInput,
-    sourceTitle,
     updateBoard,
     saveBoardChanges,
   };
@@ -255,7 +252,7 @@ const BoardLists = ({ history }) => {
         {modalOpen && !hideCardDetail && (
           <Suspense fallback={<UILoadingSpinner />}>
             <CardDetailModal
-              sourceId={sourceId}
+              listId={sourceId}
               history={history}
               modalOpen={modalOpen}
             />

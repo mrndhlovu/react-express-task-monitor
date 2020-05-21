@@ -3,7 +3,11 @@ import _debounce from "debounce";
 
 import { Header, Button } from "semantic-ui-react";
 
-import { emptyFunction, stringsEqual } from "../../utils/appUtils";
+import {
+  emptyFunction,
+  stringsEqual,
+  findArrayItem,
+} from "../../utils/appUtils";
 import { useFetch } from "../../utils/hookUtils";
 import DropdownList from "../sharedComponents/DropdownList";
 import UIContainer from "../sharedComponents/UIContainer";
@@ -20,6 +24,8 @@ const MoveCardDialog = ({
   history,
   sourceListId,
   handleBoardUpdate,
+  setClose,
+  setSourceId,
 }) => {
   const [data, loading] = useFetch(history);
 
@@ -84,15 +90,18 @@ const MoveCardDialog = ({
 
     const updatedTargetList = () => {
       sourceList.cards.splice(position, 0, originalCard);
+      setSourceId(sourceList._id);
+
       return sourceList;
     };
 
     if (!boardChanged && !listChanged) {
-      sourceList.cards.splice(sourceList.cards.indexOf(originalCard), 1);
+      removeCardFromSource();
       updatedTargetList();
 
       handleBoardUpdate(originalBoard, "lists");
       setMove(false);
+      setClose();
     } else if (boardChanged) {
       removeCardFromSource();
 
@@ -107,17 +116,20 @@ const MoveCardDialog = ({
         _debounce(history.push(`/boards/id/${targetId}`), 500);
       });
       setMove(false);
+      setClose();
     } else if (listChanged) {
       removeCardFromSource();
       updatedTargetList();
 
       handleBoardUpdate(board, "lists");
       setMove(false);
+      setClose();
     }
   }, [
     boardChanged,
     boards,
     handleBoardUpdate,
+    setClose,
     history,
     listChanged,
     move,
@@ -125,6 +137,7 @@ const MoveCardDialog = ({
     originalBoard,
     originalCard,
     sourceList,
+    setSourceId,
   ]);
 
   useEffect(() => {
