@@ -103,7 +103,7 @@ const MainContainer = ({ children, history, auth }) => {
                 />
                 <MobileSideMenu
                   visible={visible}
-                  setVisible={() => setVisible(!visible)}
+                  setVisible={setVisible}
                   history={history}
                 />
               </Fragment>

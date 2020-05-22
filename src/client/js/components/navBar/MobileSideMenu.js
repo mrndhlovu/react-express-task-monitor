@@ -36,16 +36,16 @@ const MobileSideMenu = ({ visible, setVisible, history }) => {
     <SideBarWrapper
       direction="left"
       icon="labeled"
-      handleClose={setVisible}
+      handleClose={() => setVisible(false)}
       open={visible}
       style={style}
       hasHeader={false}
-      onHide={setVisible}
+      onHide={() => setVisible(false)}
       className="mobile-side-menu"
     >
       <UIWrapper display={wrapperStyle}>
         <NavUserAvatar
-          callback={() => setVisible()}
+          callback={() => setVisible(false)}
           pointing="left"
           userName={fname}
           history={history}

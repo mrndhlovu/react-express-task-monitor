@@ -26,7 +26,10 @@ const NavUserAvatar = ({
       <Dropdown.Menu>
         <Dropdown.Item
           text="Profile and Visibility"
-          onClick={() => (history ? history.push("/profile") : {})}
+          onClick={() => {
+            callback();
+            history ? history.push("/profile") : {};
+          }}
         />
         <Dropdown.Item
           text="Log out"
