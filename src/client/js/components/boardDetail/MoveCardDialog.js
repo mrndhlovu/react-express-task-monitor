@@ -3,11 +3,7 @@ import _debounce from "debounce";
 
 import { Header, Button } from "semantic-ui-react";
 
-import {
-  emptyFunction,
-  stringsEqual,
-  findArrayItem,
-} from "../../utils/appUtils";
+import { emptyFunction, stringsEqual } from "../../utils/appUtils";
 import { useFetch } from "../../utils/hookUtils";
 import DropdownList from "../sharedComponents/DropdownList";
 import UIContainer from "../sharedComponents/UIContainer";

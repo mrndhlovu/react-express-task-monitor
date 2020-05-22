@@ -31,10 +31,6 @@ const AccountSettings = ({ history }) => {
     setCredentials({ ...credentials, [name]: value });
   };
 
-  const clear = () => {
-    setPasswordConfirmed(false);
-  };
-
   const handleSave = (e) => {
     e.preventDefault();
     if (!stringsEqual(credentials.password, credentials.confirmPassword))

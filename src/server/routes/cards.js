@@ -1,4 +1,3 @@
-const equals = require("validator/lib/equals");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const Board = require("../models/Board");
 const Card = require("../models/Card");
