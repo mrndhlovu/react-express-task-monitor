@@ -41,6 +41,7 @@ const MobileSideMenu = ({ visible, setVisible, history }) => {
       style={style}
       hasHeader={false}
       onHide={setVisible}
+      className="mobile-side-menu"
     >
       <UIWrapper display={wrapperStyle}>
         <NavUserAvatar

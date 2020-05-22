@@ -571,4 +571,12 @@ ui.form,
   .board-header-button > div {
     color: #000;
   }
+
+  .mobile-side-menu {
+    padding: 0 !important;
+    width: 80vw !important;
+  }
+  .mobile-side-menu > div {
+    padding: 0 !important;
+  }
 }
