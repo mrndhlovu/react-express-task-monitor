@@ -10,15 +10,18 @@ const UIMessage = ({
   list,
   dataTestId,
 }) => {
+  setTimeout(() => {
+    handleDismiss && handleDismiss();
+  }, 3000);
+
   return (
     <Message
       className="message-box"
       floating
       header={message}
-      positive={success}
+      warning={success}
       negative={error}
-      onDismiss={handleDismiss}
-      data-test-id={dataTestId}
+      data-test-id={dataTestId || "notification"}
       size="tiny"
       list={list}
       key="list"

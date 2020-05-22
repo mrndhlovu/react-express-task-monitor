@@ -9,7 +9,7 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 //   cMapPacked: true,
 // };
 
-const PDFPreview = ({ file, setNumPages, pageNumber, scale }) => {
+const PDFPreview = () => {
   return (
     <UIWrapper className="pdf-preview">
       {/* <Document

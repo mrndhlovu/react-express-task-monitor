@@ -3,18 +3,18 @@ import { withRouter, Redirect } from "react-router-dom";
 
 import { requestUpdatePassword } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
-import { useAuth } from "../utils/hookUtils";
+import { useAuth, useAlert } from "../utils/hookUtils";
 import ResetPassword from "../components/auth/ResetPassword";
 
 const ResetPasswordContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
+  const { notify } = useAlert();
 
   const { auth } = useAuth();
   const [credentials, setCredentials] = useState({
     password: null,
     confirmPassword: null,
   });
-  const [message, setMessage] = useState({ text: null, success: null });
   const [save, setSave] = useState(false);
   const [passwordChanged, setPasswordConfirmed] = useState(false);
 
@@ -24,7 +24,6 @@ const ResetPasswordContainer = ({ history, location }) => {
   };
 
   const clearError = () => {
-    setMessage({ ...message, text: null, success: null });
     resetForm("password-input");
     resetForm("password-confirm-input");
   };
@@ -48,27 +47,24 @@ const ResetPasswordContainer = ({ history, location }) => {
         .then((res) => {
           setSave(false);
           setPasswordConfirmed(true);
-          setMessage({ ...message, text: res.data.message, success: true });
+          notify({ message: res.data.message, success: true });
         })
         .catch((error) => {
           setSave(false);
-          setMessage({
-            ...message,
-            text: error.response.data.message,
-            success: false,
+          notify({
+            message: error.response.data.message,
+            cb: () => clearError(),
           });
         });
     };
     updatePassword();
-  }, [save, credentials, history]);
+  }, [save, credentials, history, notify]);
 
   if (auth.authenticated) return <Redirect to={`${from.pathname}`} />;
 
   return (
     <ResetPassword
       passwordChanged={passwordChanged}
-      clearError={clearError}
-      message={message}
       handleSaveClick={handleSaveClick}
       history={history}
       save={save}

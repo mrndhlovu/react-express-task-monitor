@@ -40,9 +40,6 @@ export const requestCreateNewCard = (body, id) =>
 export const requestCardUpdate = (body, id) =>
   axios.patch(`${CARDS_EP}/${id}/update-card`, body, params);
 
-export const requestDeleteAttachment = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/delete-attachment`, { ...body });
-
 export const requestAuthSignup = (body) =>
   axios.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
 

@@ -1,8 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import { Message } from "semantic-ui-react";
-
-import { emptyFunction } from "../../utils/appUtils";
 import { requestCreateNewCard } from "../../apis/apiRequests";
 import CreateInput from "../sharedComponents/CreateInput";
 import DropdownButton from "../sharedComponents/DropdownButton";
@@ -10,50 +7,39 @@ import UIContainer from "../sharedComponents/UIContainer";
 
 const CopyCardAction = ({ activeCard, id, sourceId, saveBoardChanges }) => {
   const [title, setTitle] = useState(`${activeCard.title} clone`);
-  const [copy, setCopy] = useState(false);
-  const [message, setMessage] = useState(false);
+  const [copied, setCopied] = useState(null);
 
-  useEffect(() => {
-    if (!copy) return emptyFunction();
-
-    const copyCard = async () => {
-      const card = {
-        ...activeCard,
-        title,
-        archived: false,
-      };
-
-      delete card._id;
-
-      const body = { card, listId: sourceId };
-
-      await requestCreateNewCard(body, id).then((res) => {
-        setMessage(true);
-        saveBoardChanges(res.body);
-      });
+  const handleCopyCard = async () => {
+    const card = {
+      ...activeCard,
+      title,
+      archived: false,
     };
+    delete card._id;
+    const body = { card, listId: sourceId };
 
-    copyCard();
-    setCopy(false);
-  }, [activeCard, title, requestCreateNewCard, id, sourceId, copy]);
+    await requestCreateNewCard(body, id).then((res) => {
+      saveBoardChanges(res.data);
+      setCopied(true);
+    });
+  };
 
   return (
-    <DropdownButton header="Copy" icon="copy" buttonText="Copy" upward={true}>
+    <DropdownButton
+      close={copied}
+      header="Copy"
+      icon="copy"
+      buttonText="Copy"
+      upward={true}
+    >
       <UIContainer width="100%">
-        {message && (
-          <Message
-            positive
-            content="Card copied"
-            onDismiss={() => setMessage(false)}
-          />
-        )}
         <CreateInput
           hideIcon={true}
           buttonText="Copy"
           placeholder="Enter a new card title"
           defaultValue={title}
           handleChange={(e) => setTitle(e.target.value)}
-          handleCreateClick={() => setCopy(true)}
+          handleCreateClick={() => handleCopyCard()}
         />
       </UIContainer>
     </DropdownButton>

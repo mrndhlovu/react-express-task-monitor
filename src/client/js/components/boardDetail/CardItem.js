@@ -1,9 +1,13 @@
-import React, { useState, useContext, useEffect, Fragment } from "react";
+import React, { useState, useContext, Fragment } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { BoardListsContext, BoardContext } from "../../utils/contextUtils";
-import { getFormattedDate, stringsEqual } from "../../utils/appUtils";
+import {
+  getFormattedDate,
+  stringsEqual,
+  findArrayItem,
+} from "../../utils/appUtils";
 import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
 import EditCardPenIcon from "./EditCardPenIcon";
@@ -36,6 +40,9 @@ const Container = styled.div`
 const BadgeContainer = styled.div`
   padding: 2px 10px;
   display: flex;
+  min-height: 40px;
+  vertical-align: bottom;
+  align-items: flex-end;
 `;
 
 const CardItem = ({
@@ -47,14 +54,10 @@ const CardItem = ({
   showEditButton,
   listPosition,
 }) => {
-  const {
-    handleBoardUpdate,
-    handleCardClick,
-    updateBoard,
-    board,
-    mobile,
-  } = useContext(BoardListsContext);
-  const { saveBoardChanges } = useContext(BoardContext);
+  const { setSourceId, handleCardClick, board, mobile } = useContext(
+    BoardListsContext
+  );
+  const { saveBoardChanges, handleBoardUpdate } = useContext(BoardContext);
 
   const hasLabel = card.labels.length !== 0;
   const hasAttachments = card.attachments.length !== 0;
@@ -65,29 +68,15 @@ const CardItem = ({
   const hasDueDate = card.dueDate;
   const { id } = match.params;
 
-  const [deleteCard, setDeleteCard] = useState(false);
   const [openCardModal, setOpenCardModal] = useState(false);
 
-  useEffect(() => {
-    if (!deleteCard) return;
-    const deleteCardItem = async () => {
-      const newBoard = {
-        ...board,
-        lists: board.lists.map((list) =>
-          list._id === sourceListId
-            ? {
-                ...list,
-                cards: list.cards.filter((item) => item._id !== card._id),
-              }
-            : { ...list }
-        ),
-      };
+  const handleDeleteCard = () => {
+    const sourceList = findArrayItem(board.lists, sourceListId, "_id");
+    sourceList.cards.splice(sourceList.cards.indexOf(card));
+    board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-      updateBoard(newBoard, "deleteCard");
-    };
-    deleteCardItem();
-    setDeleteCard(false);
-  }, [card, deleteCard, sourceListId, handleBoardUpdate, board, updateBoard]);
+    return handleBoardUpdate(board);
+  };
 
   return (
     <Fragment>
@@ -131,7 +120,7 @@ const CardItem = ({
       )}
       <EditCardModal
         cardItem={card}
-        handleDeleteCard={() => setDeleteCard(true)}
+        handleDeleteCard={() => handleDeleteCard()}
         history={history}
         id={id}
         sourceListId={sourceListId}
@@ -142,6 +131,7 @@ const CardItem = ({
         saveBoardChanges={saveBoardChanges}
         handleBoardUpdate={handleBoardUpdate}
         hasDueDate={hasDueDate}
+        setSourceId={setSourceId}
       />
     </Fragment>
   );

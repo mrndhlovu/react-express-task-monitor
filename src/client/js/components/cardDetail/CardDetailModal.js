@@ -1,14 +1,13 @@
 import React, {
   useContext,
   useState,
-  useEffect,
   memo,
   useCallback,
   Suspense,
   lazy,
 } from "react";
-import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+
 import { Modal, Button, Grid } from "semantic-ui-react";
 
 import {
@@ -16,20 +15,17 @@ import {
   MainContext,
   BoardContext,
 } from "../../utils/contextUtils";
-import {
-  emptyFunction,
-  findArrayItem,
-  stringsEqual,
-} from "../../utils/appUtils";
+import { findArrayItem, stringsEqual } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
 
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
-import { useAuth } from "../../utils/hookUtils";
+import { useAuth, useAlert } from "../../utils/hookUtils";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import AddAttachment from "./AddAttachment";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const Attachments = lazy(() => import("./Attachments"));
 const CardModalActivities = lazy(() => import("./CardModalActivities"));
@@ -39,19 +35,7 @@ const DueDate = lazy(() => import("./DueDate"));
 const ModalHeader = lazy(() => import("./ModalHeader"));
 const ModalImageCover = lazy(() => import("./ModalImageCover"));
 
-const ModalContent = styled(Modal.Content)``;
-
-const LeftSideContent = styled(Modal.Description)``;
-
-const Container = styled.div`
-  padding: 25px;
-`;
-
-const StyledIcon = styled(Button)`
-  border-radius: 50px !important;
-`;
-
-const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
+const CardDetailModal = ({ listId, match, modalOpen, history }) => {
   const {
     activeCard,
     board,
@@ -59,157 +43,82 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
     handleBoardUpdate,
     handleCardClick,
     handleUploadAttachment,
-    sourceTitle,
   } = useContext(BoardListsContext);
   const { saveBoardChanges } = useContext(BoardContext);
   const { user } = useAuth();
   const { device } = useContext(MainContext);
+  const { notify } = useAlert();
   const { id } = match.params;
 
-  const [activeCover, setActiveCardCover] = useState(null);
   const [card, setCard] = useState(activeCard);
-  const [deleteAttachment, setDeleteAttachment] = useState(null);
   const [hideActivities, setHideActivities] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [newAttachment, setNewAttachment] = useState(null);
-  const [newCover, setNewCover] = useState(null);
-  const [removeCover, setRemoveCover] = useState(false);
+  const [isLoading, setIsLoading] = useState("");
+  const [sourceId, setSourceId] = useState(listId);
 
   const hasLabel = card && card.labels.length !== 0;
   const hasChecklist = card && card.checklists.length !== 0;
   const hasMembers = board && board.members.length !== 0;
-  const hasCover = card && !stringsEqual(card.cardCover, "");
+  const hasCover = card && card.cardCover !== "";
   const hasAttachments = card && card.attachments.length !== 0;
+
+  const sourceList = findArrayItem(board.lists, sourceId, "_id");
 
   const saveCardChanges = (changes) => setCard(changes);
 
-  const handleMakeCover = (coverUrl) => setNewCover(coverUrl);
+  const handleMakeCover = async (cover) => {
+    setIsLoading("cover");
+    let newCard = { ...card, cardCover: cover };
+
+    const body = {
+      newCard,
+      listId: sourceId,
+    };
+
+    await requestCardUpdate(body, id).then((res) => {
+      saveCardChanges(newCard);
+      saveBoardChanges(res.data);
+      setIsLoading("");
+    });
+  };
 
   const editAttachments = useCallback(
     (attachment, callback, remove) => {
       const attachmentIndex = card.attachments.indexOf(attachment);
-      setIsLoading(true);
+      setIsLoading("attachment");
 
       if (remove) {
         card.attachments.splice(attachmentIndex, 1);
       } else card.attachments.push(attachment);
 
-      const sourceList = findArrayItem(board.lists, sourceId, "_id");
       const cardIndex = sourceList.cards.indexOf(card);
       const sourceIndex = board.lists.indexOf(sourceList);
 
       sourceList.cards.splice(cardIndex, 1, card);
       board.lists.splice(sourceIndex, 1, sourceList);
 
-      setNewAttachment(board);
+      handleBoardUpdate(board, "lists", "addAttachment");
+      setIsLoading("");
 
       return callback && callback();
     },
-    [card, board, sourceId]
+    [card, board, sourceId, handleBoardUpdate]
   );
 
-  useEffect(() => {
-    if (!newAttachment) return emptyFunction();
+  const handleRemoveCover = async () => {
+    setIsLoading("cover");
 
-    handleBoardUpdate(newAttachment, "lists", "addAttachment");
-    setNewAttachment(false);
-    setIsLoading(false);
-  }, [handleBoardUpdate, newAttachment]);
+    const body = {
+      cardId: card._id,
+      listId: sourceId,
+      newCard: { ...card, cardCover: "" },
+    };
+    await requestCardUpdate(body, id).then((res) => {
+      saveCardChanges({ ...card, cardCover: "" });
+      saveBoardChanges(res.data);
 
-  const handleLoadingAttachment = (loading) => {
-    setIsLoading(loading);
+      setIsLoading("");
+    });
   };
-  const handleRemoveCover = () => {
-    setRemoveCover(true);
-    handleLoadingAttachment(true);
-  };
-
-  useEffect(() => {
-    if (!removeCover) return;
-
-    const removeCardCover = async () => {
-      const body = {
-        cardId: card._id,
-        listId: sourceId,
-        newCard: { ...card, cardCover: "" },
-      };
-      await requestCardUpdate(body, id).then((res) => {
-        setCard({ ...card, cardCover: "" });
-        saveBoardChanges(res.data);
-        setRemoveCover(false);
-        handleLoadingAttachment(false);
-        setActiveCardCover(null);
-      });
-    };
-    removeCardCover();
-  }, [card, id, sourceId, handleBoardUpdate, removeCover, saveBoardChanges]);
-
-  useEffect(() => {
-    if (!newCover) return emptyFunction();
-
-    const attachCardCover = async () => {
-      let newCard = { ...card, cardCover: newCover };
-
-      const body = {
-        newCard,
-        listId: sourceId,
-      };
-
-      await requestCardUpdate(body, id).then((res) => {
-        setCard(newCard);
-        saveBoardChanges(res.data);
-        setActiveCardCover(newCard.cardCover);
-      });
-    };
-    attachCardCover();
-    return () => setNewCover(null);
-  }, [
-    card,
-    id,
-    sourceId,
-    handleBoardUpdate,
-    setNewCover,
-    newCover,
-    newAttachment,
-    saveBoardChanges,
-  ]);
-
-  useEffect(() => {
-    if (newCover) return;
-    setActiveCardCover(card.cardCover);
-  }, [card, newCover]);
-
-  useEffect(() => {
-    if (!deleteAttachment) return emptyFunction();
-
-    const removeAttachment = async () => {
-      card.attachments.images.splice(
-        card.attachments.images.indexOf(deleteAttachment),
-        1
-      );
-
-      const body = {
-        newCard: card,
-        listId: sourceId,
-      };
-
-      await requestCardUpdate(body, id).then((res) => {
-        setCard(body.newCard);
-        saveBoardChanges(res.data);
-        setIsLoading(false);
-      });
-    };
-    removeAttachment();
-    setDeleteAttachment(null);
-  }, [
-    activeCover,
-    deleteAttachment,
-    card,
-    id,
-    sourceId,
-    saveBoardChanges,
-    newCover,
-  ]);
 
   return (
     <Modal
@@ -219,7 +128,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
       open={card && modalOpen}
       closeOnRootNodeClick={false}
       closeIcon={
-        <StyledIcon
+        <Button
           onClick={() => handleCardClick()}
           icon="delete"
           size="tiny"
@@ -230,11 +139,11 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
       <Suspense fallback={<UILoadingSpinner />}>
         <ModalImageCover
           activeCard={card}
-          cardCover={activeCover}
+          cardCover={card.cardCover}
           handleCardClick={handleCardClick}
           hasCover={hasCover}
           id={id}
-          isLoading={isLoading && (newCover || removeCover)}
+          isLoading={stringsEqual(isLoading, "cover")}
           sourceId={sourceId}
           saveCardChanges={saveCardChanges}
           saveBoardChanges={saveBoardChanges}
@@ -242,24 +151,25 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
           handleMakeCover={handleMakeCover}
         />
 
-        <Container>
+        <UIWrapper>
           <ModalHeader
             title={card.title}
             cardPosition={card._id}
             sourceId={sourceId}
-            sourceTitle={sourceTitle}
+            sourceTitle={sourceList.title}
             cardCover={card.cardCover}
             originalBoard={board}
             originalCard={card}
             history={history}
             handleBoardUpdate={handleBoardUpdate}
+            setSourceId={setSourceId}
           />
 
           <Grid columns={2} divided stackable>
             <Grid.Row stretched>
               <Grid.Column width={12}>
-                <ModalContent image>
-                  <LeftSideContent>
+                <Modal.Content image>
+                  <Modal.Description>
                     {card.dueDate && card.dueDate.date && (
                       <DueDate
                         activeCard={card}
@@ -316,33 +226,39 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                           />
                         </div>
 
-                        {card.attachments.map((attachment, index) => (
-                          <Attachments
-                            key={index}
-                            activeCover={activeCover}
-                            attachment={attachment}
-                            isLoading={
-                              isLoading && (newAttachment || deleteAttachment)
-                            }
-                            handleMakeCover={handleMakeCover}
-                            handleRemoveCover={handleRemoveCover}
-                            editAttachments={editAttachments}
-                            history={history}
-                          />
-                        ))}
+                        {hasAttachments &&
+                          card.attachments.map((attachment, index) => (
+                            <Attachments
+                              key={index}
+                              activeCover={card.cardCover}
+                              attachment={attachment}
+                              handleMakeCover={handleMakeCover}
+                              handleRemoveCover={handleRemoveCover}
+                              editAttachments={editAttachments}
+                              history={history}
+                            />
+                          ))}
+                        {stringsEqual(isLoading, "attachment") && (
+                          <UIWrapper className="loading-attachment-placeholder">
+                            Loading...
+                          </UIWrapper>
+                        )}
                         {hasAttachments && (
                           <AddAttachment
-                            upward={true}
-                            labeled={false}
-                            fluid={false}
-                            icon=""
-                            editAttachments={editAttachments}
-                            mobile={device.mobile}
                             activeCard={card}
-                            handleLoadingAttachment={handleLoadingAttachment}
-                            direction="right"
-                            compact={false}
                             buttonText="Add an attachment"
+                            compact={false}
+                            direction="right"
+                            editAttachments={editAttachments}
+                            fluid={false}
+                            handleLoadingAttachment={setIsLoading}
+                            icon=""
+                            id={id}
+                            labeled={false}
+                            mobile={device.mobile}
+                            saveBoardChanges={saveBoardChanges}
+                            saveCardChanges={saveCardChanges}
+                            sourceId={sourceId}
                           />
                         )}
                       </>
@@ -362,8 +278,8 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                       saveCardChanges={saveCardChanges}
                       user={user.fname}
                     />
-                  </LeftSideContent>
-                </ModalContent>
+                  </Modal.Description>
+                </Modal.Content>
               </Grid.Column>
               <Grid.Column width={4}>
                 <CardModalSidebar
@@ -373,7 +289,7 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                   boardMembers={board.members}
                   getSourceList={getSourceList}
                   handleBoardUpdate={handleBoardUpdate}
-                  handleLoadingAttachment={handleLoadingAttachment}
+                  handleLoadingAttachment={setIsLoading}
                   handleMakeCover={handleMakeCover}
                   handleRemoveCover={handleRemoveCover}
                   handleUploadAttachment={handleUploadAttachment}
@@ -387,11 +303,13 @@ const CardDetailModal = ({ sourceId, match, modalOpen, history }) => {
                   saveCardChanges={saveCardChanges}
                   id={id}
                   history={history}
+                  notify={notify}
+                  setSourceId={setSourceId}
                 />
               </Grid.Column>
             </Grid.Row>
           </Grid>
-        </Container>
+        </UIWrapper>
       </Suspense>
     </Modal>
   );

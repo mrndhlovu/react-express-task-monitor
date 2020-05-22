@@ -8,7 +8,7 @@ import {
   stringsEqual,
   emptyFunction,
 } from "../../utils/appUtils";
-import UIContainer from "../sharedComponents/UIContainer";
+
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 
@@ -49,33 +49,22 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
   max-width: 200px !important;
 `;
 
-const display = {
-  backgroundColor: "#e2dfe4 !important",
-  height: "80px",
-  position: "relative",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-};
-
 const Attachments = ({
   activeCover,
   attachment,
   editAttachments,
   handleMakeCover,
   handleRemoveCover,
-  isLoading,
 }) => {
   const [openDocument, setOpenDocument] = useState(null);
   const { filetype, name, uploadDate, url } = attachment;
   const isAnImage = ALLOWED_IMAGE_TYPES.includes(filetype);
-  const isActiveCover = isAnImage && stringsEqual(url, activeCover);
+  const isActiveCover =
+    activeCover && isAnImage && stringsEqual(url, activeCover);
 
   const handleClick = (item) => setOpenDocument(item);
 
-  return isLoading ? (
-    <UIContainer display={display}>Loading...</UIContainer>
-  ) : (
+  return (
     <Item.Group divided>
       <Item>
         {isAnImage ? (

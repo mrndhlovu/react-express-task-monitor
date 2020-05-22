@@ -31,8 +31,9 @@ router.post("/:type/:boardId/:listId/:cardId/upload", auth, (req, res) => {
 
   uploadFile(type, req, res, async (err) => {
     if (err) return res.json({ message: err.message, success: false });
-    const { originalname, location } = req.file;
+
     try {
+      const { originalname, location } = req.file;
       const attachment = {
         url: location,
         uploadDate: Date.now(),

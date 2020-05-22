@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useMemo,
-  useContext,
-} from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -46,16 +40,19 @@ const BoardContainer = ({ match, history }) => {
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
-  const handleBoardUpdate = useMemo(
-    () => (changes, fieldId = "lists", activity, callback, newId) => {
-      if (!changes) return setBoard(null);
-      saveBoardChanges(changes);
-      setUpdatedField({ fieldId, activity, callback, newId });
-    },
-    []
-  );
+  const handleBoardUpdate = (
+    newBoard,
+    fieldId = "lists",
+    activity,
+    callback,
+    newId
+  ) => {
+    if (!newBoard) return setBoard(null);
+    saveBoardChanges(newBoard);
+    setUpdatedField({ fieldId, activity, callback, newId });
+  };
 
-  const saveBoardChanges = (changes) => setBoard(changes);
+  const saveBoardChanges = (newBoard) => setBoard(newBoard);
 
   const changeBoardAccessLevel = (option) => {
     const newBoard = {
@@ -161,7 +158,6 @@ const BoardContainer = ({ match, history }) => {
   }, [id, updatedField, board, auth, getNavData]);
 
   useEffect(() => {
-    if (board) return emptyFunction();
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then((res) => {
@@ -170,7 +166,7 @@ const BoardContainer = ({ match, history }) => {
         })
         .catch(() => history.push("/"));
 
-    auth.authenticated && fetchData();
+    auth.authenticated && !board && fetchData();
   }, [board, updatedField, id, history, getNavData, auth]);
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import styled from "styled-components";
 
 import { Header, Dropdown, Icon } from "semantic-ui-react";
@@ -39,14 +39,18 @@ const DropdownButton = ({
   pointing,
   className,
   compact = true,
+  close,
 }) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = (callback) => {
-    callback();
-
+    callback && callback();
     return setOpen(false);
   };
+
+  useEffect(() => {
+    close && handleClose();
+  }, [close]);
 
   return (
     <StyledDropdown

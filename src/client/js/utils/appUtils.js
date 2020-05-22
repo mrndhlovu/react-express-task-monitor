@@ -125,7 +125,8 @@ export const getFormattedDate = (date, format, calendar) =>
   calendar ? moment(date).calendar() : moment(date).format(format);
 
 export const stringsEqual = (mainString, comparison) => {
-  if (typeof comparison !== "string") return comparison.includes(mainString);
+  if (typeof comparison !== "string")
+    return comparison.includes(mainString || "");
 
   return equals(mainString, comparison);
 };
