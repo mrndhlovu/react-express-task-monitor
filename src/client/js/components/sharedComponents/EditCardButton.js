@@ -9,9 +9,11 @@ const EditCardButton = ({
   children,
   closeOnSelect,
   buttonText,
+  close,
 }) => {
   return (
     <DropdownButton
+      close={close}
       buttonText={buttonText}
       icon={icon}
       compact

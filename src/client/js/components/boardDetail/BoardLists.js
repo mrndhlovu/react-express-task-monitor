@@ -219,6 +219,7 @@ const BoardLists = ({ history }) => {
     newCardName,
     showAddCardInput,
     updateBoard,
+    setSourceId,
   };
 
   return (

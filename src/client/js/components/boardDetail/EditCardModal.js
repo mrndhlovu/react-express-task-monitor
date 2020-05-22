@@ -56,6 +56,7 @@ const EditCardModal = ({
   saveBoardChanges,
   setOpenCardModal,
   sourceListId,
+  setSourceId,
 }) => {
   const { board } = useContext(BoardListsContext);
 
@@ -66,13 +67,17 @@ const EditCardModal = ({
   const [newTitle, setNewTitle] = useState(false);
   const [saveCard, setSaveCard] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
+  const [close, setClose] = useState(false);
 
   const handleChange = (e) => setNewTitle(e.target.value);
 
   const handleChangeMembers = (member) => setBoardMember(member);
 
-  const handleRemoveDueDate = () => setNewDate({ ...newDate, remove: true });
-  const handleAddDueDate = () => setNewDate({ ...newDate, add: true });
+  const handleUpdateDueDate = (remove) => {
+    remove
+      ? setNewDate({ ...newDate, remove: true })
+      : setNewDate({ ...newDate, add: true });
+  };
 
   useEffect(() => {
     let newCard;
@@ -138,6 +143,14 @@ const EditCardModal = ({
     startDate,
   ]);
 
+  useEffect(() => {
+    return () => {
+      setTimeout(() => {
+        setClose(false);
+      }, 500);
+    };
+  });
+
   return (
     <Modal
       centered={false}
@@ -173,7 +186,12 @@ const EditCardModal = ({
               fluid
             />
           </EditCardButton>
-          <EditCardButton buttonText="Move" header="Move" icon="right arrow">
+          <EditCardButton
+            close={close}
+            buttonText="Move"
+            header="Move"
+            icon="right arrow"
+          >
             <MoveCardDialog
               originalBoard={board}
               originalCard={card}
@@ -183,6 +201,8 @@ const EditCardModal = ({
               saveBoardChanges={saveBoardChanges}
               id={id}
               handleBoardUpdate={handleBoardUpdate}
+              setClose={() => setClose(true)}
+              setSourceId={setSourceId}
             />
           </EditCardButton>
           <EditCardButton
@@ -201,8 +221,7 @@ const EditCardModal = ({
             <PickDueDate
               startDate={startDate}
               setStartDate={setStartDate}
-              handleAddClick={handleAddDueDate}
-              handleRemoveClick={handleRemoveDueDate}
+              handleUpdateDueDate={handleUpdateDueDate}
             />
           </EditCardButton>
           <EditCardButton
