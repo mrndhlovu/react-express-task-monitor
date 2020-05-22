@@ -1,17 +1,17 @@
-@import "vendors";
+@import "lib/vendors";
 
-@import "mediaqueries";
+@import "components/mediaqueries";
 
-@import "sidebars";
+@import "components/sidebars";
 
-@import "nav";
+@import "components/nav";
 
-@import "logo";
+@import "components/logo";
 
-@import "board";
+@import "components/board";
 
-@import "card";
+@import "components/card";
 
-@import "icons";
+@import "components/icons";
 
-@import "main";
+@import "components/main";
