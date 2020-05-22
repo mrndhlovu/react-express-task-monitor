@@ -1,0 +1,218 @@
+.activities-wrap {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  margin-bottom: 10px;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.card-list::-webkit-scrollbar {
+  display: none;
+}
+
+.card-detail-container {
+  margin-top: 3% !important;
+}
+
+.image-container,
+.card-list {
+  -ms-overflow-style: none;
+}
+
+.loading-attachment-placeholder {
+  background: #e2dfe4 !important;
+  height: 80px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-complete {
+  text-decoration: line-through;
+}
+
+.checklist-item-wrap {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.checklist-edit-wrap {
+  display: flex;
+  align-items: baseline;
+}
+
+.progress-bar-wrap {
+  padding-right: 5px;
+}
+
+.card-checklist {
+  padding-right: 0;
+}
+
+.checklist-item-actions {
+  width: 300px;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+.attachment-link {
+  background-position: 50%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border-radius: 3px;
+  margin-top: -40px;
+  text-align: center;
+  text-decoration: none;
+  z-index: 1;
+  width: 100%;
+}
+
+.attachment-link-text {
+  font-weight: 700;
+  color: #172b4d;
+  cursor: pointer;
+}
+
+.attachment-link-span {
+  background-color: #091e420a;
+  color: #5e6c84;
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  height: 100%;
+  line-height: 80px;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: 112px;
+}
+.attachment-thumbnail,
+.attachment-thumbnail-wrap {
+  height: 80px !important;
+  width: 112px !important;
+  border-top: 0 !important;
+  display: block;
+}
+
+.image-attachment-container {
+  margin-bottom: 10px;
+}
+
+.redirect-icon {
+  transform: rotate(-42deg);
+  padding-left: 5px;
+  font-size: 12px !important;
+  color: #172b4d;
+}
+
+.doc-page-buttons {
+  align-items: baseline;
+  align-items: center;
+  background: transparent !important;
+  border-radius: 3px;
+  bottom: 1%;
+  display: flex;
+  height: 80px;
+  justify-content: space-around;
+  position: fixed;
+  width: 40%;
+  font-size: 15px !important;
+  color: #fff;
+}
+
+.document-view-wrap {
+  width: fit-content !important;
+  background: transparent !important;
+  margin: 5vh 0 0 0 !important;
+  padding-bottom: 8% !important;
+}
+
+.modal-content-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  overflow-y: auto;
+  width: 80vw;
+  max-height: 78vh;
+}
+
+.document-content {
+  width: 100% !important;
+}
+.page-tracker {
+  padding: 5px;
+}
+
+.image-preview {
+  height: 67vh;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.image-preview > img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.txt-preview-edit-buttons,
+.img-preview-edit-buttons {
+  cursor: pointer;
+}
+
+.docx-preview,
+.pdf-preview {
+  display: flex;
+  justify-content: center;
+  background: #e2dfe4;
+  min-height: 92vh;
+}
+
+.txt-preview {
+  background: #fff;
+  max-height: 75vh;
+  overflow-y: auto;
+  padding: 1% 2%;
+}
+
+.close-modal {
+  position: absolute;
+  top: 0% !important;
+  color: #000 !important;
+}
+
+.docx-container {
+  width: 56%;
+  background: #fff;
+  display: flex;
+  border-radius: 2px;
+  flex-direction: column;
+  padding: 76px;
+  pointer-events: none;
+  box-shadow: 0px 0px 35px -8px #000000bf;
+}
+
+.card-source > div {
+  text-decoration: underline;
+}
+
+.move-card-wrapper {
+  width: fit-content;
+}
+
+.attachment-thumbnail img {
+  height: 80px !important;
+  width: 100%;
+  cursor: pointer;
+}
+
+.attachment-alert {
+  position: relative;
+  padding: 0;
+}

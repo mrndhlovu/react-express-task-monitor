@@ -1,0 +1,71 @@
+.board-header-button {
+  color: #fff !important;
+}
+
+.board-menu-sidebar {
+  width: 350px !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.board-menu-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.board-creator {
+  font-weight: 800;
+}
+
+.board-creator-details {
+  display: flex;
+  padding-top: 20px;
+  font-size: 17px;
+  align-items: center;
+}
+
+.board-creator-small {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+}
+
+.board-creator-small > span {
+  font-weight: 800;
+}
+
+.board-delete-button-wrap {
+  position: fixed;
+  bottom: 0;
+  padding-bottom: 5%;
+  width: 95%;
+  background: #fff;
+}
+
+.board-content {
+  display: grid;
+  height: 96vh;
+  left: 0;
+  position: relative;
+  top: 0%;
+  width: 100%;
+}
+
+.boards-container::-webkit-scrollbar {
+  display: none;
+}
+
+.lists-container::-webkit-scrollbar {
+  display: none;
+}
+
+.board-header {
+  align-items: start;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  left: 2px;
+  max-height: 40px;
+  padding-right: 8px;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+}

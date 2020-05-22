@@ -4,6 +4,7 @@
   "plugins": [
     "@babel/transform-runtime",
     "@babel/plugin-proposal-class-properties",
-    "transform-semantic-ui-react-imports"
+    "transform-semantic-ui-react-imports",
+    "babel-plugin-styled-components"
   ]
 }

@@ -76,25 +76,6 @@ module.exports = {
         use: ["file-loader"],
       },
       {
-        test: /\.module\.s(a|c)ss$/,
-        use: [
-          isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
-          {
-            loader: "css-loader",
-            options: {
-              modules: true,
-              sourceMap: isDevelopment,
-            },
-          },
-          {
-            loader: "sass-loader",
-            options: {
-              sourceMap: isDevelopment,
-            },
-          },
-        ],
-      },
-      {
         test: /\.s(a|c)ss$/,
         exclude: /\.module.(s(a|c)ss)$/,
         use: [
@@ -108,13 +89,6 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.css$/,
-        use: [
-          isDevelopment ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
-        ],
-      },
     ],
   },
   resolve: {
@@ -124,9 +98,8 @@ module.exports = {
     new Dotenv(),
     new MiniCssExtractPlugin({
       filename: isDevelopment ? "[name].css" : "[name].[hash].css",
-      chunkFilename: isDevelopment ? "[id].css" : "[id].[hash].css",
     }),
-    new CleanWebpackPlugin({}),
+    new CleanWebpackPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
   ],
 };

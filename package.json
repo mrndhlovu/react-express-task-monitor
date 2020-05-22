@@ -17,6 +17,7 @@
     "aws-sdk": "2.678.0",
     "axios": "0.19.0",
     "babel-loader": "^8.1.0",
+    "babel-plugin-styled-components": "^1.10.7",
     "babel-plugin-transform-semantic-ui-react-imports": "^1.4.1",
     "bcrypt": "4.0.1",
     "chalk": "3.0.0",

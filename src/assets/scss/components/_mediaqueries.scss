@@ -1,0 +1,73 @@
+@media only screen and (min-width: 1920px) {
+  .ui.modal {
+    width: 789px;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .ui.modal {
+    width: 808px;
+  }
+  .docx-container {
+    width: 70%;
+    padding: 50px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .checklist-header {
+    grid-template-columns: 1fr;
+  }
+  .attachment-thumbnail {
+    margin-left: 0 !important;
+  }
+  .modal-content-wrapper {
+    width: 94vw;
+  }
+
+  .document-view-wrap {
+    padding-bottom: 36% !important;
+  }
+  .doc-page-buttons {
+    width: 96%;
+  }
+
+  .docx-container {
+    width: 100%;
+    padding: 6px;
+  }
+  .logo-text > h2 {
+    font-size: 18px !important;
+  }
+  .board-header {
+    display: none;
+  }
+
+  .board-content {
+    height: 92vh;
+  }
+
+  .chat-icon {
+    bottom: 0%;
+  }
+
+  .chat-sidebar {
+    width: 300px !important;
+  }
+
+  .board-menu-sidebar {
+    width: 280px !important;
+  }
+
+  .board-header-button > div {
+    color: #000;
+  }
+
+  .mobile-side-menu {
+    padding: 0 !important;
+    width: 80vw !important;
+  }
+  .mobile-side-menu > div {
+    padding: 0 !important;
+  }
+}

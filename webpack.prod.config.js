@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = merge(shared, {
   optimization: {
-    minimizer: [new TerserPlugin(), new OptimizeCssAssetsPlugin({})],
+    minimizer: [new OptimizeCssAssetsPlugin(), new TerserPlugin()],
   },
   plugins: [
     new HtmlWebPackPlugin({

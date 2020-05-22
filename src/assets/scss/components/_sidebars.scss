@@ -1,0 +1,37 @@
+.sidebar-board-description {
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.sidebar-board-description > span {
+  padding-left: 15px;
+  font-weight: 800;
+}
+
+.sidebar-activities::-webkit-scrollbar {
+  display: none;
+  overflow-y: scroll;
+}
+.sidebar {
+  border: none !important;
+}
+
+.ui.sidebar {
+  border-radius: 3px !important;
+}
+
+.chat-sidebar {
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.thread-time,
+.chat-room-counter {
+  color: #000;
+}
+
+.sidebar-activities-wrap {
+  max-height: 45vh;
+  overflow-x: hidden;
+}
