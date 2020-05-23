@@ -62,6 +62,18 @@ const DEFAULT_TEMPLATES = [
   },
 ];
 
+const allowedFields = [
+  "fname",
+  "email",
+  "password",
+  "starred",
+  "idBoards",
+  "username",
+  "avatar",
+  "bio",
+  "viewedRecent",
+];
+
 module.exports = {
   allowedFileTypes,
   environment,
@@ -78,4 +90,5 @@ module.exports = {
   TOKEN_SIGNATURE,
   isDevelopment,
   DEFAULT_TEMPLATES,
+  allowedFields,
 };

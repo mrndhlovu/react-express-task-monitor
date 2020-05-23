@@ -10,9 +10,11 @@ import { requestNewBoard } from "../../apis/apiRequests";
 const TemplatesPage = ({ templates, history }) => {
   const [openDemo, setOpenDemo] = useState(null);
 
-  const handleUseTemplate = async (template) => {
-    delete template._id;
-    await requestNewBoard({ ...template, isTemplate: false }).then((res) => {
+  const handleUseTemplate = async (board) => {
+    delete board._id;
+    board = { ...board, isTemplate: false };
+
+    await requestNewBoard(board).then((res) => {
       if (res.status === 200) history.push(`/boards/id/${res.data._id}`);
     });
   };

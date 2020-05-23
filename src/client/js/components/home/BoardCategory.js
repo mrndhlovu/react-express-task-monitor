@@ -6,7 +6,6 @@ import { Header, Icon } from "semantic-ui-react";
 import { HomepageContext, MainContext } from "../../utils/contextUtils";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import Summary from "./Summary";
-import { useAuth } from "../../utils/hookUtils";
 
 const Category = styled.div`
   display: grid;
@@ -23,7 +22,6 @@ const Span = styled(Header)`
   padding: 0 5px !important;
   &:after {
     content: '${(props) => props.text}';
-   
   }
 
 `;
@@ -34,11 +32,11 @@ const BoardCategory = ({
   isDefault,
   isLast,
   showNewBoardModal,
-  category,
+  starred,
+  viewedRecent,
 }) => {
   const { tablet, loading, device } = useContext(MainContext);
-  const { boards } = useContext(HomepageContext);
-  const { user } = useAuth();
+  const { boards, user } = useContext(HomepageContext);
 
   return (
     <Fragment>
@@ -49,16 +47,13 @@ const BoardCategory = ({
         {!loading &&
           boards.map(
             (board) =>
-              ((user.starred.includes(board._id) && category === "starred") ||
-                (user.viewedRecent.includes(board._id) &&
-                  category === "recent") ||
-                category === "default") && (
+              ((user.starred.includes(board._id) && starred) ||
+                (user.viewedRecent.includes(board._id) && viewedRecent) ||
+                isDefault) && (
                 <Summary
-                  color={board.styleProperties.color}
-                  header={board.title}
                   key={board._id}
                   starred={user.starred.includes(board._id)}
-                  id={board._id}
+                  board={board}
                 />
               )
           )}

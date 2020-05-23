@@ -14,3 +14,21 @@
   z-index: 100;
   color: #fff;
 }
+
+.yellow-star {
+  color: yellow !important;
+}
+
+.white-star {
+  color: #fff !important;
+}
+
+.white-star,
+.yellow-star {
+  position: absolute !important;
+  bottom: 12% !important;
+  right: 3%;
+  width: 20px;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}

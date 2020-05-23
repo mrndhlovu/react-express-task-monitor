@@ -19,13 +19,13 @@ const StyledWrapper = styled.div`
   margin: ${(props) => (props.mobile || props.tablet ? "8% 0" : "1%  19%")};
 `;
 
-const HomePage = ({ history }) => {
+const HomePage = ({ history, user }) => {
   const { mobile, tablet } = useContext(MainContext).device;
   return (
     <StyledContainer className="boards-container" mobile={mobile}>
       <StyledWrapper mobile={mobile} tablet={tablet}>
         {!mobile && !tablet && <HomeSideMenu history={history} />}
-        <BoardsSummary />
+        <BoardsSummary user={user} />
       </StyledWrapper>
     </StyledContainer>
   );

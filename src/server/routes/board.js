@@ -65,6 +65,12 @@ router.delete("/:boardId/delete-board", auth, async (req, res) => {
   const _id = req.params.boardId;
 
   try {
+    const { starred, viewedRecent } = req.user;
+    if (starred.includes(_id) || viewedRecent.includes(_id)) {
+      starred.splice(starred.indexOf(_id), 1);
+      viewedRecent.splice(viewedRecent.indexOf(_id), 1);
+      req.user.save();
+    }
     await Board.findById({ _id }).then((board) => {
       board.members.map((member) => {
         if (member.isAdmin) return board.delete();
