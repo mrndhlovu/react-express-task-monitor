@@ -165,6 +165,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           return setBoard(res.data);
         })
         .catch(() => history.push("/"));
+
     if (templateBoard) return setBoard(templateBoard);
     auth.authenticated && !templateBoard && !board && fetchData();
   }, [board, updatedField, id, history, getNavData, templateBoard, auth]);

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useContext } from "react";
 
-import { requestBoardList, requestAuthLogout } from "../apis/apiRequests";
+import { requestBoardList } from "../apis/apiRequests";
 import { MainContext, AlertContext } from "./contextUtils";
 
 export const useAuth = () => {
@@ -32,7 +32,7 @@ export const useFetch = (history) => {
         })
         .catch(() => {
           setLoading(false);
-          requestAuthLogout().then(() => history.push("/login"));
+          window.location.reload();
         });
     };
 
