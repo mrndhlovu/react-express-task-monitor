@@ -11,7 +11,7 @@ const StyledMenuButton = styled.span`
   font-weight: 500;
   text-decoration: none;
   &:after {
-    content: '${props => props.content}';  
+    content: '${(props) => props.content}';  
     margin-left: 5px
   }
 
@@ -24,21 +24,21 @@ const Wrapper = styled.div`
   overflow: hidden;
   padding: 6px 8px;
   border-radius: 3px;
-  margin-bottom: 10px;
   transition-property: background-color, border-color, box-shadow;
   transition-duration: 85ms;
   transition-timing-function: ease;
   text-align: left !important;
-
-  &:hover {
-    background-color: #e4f0f6;
-    color: #091e42;
-  }
+  background: ${({ active }) => active && " #e4f0f6"};
 `;
 
-const HomeSidebarButton = ({ iconName, buttonText, onClick }) => {
+const HomeSidebarButton = ({
+  iconName,
+  buttonText,
+  onClick,
+  active = true,
+}) => {
   return (
-    <Wrapper>
+    <Wrapper active={active}>
       <StyledMenuButton content={buttonText} onClick={onClick}>
         <Icon name={iconName} />
       </StyledMenuButton>

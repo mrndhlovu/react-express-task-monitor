@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 
+import { MainContext } from "../../utils/contextUtils";
 import BoardsSummary from "./BoardsSummary";
 import HomeSideMenu from "./HomeSideMenu";
-import { MainContext } from "../../utils/contextUtils";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const StyledContainer = styled.div`
   font-family: roboto, sans-serif;
@@ -12,21 +13,16 @@ const StyledContainer = styled.div`
   overflow-y: auto;
 `;
 
-const StyledWrapper = styled.div`
-  display: grid;
-  grid-template-columns: ${(props) =>
-    props.mobile || props.tablet ? "100%" : "20% 80%"};
-  margin: ${(props) => (props.mobile || props.tablet ? "8% 0" : "1%  19%")};
-`;
-
 const HomePage = ({ history, user }) => {
   const { mobile, tablet } = useContext(MainContext).device;
   return (
     <StyledContainer className="boards-container" mobile={mobile}>
-      <StyledWrapper mobile={mobile} tablet={tablet}>
-        {!mobile && !tablet && <HomeSideMenu history={history} />}
-        <BoardsSummary user={user} />
-      </StyledWrapper>
+      <UIWrapper className="boards-grid-wrap">
+        <UIWrapper className="boards-grid" mobile={mobile} tablet={tablet}>
+          <HomeSideMenu history={history} className="sidebar-wrap" />
+          <BoardsSummary user={user} />
+        </UIWrapper>
+      </UIWrapper>
     </StyledContainer>
   );
 };

@@ -8,7 +8,6 @@ import EditableHeader from "../sharedComponents/EditableHeader";
 const TitleWrapper = styled.div`
   align-self: auto;
   display: flex;
-  justify-content: ${(props) => (props.mobile ? "center" : "start")};
   padding: 10px;
 `;
 
@@ -20,7 +19,7 @@ const BoardHeader = ({ user }) => {
 
   return (
     <div className="board-header">
-      <TitleWrapper mobile={mobile}>
+      <TitleWrapper>
         <EditableHeader type="boardTitle" title={board.title} />
       </TitleWrapper>
       {user && (

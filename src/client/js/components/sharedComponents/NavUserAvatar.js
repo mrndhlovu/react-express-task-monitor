@@ -19,7 +19,9 @@ const NavUserAvatar = ({
     });
   };
 
-  const trigger = <UserAvatar userInitials={getUserInitials(userName)} />;
+  const trigger = (
+    <UserAvatar padding="15px" userInitials={getUserInitials(userName)} />
+  );
 
   return (
     <Dropdown size="huge" trigger={trigger} pointing={pointing} icon={null}>

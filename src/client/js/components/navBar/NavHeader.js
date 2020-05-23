@@ -1,4 +1,4 @@
-import React, { useContext, memo, Fragment } from "react";
+import React, { useContext, memo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
@@ -11,37 +11,38 @@ import RightNavButtons from "./RightNavButtons";
 const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-between;
-  padding: 4px;
-  background-color: ${(props) => props.color};
-  max-height: 40px;
-  min-height: 40px;
-  position: sticky;
   top: 0;
   left: 0;
   z-index: 100;
   width: 100%;
 `;
 
+const NavContainer = styled.nav`
+  background-color: ${(props) => props.color};
+  max-height: 40px;
+  min-height: 40px;
+  position: sticky;
+  padding-top: 2px;
+`;
+
 const NavHeader = ({ history, color = "transparent", setVisible }) => {
-  const { device, isHomePage, setShowMobileMenu } = useContext(MainContext);
+  const { isHomePage, setShowMobileMenu } = useContext(MainContext);
 
   return (
-    <NavWrapper className="nav-container" color={color}>
-      {!device.mobile ? (
-        <Fragment>
-          <LeftNavButtons history={history} />
-          <Logo history={history} />
-          <RightNavButtons history={history} />
-        </Fragment>
-      ) : (
-        <MobileNavBar
-          setVisible={setVisible}
-          isHomePage={isHomePage}
-          history={history}
-          setShowMobileMenu={setShowMobileMenu}
-        />
-      )}
-    </NavWrapper>
+    <NavContainer className="nav-container" color={color}>
+      <NavWrapper className="desktop-nav-container">
+        <LeftNavButtons history={history} />
+        <Logo history={history} />
+        <RightNavButtons history={history} />
+      </NavWrapper>
+
+      <MobileNavBar
+        setVisible={setVisible}
+        isHomePage={isHomePage}
+        history={history}
+        setShowMobileMenu={setShowMobileMenu}
+      />
+    </NavContainer>
   );
 };
 

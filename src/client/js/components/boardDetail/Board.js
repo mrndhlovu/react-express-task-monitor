@@ -18,7 +18,6 @@ const BoardWrapper = styled.div`
   padding-left: ${(props) => (props.mobile ? "3px" : "7px")};
   position: relative;
   width: 100vw;
-  margin-top: ${(props) => !props.mobile && "37px"};
 `;
 
 const Board = () => {
@@ -40,7 +39,7 @@ const Board = () => {
   const getMembersOnline = (users) => setMembersOnline(users);
 
   return (
-    <BoardWrapper mobile={device.mobile}>
+    <BoardWrapper className="board-wrap" mobile={device.mobile}>
       <Sidebar.Pushable>
         <Suspense fallback={<UILoadingSpinner />}>
           <BoardLists />

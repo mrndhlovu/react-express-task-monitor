@@ -3,18 +3,14 @@ import React from "react";
 import HomeSidebarButton from "../sharedComponents/HomeSidebarButton";
 import UIContainer from "../sharedComponents/UIContainer";
 
-const style = {
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "start",
-  padding: "10px 5px",
-};
-
-const HomeSideMenu = ({ history }) => {
+const HomeSideMenu = ({ history, className, callback = () => {} }) => {
   return (
-    <UIContainer display={style}>
+    <UIContainer className={className}>
       <HomeSidebarButton
-        onClick={() => history.push("/templates")}
+        onClick={() => {
+          history.push("/templates");
+          callback();
+        }}
         buttonText="Templates"
         iconName="object ungroup outline"
       />
