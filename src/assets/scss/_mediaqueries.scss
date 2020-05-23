@@ -70,4 +70,17 @@
   .mobile-side-menu > div {
     padding: 0 !important;
   }
+
+  .templates-container {
+    flex-direction: row;
+  }
+  .template-page {
+    margin: 0 !important;
+  }
+  .templates-wrap {
+    flex-direction: column;
+  }
+  .templates-header {
+    margin-left: 7% !important;
+  }
 }

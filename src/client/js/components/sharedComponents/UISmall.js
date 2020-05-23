@@ -19,9 +19,11 @@ const UISmall = ({
   left = "13%",
   margin,
   dataTestId,
+  className,
 }) => {
   return (
     <StyledSmall
+      className={className}
       data-test-id={dataTestId}
       bottom={bottom}
       left={left}

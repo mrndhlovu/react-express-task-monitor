@@ -25,6 +25,43 @@ const TOKEN_SIGNATURE = process.env.TOKEN_SIGNATURE;
 const ROOT_URL =
   process.env.LOCAL_URL || `https://moneat.herokuapp.com:${PORT}`;
 
+const DEFAULT_TEMPLATES = [
+  {
+    category: "development",
+    title: "Web Development",
+    lists: [
+      "Backlog",
+      "Features",
+      "Running Tasks",
+      "Fix & Upgrade",
+      "Testing",
+      "Ready",
+    ],
+    description:
+      "Template to help web developers to organize and manage tasks and features for their projects and website development.",
+  },
+  {
+    category: "education",
+    title: "Life watch",
+    lists: ["Resolution", "Today", "This week", "Tomorrow", "Done"],
+    description: "Life Watchers, It's like Weight Watchers, but for your life!",
+  },
+  {
+    category: "Engineering",
+    title: "Software engineering career design",
+    lists: [
+      "AWS Certification",
+      "Node JS",
+      "Design patterns",
+      "React , Hooks and Redux",
+      "Experience-3 years",
+      "Resume",
+    ],
+    description:
+      "Plan your career with this board starting from where you are to where you want to be. Be bold, imaginative and set time-bound goals. Review this board weekly! You must!",
+  },
+];
+
 module.exports = {
   allowedFileTypes,
   environment,
@@ -40,4 +77,5 @@ module.exports = {
   S3_BUCKET,
   TOKEN_SIGNATURE,
   isDevelopment,
+  DEFAULT_TEMPLATES,
 };

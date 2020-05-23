@@ -1,8 +1,10 @@
 const jwt = require("jsonwebtoken");
 const User = require("../../models/User");
-const { TOKEN_SIGNATURE } = require("../config");
+const Board = require("../../models/Board");
+const List = require("../../models/List");
+const { TOKEN_SIGNATURE, DEFAULT_TEMPLATES } = require("../config");
 
-const viewedRecentMiddleWare = async (req, res, next) => {
+const viewedRecent = async (req, res, next) => {
   const _id = req.params.boardId;
   try {
     const token = req.cookies.access_token;
@@ -16,11 +18,11 @@ const viewedRecentMiddleWare = async (req, res, next) => {
     if (!user) throw new Error();
 
     const isStarred = user.starred.includes(_id);
-    const viewedRecent = user.viewedRecent.includes(_id);
+    const openRecently = user.viewedRecent.includes(_id);
 
-    const shouldAddToRecentViewed = !viewedRecent && !isStarred;
+    const shouldAddToRecentViewed = !openRecently && !isStarred;
     if (shouldAddToRecentViewed) user.viewedRecent.unshift(_id);
-    else if (isStarred && viewedRecent)
+    else if (isStarred && openRecently)
       user.viewedRecent.splice(user.viewedRecent.indexOf(_id), 1);
 
     const recent = user.viewedRecent.splice(0, 4);
@@ -35,4 +37,30 @@ const viewedRecentMiddleWare = async (req, res, next) => {
   }
 };
 
-module.exports = { viewedRecentMiddleWare };
+const defaultTemplates = async (req, res, next) => {
+  try {
+    const templates = [];
+    DEFAULT_TEMPLATES.map((template) => {
+      const newTemplate = new Board({
+        title: template.title,
+        isTemplate: true,
+        description: template.description,
+        styleProperties: { color: "#0078be" },
+      });
+
+      template.lists.forEach((list) => {
+        const newList = new List({ title: list });
+        newTemplate.lists.push(newList);
+      });
+
+      templates.push(newTemplate);
+    });
+    req.templates = templates;
+
+    next();
+  } catch (error) {
+    res.status(401).send({ error: error.message });
+  }
+};
+
+module.exports = { viewedRecent, defaultTemplates };

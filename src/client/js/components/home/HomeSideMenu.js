@@ -10,11 +10,11 @@ const style = {
   padding: "10px 5px",
 };
 
-const HomeSideMenu = () => {
+const HomeSideMenu = ({ history }) => {
   return (
     <UIContainer display={style}>
-      <HomeSidebarButton buttonText="Boards" iconName="target" />
       <HomeSidebarButton
+        onClick={() => history.push("/templates")}
         buttonText="Templates"
         iconName="object ungroup outline"
       />

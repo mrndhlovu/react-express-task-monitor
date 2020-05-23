@@ -46,6 +46,7 @@ export const bgColors = [
   "#58bf6b",
   "#32aecc",
   "#828c90",
+  "#172b4d",
 ];
 
 export const listMenuOptions = [

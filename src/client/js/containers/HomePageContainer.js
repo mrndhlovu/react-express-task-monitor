@@ -56,7 +56,7 @@ const HomePageContainer = ({ history }) => {
         handleBoardStarClick,
       }}
     >
-      <HomePage />
+      <HomePage history={history} />
     </HomepageContext.Provider>
   ) : (
     <UILoadingSpinner />

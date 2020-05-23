@@ -67,6 +67,11 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       minlength: 4,
     },
+    templates: {
+      type: Array,
+      required: true,
+      default: [],
+    },
     tokens: [
       {
         token: {
@@ -89,6 +94,12 @@ const UserSchema = new mongoose.Schema(
 
 UserSchema.virtual("boards", {
   ref: "Board",
+  localField: "_id",
+  foreignField: "owner",
+});
+
+UserSchema.virtual("template", {
+  ref: "Templates",
   localField: "_id",
   foreignField: "owner",
 });

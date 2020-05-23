@@ -1,10 +1,13 @@
 const router = require("express").Router();
 const Board = require("../models/Board");
+const Template = require("../models/Template");
 const List = require("../models/List");
 const User = require("../models/User");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
-const lastViewed = require("../utils/middleware/boardMiddleWare")
-  .viewedRecentMiddleWare;
+const {
+  viewedRecent,
+  defaultTemplates,
+} = require("../utils/middleware/boardMiddleWare");
 const { sendInvitationEmail } = require("../utils/middleware/emailMiddleware");
 const { ROOT_URL } = require("../utils/config");
 const ObjectID = require("mongodb").ObjectID;
@@ -38,7 +41,7 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.get("/id/:boardId", auth, lastViewed, async (req, res) => {
+router.get("/id/:boardId", auth, viewedRecent, async (req, res) => {
   const _id = req.params.boardId;
 
   let board;
@@ -47,7 +50,7 @@ router.get("/id/:boardId", auth, lastViewed, async (req, res) => {
 
     if (!board) {
       board = await Board.findOne({ _id });
-      board.validateBoardMember(req.user._id);
+      !board.isTemplate && board.validateBoardMember(req.user._id);
     }
 
     await board.populate("owner").execPopulate();
@@ -177,6 +180,33 @@ router.post("/:boardId/create-list", auth, async (req, res) => {
     board.lists.push(list);
     await board.save();
     res.status(203).send(board);
+  } catch (error) {
+    res.status(400).send({ message: error });
+  }
+});
+
+router.post("/create-template", auth, async (req, res) => {
+  // const { templateId } = req.body;
+  // let template;
+  // template = Template.findOne({ _id: templateId });
+
+  try {
+    res.status(203).send();
+  } catch (error) {
+    res.status(400).send({ message: error });
+  }
+});
+
+router.get("/templates", auth, defaultTemplates, async (req, res) => {
+  try {
+    const defaultTemps = req.templates;
+    const templates = await Template.find();
+    const data =
+      templates.length > 0
+        ? [...templates, ...defaultTemps]
+        : [...defaultTemps];
+
+    res.status(203).send(data);
   } catch (error) {
     res.status(400).send({ message: error });
   }
