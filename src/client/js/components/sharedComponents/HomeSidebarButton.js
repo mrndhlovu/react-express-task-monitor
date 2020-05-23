@@ -38,8 +38,8 @@ const HomeSidebarButton = ({
   active = true,
 }) => {
   return (
-    <Wrapper active={active}>
-      <StyledMenuButton content={buttonText} onClick={onClick}>
+    <Wrapper active={active} onClick={onClick}>
+      <StyledMenuButton content={buttonText}>
         <Icon name={iconName} />
       </StyledMenuButton>
     </Wrapper>
