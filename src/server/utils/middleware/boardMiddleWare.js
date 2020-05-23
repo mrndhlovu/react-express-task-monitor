@@ -4,7 +4,7 @@ const Board = require("../../models/Board");
 const List = require("../../models/List");
 const { TOKEN_SIGNATURE, DEFAULT_TEMPLATES } = require("../config");
 
-const viewedRecent = async (req, res, next) => {
+const viewedRecentMiddleware = async (req, res, next) => {
   const starId = req.query.id;
   const _id = req.params.boardId || starId;
   let user;
@@ -69,4 +69,4 @@ const defaultTemplates = async (req, res, next) => {
   }
 };
 
-module.exports = { viewedRecent, defaultTemplates };
+module.exports = { viewedRecentMiddleware, defaultTemplates };

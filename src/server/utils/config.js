@@ -74,6 +74,19 @@ const allowedFields = [
   "viewedRecent",
 ];
 
+const allowedBoardUpdateFields = [
+  "accessLevel",
+  "activities",
+  "archived",
+  "category",
+  "comments",
+  "description",
+  "labels",
+  "lists",
+  "styleProperties",
+  "title",
+];
+
 module.exports = {
   allowedFileTypes,
   environment,
@@ -91,4 +104,5 @@ module.exports = {
   isDevelopment,
   DEFAULT_TEMPLATES,
   allowedFields,
+  allowedBoardUpdateFields,
 };

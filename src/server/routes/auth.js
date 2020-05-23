@@ -7,7 +7,9 @@ const {
   sendResetPasswordEmail,
   sendPasswordChangeConfirmation,
 } = require("../utils/middleware/emailMiddleware");
-const { viewedRecent } = require("../utils/middleware/boardMiddleWare");
+const {
+  viewedRecentMiddleware,
+} = require("../utils/middleware/boardMiddleWare");
 const crypto = require("crypto");
 const async = require("async");
 
@@ -194,7 +196,7 @@ router.patch("/update", auth, async (req, res, next) => {
 
   try {
     updates.forEach((update) => (req.user[update] = req.body[update]));
-    if (updateBoardStar) await viewedRecent(req, res, next);
+    if (updateBoardStar) await viewedRecentMiddleware(req, res, next);
     else await req.user.save();
 
     res.send(req.user);
