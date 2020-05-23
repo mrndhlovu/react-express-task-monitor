@@ -12,7 +12,7 @@ const TemplatesPage = ({ templates, history }) => {
 
   const handleUseTemplate = async (template) => {
     delete template._id;
-    await requestNewBoard(template).then((res) => {
+    await requestNewBoard({ ...template, isTemplate: false }).then((res) => {
       if (res.status === 200) history.push(`/boards/id/${res.data._id}`);
     });
   };
