@@ -22,7 +22,7 @@ const StyledContainer = styled.div`
   background: ${({ bgColor }) => bgColor};
 `;
 
-const BoardContainer = ({ match, history }) => {
+const BoardContainer = ({ match, history, templateBoard }) => {
   const { id } = match.params;
   const { getNavData } = useContext(MainContext);
   const { auth, user } = useAuth();
@@ -165,9 +165,9 @@ const BoardContainer = ({ match, history }) => {
           return setBoard(res.data);
         })
         .catch(() => history.push("/"));
-
-    auth.authenticated && !board && fetchData();
-  }, [board, updatedField, id, history, getNavData, auth]);
+    if (templateBoard) return setBoard(templateBoard);
+    auth.authenticated && !templateBoard && !board && fetchData();
+  }, [board, updatedField, id, history, getNavData, templateBoard, auth]);
 
   return (
     board && (

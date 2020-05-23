@@ -1,0 +1,58 @@
+.template-page {
+  display: flex;
+  flex-direction: column;
+  height: 96vh;
+  margin: 0 25%;
+}
+
+.template-container {
+  padding: 0;
+}
+
+.template-image {
+  max-width: 300px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.template-text {
+  font-weight: 800;
+}
+
+.template-individual {
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  width: fit-content;
+  margin-right: 10px;
+}
+
+.templates-header {
+  width: fit-content;
+  margin-left: 2% !important;
+  margin-top: 2% !important;
+}
+
+.templates-individual-wrap {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+}
+
+.close-template-demo {
+  position: absolute;
+  bottom: 7%;
+  left: 1%;
+  z-index: 10;
+}
+
+.templates-wrap {
+  display: flex;
+  width: fit-content;
+}
+
+.use-template {
+  padding-top: 10px;
+  font-weight: 800;
+}

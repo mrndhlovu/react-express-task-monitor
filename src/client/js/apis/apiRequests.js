@@ -84,3 +84,6 @@ export const requestBoardMembers = (id) =>
 
 export const requestImages = (query) =>
   axios.get(`${IMAGES_EP}&q=${query}&image_type=photo`);
+
+export const requestTemplates = () =>
+  axios.get(`${BOARDS_EP}/templates`, params);

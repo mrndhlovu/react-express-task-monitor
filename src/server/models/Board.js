@@ -23,7 +23,7 @@ const BoardSchema = new mongoose.Schema(
     },
     styleProperties: {
       type: Object,
-      default: { color: "#828c90" },
+      default: { color: "#0079be" },
     },
     accessLevel: {
       type: Object,
@@ -63,6 +63,11 @@ const BoardSchema = new mongoose.Schema(
     description: {
       type: String,
       default: "",
+    },
+    isTemplate: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
   },
   {

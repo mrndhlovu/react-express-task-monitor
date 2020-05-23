@@ -98,7 +98,7 @@ const BoardLists = ({ history }) => {
 
   const updateBoard = (data, action) => {
     setUpdate(data.lists);
-    handleBoardUpdate(data, "lists", activity || action);
+    !board.isTemplate && handleBoardUpdate(data, "lists", activity || action);
     setActivity(null);
   };
 

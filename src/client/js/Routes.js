@@ -89,6 +89,14 @@ const BoardContainer = (props) => (
   </DynamicImport>
 );
 
+const TemplatesContainer = (props) => (
+  <DynamicImport load={() => import("./containers/TemplatesContainer")}>
+    {(Component) =>
+      !Component ? <UILoadingSpinner /> : <Component {...props} />
+    }
+  </DynamicImport>
+);
+
 const Routes = () => {
   return (
     <Switch>
@@ -102,6 +110,12 @@ const Routes = () => {
         key="profile"
         path="/profile"
         component={UserProfileContainer}
+      />
+
+      <ProtectedRoute
+        key="templates"
+        path="/templates"
+        component={TemplatesContainer}
       />
 
       <Route
