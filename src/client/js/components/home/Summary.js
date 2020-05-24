@@ -33,6 +33,8 @@ const Card = styled.div`
       ? `background: url(${bgStyle.image})`
       : `background:${bgStyle.color}`};
   background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 2px !important;
   height: 100px !important;
   min-width: 100%;
