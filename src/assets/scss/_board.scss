@@ -43,11 +43,12 @@
 
 .board-content {
   display: grid;
-  height: 96vh;
+  height: 92vh;
   left: 0;
   position: relative;
   top: 0%;
   width: 100%;
+  padding-top: 5px;
 }
 
 .boards-container::-webkit-scrollbar {
