@@ -25,7 +25,6 @@ const AddCoverImage = ({ notify, ...props }) => {
   const [totalPages, setTotalPages] = useState(null);
 
   const handleSuggestionClick = (suggestion) => {
-    setSearchResult(null);
     setSearchQuery(suggestion);
     setSearch(true);
   };
@@ -65,7 +64,6 @@ const AddCoverImage = ({ notify, ...props }) => {
     setSearch(false);
 
     return () => {
-      setSearchResult(null);
       setSearch(false);
       setPageNum(1);
     };

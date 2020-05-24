@@ -40,7 +40,6 @@ const Container = styled.div`
 const BadgeContainer = styled.div`
   padding: 2px 10px;
   display: flex;
-  min-height: 40px;
   vertical-align: bottom;
   align-items: flex-end;
 `;

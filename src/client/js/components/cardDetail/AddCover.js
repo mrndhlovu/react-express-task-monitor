@@ -48,7 +48,7 @@ const AddCover = ({
           />
         </UIContainer>
       ) : (
-        <UIWrapper>
+        <UIWrapper className="add-image-container">
           <AddCoverImage hasCover={hasCover} {...props} />
 
           {hasCover && (

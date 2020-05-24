@@ -6,6 +6,7 @@ import React, {
   Fragment,
 } from "react";
 import { withRouter } from "react-router-dom";
+import styled from "styled-components";
 
 import { Sidebar } from "semantic-ui-react";
 
@@ -17,28 +18,39 @@ import { useDimensions } from "../utils/hookUtils";
 import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
-import UIContainer from "../components/sharedComponents/UIContainer";
 
-const style = {
-  padding: "0",
-  margin: 0,
-  position: "absolute",
-  width: "100vw",
-};
+const AppWrapper = styled.div`
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  width: 100vw;
+  ${({ bg }) =>
+    bg.image ? `background: url(${bg.image})` : `background:${bg.color}`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
+`;
 
 const MainContainer = ({ children, history, auth }) => {
   const isHomePage = history.location.pathname === "/";
   const [visible, setVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+  const [background, setBackground] = useState({ image: "", color: "" });
   const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
-  const [color, setColor] = useState(null);
+  const [create, setCreate] = useState(false);
   const [search, setSearch] = useState(false);
   const [update, setUpdate] = useState(null);
-  const [create, setCreate] = useState(false);
 
   const { device, dimensions } = useDimensions();
+
+  const navBackground =
+    !background.color && !background.image
+      ? DEFAULT_NAV_COLOR
+      : background.image
+      ? "transparent"
+      : background.color;
 
   const handleSearchClick = useCallback((e) => {
     setSearch(e.target.value);
@@ -51,11 +63,16 @@ const MainContainer = ({ children, history, auth }) => {
 
   const getNavigationBoards = (data) => setUpdate(data);
 
-  const getNavData = useMemo(() => (color) => color && setColor(color), []);
+  const getNavData = useMemo(
+    () => (style) => {
+      setBackground({ ...background, ...style });
+    },
+    []
+  );
 
   useEffect(() => {
-    history.location.pathname === "/" && setColor(null);
-  }, [history]);
+    isHomePage && setBackground({ image: "", color: "" });
+  }, [isHomePage]);
 
   useEffect(() => {
     if (!create) return emptyFunction();
@@ -67,7 +84,7 @@ const MainContainer = ({ children, history, auth }) => {
     };
     createBoard();
     setCreate(false);
-  }, [board, history]);
+  }, [board, history.push]);
 
   useEffect(() => {
     setBoards(update);
@@ -91,13 +108,13 @@ const MainContainer = ({ children, history, auth }) => {
         setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
       }}
     >
-      <UIContainer dataTestId="app-container" display={style}>
+      <AppWrapper data-test-id="app-container" bg={{ ...background }}>
         <Sidebar.Pushable>
           <Fragment>
             {auth.authenticated && (
               <Fragment>
                 <NavHeader
-                  color={color ? color : DEFAULT_NAV_COLOR}
+                  color={navBackground}
                   setVisible={() => setVisible(!visible)}
                 />
                 <MobileSideMenu
@@ -111,7 +128,7 @@ const MainContainer = ({ children, history, auth }) => {
             {search && <SearchPage />}
           </Fragment>
         </Sidebar.Pushable>
-      </UIContainer>
+      </AppWrapper>
     </MainContext.Provider>
   );
 };
