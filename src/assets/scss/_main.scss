@@ -5,6 +5,16 @@ ui.form,
   letter-spacing: 0.4px;
 }
 
+.auth-page {
+  align-items: center !important;
+  background-color: #fafbfc !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  justify-items: center !important;
+  position: relative !important;
+}
+
 .ui.tiny.modal {
   width: 300px !important;
   color: #b8ccf0 !important;
@@ -107,16 +117,6 @@ ui.form,
 .uibutton:hover {
   background-color: #2224261a !important;
   text-align: "left" !important;
-}
-
-.auth-page {
-  align-items: center;
-  background-color: #fafbfc;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  justify-items: center;
-  position: relative;
 }
 
 #authForm {
