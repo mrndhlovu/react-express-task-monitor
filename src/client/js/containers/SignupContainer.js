@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 
 import { requestAuthSignup } from "../apis/apiRequests";
@@ -7,7 +7,7 @@ import { useAuth, useAlert } from "../utils/hookUtils";
 import SignupPage from "../components/auth/SignupPage";
 
 const SignupContainer = ({ history }) => {
-  const { auth } = useAuth();
+  const { authenticated, authListener } = useAuth().auth;
   const { notify } = useAlert();
 
   const [loading, setLoading] = useState(false);
@@ -23,40 +23,31 @@ const SignupContainer = ({ history }) => {
     setCredentials({ ...credentials, [name]: value });
   };
 
-  useEffect(() => {
-    if (!loading) return;
-    const handleRedirect = async () => {
-      setLoading(true);
-      await requestAuthSignup(credentials)
-        .then((res) => {
-          notify({ message: "Account created successfully!", success: true });
-          localStorage.setItem("user", JSON.stringify(res.data));
-          if (res.status === 201)
-            setTimeout(() => {
-              history.push("/");
-              window.location.reload();
-            }, 500);
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await requestAuthSignup(credentials)
+      .then(() => {
+        notify({ message: "Account created successfully!", success: true });
+        authListener();
+      })
+      .catch((error) =>
+        notify({
+          message: error.response.data,
+          cb: () => {
+            resetForm("authForm");
+            setLoading(false);
+          },
         })
-        .catch((error) =>
-          notify({
-            message: error.response.data,
-            cb: () => resetForm("authForm"),
-          })
-        );
-    };
-    handleRedirect();
-    setLoading(false);
-  }, [history, loading, credentials]);
+      );
+  };
 
-  if (auth.authenticated) return <Redirect to="/" />;
+  if (authenticated) return <Redirect to="/" />;
 
   return (
     <SignupPage
       onHandleChange={onHandleChange}
-      handleSignupClick={(e) => {
-        e.preventDefault();
-        setLoading(true);
-      }}
+      handleSignupClick={(e) => handleSignUp(e)}
       history={history}
       loading={loading}
     />

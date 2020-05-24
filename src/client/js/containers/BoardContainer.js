@@ -42,7 +42,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
   const [updatedField, setUpdatedField] = useState(null);
-
   const [showMobileMenu, setShowMobileMenu] = useState();
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
@@ -177,7 +176,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then((res) => {
-          getNavData(res.data.styleProperties.color);
+          // getNavData(res.data.styleProperties.color);
           return setBoard(res.data);
         })
         .catch(() => history.push("/"));

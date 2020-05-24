@@ -21,7 +21,7 @@ const defaultRoom = [
     key: "Current board",
     text: "Current board",
     value: "current-board",
-    icon: "green circle",
+    icon: "circle",
   },
 ];
 
