@@ -8,20 +8,14 @@ import UISmall from "../sharedComponents/UISmall";
 
 const SearchImageList = ({ data, handleMakeCover }) => {
   const [images, setImages] = useState(null);
-  const [lazyLoad, setLazyLoad] = useState(true);
-
   useEffect(() => {
-    setTimeout(() => setImages(data), 1000);
-    return () => {
-      setLazyLoad(false);
-      setImages(null);
-    };
+    setImages(data);
   }, [data]);
 
   return (
     <UIWrapper className="images-container">
-      {lazyLoad && !images ? (
-        <UILoadingSpinner inverted={false} />
+      {!images ? (
+        <UILoadingSpinner />
       ) : (
         images.map((image) => (
           <Dropdown.Item
