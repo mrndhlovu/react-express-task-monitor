@@ -10,13 +10,7 @@ import UIDivider from "./UIDivider";
 import UISmall from "./UISmall";
 
 const StyledHeader = styled.div`
-  color: #0079bf;
-  font-family: Poppins, sans-serif;
-  font-size: 25px;
-  transition-duration: 500ms;
-  width: max-content;
-  position: absolute;
-  top: 16%
+
 }
 `;
 
@@ -79,7 +73,7 @@ const AuthFormWrapper = ({
 
   return (
     <UIContainer dataTestId={dataTestId} className="auth-page">
-      <StyledHeader>
+      <StyledHeader className="logo-container">
         <Icon name="bullseye" size="large" />
         Task Monitor
       </StyledHeader>
