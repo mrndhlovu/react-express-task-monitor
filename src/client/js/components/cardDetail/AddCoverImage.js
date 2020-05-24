@@ -16,7 +16,7 @@ const displayStyles = {
   marginTop: "5px",
 };
 
-const AddCoverImage = ({ ...props }) => {
+const AddCoverImage = ({ notify, ...props }) => {
   const [searchQuery, setSearchQuery] = useState(null);
   const [search, setSearch] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
@@ -28,7 +28,6 @@ const AddCoverImage = ({ ...props }) => {
   };
 
   const handleClearSearch = () => {
-    setSearchResult(null);
     setSearchQuery(null);
   };
 
@@ -39,26 +38,35 @@ const AddCoverImage = ({ ...props }) => {
     const getQueryImageList = async () => {
       await requestImages(query).then((res) => {
         try {
-          setSearchResult(res.data.hits);
+          setSearchResult(res.data.results);
           setSearch(false);
         } catch (error) {
-          alert(error.message);
+          notify({ message: error.message });
         }
       });
     };
     getQueryImageList();
   }, [searchQuery, search]);
 
+  // TODO add image search pagination
+
   return (
     <Fragment>
-      {!searchResult && <Header content="Suggested searches" as="h4" />}
+      <Header
+        className="images-source"
+        content="Images by Unsplash"
+        as="a"
+        href="https://unsplash.com"
+      />
+      {!searchResult && <Header content="Suggested searches" as="h5" />}
       <Input
+        className="image-search-input"
         icon={
           <Icon
             name={!searchResult ? "search" : "close"}
             link={(searchResult && searchResult.length > 0) || false}
             onClick={() =>
-              searchResult ? handleClearSearch(null) : emptyFunction()
+              searchResult ? handleClearSearch() : emptyFunction()
             }
           />
         }

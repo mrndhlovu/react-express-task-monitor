@@ -1,27 +1,10 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+
 import { Image, Dropdown } from "semantic-ui-react";
 
-import UIContainer from "../sharedComponents/UIContainer";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-
-const displayStyles = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, 50%)",
-  height: "333px",
-  width: "300px",
-  overflowY: "auto",
-  padding: 0,
-  position: "relative",
-  borderRadius: "3px",
-};
-
-const ImageWrapper = styled(Dropdown.Item)`
-  background-color: #eee;
-  margin: 4px;
-  border-radius: 3px !important;
-  cursor: pointer;
-`;
+import UIWrapper from "../sharedComponents/UIWrapper";
+import UISmall from "../sharedComponents/UISmall";
 
 const SearchImageList = ({ data, handleMakeCover }) => {
   const [images, setImages] = useState(null);
@@ -36,19 +19,38 @@ const SearchImageList = ({ data, handleMakeCover }) => {
   }, [data]);
 
   return (
-    <UIContainer display={displayStyles} className="image-container">
+    <UIWrapper className="images-container">
       {lazyLoad && !images ? (
         <UILoadingSpinner inverted={false} />
       ) : (
         images.map((image) => (
-          <ImageWrapper
+          <Dropdown.Item
+            className="search-images-wrap"
             key={image.id}
-            onClick={() => handleMakeCover(image.userImageURL)}
-            image={<Image src={image.userImageURL} />}
+            content={
+              <UISmall className="image-owner">
+                Image by:{" "}
+                <a
+                  className="image-owner"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={image.user.links.html}
+                >
+                  {image.user.first_name}
+                </a>
+              </UISmall>
+            }
+            image={
+              <Image
+                onClick={() => handleMakeCover(image.urls.full)}
+                className="search-image"
+                src={image.urls.small}
+              />
+            }
           />
         ))
       )}
-    </UIContainer>
+    </UIWrapper>
   );
 };
 

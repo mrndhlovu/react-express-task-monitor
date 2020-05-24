@@ -38,7 +38,7 @@ const DEFAULT_TEMPLATES = [
       "Ready",
     ],
     image:
-      "https://boards-app.s3.eu-west-1.amazonaws.com/view-of-airport-247791.jpg",
+      "https://images.unsplash.com/photo-1514474959185-1472d4c4e0d4?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEyNTA3OH0",
     description:
       "Template to help web developers to organize and manage tasks and features for their projects and website development.",
   },
@@ -47,14 +47,14 @@ const DEFAULT_TEMPLATES = [
     title: "Life watch",
     lists: ["Resolution", "Today", "This week", "Tomorrow", "Done"],
     image:
-      "https://boards-app.s3.eu-west-1.amazonaws.com/classic-blue-coupe-die-cast-model-1037995.jpg",
+      "https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEyNTA3OH0",
     description: "Life Watchers, It's like Weight Watchers, but for your life!",
   },
   {
     category: "Engineering",
     title: "Software engineering career design",
     image:
-      "https://boards-app.s3.eu-west-1.amazonaws.com/blue-sky-blur-clear-sky-color-281260.jpg",
+      "https://images.unsplash.com/photo-1544819667-9bfc1de23d4e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=400&fit=max&ixid=eyJhcHBfaWQiOjEyNTA3OH0",
     lists: [
       "AWS Certification",
       "Node JS",

@@ -149,6 +149,7 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
           saveBoardChanges={saveBoardChanges}
           handleRemoveCover={handleRemoveCover}
           handleMakeCover={handleMakeCover}
+          notify={notify}
         />
 
         <UIWrapper>

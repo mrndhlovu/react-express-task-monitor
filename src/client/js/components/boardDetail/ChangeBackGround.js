@@ -8,6 +8,7 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 import { stringsEqual } from "../../utils/appUtils";
 import AddCoverImage from "../cardDetail/AddCoverImage";
 import { Button } from "semantic-ui-react";
+import { useAlert } from "../../utils/hookUtils";
 
 const colorStyle = {
   borderRadius: "8px",
@@ -24,27 +25,28 @@ const ChangeBackGround = ({
 }) => {
   const [show, setShow] = useState("");
   const [link, setLink] = useState("");
+  const { notify } = useAlert();
 
   return (
     <SideBarWrapper
       open={changeBg}
       handleClose={toggleChangeBg}
-      header="Change board color"
+      header={show ? `Change board ${show}` : "Change board background"}
       className="board-menu-sidebar"
     >
       <UIDivider inverted={true} hidden={true} />
 
       <UIWrapper className="bg-options-wrap">
-        <UIWrapper className="bg-option" handleClick={() => setShow("colors")}>
+        <UIWrapper className="bg-option" handleClick={() => setShow("color")}>
           <span>Colors</span>
         </UIWrapper>
-        <UIWrapper className="bg-option" handleClick={() => setShow("images")}>
+        <UIWrapper className="bg-option" handleClick={() => setShow("image")}>
           <span>Images</span>
         </UIWrapper>
       </UIWrapper>
 
       <UIDivider inverted={true} hidden={true} />
-      {stringsEqual(show, "colors") && (
+      {stringsEqual(show, "color") && (
         <UIWrapper className="board-colors-wrap">
           {bgColors.map((color) => (
             <UIContainer padding="6px" key={color}>
@@ -60,9 +62,12 @@ const ChangeBackGround = ({
           ))}
         </UIWrapper>
       )}
-      {stringsEqual(show, "images") && (
+      {stringsEqual(show, "image") && (
         <UIWrapper>
-          <AddCoverImage handleMakeCover={handleSelectedBackground} />
+          <AddCoverImage
+            notify={notify}
+            handleMakeCover={handleSelectedBackground}
+          />
           <UIDivider
             content="Paste custom image link"
             inverted={true}
