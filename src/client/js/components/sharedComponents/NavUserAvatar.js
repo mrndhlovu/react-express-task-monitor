@@ -12,12 +12,8 @@ const NavUserAvatar = ({
   pointing = "top right",
   callback = () => {},
 }) => {
-  const handleLogOut = async () => {
-    await requestAuthLogout().then(() => {
-      localStorage.removeItem("user");
-      window.location.reload();
-    });
-  };
+  const handleLogOut = async () =>
+    await requestAuthLogout().then(() => history.push("/login"));
 
   const trigger = (
     <UserAvatar padding="15px" userInitials={getUserInitials(userName)} />

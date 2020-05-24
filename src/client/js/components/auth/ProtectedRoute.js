@@ -1,29 +1,25 @@
-import React from "react";
+import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 
 import { useAuth } from "../../utils/hookUtils";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const ProtectedRoute = ({ component: Component, location, ...rest }) => {
+const ProtectedRoute = ({ component: ComposedComponent, ...rest }) => {
   const { auth } = useAuth();
 
-  return (
-    <Route
-      {...rest}
-      render={(props) => {
-        if (auth.authenticated) {
-          return <Component key={location.pathname} {...props} />;
-        } else
-          return (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location },
-              }}
-            />
-          );
-      }}
-    />
-  );
+  class Authentication extends Component {
+    handleRender = (props) => {
+      if (this.props.auth.isLoading) return <UILoadingSpinner />;
+      if (!this.props.auth.authenticated) return <Redirect to="/login" />;
+      return <ComposedComponent auth={this.props.auth} {...props} />;
+    };
+
+    render() {
+      return <Route {...rest} render={this.handleRender} />;
+    }
+  }
+
+  return <Authentication auth={auth} />;
 };
 
 export default ProtectedRoute;

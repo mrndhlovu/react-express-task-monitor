@@ -12,7 +12,7 @@ const UIMessage = ({
 }) => {
   setTimeout(() => {
     handleDismiss && handleDismiss();
-  }, 3000);
+  }, 1000);
 
   return (
     <Message

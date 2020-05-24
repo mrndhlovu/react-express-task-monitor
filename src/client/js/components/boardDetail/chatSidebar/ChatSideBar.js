@@ -45,7 +45,7 @@ const FormWrapper = styled.div`
   width: 100%;
 `;
 
-const ChatSideBar = ({ openChat }) => {
+const ChatSideBar = ({ openChat, handleClose }) => {
   const { fname } = useAuth().user;
   const { board, handleBoardUpdate } = useContext(BoardContext);
   const name = getFormattedString(fname);
@@ -134,7 +134,7 @@ const ChatSideBar = ({ openChat }) => {
   return (
     <SideBarWrapper
       open={openChat}
-      handleClose={() => window.location.reload()}
+      handleClose={() => handleClose()}
       header="Comments"
       inverted={true}
       className="chat-sidebar"

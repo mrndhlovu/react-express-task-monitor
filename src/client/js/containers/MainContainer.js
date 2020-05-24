@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useMemo,
-  Fragment,
-} from "react";
+import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
@@ -33,15 +27,15 @@ const AppWrapper = styled.div`
 
 const MainContainer = ({ children, history, auth }) => {
   const isHomePage = history.location.pathname === "/";
-  const [visible, setVisible] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const [background, setBackground] = useState({ image: "", color: "" });
   const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
   const [create, setCreate] = useState(false);
   const [search, setSearch] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [update, setUpdate] = useState(null);
+  const [visible, setVisible] = useState(false);
 
   const { device, dimensions } = useDimensions();
 
@@ -63,12 +57,7 @@ const MainContainer = ({ children, history, auth }) => {
 
   const getNavigationBoards = (data) => setUpdate(data);
 
-  const getNavData = useMemo(
-    () => (style) => {
-      setBackground({ ...background, ...style });
-    },
-    []
-  );
+  const getNavData = (style) => setBackground({ ...background, ...style });
 
   useEffect(() => {
     isHomePage && setBackground({ image: "", color: "" });
@@ -97,15 +86,15 @@ const MainContainer = ({ children, history, auth }) => {
         boards,
         device,
         dimensions,
+        getNavData,
         getNavigationBoards,
         handleSearchClick,
         history,
+        isHomePage,
         makeNewBoard,
         search,
-        isHomePage,
-        showMobileMenu,
-        getNavData,
         setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
+        showMobileMenu,
       }}
     >
       <AppWrapper data-test-id="app-container" bg={{ ...background }}>

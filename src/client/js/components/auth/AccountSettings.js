@@ -48,9 +48,7 @@ const AccountSettings = ({ history }) => {
             message: res.data.message,
             success: true,
           });
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+          history.push("/login");
         })
         .catch((error) => {
           setDeleteAccount(false);

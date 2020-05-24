@@ -20,6 +20,13 @@ import BoardHeader from "../components/boardDetail/BoardHeader";
 
 const StyledContainer = styled.div`
   height: 100vh;
+  ${({ bgStyle }) =>
+    bgStyle.image
+      ? `background: url(${bgStyle.image})`
+      : `background:${bgStyle.color}`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const BoardContainer = ({ match, history, templateBoard }) => {
@@ -35,7 +42,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
   const [updatedField, setUpdatedField] = useState(null);
-
   const [showMobileMenu, setShowMobileMenu] = useState();
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
@@ -157,7 +163,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       };
 
       await requestBoardUpdate(newId ? newId : id, update).then((res) => {
-        getNavData(res.data.styleProperties);
+        getNavData(res.data.styleProperties.color);
         if (callback) callback();
       });
     };
@@ -170,17 +176,14 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then((res) => {
-          getNavData(res.data.styleProperties);
+          // getNavData(res.data.styleProperties.color);
           return setBoard(res.data);
         })
         .catch(() => history.push("/"));
 
-    if (templateBoard) {
-      setBoard(templateBoard);
-      return getNavData(templateBoard.styleProperties);
-    }
+    if (templateBoard) return setBoard(templateBoard);
     auth.authenticated && !templateBoard && !board && fetchData();
-  }, [board, updatedField, id, history.push, getNavData, templateBoard, auth]);
+  }, [board, updatedField, id, history, getNavData, templateBoard, auth]);
 
   return (
     board && (
@@ -204,7 +207,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           setShowMobileMenu,
         }}
       >
-        <StyledContainer>
+        <StyledContainer bgStyle={board.styleProperties}>
           <div className="board-content">
             <BoardHeader user={user} />
             <Board />
