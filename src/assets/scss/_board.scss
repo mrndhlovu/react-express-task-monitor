@@ -68,6 +68,7 @@
   position: absolute;
   top: 0;
   width: 100vw;
+  padding-top: 2px;
 }
 
 .card-template-label {
@@ -75,4 +76,10 @@
   bottom: 3%;
   left: 3%;
   opacity: 0.8;
+}
+
+.board-colors-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0;
 }

@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 
-import { MainContext } from "../../utils/contextUtils";
 import BoardsSummary from "./BoardsSummary";
 import HomeSideMenu from "./HomeSideMenu";
 import UIWrapper from "../sharedComponents/UIWrapper";
@@ -14,11 +13,10 @@ const StyledContainer = styled.div`
 `;
 
 const HomePage = ({ history, user }) => {
-  const { mobile, tablet } = useContext(MainContext).device;
   return (
-    <StyledContainer className="boards-container" mobile={mobile}>
+    <StyledContainer className="boards-container">
       <UIWrapper className="boards-grid-wrap">
-        <UIWrapper className="boards-grid" mobile={mobile} tablet={tablet}>
+        <UIWrapper className="boards-grid">
           <HomeSideMenu history={history} className="sidebar-wrap" />
           <BoardsSummary user={user} />
         </UIWrapper>
