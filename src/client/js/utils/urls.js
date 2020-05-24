@@ -1,4 +1,4 @@
-const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 
 export const getRootUrl = () =>
   process.env.NODE_ENV === "production"
