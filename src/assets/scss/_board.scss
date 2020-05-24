@@ -68,4 +68,19 @@
   position: absolute;
   top: 0;
   width: 100vw;
+  padding-top: 3px;
+  background: #0000000d;
+}
+
+.card-template-label {
+  position: absolute;
+  bottom: 3%;
+  left: 3%;
+  opacity: 0.8;
+}
+
+.board-colors-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0;
 }

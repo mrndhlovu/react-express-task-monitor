@@ -18,13 +18,13 @@ import {
 import { findArrayItem, stringsEqual } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
 
+import { useAuth, useAlert } from "../../utils/hookUtils";
+import AddAttachment from "./AddAttachment";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
-import { useAuth, useAlert } from "../../utils/hookUtils";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import AddAttachment from "./AddAttachment";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const Attachments = lazy(() => import("./Attachments"));

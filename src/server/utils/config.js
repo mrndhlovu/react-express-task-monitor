@@ -37,6 +37,8 @@ const DEFAULT_TEMPLATES = [
       "Testing",
       "Ready",
     ],
+    image:
+      "https://boards-app.s3.eu-west-1.amazonaws.com/view-of-airport-247791.jpg",
     description:
       "Template to help web developers to organize and manage tasks and features for their projects and website development.",
   },
@@ -44,11 +46,15 @@ const DEFAULT_TEMPLATES = [
     category: "education",
     title: "Life watch",
     lists: ["Resolution", "Today", "This week", "Tomorrow", "Done"],
+    image:
+      "https://boards-app.s3.eu-west-1.amazonaws.com/classic-blue-coupe-die-cast-model-1037995.jpg",
     description: "Life Watchers, It's like Weight Watchers, but for your life!",
   },
   {
     category: "Engineering",
     title: "Software engineering career design",
+    image:
+      "https://boards-app.s3.eu-west-1.amazonaws.com/blue-sky-blur-clear-sky-color-281260.jpg",
     lists: [
       "AWS Certification",
       "Node JS",
@@ -60,6 +66,31 @@ const DEFAULT_TEMPLATES = [
     description:
       "Plan your career with this board starting from where you are to where you want to be. Be bold, imaginative and set time-bound goals. Review this board weekly! You must!",
   },
+];
+
+const allowedFields = [
+  "fname",
+  "email",
+  "password",
+  "starred",
+  "idBoards",
+  "username",
+  "avatar",
+  "bio",
+  "viewedRecent",
+];
+
+const allowedBoardUpdateFields = [
+  "accessLevel",
+  "activities",
+  "archived",
+  "category",
+  "comments",
+  "description",
+  "labels",
+  "lists",
+  "styleProperties",
+  "title",
 ];
 
 module.exports = {
@@ -78,4 +109,6 @@ module.exports = {
   TOKEN_SIGNATURE,
   isDevelopment,
   DEFAULT_TEMPLATES,
+  allowedFields,
+  allowedBoardUpdateFields,
 };

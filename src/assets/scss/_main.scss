@@ -126,3 +126,14 @@ ui.form,
   padding: 10px;
   border-radius: 3px;
 }
+
+.boards-grid {
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+}
+
+.boards-grid-wrap {
+  margin-left: 22%;
+  margin-right: 14%;
+  margin-top: 1%;
+}

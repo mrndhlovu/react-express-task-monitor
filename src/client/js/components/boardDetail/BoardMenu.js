@@ -13,7 +13,7 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 import { useAuth } from "../../utils/hookUtils";
 
 const BoardMenu = ({
-  handleChangeColorClick,
+  toggleChangeBg,
   handleDeleteBoard,
   showSideBar,
   setShowAboutCard,
@@ -43,7 +43,7 @@ const BoardMenu = ({
         About this board
       </Menu.Item>
 
-      <Menu.Item as="a" onClick={() => handleChangeColorClick()}>
+      <Menu.Item as="a" onClick={() => toggleChangeBg()}>
         Change Background
       </Menu.Item>
 

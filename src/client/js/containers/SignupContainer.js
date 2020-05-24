@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 
-import _debounce from "debounce";
 import { requestAuthSignup } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
 import { useAuth, useAlert } from "../utils/hookUtils";
@@ -30,9 +29,13 @@ const SignupContainer = ({ history }) => {
       setLoading(true);
       await requestAuthSignup(credentials)
         .then((res) => {
-          notify({ message: "Success", success: true });
+          notify({ message: "Account created successfully!", success: true });
           localStorage.setItem("user", JSON.stringify(res.data));
-          if (res.status === 201) _debounce(window.location.reload(), 3000);
+          if (res.status === 201)
+            setTimeout(() => {
+              history.push("/");
+              window.location.reload();
+            }, 500);
         })
         .catch((error) =>
           notify({

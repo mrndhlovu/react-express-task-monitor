@@ -5,7 +5,7 @@ import { Sidebar } from "semantic-ui-react";
 
 import { BoardContext, MainContext } from "../../utils/contextUtils";
 
-const BackGroundColors = lazy(() => import("./BackGroundColors"));
+const ChangeBackGround = lazy(() => import("./ChangeBackGround"));
 const BoardLists = lazy(() => import("./BoardLists"));
 const BoardMenu = lazy(() => import("./BoardMenu"));
 const ChatIcon = lazy(() => import("./ChatIcon"));
@@ -18,29 +18,28 @@ const BoardWrapper = styled.div`
   padding-left: ${(props) => (props.mobile ? "3px" : "7px")};
   position: relative;
   width: 100vw;
-  margin-top: ${(props) => !props.mobile && "37px"};
 `;
 
 const Board = () => {
   const {
-    handleSelectedColor,
     handleDeleteBoard,
-    showSideBar,
+    handleSelectedBackground,
     handleShowMenuClick,
+    showSideBar,
   } = useContext(BoardContext);
   const { device, showMobileMenu } = useContext(MainContext);
 
   const [membersOnline, setMembersOnline] = useState(0);
   const [openChat, setOpenChat] = useState(false);
-  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [changeBg, setChangeBg] = useState(false);
   const [showAboutCard, setShowAboutCard] = useState(false);
 
-  const handleChangeColorClick = () => setShowColorPicker(!showColorPicker);
+  const toggleChangeBg = () => setChangeBg(!changeBg);
   const handleClose = () => setOpenChat(false);
   const getMembersOnline = (users) => setMembersOnline(users);
 
   return (
-    <BoardWrapper mobile={device.mobile}>
+    <BoardWrapper className="board-wrap" mobile={device.mobile}>
       <Sidebar.Pushable>
         <Suspense fallback={<UILoadingSpinner />}>
           <BoardLists />
@@ -49,16 +48,16 @@ const Board = () => {
           <BoardMenu
             showSideBar={showSideBar || showMobileMenu}
             handleShowMenuClick={handleShowMenuClick}
-            handleChangeColorClick={handleChangeColorClick}
+            toggleChangeBg={toggleChangeBg}
             setShowAboutCard={() => setShowAboutCard(!showAboutCard)}
             handleDeleteBoard={handleDeleteBoard}
           />
         </Suspense>
         <Suspense fallback={<UILoadingSpinner />}>
-          <BackGroundColors
-            showColorPicker={showColorPicker}
-            handleChangeColorClick={handleChangeColorClick}
-            handleSelectedColor={handleSelectedColor}
+          <ChangeBackGround
+            changeBg={changeBg}
+            toggleChangeBg={toggleChangeBg}
+            handleSelectedBackground={handleSelectedBackground}
           />
         </Suspense>
 

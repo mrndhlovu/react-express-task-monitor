@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import { MainContext, HomepageContext } from "../../utils/contextUtils";
-import { Icon } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 
@@ -21,20 +21,6 @@ const CardHeader = styled.div`
   }
 `;
 
-const StarWrapper = styled.div`
-  position: absolute;
-  bottom: 6px;
-  right: 6px;
-  width: 20px;
-  height: 20px;
-  transition-duration: 300ms;
-  transition-timing-function: ease-in-out;
-
-  &:after {
-    font-size: 20px !important;
-  }
-`;
-
 const Wrapper = styled.div`
   display: flex;
   margin: 5px;
@@ -42,7 +28,13 @@ const Wrapper = styled.div`
 `;
 
 const Card = styled.div`
-  background-color: ${(props) => props.color};
+  ${({ bgStyle }) =>
+    bgStyle.image
+      ? `background: url(${bgStyle.image})`
+      : `background:${bgStyle.color}`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
   border-radius: 2px !important;
   height: 100px !important;
   min-width: 100%;
@@ -51,15 +43,17 @@ const Card = styled.div`
   position: relative;
 `;
 
-const Summary = ({ color, header, history, id, starred }) => {
+const Summary = ({ board, history, starred }) => {
   const { mobile } = useContext(MainContext).device;
   const [showStar, setShowStar] = useState(false);
   const { handleBoardStarClick } = useContext(HomepageContext);
+  const { title, _id, styleProperties, isTemplate } = board;
 
-  const handleCardClick = (e, star) =>
+  const handleCardClick = (e, star) => {
     e.target.id
-      ? handleBoardStarClick(id, star)
-      : history.push(`/boards/id/${id}`);
+      ? handleBoardStarClick(_id, star)
+      : history.push(`/boards/id/${_id}`);
+  };
 
   return (
     <Wrapper
@@ -67,18 +61,28 @@ const Summary = ({ color, header, history, id, starred }) => {
       onMouseEnter={() => setShowStar(!showStar)}
       mobile={mobile}
     >
-      <Card color={color} mobile={mobile} onClick={(e) => handleCardClick(e)}>
-        <CardHeader content={header} />
+      <Card
+        bgStyle={styleProperties}
+        mobile={mobile}
+        onClick={(e) => handleCardClick(e)}
+      >
+        {isTemplate && (
+          <Label
+            size="tiny"
+            content="TEMPLATE"
+            className="card-template-label"
+          />
+        )}
+        <CardHeader content={title} />
 
-        <StarWrapper onClick={(e) => handleCardClick(e, "star")}>
-          {(starred || showStar) && (
-            <Icon
-              id={id}
-              name="star outline"
-              color={starred ? "yellow" : "black"}
-            />
-          )}
-        </StarWrapper>
+        {(starred || showStar) && (
+          <Icon
+            onClick={(e) => handleCardClick(e, "star")}
+            id={_id}
+            name="star outline"
+            className={starred ? "yellow-star" : "white-star star"}
+          />
+        )}
       </Card>
     </Wrapper>
   );

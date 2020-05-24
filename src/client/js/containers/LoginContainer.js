@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
-import _debounce from "debounce";
 
 import { requestAuthLogin } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
 import { useAuth, useAlert } from "../utils/hookUtils";
 import LoginPage from "../components/auth/LoginPage";
 
-const LoginContainer = ({ history, location }) => {
+const LoginContainer = ({ history, location, user }) => {
   const { from } = location.state || { from: { pathname: "/" } };
+
   const { notify } = useAlert();
 
-  const { auth } = useAuth();
+  const auth = user || useAuth().auth;
   const [credentials, setCredentials] = useState({
     password: null,
     email: null,
@@ -34,8 +34,10 @@ const LoginContainer = ({ history, location }) => {
       await requestAuthLogin(credentials)
         .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
-          notify("Success", true);
-          _debounce(redirect(), 3000);
+          notify({ message: "Login success!", success: true });
+          setTimeout(() => {
+            redirect();
+          }, 500);
         })
         .catch((error) => {
           notify({

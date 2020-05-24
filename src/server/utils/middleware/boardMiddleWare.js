@@ -4,23 +4,29 @@ const Board = require("../../models/Board");
 const List = require("../../models/List");
 const { TOKEN_SIGNATURE, DEFAULT_TEMPLATES } = require("../config");
 
-const viewedRecent = async (req, res, next) => {
-  const _id = req.params.boardId;
+const viewedRecentMiddleware = async (req, res, next) => {
+  const starId = req.query.id;
+  const _id = req.params.boardId || starId;
+  let user;
+  if (!_id) return next();
   try {
-    const token = req.cookies.access_token;
+    if (starId) user = req.user;
+    else {
+      const token = req.cookies.access_token;
 
-    const decoded = jwt.verify(token, TOKEN_SIGNATURE);
-    const user = await User.findOne({
-      _id: decoded._id,
-      "tokens.token": token,
-    });
+      const decoded = jwt.verify(token, TOKEN_SIGNATURE);
+      user = await User.findOne({
+        _id: decoded._id,
+        "tokens.token": token,
+      });
+    }
 
     if (!user) throw new Error();
 
     const isStarred = user.starred.includes(_id);
     const openRecently = user.viewedRecent.includes(_id);
-
     const shouldAddToRecentViewed = !openRecently && !isStarred;
+
     if (shouldAddToRecentViewed) user.viewedRecent.unshift(_id);
     else if (isStarred && openRecently)
       user.viewedRecent.splice(user.viewedRecent.indexOf(_id), 1);
@@ -45,7 +51,7 @@ const defaultTemplates = async (req, res, next) => {
         title: template.title,
         isTemplate: true,
         description: template.description,
-        styleProperties: { color: "#0078be" },
+        styleProperties: { color: "#0078be", image: template.image },
       });
 
       template.lists.forEach((list) => {
@@ -63,4 +69,4 @@ const defaultTemplates = async (req, res, next) => {
   }
 };
 
-module.exports = { viewedRecent, defaultTemplates };
+module.exports = { viewedRecentMiddleware, defaultTemplates };

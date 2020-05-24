@@ -43,3 +43,37 @@
 .template-small {
   padding-bottom: 10px;
 }
+
+.bg-options-wrap {
+  display: flex;
+}
+
+.bg-option {
+  background: #e6e6fa;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 96px;
+  margin-bottom: 8px;
+  margin: 5px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #162b4d;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.bg-option:hover {
+  opacity: 0.8;
+}
+
+.custom-image-link {
+  margin-bottom: 5px;
+}
+
+.ui-textarea.custom-image-link {
+  min-height: 20px !important;
+  height: 39px !important;
+  padding-left: 8px;
+}

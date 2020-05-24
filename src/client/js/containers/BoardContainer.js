@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import isURL from "validator/lib/isURL";
 
 import { BoardContext, MainContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
@@ -19,7 +20,13 @@ import BoardHeader from "../components/boardDetail/BoardHeader";
 
 const StyledContainer = styled.div`
   height: 100vh;
-  background: ${({ bgColor }) => bgColor};
+  ${({ bgStyle }) =>
+    bgStyle.image
+      ? `background: url(${bgStyle.image})`
+      : `background:${bgStyle.color}`};
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 const BoardContainer = ({ match, history, templateBoard }) => {
@@ -79,11 +86,20 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     updateUser();
   }, [history, id, user]);
 
-  const handleSelectedColor = (color) => {
-    const newBoard = {
-      ...board,
-      styleProperties: { ...board.styleProperties, color },
-    };
+  const handleSelectedBackground = (option) => {
+    const isImageURL = isURL(option);
+    let newBoard;
+
+    if (isImageURL)
+      newBoard = {
+        ...board,
+        styleProperties: { ...board.styleProperties, image: option, color: "" },
+      };
+    else
+      newBoard = {
+        ...board,
+        styleProperties: { ...board.styleProperties, color: option, image: "" },
+      };
 
     handleBoardUpdate(newBoard, "styleProperties", "color");
   };
@@ -165,6 +181,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           return setBoard(res.data);
         })
         .catch(() => history.push("/"));
+
     if (templateBoard) return setBoard(templateBoard);
     auth.authenticated && !templateBoard && !board && fetchData();
   }, [board, updatedField, id, history, getNavData, templateBoard, auth]);
@@ -178,7 +195,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           changeBoardAccessLevel,
           handleBoardStarClick,
           handleBoardUpdate,
-          handleSelectedColor,
+          handleSelectedBackground,
           handleDeleteBoard,
           handleInviteClick,
           handleShowMenuClick,
@@ -191,7 +208,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           setShowMobileMenu,
         }}
       >
-        <StyledContainer bgColor={board.styleProperties.color}>
+        <StyledContainer bgStyle={board.styleProperties}>
           <div className="board-content">
             <BoardHeader user={user} />
             <Board />

@@ -5,11 +5,11 @@ const List = require("../models/List");
 const User = require("../models/User");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const {
-  viewedRecent,
+  viewedRecentMiddleware,
   defaultTemplates,
 } = require("../utils/middleware/boardMiddleWare");
 const { sendInvitationEmail } = require("../utils/middleware/emailMiddleware");
-const { ROOT_URL } = require("../utils/config");
+const { ROOT_URL, allowedBoardUpdateFields } = require("../utils/config");
 const ObjectID = require("mongodb").ObjectID;
 
 router.get("/", auth, async (req, res) => {
@@ -41,7 +41,7 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
-router.get("/id/:boardId", auth, viewedRecent, async (req, res) => {
+router.get("/id/:boardId", auth, viewedRecentMiddleware, async (req, res) => {
   const _id = req.params.boardId;
 
   let board;
@@ -65,6 +65,13 @@ router.delete("/:boardId/delete-board", auth, async (req, res) => {
   const _id = req.params.boardId;
 
   try {
+    const { starred, viewedRecent } = req.user;
+
+    starred.includes(_id) && starred.splice(starred.indexOf(_id), 1);
+    viewedRecent.includes(_id) &&
+      viewedRecent.splice(viewedRecent.indexOf(_id), 1);
+    req.user.save();
+
     await Board.findById({ _id }).then((board) => {
       board.members.map((member) => {
         if (member.isAdmin) return board.delete();
@@ -113,20 +120,9 @@ router.patch("/:boardId/update-board", auth, async (req, res) => {
 
   let board;
   const updates = Object.keys(req.body);
-  const allowedUpdates = [
-    "accessLevel",
-    "activities",
-    "archived",
-    "category",
-    "comments",
-    "description",
-    "labels",
-    "lists",
-    "styleProperties",
-    "title",
-  ];
+
   const isValidField = updates.every((update) =>
-    allowedUpdates.includes(update)
+    allowedBoardUpdateFields.includes(update)
   );
 
   if (!isValidField)
@@ -186,10 +182,6 @@ router.post("/:boardId/create-list", auth, async (req, res) => {
 });
 
 router.post("/create-template", auth, async (req, res) => {
-  // const { templateId } = req.body;
-  // let template;
-  // template = Template.findOne({ _id: templateId });
-
   try {
     res.status(203).send();
   } catch (error) {

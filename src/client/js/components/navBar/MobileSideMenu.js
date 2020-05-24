@@ -53,7 +53,7 @@ const MobileSideMenu = ({ visible, setVisible, history }) => {
         <Span>{fname}</Span>
         <small>{email}</small>
       </UIWrapper>
-      <HomeSideMenu />
+      <HomeSideMenu history={history} callback={() => setVisible(false)} />
       <UIDivider margin="0" />
     </SideBarWrapper>
   );

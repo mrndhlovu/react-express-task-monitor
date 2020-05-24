@@ -1,4 +1,4 @@
-const { ROOT_URL } = require("../utils/config.js");
+const { ROOT_URL, allowedFields } = require("../utils/config.js");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const router = require("express").Router();
 const User = require("../models/User");
@@ -7,6 +7,9 @@ const {
   sendResetPasswordEmail,
   sendPasswordChangeConfirmation,
 } = require("../utils/middleware/emailMiddleware");
+const {
+  viewedRecentMiddleware,
+} = require("../utils/middleware/boardMiddleWare");
 const crypto = require("crypto");
 const async = require("async");
 
@@ -180,33 +183,21 @@ router.delete("/delete-account", auth, async (req, res) => {
   }
 });
 
-router.patch("/update", auth, async (req, res) => {
+router.patch("/update", auth, async (req, res, next) => {
   const updates = Object.keys(req.body);
+  const updateBoardStar = updates[0] === "starred";
 
-  const allowedUpdates = [
-    "fname",
-    "email",
-    "password",
-    "starred",
-    "idBoards",
-    "username",
-    "avatar",
-    "bio",
-    "viewedRecent",
-  ];
   const isValidField = updates.every((update) =>
-    allowedUpdates.includes(update)
+    allowedFields.includes(update)
   );
 
   if (!isValidField)
     return res.status(400).send({ error: "Invalid update field" });
 
   try {
-    updates.forEach((update) => {
-      req.user[update] = req.body[update];
-    });
-
-    await req.user.save();
+    updates.forEach((update) => (req.user[update] = req.body[update]));
+    if (updateBoardStar) await viewedRecentMiddleware(req, res, next);
+    else await req.user.save();
 
     res.send(req.user);
   } catch (error) {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 
-import { emptyFunction } from "../utils/appUtils";
 import { HomepageContext } from "../utils/contextUtils";
 import { requestUserUpdate } from "../apis/apiRequests";
 import { useFetch, useAuth } from "../utils/hookUtils";
@@ -10,38 +9,19 @@ import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const HomePageContainer = ({ history }) => {
   const [data, loading] = useFetch(history);
-  const { user } = useAuth();
-
   const [boards, setBoards] = useState([]);
-  const [starred, setStarred] = useState(false);
-  const [unStarred, setUnStarred] = useState(false);
+  const [user, setUser] = useState(useAuth().user);
 
-  const handleBoardStarClick = (id, starClicked) => {
-    if (starClicked) {
-      if (user.starred.includes(id)) {
-        user.starred.splice(user.starred.indexOf(id));
-        setUnStarred(true);
-      } else {
-        user.starred.push(id);
-        setStarred(true);
-      }
-    }
+  const handleBoardStarClick = async (id, starRef) => {
+    if (!starRef) return;
+    if (user.starred.includes(id))
+      user.starred.splice(user.starred.indexOf(id));
+    else user.starred.push(id);
+
+    await requestUserUpdate({ starred: [...user.starred] }, id).then((res) => {
+      setUser(res.data);
+    });
   };
-
-  useEffect(() => {
-    if (!starred && !unStarred) return emptyFunction();
-
-    const updateUser = async () => {
-      await requestUserUpdate({ starred: user.starred });
-    };
-
-    user && updateUser();
-
-    return () => {
-      setStarred(false);
-      setUnStarred(false);
-    };
-  }, [starred, user, unStarred]);
 
   useEffect(() => {
     if (!data) return;
@@ -51,6 +31,7 @@ const HomePageContainer = ({ history }) => {
   return data && boards && !loading ? (
     <HomepageContext.Provider
       value={{
+        user,
         boards,
         loading,
         handleBoardStarClick,
