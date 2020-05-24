@@ -8,12 +8,11 @@ import Logo from "./Logo";
 import MobileNavBar from "./MobileNavBar";
 import RightNavButtons from "./RightNavButtons";
 
-const NavWrapper = styled.nav`
+const NavWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   top: 0;
   left: 0;
-  z-index: 100;
   width: 100%;
 `;
 
@@ -23,6 +22,7 @@ const NavContainer = styled.nav`
   min-height: 40px;
   position: sticky;
   padding-top: 2px;
+  z-index: 100;
 `;
 
 const NavHeader = ({ history, color = "transparent", setVisible }) => {
