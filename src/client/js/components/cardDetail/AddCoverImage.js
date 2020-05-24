@@ -1,13 +1,13 @@
 import React, { useState, useEffect, Fragment } from "react";
 
-import { Button, Header, Input, Icon } from "semantic-ui-react";
+import { Button, Header, Input, Icon, Pagination } from "semantic-ui-react";
 
 import { emptyFunction } from "../../utils/appUtils";
+import { getSearchQueryString } from "../../utils/urls";
 import { requestImages } from "../../apis/apiRequests";
 import { SUGGESTED_COVERS } from "../../constants/constants";
 import SearchImageList from "./SearchImageList";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import { getSearchQueryString } from "../../utils/urls";
 
 const displayStyles = {
   display: "flex",
@@ -20,6 +20,9 @@ const AddCoverImage = ({ notify, ...props }) => {
   const [searchQuery, setSearchQuery] = useState(null);
   const [search, setSearch] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
+  const [pageNum, setPageNum] = useState(1);
+
+  const [totalPages, setTotalPages] = useState(null);
 
   const handleSuggestionClick = (suggestion) => {
     setSearchResult(null);
@@ -29,6 +32,19 @@ const AddCoverImage = ({ notify, ...props }) => {
 
   const handleClearSearch = () => {
     setSearchQuery(null);
+    setSearchResult(null);
+  };
+
+  const handlePageChange = async (value) => {
+    setPageNum(value);
+    await requestImages(searchQuery, value).then((res) => {
+      try {
+        setTotalPages(res.data.total_pages);
+        setSearchResult(res.data.results);
+      } catch (error) {
+        notify({ message: error.message });
+      }
+    });
   };
 
   useEffect(() => {
@@ -36,19 +52,24 @@ const AddCoverImage = ({ notify, ...props }) => {
     const query = getSearchQueryString(searchQuery);
 
     const getQueryImageList = async () => {
-      await requestImages(query).then((res) => {
+      await requestImages(query, pageNum).then((res) => {
         try {
+          setTotalPages(res.data.total_pages);
           setSearchResult(res.data.results);
-          setSearch(false);
         } catch (error) {
           notify({ message: error.message });
         }
       });
     };
     getQueryImageList();
-  }, [searchQuery, search]);
+    setSearch(false);
 
-  // TODO add image search pagination
+    return () => {
+      setSearchResult(null);
+      setSearch(false);
+      setPageNum(1);
+    };
+  }, [searchQuery, search]);
 
   return (
     <Fragment>
@@ -58,15 +79,15 @@ const AddCoverImage = ({ notify, ...props }) => {
         as="a"
         href="https://unsplash.com"
       />
-      {!searchResult && <Header content="Suggested searches" as="h5" />}
+      {!searchQuery && <Header content="Suggested searches" as="h5" />}
       <Input
         className="image-search-input"
         icon={
           <Icon
-            name={!searchResult ? "search" : "close"}
-            link={(searchResult && searchResult.length > 0) || false}
+            name={!searchQuery ? "search" : "close"}
+            link
             onClick={() =>
-              searchResult ? handleClearSearch() : emptyFunction()
+              searchQuery ? handleClearSearch() : emptyFunction()
             }
           />
         }
@@ -77,6 +98,20 @@ const AddCoverImage = ({ notify, ...props }) => {
         onChange={(e) => setSearchQuery(e.target.value)}
         onKeyDown={(e) => (e.key === "Enter" ? setSearch(true) : null)}
       />
+
+      {searchResult && (
+        <Pagination
+          className="img-search-pagination"
+          defaultActivePage={1}
+          firstItem={null}
+          lastItem={null}
+          totalPages={totalPages}
+          onPageChange={(e, data) => handlePageChange(data.activePage)}
+          pointing
+          secondary
+        />
+      )}
+
       <UIWrapper padding="0" display={displayStyles}>
         {!searchResult &&
           SUGGESTED_COVERS.map((suggestion, index) => (

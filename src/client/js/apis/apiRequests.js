@@ -82,8 +82,10 @@ export const requestCreateComment = (body, id) =>
 export const requestBoardMembers = (id) =>
   axios.get(`${BOARDS_EP}/id/${id}/members`, params);
 
-export const requestImages = (query, orientation = "landscape") =>
-  axios.get(`${IMAGES_EP}&query=${query}&orientation=${orientation}`);
+export const requestImages = (query, page, orientation = "landscape") =>
+  axios.get(
+    `${IMAGES_EP}&query=${query}&page=${page}&orientation=${orientation}`
+  );
 
 export const requestTemplates = () =>
   axios.get(`${BOARDS_EP}/templates`, params);
