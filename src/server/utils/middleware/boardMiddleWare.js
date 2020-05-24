@@ -51,7 +51,7 @@ const defaultTemplates = async (req, res, next) => {
         title: template.title,
         isTemplate: true,
         description: template.description,
-        styleProperties: { color: "#0078be" },
+        styleProperties: { color: "#0078be", image: template.image },
       });
 
       template.lists.forEach((list) => {

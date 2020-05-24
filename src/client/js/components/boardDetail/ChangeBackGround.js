@@ -7,6 +7,7 @@ import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import { stringsEqual } from "../../utils/appUtils";
 import AddCoverImage from "../cardDetail/AddCoverImage";
+import { Button } from "semantic-ui-react";
 
 const colorStyle = {
   borderRadius: "8px",
@@ -22,6 +23,7 @@ const ChangeBackGround = ({
   handleSelectedBackground,
 }) => {
   const [show, setShow] = useState("");
+  const [link, setLink] = useState("");
 
   return (
     <SideBarWrapper
@@ -49,7 +51,10 @@ const ChangeBackGround = ({
               <UIWrapper
                 display={{ ...colorStyle, backgroundColor: color }}
                 color={color}
-                handleClick={() => handleSelectedBackground(color)}
+                handleClick={() => {
+                  handleSelectedBackground(color);
+                  setLink("");
+                }}
               />
             </UIContainer>
           ))}
@@ -58,6 +63,25 @@ const ChangeBackGround = ({
       {stringsEqual(show, "images") && (
         <UIWrapper>
           <AddCoverImage handleMakeCover={handleSelectedBackground} />
+          <UIDivider
+            content="Paste custom image link"
+            inverted={true}
+            hidden={false}
+          />
+          <input
+            className="ui-textarea custom-image-link"
+            placeholder="Custom image link!"
+            onChange={(e) => {
+              e.preventDefault();
+              setLink(e.target.value);
+            }}
+          />
+          <Button
+            compact
+            positive
+            content="Add"
+            onClick={() => handleSelectedBackground(link)}
+          />
         </UIWrapper>
       )}
     </SideBarWrapper>

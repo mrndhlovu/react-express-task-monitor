@@ -67,3 +67,13 @@
 .bg-option:hover {
   opacity: 0.8;
 }
+
+.custom-image-link {
+  margin-bottom: 5px;
+}
+
+.ui-textarea.custom-image-link {
+  min-height: 20px !important;
+  height: 39px !important;
+  padding-left: 8px;
+}
