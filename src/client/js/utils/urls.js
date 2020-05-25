@@ -1,5 +1,3 @@
-const UNSPLASH_ACCESS_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
-
 export const getRootUrl = () =>
   process.env.NODE_ENV === "production"
     ? "https://moneat.herokuapp.com"
@@ -10,7 +8,7 @@ export const UPLOAD_EP = `${getRootUrl()}/upload`;
 export const CARDS_EP = `${getRootUrl()}/cards`;
 export const AUTH_EP = `${getRootUrl()}/auth`;
 
-export const IMAGES_EP = `https://api.unsplash.com/search/photos?client_id=${UNSPLASH_ACCESS_KEY}`;
+export const IMAGES_EP = `https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}`;
 
 export const params = {
   headers: {
