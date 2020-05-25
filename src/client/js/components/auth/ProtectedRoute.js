@@ -9,9 +9,9 @@ const ProtectedRoute = ({ component: ComposedComponent, ...rest }) => {
 
   class Authentication extends Component {
     handleRender = (props) => {
-      if (this.props.auth.isLoading) return <UILoadingSpinner />;
+      if (this.props.isLoading) return <UILoadingSpinner />;
       if (!this.props.auth.authenticated) return <Redirect to="/login" />;
-      return <ComposedComponent auth={this.props.auth} {...props} />;
+      else return <ComposedComponent {...props} />;
     };
 
     render() {

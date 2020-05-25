@@ -27,8 +27,8 @@ const LoginContainer = ({ history, location }) => {
     setLoading(true);
     await requestAuthLogin(credentials)
       .then(() => {
-        notify({ message: "Login success!", success: true });
         authListener();
+        history.push(`${from.pathname}`);
       })
 
       .catch((error) => {

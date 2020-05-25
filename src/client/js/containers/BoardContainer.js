@@ -20,13 +20,6 @@ import BoardHeader from "../components/boardDetail/BoardHeader";
 
 const StyledContainer = styled.div`
   height: 100vh;
-  ${({ bgStyle }) =>
-    bgStyle.image
-      ? `background: url(${bgStyle.image})`
-      : `background:${bgStyle.color}`};
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-size: cover;
 `;
 
 const BoardContainer = ({ match, history, templateBoard }) => {
@@ -163,7 +156,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       };
 
       await requestBoardUpdate(newId ? newId : id, update).then((res) => {
-        getNavData(res.data.styleProperties.color);
+        getNavData(res.data.styleProperties);
         if (callback) callback();
       });
     };
@@ -173,24 +166,27 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   }, [id, updatedField, board, auth, getNavData]);
 
   useEffect(() => {
+    if (board) return emptyFunction();
     const fetchData = async () =>
       await requestBoardDetail(id)
         .then((res) => {
-          // getNavData(res.data.styleProperties.color);
+          getNavData(res.data.styleProperties);
           return setBoard(res.data);
         })
         .catch(() => history.push("/"));
 
-    if (templateBoard) return setBoard(templateBoard);
-    auth.authenticated && !templateBoard && !board && fetchData();
-  }, [board, updatedField, id, history, getNavData, templateBoard, auth]);
+    if (templateBoard) {
+      setBoard(templateBoard);
+      return getNavData(templateBoard.styleProperties);
+    }
+    fetchData();
+  }, [board, updatedField, id, history.push, getNavData, templateBoard]);
 
   return (
     board && (
       <BoardContext.Provider
         value={{
           board,
-          auth,
           changeBoardAccessLevel,
           handleBoardStarClick,
           handleBoardUpdate,

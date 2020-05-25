@@ -8,7 +8,7 @@ import { DEFAULT_NAV_COLOR } from "../constants/constants";
 import { emptyFunction } from "../utils/appUtils";
 import { MainContext } from "../utils/contextUtils";
 import { requestNewBoard } from "../apis/apiRequests";
-import { useDimensions } from "../utils/hookUtils";
+import { useDimensions, useAuth } from "../utils/hookUtils";
 import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
@@ -25,10 +25,14 @@ const AppWrapper = styled.div`
   background-size: cover;
 `;
 
-const MainContainer = ({ children, history, auth }) => {
+const MainContainer = ({ children, history }) => {
+  const { auth } = useAuth();
+
   const isHomePage = history.location.pathname === "/";
+  const isTemplatePage = history.location.pathname === "/templates";
 
   const [background, setBackground] = useState({ image: "", color: "" });
+
   const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
   const [create, setCreate] = useState(false);
@@ -60,8 +64,8 @@ const MainContainer = ({ children, history, auth }) => {
   const getNavData = (style) => setBackground({ ...background, ...style });
 
   useEffect(() => {
-    isHomePage && setBackground({ image: "", color: "" });
-  }, [isHomePage]);
+    (isHomePage || isTemplatePage) && setBackground({ image: "", color: "" });
+  }, [isHomePage, isTemplatePage]);
 
   useEffect(() => {
     if (!create) return emptyFunction();
@@ -82,7 +86,6 @@ const MainContainer = ({ children, history, auth }) => {
   return (
     <MainContext.Provider
       value={{
-        auth,
         boards,
         device,
         dimensions,
@@ -97,7 +100,7 @@ const MainContainer = ({ children, history, auth }) => {
         showMobileMenu,
       }}
     >
-      <AppWrapper data-test-id="app-container" bg={{ ...background }}>
+      <AppWrapper data-test-id="app-container" bg={background}>
         <Sidebar.Pushable>
           <Fragment>
             {auth.authenticated && (

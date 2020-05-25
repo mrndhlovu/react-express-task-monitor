@@ -4,10 +4,11 @@ import { withRouter } from "react-router-dom";
 
 import { getAuth } from "../selectors/authSelectors";
 import { getCurrentUser } from "../actions/AuthActions";
-import MainContainer from "./MainContainer";
 import withAlert from "../HOC/withAlert";
+import { UserContext } from "../utils/contextUtils";
+import MainContainer from "./MainContainer";
 
-class AppContainer extends Component {
+class AuthContainer extends Component {
   componentDidMount() {
     this.authListener();
   }
@@ -20,11 +21,11 @@ class AppContainer extends Component {
     const { auth } = this.props;
 
     return (
-      <MainContainer
-        auth={{ ...auth, authListener: () => this.authListener() }}
+      <UserContext.Provider
+        value={{ auth: { ...auth, authListener: () => this.authListener() } }}
       >
-        {this.props.children}
-      </MainContainer>
+        <MainContainer>{this.props.children}</MainContainer>
+      </UserContext.Provider>
     );
   }
 }
@@ -32,5 +33,5 @@ class AppContainer extends Component {
 const mapStateToProps = (state) => ({ auth: getAuth(state) });
 
 export default connect(mapStateToProps, { getCurrentUser })(
-  withRouter(withAlert(AppContainer))
+  withRouter(withAlert(AuthContainer))
 );

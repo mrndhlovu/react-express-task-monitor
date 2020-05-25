@@ -1,13 +1,13 @@
 import { useEffect, useState, useRef, useContext } from "react";
 
 import { requestBoardList } from "../apis/apiRequests";
-import { MainContext, AlertContext } from "./contextUtils";
+import { AlertContext, UserContext } from "./contextUtils";
 
 export const useAuth = () => {
   const {
     auth: { data: data },
     auth,
-  } = useContext(MainContext);
+  } = useContext(UserContext);
   return { auth, user: data.data };
 };
 

@@ -10,7 +10,6 @@ import {
 
 import CreateItemForm from "../sharedComponents/CreateItemForm";
 import ListGrid from "./ListGrid";
-import { parseSearchQuery, getQueryString } from "../../utils/urls";
 import { findArrayItem, emptyFunction } from "../../utils/appUtils";
 import { requestNewBoardList } from "../../apis/apiRequests";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
@@ -31,9 +30,7 @@ const BoardLists = ({ history }) => {
   const { mobile } = useContext(MainContext).device;
 
   const { lists } = board;
-  const modalOpen = parseSearchQuery(getQueryString(history.location))[
-    "modal-open"
-  ];
+
   const hasLists = lists.length !== 0;
 
   const [activeCard, setActiveCard] = useState(false);
@@ -87,13 +84,6 @@ const BoardLists = ({ history }) => {
   const handleAddCardName = (listId) => {
     setShowAddCardInput(true);
     setActiveList(listId);
-  };
-
-  const getFilteredBoard = (filterId) => {
-    return {
-      ...board,
-      lists: [...lists.filter((list) => list._id !== filterId)],
-    };
   };
 
   const updateBoard = (data, action) => {
@@ -174,15 +164,11 @@ const BoardLists = ({ history }) => {
   };
 
   const handleCardClick = (card, sourceId) => {
-    const { pathname } = history.location;
-
     if (sourceId) {
       setActiveCard(card);
       setSourceId(sourceId);
     }
     setHideCardDetail(!hideCardDetail);
-    if (!hideCardDetail) return history.push(`${pathname}?modal-open=false`);
-    history.push(`${pathname}?modal-open=true`);
   };
 
   const handleDrop = () => {
@@ -206,7 +192,6 @@ const BoardLists = ({ history }) => {
     boardId: id,
     closeAddCardOption: () => setActiveList(""),
     dragCardId,
-    getFilteredBoard,
     getSourceList,
     handleAddCardName,
     handleBoardUpdate,
@@ -249,12 +234,12 @@ const BoardLists = ({ history }) => {
           handleCreateClick={handleCreateList}
         />
 
-        {modalOpen && !hideCardDetail && (
+        {!hideCardDetail && (
           <Suspense fallback={<UILoadingSpinner />}>
             <CardDetailModal
               listId={sourceId}
               history={history}
-              modalOpen={modalOpen}
+              modalOpen={!hideCardDetail}
             />
           </Suspense>
         )}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { Header, Button } from "semantic-ui-react";
 
@@ -6,9 +6,12 @@ import { requestNewBoard } from "../../apis/apiRequests";
 import BoardContainer from "../../containers/BoardContainer";
 import UISmall from "../sharedComponents/UISmall";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import { MainContext } from "../../utils/contextUtils";
 
 const TemplatesPage = ({ templates, history }) => {
   const [openDemo, setOpenDemo] = useState(null);
+
+  const { getNavData } = useContext(MainContext);
 
   const handleUseTemplate = async (board) => {
     delete board._id;
@@ -18,6 +21,10 @@ const TemplatesPage = ({ templates, history }) => {
       if (res.status === 200) history.push(`/boards/id/${res.data._id}`);
     });
   };
+
+  useEffect(() => {
+    if (!openDemo) getNavData({ image: "", color: "" });
+  }, [openDemo]);
 
   return !openDemo ? (
     <UIWrapper className="template-page">

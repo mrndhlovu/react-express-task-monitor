@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import Backend from "react-dnd-html5-backend";
 
 import BaseRouter from "./Routes";
-import AppContainer from "./containers/AppContainer";
+import AuthContainer from "./containers/AuthContainer";
 import store from "./store";
 
 const App = () => {
@@ -13,9 +13,9 @@ const App = () => {
     <Provider store={store}>
       <DndProvider backend={Backend}>
         <HashRouter>
-          <AppContainer>
+          <AuthContainer>
             <BaseRouter />
-          </AppContainer>
+          </AuthContainer>
         </HashRouter>
       </DndProvider>
     </Provider>
