@@ -27,10 +27,7 @@ const SignupContainer = ({ history }) => {
     e.preventDefault();
     setLoading(true);
     await requestAuthSignup(credentials)
-      .then(() => {
-        notify({ message: "Account created successfully!", success: true });
-        authListener();
-      })
+      .then(() => authListener())
       .catch((error) =>
         notify({
           message: error.response.data,

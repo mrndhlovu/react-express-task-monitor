@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Header, Button } from "semantic-ui-react";
 
@@ -6,12 +6,12 @@ import { requestNewBoard } from "../../apis/apiRequests";
 import BoardContainer from "../../containers/BoardContainer";
 import UISmall from "../sharedComponents/UISmall";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import { MainContext } from "../../utils/contextUtils";
+import { useMainContext } from "../../utils/hookUtils";
 
 const TemplatesPage = ({ templates, history }) => {
   const [openDemo, setOpenDemo] = useState(null);
 
-  const { getNavData } = useContext(MainContext);
+  const { getNavData } = useMainContext();
 
   const handleUseTemplate = async (board) => {
     delete board._id;

@@ -1,7 +1,13 @@
 import { useEffect, useState, useRef, useContext } from "react";
 
 import { requestBoardList } from "../apis/apiRequests";
-import { AlertContext, UserContext } from "./contextUtils";
+import {
+  AlertContext,
+  UserContext,
+  HomepageContext,
+  MainContext,
+  BoardContext,
+} from "./contextUtils";
 
 export const useAuth = () => {
   const {
@@ -11,10 +17,10 @@ export const useAuth = () => {
   return { auth, user: data.data };
 };
 
-export const useAlert = () => {
-  const { notify } = useContext(AlertContext);
-  return { notify };
-};
+export const useHomeContext = () => useContext(HomepageContext);
+export const useBoardContext = () => useContext(BoardContext);
+export const useMainContext = () => useContext(MainContext);
+export const useAlert = () => useContext(AlertContext);
 
 export const useFetch = (history) => {
   const [data, setData] = useState(null);

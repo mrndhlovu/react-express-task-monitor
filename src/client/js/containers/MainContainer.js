@@ -5,10 +5,9 @@ import styled from "styled-components";
 import { Sidebar } from "semantic-ui-react";
 
 import { DEFAULT_NAV_COLOR } from "../constants/constants";
-import { emptyFunction } from "../utils/appUtils";
 import { MainContext } from "../utils/contextUtils";
 import { requestNewBoard } from "../apis/apiRequests";
-import { useDimensions, useAuth } from "../utils/hookUtils";
+import { useDimensions, useAuth, useAlert } from "../utils/hookUtils";
 import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
@@ -27,18 +26,15 @@ const AppWrapper = styled.div`
 
 const MainContainer = ({ children, history }) => {
   const { auth } = useAuth();
+  const { notify } = useAlert();
 
   const isHomePage = history.location.pathname === "/";
   const isTemplatePage = history.location.pathname === "/templates";
 
   const [background, setBackground] = useState({ image: "", color: "" });
-
-  const [board, setBoard] = useState(null);
   const [boards, setBoards] = useState(null);
-  const [create, setCreate] = useState(false);
   const [search, setSearch] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [update, setUpdate] = useState(null);
   const [visible, setVisible] = useState(false);
 
   const { device, dimensions } = useDimensions();
@@ -54,34 +50,26 @@ const MainContainer = ({ children, history }) => {
     setSearch(e.target.value);
   }, []);
 
-  const makeNewBoard = (update) => {
-    setCreate(true);
-    setBoard(update);
+  const makeNewBoard = async (board) => {
+    await requestNewBoard(board)
+      .then((res) => {
+        return history.push(`/boards/id/${res.data._id}`);
+      })
+      .catch((error) => notify({ message: error.response.data.message }));
   };
 
-  const getNavigationBoards = (data) => setUpdate(data);
-
-  const getNavData = (style) => setBackground({ ...background, ...style });
+  const getNavData = useCallback(
+    (style, boards) => {
+      style && setBackground({ ...background, ...style });
+      boards && setBoards(boards);
+    },
+    [background]
+  );
 
   useEffect(() => {
-    (isHomePage || isTemplatePage) && setBackground({ image: "", color: "" });
+    (isHomePage || isTemplatePage || !background.image) &&
+      setBackground({ image: "", color: "" });
   }, [isHomePage, isTemplatePage]);
-
-  useEffect(() => {
-    if (!create) return emptyFunction();
-    const createBoard = async () => {
-      await requestNewBoard(board).then((res) => {
-        setBoard(res.data);
-        return history.push(`/boards/id/${res.data._id}`);
-      });
-    };
-    createBoard();
-    setCreate(false);
-  }, [board, history.push]);
-
-  useEffect(() => {
-    setBoards(update);
-  }, [update]);
 
   return (
     <MainContext.Provider
@@ -90,7 +78,6 @@ const MainContainer = ({ children, history }) => {
         device,
         dimensions,
         getNavData,
-        getNavigationBoards,
         handleSearchClick,
         history,
         isHomePage,

@@ -3,14 +3,15 @@ import { withRouter } from "react-router-dom";
 
 import { HomepageContext } from "../utils/contextUtils";
 import { requestUserUpdate } from "../apis/apiRequests";
-import { useFetch, useAuth } from "../utils/hookUtils";
+import { useFetch, useAuth, useMainContext } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const HomePageContainer = ({ history }) => {
+  const [boards, setBoards] = useState("");
   const [data, loading] = useFetch(history);
-  const [boards, setBoards] = useState([]);
   const [user, setUser] = useState(useAuth().user);
+  const { getNavData } = useMainContext();
 
   const handleBoardStarClick = async (id, starRef) => {
     if (!starRef) return;
@@ -25,8 +26,9 @@ const HomePageContainer = ({ history }) => {
 
   useEffect(() => {
     if (!data) return;
-    data && setBoards(data);
-  }, [data]);
+    setBoards(data);
+    getNavData(null, data);
+  }, [data, getNavData]);
 
   return data && boards && !loading ? (
     <HomepageContext.Provider

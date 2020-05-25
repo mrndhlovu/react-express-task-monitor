@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import isURL from "validator/lib/isURL";
 
-import { BoardContext, MainContext } from "../utils/contextUtils";
+import { BoardContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
 import {
   requestBoardUpdate,
@@ -13,8 +13,14 @@ import {
   requestUserUpdate,
 } from "../apis/apiRequests";
 
-import { getActivity, emptyFunction, resetForm } from "../utils/appUtils";
-import { useAuth } from "../utils/hookUtils";
+import {
+  getActivity,
+  emptyFunction,
+  resetForm,
+  getUpdatedArray,
+  findArrayItem,
+} from "../utils/appUtils";
+import { useAuth, useAlert, useMainContext } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
 import BoardHeader from "../components/boardDetail/BoardHeader";
 
@@ -24,8 +30,9 @@ const StyledContainer = styled.div`
 
 const BoardContainer = ({ match, history, templateBoard }) => {
   const { id } = match.params;
-  const { getNavData } = useContext(MainContext);
+  const { getNavData, boards } = useMainContext();
   const { auth, user } = useAuth();
+  const { notify } = useAlert();
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
@@ -92,8 +99,14 @@ const BoardContainer = ({ match, history, templateBoard }) => {
         ...board,
         styleProperties: { ...board.styleProperties, color: option, image: "" },
       };
+    if (boards) {
+      const source = findArrayItem(boards, board._id, "_id");
+      const removeIndex = boards.indexOf(source);
 
-    handleBoardUpdate(newBoard, "styleProperties", "color");
+      getNavData(null, getUpdatedArray(boards, removeIndex, newBoard));
+    }
+
+    handleBoardUpdate(newBoard, "styleProperties");
   };
 
   const handleBoardStarClick = () => {
@@ -132,7 +145,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           resetForm("invite-input");
         })
         .catch((error) => {
-          alert(error.response.data.message);
+          notify({ message: error.response.data.message });
         });
     };
 
@@ -167,20 +180,22 @@ const BoardContainer = ({ match, history, templateBoard }) => {
 
   useEffect(() => {
     if (board) return emptyFunction();
-    const fetchData = async () =>
+    const fetchData = async () => {
       await requestBoardDetail(id)
         .then((res) => {
-          getNavData(res.data.styleProperties);
-          return setBoard(res.data);
+          setBoard(res.data);
+          return getNavData(res.data.styleProperties, boards);
         })
-        .catch(() => history.push("/"));
+        .catch((error) => notify({ message: error.response.data.message }));
+    };
 
     if (templateBoard) {
       setBoard(templateBoard);
-      return getNavData(templateBoard.styleProperties);
+      return getNavData(templateBoard.styleProperties, boards);
     }
+
     fetchData();
-  }, [board, updatedField, id, history.push, getNavData, templateBoard]);
+  }, [board, boards, id, history, getNavData, templateBoard]);
 
   return (
     board && (

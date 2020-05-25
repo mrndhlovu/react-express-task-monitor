@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 
-import { BoardContext, MainContext } from "../../utils/contextUtils";
+import { useMainContext, useBoardContext } from "../../utils/hookUtils";
 import BoardHeaderButtons from "./BoardHeaderButtons";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
@@ -12,10 +12,8 @@ const TitleWrapper = styled.div`
 `;
 
 const BoardHeader = ({ user }) => {
-  const { board, handleShowMenuClick } = useContext(BoardContext);
-
-  const { device } = useContext(MainContext);
-  const { mobile } = device;
+  const { board, handleShowMenuClick } = useBoardContext();
+  const { mobile } = useMainContext().device;
 
   return (
     <div className="board-header">

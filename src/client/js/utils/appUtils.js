@@ -133,3 +133,8 @@ export const findArrayItem = (array, itemId, fieldProp) =>
   array.filter((item, index) =>
     fieldProp ? equals(item[fieldProp], itemId) : index === itemId
   )[0];
+
+export const getUpdatedArray = (array, replaceIndex, newObject) => {
+  array.splice(replaceIndex, 1, newObject);
+  return array;
+};

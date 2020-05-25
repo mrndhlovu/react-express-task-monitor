@@ -26,11 +26,7 @@ const LoginContainer = ({ history, location }) => {
     e.preventDefault();
     setLoading(true);
     await requestAuthLogin(credentials)
-      .then(() => {
-        authListener();
-        history.push(`${from.pathname}`);
-      })
-
+      .then(() => authListener())
       .catch((error) => {
         setLoading(false);
         notify({

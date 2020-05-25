@@ -1,10 +1,9 @@
-import React, { useState, Fragment, useContext, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 
 import { Dropdown, Icon } from "semantic-ui-react";
 
-import { MainContext } from "../../utils/contextUtils";
-import { useFetch } from "../../utils/hookUtils";
+import { useMainContext } from "../../utils/hookUtils";
 import NavButton from "../sharedComponents/NavButton";
 
 const StyledDiv = styled.div`
@@ -18,18 +17,12 @@ const StyledButton = styled(Dropdown)`
 
 const StyledSpan = styled.span`
   color: ${(props) => props.color};
+  margin-right: 37px;
 `;
 
 const LeftNavButtons = ({ history }) => {
-  const { isLoading, device } = useContext(MainContext);
-  const [data] = useFetch(history);
-
+  const { isLoading, device, boards } = useMainContext();
   const [showBoardList, setShowBoardList] = useState(false);
-  const [boards, setBoards] = useState(null);
-
-  useEffect(() => {
-    data && setBoards(data);
-  }, [data]);
 
   return (
     <StyledDiv>
@@ -53,10 +46,20 @@ const LeftNavButtons = ({ history }) => {
               <Fragment key={board._id}>
                 <Dropdown.Item
                   onClick={() => history.push(`/boards/id/${board._id}`)}
+                  image={
+                    board.styleProperties.image && (
+                      <img
+                        className="nav-board-image"
+                        src={board.styleProperties.image}
+                      />
+                    )
+                  }
                   icon={
-                    <StyledSpan color={board.styleProperties.color}>
-                      <Icon name="columns" />
-                    </StyledSpan>
+                    board.styleProperties.color && (
+                      <StyledSpan color={board.styleProperties.color}>
+                        <Icon size="big" name="window maximize" />
+                      </StyledSpan>
+                    )
                   }
                   text={board.title}
                 />
