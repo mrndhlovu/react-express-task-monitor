@@ -101,10 +101,5 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
-    new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify(process.env.environment),
-      },
-    }),
   ],
 };
