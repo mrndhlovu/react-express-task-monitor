@@ -27,7 +27,6 @@ const UserSchema = new mongoose.Schema(
       lowercase: true,
       unique: true,
       trim: true,
-      required: true,
       validate(value) {
         if (!isEmail(value)) throw new Error("Email is invalid");
       },
@@ -66,6 +65,14 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
       minlength: 4,
+    },
+    socialAuth: {
+      type: Object,
+      required: true,
+      default: {
+        provider: "",
+        id: "",
+      },
     },
     templates: {
       type: Array,

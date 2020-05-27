@@ -7,7 +7,7 @@ const {
   removeUser,
 } = require("../chatRooms");
 
-const socketConfig = (server) => {
+const socketIOConfig = (server) => {
   const io = socketIo(server);
 
   const boardIo = io.of("chat");
@@ -76,4 +76,4 @@ const socketConfig = (server) => {
   });
 };
 
-module.exports = { socketConfig };
+module.exports = { socketIOConfig };
