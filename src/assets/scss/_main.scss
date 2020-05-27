@@ -147,3 +147,15 @@ ui.form,
   position: absolute;
   top: 16%;
 }
+
+.error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: auto;
+  justify-content: center;
+  font-weight: 800;
+  color: #162b4d;
+  text-align: center;
+  height: 96vh;
+}
