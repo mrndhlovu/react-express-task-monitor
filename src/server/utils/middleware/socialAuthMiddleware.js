@@ -12,9 +12,9 @@ const {
 const passportInit = (passport) => {
   passport.serializeUser((user, done) => done(null, user.id));
 
-  passport.deserializeUser((id, done) => {
-    User.findById(id).then(async (user) => done(null, user));
-  });
+  passport.deserializeUser((id, done) =>
+    User.findById(id).then((user) => done(null, user))
+  );
 
   const getUser = (profile, done) => {
     const { id, displayName, emails, provider } = profile;
@@ -24,13 +24,10 @@ const passportInit = (passport) => {
       new User({
         fname: displayName,
         email: emails[0].value,
-        password: `${id}`,
-        socialAuth: { provider },
+        socialAuth: { provider, id },
       })
         .save()
-        .then((user) => {
-          done(null, user);
-        });
+        .then((user) => done(null, user));
     });
   };
 
@@ -41,9 +38,7 @@ const passportInit = (passport) => {
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
       },
-      (accessToken, refreshToken, profile, done) => {
-        getUser(profile, done);
-      }
+      (accessToken, refreshToken, profile, done) => getUser(profile, done)
     )
   );
 
@@ -54,9 +49,8 @@ const passportInit = (passport) => {
         clientID: SPOTIFY_CLIENT_ID,
         clientSecret: SPOTIFY_SECRET_ID,
       },
-      (accessToken, refreshToken, expires_in, profile, done) => {
-        getUser(profile, done);
-      }
+      (accessToken, refreshToken, expires_in, profile, done) =>
+        getUser(profile, done)
     )
   );
 };

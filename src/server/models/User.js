@@ -34,7 +34,6 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       trim: true,
-      required: true,
       minlength: 7,
       validate(value) {
         if (value.toLowerCase().includes("password"))
@@ -51,6 +50,14 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: [],
     },
+    socialAuth: {
+      type: Object,
+      required: true,
+      default: {
+        provider: "",
+        id: "",
+      },
+    },
     idBoards: {
       type: Array,
       required: true,
@@ -65,14 +72,6 @@ const UserSchema = new mongoose.Schema(
       type: String,
       trim: true,
       minlength: 4,
-    },
-    socialAuth: {
-      type: Object,
-      required: true,
-      default: {
-        provider: "",
-        id: "",
-      },
     },
     templates: {
       type: Array,
@@ -150,9 +149,11 @@ UserSchema.statics.findByCredentials = async (email, password) => {
   const user = await User.findOne({ email });
 
   if (!user) throw new Error("Login error: check your email or password.");
+  if (!user.socialAuth.provider) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new Error("Login error: check your email or password.");
+  }
 
-  const isMatch = await bcrypt.compare(password, user.password);
-  if (!isMatch) throw new Error("Login error: check your email or password.");
   return user;
 };
 
