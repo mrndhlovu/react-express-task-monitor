@@ -9,10 +9,9 @@ import UIContainer from "./UIContainer";
 import UIDivider from "./UIDivider";
 import UISmall from "./UISmall";
 
-const StyledHeader = styled.div`
+import { socialAuthOptions } from "../../constants/constants";
 
-}
-`;
+const StyledHeader = styled.div``;
 
 const FormWrapper = styled.form`
   background: #fff;
@@ -95,12 +94,14 @@ const AuthFormWrapper = ({
         {!resetPasswordPage && <UIDivider content="OR" horizontal={true} />}
         {socialButtons && (
           <>
-            <SocialAuthButton buttonText="Continue with Google" icon="google" />
-
-            <SocialAuthButton
-              buttonText="Continue with Microsoft"
-              icon="microsoft"
-            />
+            {socialAuthOptions.map((option) => (
+              <SocialAuthButton
+                key={option.key}
+                hrefTo={option.key}
+                buttonText={`Continue with ${option.name}`}
+                icon={option.key}
+              />
+            ))}
 
             <UIDivider />
           </>

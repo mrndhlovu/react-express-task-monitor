@@ -120,3 +120,14 @@ export const ALLOWED_DOCUMENT_TYPES = [
   // "xls",
   // "txt",
 ];
+
+export const socialAuthOptions = [
+  {
+    key: "google",
+    name: "Google",
+  },
+  {
+    key: "spotify",
+    name: "Spotify",
+  },
+];

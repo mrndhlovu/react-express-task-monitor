@@ -114,7 +114,7 @@ export const getFormattedString = (string) =>
   string.trim().replace(" ", "-").toLowerCase();
 
 export const capitalize = (string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
+  `${string.charAt(0).toUpperCase()}${string.slice(1)}`;
 
 export const getProgression = (partialValue, totalValue) =>
   (100 * partialValue) / totalValue;
