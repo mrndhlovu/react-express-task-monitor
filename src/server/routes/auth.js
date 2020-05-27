@@ -1,4 +1,8 @@
-const { ROOT_URL, allowedFields } = require("../utils/config.js");
+const {
+  ROOT_URL,
+  allowedFields,
+  isDevelopment,
+} = require("../utils/config.js");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const router = require("express").Router();
 const User = require("../models/User");
@@ -13,6 +17,8 @@ const {
 const crypto = require("crypto");
 const async = require("async");
 const passport = require("passport");
+
+const redirectTo = isDevelopment ? `/#/` : "/";
 
 const generateAccessCookie = async (res, token) => {
   res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
@@ -165,6 +171,7 @@ router.post("/:token/update-password", (req, res) => {
 router.post("/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
+
     await req.user.save();
     res.send();
   } catch (error) {
@@ -225,7 +232,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`/#/profile?${req.user.email}`);
+      res.redirect(`${redirectTo}profile?${req.user.email}`);
     });
   }
 );
@@ -236,7 +243,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`/#/profile?${req.user.email}`);
+      res.redirect(`${redirectTo}profile?${req.user.email}`);
     });
   }
 );
