@@ -50,7 +50,7 @@ const TabProfileContent = ({ user, device }) => {
       },
     },
     {
-      menuItem: "Integrations",
+      menuItem: "Connections",
       pane: {
         key: "tab3",
         content: (

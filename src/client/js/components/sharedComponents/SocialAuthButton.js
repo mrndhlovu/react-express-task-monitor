@@ -1,6 +1,9 @@
 import React from "react";
-import { Icon } from "semantic-ui-react";
 import styled from "styled-components";
+
+import { Icon } from "semantic-ui-react";
+
+import { AUTH_EP } from "../../utils/urls";
 
 const StyledSegment = styled.div`
 border: 1px solid grey;
@@ -16,10 +19,12 @@ width: 100%;
 }
 `;
 
-const SocialAuthButton = ({ icon, buttonText }) => {
+const SocialAuthButton = ({ icon, buttonText, hrefTo, color, size }) => {
+  const handleClick = () => (window.location = `${AUTH_EP}/${hrefTo}`);
+
   return (
-    <StyledSegment content={buttonText}>
-      <Icon name={icon} />
+    <StyledSegment content={buttonText} onClick={() => handleClick()}>
+      <Icon name={icon} color={color} size={size} />
     </StyledSegment>
   );
 };

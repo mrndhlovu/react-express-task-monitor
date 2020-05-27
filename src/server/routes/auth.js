@@ -12,6 +12,16 @@ const {
 } = require("../utils/middleware/boardMiddleWare");
 const crypto = require("crypto");
 const async = require("async");
+const passport = require("passport");
+
+const generateAccessCookie = async (res, token) => {
+  res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
+  res.cookie("access_token", token, {
+    maxAge: 9999999,
+    httpOnly: true,
+  });
+  await res.append("Set-Cookie", `access_token="${token}";`);
+};
 
 router.post("/signup", async (req, res) => {
   const user = new User(req.body);
@@ -19,13 +29,7 @@ router.post("/signup", async (req, res) => {
     await user.save();
     const token = await user.getAuthToken();
     sendWelcomeEmail(user.email, user.fname);
-    res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
-    res.cookie("access_token", token, {
-      maxAge: 9999999,
-      httpOnly: true,
-    });
-    res.append("Set-Cookie", "access_token=" + token + ";");
-
+    generateAccessCookie(res, token);
     res.status(201).send(user);
   } catch (error) {
     res.status(400).send(error.message);
@@ -37,16 +41,10 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findByCredentials(email, password);
     const token = await user.getAuthToken();
-
-    res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
-    res.cookie("access_token", token, {
-      maxAge: 9999999,
-      httpOnly: true,
-    });
-    res.append("Set-Cookie", "access_token=" + token + ";");
+    generateAccessCookie(res, token);
     res.send(user);
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error);
   }
 });
 
@@ -206,5 +204,41 @@ router.patch("/update", auth, async (req, res, next) => {
     });
   }
 });
+
+router.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  })
+);
+
+router.get(
+  "/spotify",
+  passport.authenticate("spotify", {
+    scope: ["user-read-email", "user-read-private"],
+  })
+);
+
+router.get(
+  "/google/redirect",
+  passport.authenticate("google", { session: false }),
+  async (req, res) => {
+    await req.user.getAuthToken().then((token) => {
+      generateAccessCookie(res, token);
+      res.redirect(`/#/profile?${req.user.email}`);
+    });
+  }
+);
+
+router.get(
+  "/spotify/redirect",
+  passport.authenticate("spotify"),
+  async (req, res) => {
+    await req.user.getAuthToken().then((token) => {
+      generateAccessCookie(res, token);
+      res.redirect(`/#/profile?${req.user.email}`);
+    });
+  }
+);
 
 module.exports = router;

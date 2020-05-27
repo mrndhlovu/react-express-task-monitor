@@ -8,7 +8,7 @@ import {
   requestUserUpdate,
   requestDeleteAccount,
 } from "../../apis/apiRequests";
-import { useAlert } from "../../utils/hookUtils";
+import { useAlert, useAuth } from "../../utils/hookUtils";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIFormInput from "../sharedComponents/UIFormInput";
@@ -17,6 +17,7 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 
 const AccountSettings = ({ history }) => {
   const { notify } = useAlert();
+  const { user } = useAuth();
   const [credentials, setCredentials] = useState({
     password: null,
     confirmPassword: null,
@@ -88,35 +89,40 @@ const AccountSettings = ({ history }) => {
 
   return (
     <UIContainer>
-      {!passwordChanged && <Header as="h3" content="Change Password" />}
-      <form id="change-password-form" onSubmit={(e) => handleSave(e)}>
-        <UIFormInput
-          id="password-confirm-input"
-          autoFocus={true}
-          placeholder="Email"
-          type="password"
-          name="password"
-          onChange={(e) => onHandleChange(e)}
-        />
-        <UIFormInput
-          id="confirm-password-input"
-          placeholder="Confirm Password"
-          type="password"
-          name="confirmPassword"
-          onChange={(e) => onHandleChange(e)}
-        />
-        <UIWrapper padding="10px 0">
-          <Button
-            loading={save}
-            disabled={
-              (!credentials.password || !credentials.confirmPassword) && !save
-            }
-            fluid
-            positive
-            content={passwordChanged ? "Done" : "Save"}
-          />
-        </UIWrapper>
-      </form>
+      {user && !user.socialAuth.provider && (
+        <>
+          {!passwordChanged && <Header as="h3" content="Change Password" />}
+          <form id="change-password-form" onSubmit={(e) => handleSave(e)}>
+            <UIFormInput
+              id="password-confirm-input"
+              autoFocus={true}
+              placeholder="Email"
+              type="password"
+              name="password"
+              onChange={(e) => onHandleChange(e)}
+            />
+            <UIFormInput
+              id="confirm-password-input"
+              placeholder="Confirm Password"
+              type="password"
+              name="confirmPassword"
+              onChange={(e) => onHandleChange(e)}
+            />
+            <UIWrapper padding="10px 0">
+              <Button
+                loading={save}
+                disabled={
+                  (!credentials.password || !credentials.confirmPassword) &&
+                  !save
+                }
+                fluid
+                positive
+                content={passwordChanged ? "Done" : "Save"}
+              />
+            </UIWrapper>
+          </form>
+        </>
+      )}
 
       <Header as="h3" content="Delete Account" />
       <UIDivider />

@@ -21,16 +21,11 @@ export const getCurrentUser = () => {
     userInfo().then(
       (response) => {
         dispatch(requestSuccess(AUTH_SUCCESS, response.data));
-        localStorage.setItem("user", JSON.stringify(response.data.data));
       },
       (error) => dispatch(requestFail(AUTH_FAIL, error.message))
     );
   };
 };
-
-// export const authState = () => {
-//   return (dispatch) => {};
-// };
 
 export const requestSignup = (data) => {
   return (dispatch) => {

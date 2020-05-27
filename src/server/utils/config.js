@@ -8,6 +8,10 @@ const S_GRID_API_KEY = process.env.SEND_GRID_API_KEY;
 const AWS_ID_POOL = process.env.AWS_ID_POOL;
 const AWS_REGION = process.env.AWS_REGION;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_KEY;
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
+const SPOTIFY_SECRET_ID = process.env.SPOTIFY_SECRET_ID;
 const CONNECTION_URI = process.env.MONGODB_URI;
 const LOCAL_MONGO_DB = process.env.LOCAL_MONGO_DB;
 const PORT = process.env.PORT || 3000;
@@ -111,4 +115,8 @@ module.exports = {
   DEFAULT_TEMPLATES,
   allowedFields,
   allowedBoardUpdateFields,
+  SPOTIFY_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CLIENT_ID,
+  SPOTIFY_SECRET_ID,
 };

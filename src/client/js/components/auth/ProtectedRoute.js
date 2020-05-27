@@ -6,12 +6,12 @@ import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const ProtectedRoute = ({ component: ComposedComponent, ...rest }) => {
   const { auth } = useAuth();
-
   class Authentication extends Component {
     handleRender = (props) => {
       if (this.props.isLoading) return <UILoadingSpinner />;
       if (!this.props.auth.authenticated) return <Redirect to="/login" />;
-      else return <ComposedComponent {...props} />;
+      else
+        return <ComposedComponent key={props.location.pathname} {...props} />;
     };
 
     render() {
