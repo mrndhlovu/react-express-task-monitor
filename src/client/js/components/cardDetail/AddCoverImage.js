@@ -36,6 +36,7 @@ const AddCoverImage = ({ notify, ...props }) => {
 
   const handlePageChange = async (value) => {
     setPageNum(value);
+
     await requestImages(searchQuery, value).then((res) => {
       try {
         setTotalPages(res.data.total_pages);
@@ -49,7 +50,7 @@ const AddCoverImage = ({ notify, ...props }) => {
   useEffect(() => {
     if (!search) return emptyFunction();
     const query = getSearchQueryString(searchQuery);
-
+    console.log("handlePageChange -> value", process.env.AWS_REGION);
     const getQueryImageList = async () => {
       await requestImages(query, pageNum).then((res) => {
         try {
