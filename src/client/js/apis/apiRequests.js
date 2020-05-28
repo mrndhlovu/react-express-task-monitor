@@ -43,8 +43,8 @@ export const requestCardUpdate = (body, id) =>
 export const requestAuthSignup = (body) =>
   axios.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
 
-export const requestAuthLogin = (body) =>
-  axios.post(`${AUTH_EP}/login`, body, params);
+export const requestAuthLogin = (body, token) =>
+  axios.post(`${AUTH_EP}/login?token=${token}`, body, params);
 
 export const requestAuthLogout = () =>
   axios.post(`${AUTH_EP}/logoutAll`, null, params);

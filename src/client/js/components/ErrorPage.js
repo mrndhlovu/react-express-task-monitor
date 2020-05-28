@@ -1,14 +1,16 @@
 import React from "react";
-import UISmall from "./sharedComponents/UISmall";
 import { withRouter } from "react-router";
+
+import UIButton from "./cardDetail/UIButton";
 
 const ErrorPage = ({ history }) => {
   return (
-    <div className="error-page">
+    <div className="error-page-wrap">
       <p>
         All is not lost! <br /> But the page you are looking for was not found!
       </p>
-      <UISmall handleClick={() => history.goBack()}>Click here to back</UISmall>
+
+      <UIButton content="Back" onClick={() => history.goBack()} />
     </div>
   );
 };

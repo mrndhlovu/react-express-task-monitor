@@ -1,8 +1,4 @@
-const {
-  ROOT_URL,
-  allowedFields,
-  isDevelopment,
-} = require("../utils/config.js");
+const { ROOT_URL, allowedFields } = require("../utils/config.js");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
 const router = require("express").Router();
 const User = require("../models/User");
@@ -17,8 +13,6 @@ const {
 const crypto = require("crypto");
 const async = require("async");
 const passport = require("passport");
-
-const redirectTo = isDevelopment ? `/#/` : "/";
 
 const generateAccessCookie = async (res, token) => {
   res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
@@ -44,8 +38,9 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.findByCredentials(email, password);
+    const authToken = req.query.token;
+    const { email = null, password = null } = req.body;
+    const user = await User.findByCredentials(email, password, authToken);
     const token = await user.getAuthToken();
     generateAccessCookie(res, token);
     res.send(user);
@@ -68,6 +63,7 @@ router.post("/logout", auth, async (req, res) => {
     req.user.tokens = req.user.tokens.filter(
       (token) => token.token !== req.token
     );
+
     await req.user.save();
     res.send();
   } catch (error) {
@@ -171,8 +167,8 @@ router.post("/:token/update-password", (req, res) => {
 router.post("/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
-
     await req.user.save();
+
     res.send();
   } catch (error) {
     res.status(500).send();
@@ -232,7 +228,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`${redirectTo}profile?${req.user.email}`);
+      res.redirect(`/#/profile?${token}&email=${req.user.email}`);
     });
   }
 );
@@ -243,7 +239,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`${redirectTo}profile?${req.user.email}`);
+      res.redirect(`/#/profile?${token}&email=${req.user.email}`);
     });
   }
 );

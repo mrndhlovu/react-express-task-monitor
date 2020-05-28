@@ -159,3 +159,29 @@ ui.form,
   text-align: center;
   height: 96vh;
 }
+
+.no-user-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #162b4d;
+  text-align: center;
+  height: 96vh;
+  text-transform: uppercase;
+}
+
+.error-page-wrap {
+  align-items: center;
+  background: #f4f5f7;
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #162b4d;
+}

@@ -145,12 +145,15 @@ UserSchema.methods.getAuthToken = async function () {
   return token;
 };
 
-UserSchema.statics.findByCredentials = async (email, password) => {
+UserSchema.statics.findByCredentials = async (email, password, token) => {
   const user = await User.findOne({ email });
-
+  let isMatch;
   if (!user) throw new Error("Login error: check your email or password.");
-  if (!user.socialAuth.provider) {
-    const isMatch = await bcrypt.compare(password, user.password);
+  if (password) {
+    isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new Error("Login error: check your email or password.");
+  } else {
+    isMatch = user.tokens.find((tokenObj) => tokenObj.token === token);
     if (!isMatch) throw new Error("Login error: check your email or password.");
   }
 
