@@ -228,7 +228,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`/#/profile?${token}&email=${req.user.email}`);
+      res.redirect(`/#/profile?token=${token}&email=${req.user.email}`);
     });
   }
 );
@@ -239,7 +239,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`/#/profile?${token}&email=${req.user.email}`);
+      res.redirect(`/#/profile?token=${token}&email=${req.user.email}`);
     });
   }
 );

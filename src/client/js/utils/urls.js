@@ -19,9 +19,17 @@ export const params = {
   withCredentials: true,
 };
 
-export const parseSearchQuery = (query) => {
-  const queryArray = query.split("=");
-  return { [`${queryArray.shift()}`]: queryArray.shift() === "true" };
+export const parseUrl = (search) => {
+  const queries = search.replace(/^\?/, "").split("&");
+  let parsedSearch = {};
+  queries.map((query) => {
+    const queryArray = query.split("=");
+    parsedSearch = {
+      ...parsedSearch,
+      [`${queryArray.shift()}`]: queryArray.shift(),
+    };
+  });
+  return parsedSearch;
 };
 
 export const getQueryString = (location) => location.search.slice(1);

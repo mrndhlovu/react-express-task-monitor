@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import { emptyFunction } from "../../utils/appUtils";
-import { getQueryString } from "../../utils/urls";
+import { parseUrl } from "../../utils/urls";
 import { MainContext } from "../../utils/contextUtils";
 import { requestAuthLogin } from "../../apis/apiRequests";
 import { useAuth } from "../../utils/hookUtils";
@@ -22,12 +22,9 @@ const UserProfile = ({ history }) => {
   const [alertText, setAlertText] = useState("Login to access this page!");
 
   useEffect(() => {
-    const urlParams = getQueryString(history.location);
-
-    if (!urlParams) return emptyFunction();
-    const paramsArray = urlParams.split("&");
-    const token = paramsArray[0];
-    const email = paramsArray[1].split("=").pop();
+    const { search } = history.location;
+    if (!search) return emptyFunction();
+    const { email, token } = parseUrl(search.slice(1));
 
     if (!token) return emptyFunction;
     setAlertText("Loading!");
@@ -39,7 +36,7 @@ const UserProfile = ({ history }) => {
           history.push("/profile");
         })
         .catch(() => {
-          setAlertText("Loading to access this page!");
+          setAlertText("Login to access this page!");
         });
     };
     token && email && loginUser();
