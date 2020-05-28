@@ -101,5 +101,8 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
+    new webpack.DefinePlugin({
+      __isBrowser__: "true",
+    }),
   ],
 };
