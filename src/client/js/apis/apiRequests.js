@@ -1,13 +1,6 @@
 import axios from "axios";
 
-import {
-  AUTH_EP,
-  BOARDS_EP,
-  CARDS_EP,
-  IMAGES_EP,
-  params,
-  UPLOAD_EP,
-} from "../utils/urls";
+import { AUTH_EP, BOARDS_EP, CARDS_EP, params, UPLOAD_EP } from "../utils/urls";
 
 export const requestNewBoard = (board) =>
   axios.post(`${BOARDS_EP}/create-board`, board, params);
@@ -84,7 +77,7 @@ export const requestBoardMembers = (id) =>
 
 export const requestImages = (query, page, orientation = "landscape") =>
   axios.get(
-    `${IMAGES_EP}&query=${query}&page=${page}&orientation=${orientation}`
+    `${BOARDS_EP}/images?query=${query}&page=${page}&orientation=${orientation}`
   );
 
 export const requestTemplates = () =>

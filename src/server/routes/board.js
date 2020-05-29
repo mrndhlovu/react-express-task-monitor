@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const fetch = require("node-fetch");
 const Board = require("../models/Board");
 const Template = require("../models/Template");
 const List = require("../models/List");
@@ -9,7 +10,11 @@ const {
   defaultTemplates,
 } = require("../utils/middleware/boardMiddleWare");
 const { sendInvitationEmail } = require("../utils/middleware/emailMiddleware");
-const { ROOT_URL, allowedBoardUpdateFields } = require("../utils/config");
+const {
+  ROOT_URL,
+  allowedBoardUpdateFields,
+  IMAGES_EP,
+} = require("../utils/config");
 const ObjectID = require("mongodb").ObjectID;
 
 router.get("/", auth, async (req, res) => {
@@ -186,6 +191,19 @@ router.post("/create-template", auth, async (req, res) => {
     res.status(203).send();
   } catch (error) {
     res.status(400).send({ message: error });
+  }
+});
+
+router.get("/images", auth, async (req, res) => {
+  const { page, query, orientation } = req.query;
+  try {
+    fetch(`${IMAGES_EP}&query=${query}&page=${page}&orientation=${orientation}`)
+      .then((res) => res.json())
+      .then((body) => res.status(203).send(body));
+  } catch (error) {
+    res.status(400).send({
+      message: "Failed to get images at this time, please try in 5 minutes.",
+    });
   }
 });
 
