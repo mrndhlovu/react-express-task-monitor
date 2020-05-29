@@ -1,26 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
-import styled from "styled-components";
-
-import { Header, Input } from "semantic-ui-react";
 
 import { BoardContext } from "../../utils/contextUtils";
 import { findArrayItem, stringsEqual } from "../../utils/appUtils";
-
-const StyledHeader = styled(Header)`
-  font-size: 14px !important;
-`;
-
-const StyledDiv = styled.div`
-  cursor: pointer;
-`;
-
-const EditHeader = styled(Input)`
-  display: flex important;
-  border-radius: 5px;
-  margin-bottom: 5px;
-  height: 29px;
-  width: 95%;
-`;
+import UIFormInput from "../sharedComponents/UIFormInput";
 
 const EditableHeader = ({ title, type, sourceId }) => {
   const { handleBoardUpdate, board } = useContext(BoardContext);
@@ -48,31 +30,43 @@ const EditableHeader = ({ title, type, sourceId }) => {
         break;
     }
 
-    setEditable(!editable);
+    setEditable(false);
   };
 
   useEffect(() => {
     if (!newBoard) return;
-    handleBoardUpdate(
-      newBoard,
-      stringsEqual(type, "boardTitle") ? "title" : "lists"
-    );
+    newTitle &&
+      handleBoardUpdate(
+        newBoard,
+        stringsEqual(type, "boardTitle") ? "title" : "lists"
+      );
     setNewBoard(null);
-  }, [newBoard, handleBoardUpdate]);
+  }, [newBoard, handleBoardUpdate, newTitle]);
 
   return (
-    <StyledDiv>
+    <div
+      className={`${
+        stringsEqual(type, "listHeader") ? "list" : "board"
+      }-header-editable`}
+    >
       {!editable ? (
-        <StyledHeader content={title} onClick={() => setEditable(!editable)} />
+        <span
+          className="editable-header-text"
+          onClick={() => setEditable(!editable)}
+        >
+          {title}{" "}
+        </span>
       ) : (
-        <EditHeader
+        <UIFormInput
+          className="editable-header-input"
           defaultValue={title}
           onBlur={() => handleUpdate()}
           onChange={(e) => handleChange(e)}
+          autoFocus={true}
           onKeyDown={(e) => (e.key === "Enter" ? handleUpdate() : null)}
         />
       )}
-    </StyledDiv>
+    </div>
   );
 };
 

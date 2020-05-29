@@ -60,9 +60,9 @@
 }
 
 .board-header {
-  align-items: start;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
   left: 2px;
   max-height: 40px;
   padding-right: 8px;
@@ -84,4 +84,50 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   padding: 0;
+}
+
+.ui-form-input {
+  margin: 0;
+  max-width: 100%;
+  flex: 1 0 auto;
+  outline: 0;
+  text-align: left;
+  line-height: 1;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #22242626;
+  color: #000000de;
+  border-radius: 3px;
+  -webkit-transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease,
+    -webkit-box-shadow 0.1s ease;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  width: 100%;
+  margin: 0 0 10px 0;
+  letter-spacing: 1px;
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.editable-header-input {
+  padding: 2px 5px;
+  margin-top: 0;
+  font-weight: 800;
+}
+
+.list-header-editable,
+.board-header-editable {
+  cursor: pointer;
+  display: flex;
+  padding-left: 5px;
+}
+
+.editable-header-text {
+  font-weight: 700;
+}
+
+.board-header-editable {
+  color: #fff;
 }
