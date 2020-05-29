@@ -16,6 +16,7 @@ const CONNECTION_URI = process.env.MONGODB_URI;
 const LOCAL_MONGO_DB = process.env.LOCAL_MONGO_DB;
 const PORT = process.env.PORT || 3000;
 const S3_BUCKET = process.env.AWS_BUCKET_NAME;
+const IMAGES_EP = `https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}`;
 const allowedFileTypes = [
   "image/jpg",
   "image/jpeg",
@@ -119,4 +120,5 @@ module.exports = {
   GOOGLE_CLIENT_SECRET,
   GOOGLE_CLIENT_ID,
   SPOTIFY_SECRET_ID,
+  IMAGES_EP,
 };
