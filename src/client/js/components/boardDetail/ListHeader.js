@@ -97,7 +97,6 @@ const ListHeader = ({
         header={header}
         callback={() => handleClose()}
         color="transparent"
-        width="250px"
       >
         <UIContainer width="fit-content">
           {hideCopyList &&
