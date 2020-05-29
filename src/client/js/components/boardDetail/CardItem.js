@@ -108,8 +108,11 @@ const CardItem = ({
 
         <CardBadge
           icon="clock outline"
-          content={getFormattedDate(card.dueDate.date, "LL")}
+          content={getFormattedDate(card.dueDate.date, "MMM Do")}
           hasBadge={hasDueDate}
+          as=""
+          color="yellow"
+          className="date-badge"
         />
         {hasAssignees && <Assignees assignees={card.assignees} />}
       </BadgeContainer>

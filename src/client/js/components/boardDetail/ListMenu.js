@@ -11,6 +11,7 @@ const DropdownItem = styled.li`
   list-style-type: none;
   padding: 8px 8px;
   border-radius: 3px;
+  width: 290px;
 
   &:hover {
     background-color: #ebecf0;

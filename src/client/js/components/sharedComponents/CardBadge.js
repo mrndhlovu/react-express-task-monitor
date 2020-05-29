@@ -1,17 +1,25 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Icon } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 
-const Badge = styled.span`
+const Badge = styled(Label)`
   font-size: 10px;
   padding-right: 5px;
 `;
 
-const CardBadge = ({ flipped, icon, content, hasBadge = false }) => {
+const CardBadge = ({
+  as = "span",
+  flipped,
+  icon,
+  content,
+  hasBadge = false,
+  color,
+  className,
+}) => {
   return (
     hasBadge && (
-      <Badge>
+      <Badge color={color} as={as} className={className}>
         <Icon name={icon} flipped={flipped} />
         {content}
       </Badge>
