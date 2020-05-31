@@ -38,14 +38,14 @@ router.post("/signup", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const authToken = req.query.token;
     const { email = null, password = null } = req.body;
-    const user = await User.findByCredentials(email, password, authToken);
+    const user = await User.findByCredentials(email, password, req.query.token);
+
     const token = await user.getAuthToken();
-    generateAccessCookie(res, token);
+    await generateAccessCookie(res, token);
     res.send(user);
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).send(error.message);
   }
 });
 
