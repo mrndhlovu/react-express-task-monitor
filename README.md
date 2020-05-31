@@ -8,13 +8,14 @@
 
 1. Clone repo
 
-2. `
+2.
+```
 # with yarn 
 yarn install
 
-`
+```
 3. Create a .env file and insert the following code. Replace values with yours!!
-   `
+ ```
 AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY_ID
 AWS_BUCKET_NAME=YOUR_AWS_BUCKET_NAME
 AWS_ID_POOL=YOUR_AWS_ID_POOL
@@ -37,14 +38,13 @@ GOOGLE_CLIENT_SECRET=YOUR_GOOGLE_CLIENT_SECRET
 
 SPOTIFY_CLIENT_ID=YOUR_SPOTIFY_CLIENT_ID
 SPOTIFY_SECRET_ID=YOUR_SPOTIFY_SECRET_ID
-
-   `
+```
 
 4. Get relevant api keys mentioned in the .env file.
 5. Start server and app 
-   `
+   ```
    yarn run dev && yarn start
-   `
+   ```
 
 
 
