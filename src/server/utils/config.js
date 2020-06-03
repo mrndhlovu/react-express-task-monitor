@@ -83,6 +83,7 @@ const allowedFields = [
   "avatar",
   "bio",
   "viewedRecent",
+  "notifications",
 ];
 
 const allowedBoardUpdateFields = [

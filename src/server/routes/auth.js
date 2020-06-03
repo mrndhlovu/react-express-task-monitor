@@ -13,6 +13,7 @@ const {
 const crypto = require("crypto");
 const async = require("async");
 const passport = require("passport");
+const Notification = require("../models/Notification");
 
 const generateAccessCookie = async (res, token) => {
   res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
@@ -26,9 +27,15 @@ const generateAccessCookie = async (res, token) => {
 router.post("/signup", async (req, res) => {
   const user = new User(req.body);
   try {
-    await user.save();
     const token = await user.getAuthToken();
-    sendWelcomeEmail(user.email, user.fname);
+    const notification = new Notification({
+      subject: "Welcome to Task Monitor!",
+      description: `Welcome to Task monitor ${user.fname}. Hope you enjoy using it!`,
+    });
+    user.notifications.push(notification);
+
+    sendWelcomeEmail(user.email, notification);
+    await user.save();
     generateAccessCookie(res, token);
     res.status(201).send(user);
   } catch (error) {

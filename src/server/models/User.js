@@ -50,6 +50,11 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: [],
     },
+    notifications: {
+      type: Array,
+      required: true,
+      default: [],
+    },
     socialAuth: {
       type: Object,
       required: true,
@@ -112,12 +117,6 @@ UserSchema.virtual("template", {
 
 UserSchema.virtual("comment", {
   ref: "Comment",
-  localField: "_id",
-  foreignField: "owner",
-});
-
-UserSchema.virtual("notification", {
-  ref: "Notification",
   localField: "_id",
   foreignField: "owner",
 });

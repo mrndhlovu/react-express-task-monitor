@@ -11,12 +11,17 @@ const NavUserAvatar = ({
   history,
   pointing = "top right",
   callback = () => {},
+  fontSize,
 }) => {
   const handleLogOut = async () =>
     await requestAuthLogout().then(() => history.push("/login"));
 
   const trigger = (
-    <UserAvatar padding="15px" userInitials={getUserInitials(userName)} />
+    <UserAvatar
+      padding="15px"
+      userInitials={getUserInitials(userName)}
+      fontSize={fontSize}
+    />
   );
 
   return (

@@ -40,6 +40,8 @@ const DropdownButton = ({
   className,
   compact = true,
   close,
+  notificationCount,
+  iconColor,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -62,7 +64,16 @@ const DropdownButton = ({
       compact={compact}
       floating
       fluid={fluid}
-      icon={icon}
+      icon={
+        icon && (
+          <>
+            {notificationCount && (
+              <span className="notifications-count">{notificationCount}</span>
+            )}
+            <Icon name={icon} color={iconColor} />
+          </>
+        )
+      }
       labeled={labeled}
       onClick={() => setOpen(true)}
       open={open}
@@ -92,7 +103,6 @@ const DropdownButton = ({
             <UIDivider />
           </Fragment>
         )}
-
         {children}
       </Dropdown.Menu>
     </StyledDropdown>

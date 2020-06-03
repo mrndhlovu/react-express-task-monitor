@@ -4,12 +4,12 @@ const moment = require("moment");
 
 sgMail.setApiKey(S_GRID_API_KEY);
 
-const sendWelcomeEmail = (email, name) => {
+const sendWelcomeEmail = (email, notification) => {
   sgMail.send({
     to: email,
     from: "kandhlovuie@gmail.com",
-    subject: "Welcome to Task Monitor",
-    text: `Welcome to Task monitor ${name}. Hope you enjoy using it!`,
+    subject: notification.subject,
+    text: notification.description,
   });
 };
 
