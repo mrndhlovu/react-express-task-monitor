@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Accordion, Icon } from "semantic-ui-react";
+
 import { requestUserUpdate } from "../../apis/apiRequests";
 import { useAuth } from "../../utils/hookUtils";
 import DropdownButton from "../sharedComponents/DropdownButton";
@@ -22,6 +23,7 @@ const RightNavButtons = ({ history }) => {
     (notification) => !notification.read
   );
   const hasUnreadNotification = unreadNotification.length > 0;
+  const hasNotifications = notifications.length > 0;
 
   const handleClick = (notification, index) => {
     setActiveIndex(index === activeIndex ? null : index);
@@ -43,29 +45,33 @@ const RightNavButtons = ({ history }) => {
         iconColor={hasUnreadNotification ? "red" : "grey"}
       >
         <UIWrapper className="notifications">
-          {notifications.map((notification, index) => {
-            return (
-              <Accordion key={index}>
-                <Accordion.Title
-                  active={activeIndex === index}
-                  index={0}
-                  onClick={() => handleClick(notification, index)}
-                  className={`single-notification ${
-                    notification.read ? "note-read" : "note-unread"
-                  }`}
-                >
-                  <Icon name="dropdown" />
-                  {notification.subject}
-                </Accordion.Title>
-                <Accordion.Content
-                  className="notification-description"
-                  active={activeIndex === index}
-                >
-                  <p>{notification.description}</p>
-                </Accordion.Content>
-              </Accordion>
-            );
-          })}
+          {hasNotifications ? (
+            notifications.map((notification, index) => {
+              return (
+                <Accordion key={index}>
+                  <Accordion.Title
+                    active={activeIndex === index}
+                    index={0}
+                    onClick={() => handleClick(notification, index)}
+                    className={`single-notification ${
+                      notification.read ? "note-read" : "note-unread"
+                    }`}
+                  >
+                    <Icon name="dropdown" />
+                    {notification.subject}
+                  </Accordion.Title>
+                  <Accordion.Content
+                    className="notification-description"
+                    active={activeIndex === index}
+                  >
+                    <p>{notification.description}</p>
+                  </Accordion.Content>
+                </Accordion>
+              );
+            })
+          ) : (
+            <p>Not new notifications</p>
+          )}
         </UIWrapper>
       </DropdownButton>
       <NavUserAvatar userName={fname} history={history} fontSize="13px" />

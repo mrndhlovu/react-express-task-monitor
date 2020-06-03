@@ -13,22 +13,22 @@ const sendWelcomeEmail = (email, notification) => {
   });
 };
 
-const sendInvitationEmail = (email, name, sender, redirectLink) => {
+const sendInvitationEmail = (email, notification) => {
   sgMail.send({
     to: email,
     from: "kandhlovuie@gmail.com",
-    subject: `${name}, you have been invited by ${sender} to access their board`,
-    text: `${name}, click on this link: \n ${redirectLink}\n to accept the invitation or ignore the message if you do not accept the invitation!`,
+    subject: notification.subject,
+    text: notification.description,
   });
 };
 
-const sendPasswordChangeConfirmation = async (email, name) => {
+const sendPasswordChangeConfirmation = async (email, notification) => {
   await sgMail
     .send({
       to: email,
       from: "kandhlovuie@gmail.com",
-      subject: `${name}, your password has been changed.`,
-      text: `${name}, this is a confirmation that the password for your account ${email} has just been changed.`,
+      subject: notification.subject,
+      text: notification.description,
     })
     .then(() => true)
     .catch(() => false);

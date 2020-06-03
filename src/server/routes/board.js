@@ -16,6 +16,7 @@ const {
   IMAGES_EP,
 } = require("../utils/config");
 const ObjectID = require("mongodb").ObjectID;
+const Notification = require("../models/Notification");
 
 router.get("/", auth, async (req, res) => {
   const match = {};
@@ -112,11 +113,17 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
       ...DEFAULT_ACCESS_LEVELS,
       team: true,
     };
-    sendInvitationEmail(email, req.user.fname, "admin", redirectLink);
+    const notification = new Notification({
+      subject: `${req.user.fname}, you have been invited by ${req.user.fname} to access their board`,
+      description: `${req.user.fname}, click on this link: \n ${redirectLink}\n to accept the invitation or ignore the message if you do not accept the invitation!`,
+    });
+    invitedUser.notifications.push(notification);
+    invitedUser.save();
+    sendInvitationEmail(email, notification);
     board.save();
     res.send({ message: "User invited and added to board members!" });
   } catch (error) {
-    res.status(400).send({ message: "User with that email not found!" });
+    res.status(400).send({ message: "User with that email was not found!" });
   }
 });
 

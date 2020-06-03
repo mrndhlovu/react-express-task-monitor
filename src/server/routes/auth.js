@@ -151,11 +151,17 @@ router.post("/:token/update-password", (req, res) => {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpires = undefined;
 
+      const notification = new Notification({
+        subject: `${user.fname}, your password has been changed.`,
+        description: `${user.fname}, this is a confirmation that the password for your account ${user.email} has just been changed.`,
+      });
+      user.notifications.push(notification);
+
       await user.save();
 
       const mailSent = await sendPasswordChangeConfirmation(
         user.email,
-        user.fname
+        notification
       );
 
       if (mailSent)
