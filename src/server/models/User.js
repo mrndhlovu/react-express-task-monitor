@@ -116,6 +116,12 @@ UserSchema.virtual("comment", {
   foreignField: "owner",
 });
 
+UserSchema.virtual("notification", {
+  ref: "Notification",
+  localField: "_id",
+  foreignField: "owner",
+});
+
 UserSchema.virtual("InvitedBoards", {
   ref: "Board",
   localField: "_id",
