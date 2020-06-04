@@ -9,6 +9,7 @@ import NavButton from "../sharedComponents/NavButton";
 const StyledDiv = styled.div`
   display: flex;
   padding-left: 3px;
+  height: 36px;
 `;
 
 const StyledButton = styled(Dropdown)`

@@ -25,6 +25,7 @@ const UIFormInput = ({
   onBlur,
   onKeyDown,
   className = "ui-form-input",
+  onClick,
 }) => {
   return (
     <InputWrapper>
@@ -33,6 +34,7 @@ const UIFormInput = ({
         autoFocus={autoFocus}
         data-test-id={dataTestId}
         defaultValue={defaultValue}
+        onClick={onClick}
         id={id}
         name={name}
         onChange={onChange}

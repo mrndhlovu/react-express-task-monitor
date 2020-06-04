@@ -1,14 +1,16 @@
-import React, { useContext, Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import isEmail from "validator/lib/isEmail";
 
-import { Dropdown, Button, Icon, List, Input } from "semantic-ui-react";
+import { Dropdown, Button, Icon, List } from "semantic-ui-react";
 
 import { ACCESS_LEVELS } from "../../constants/constants";
-import { BoardContext } from "../../utils/contextUtils";
+import { useBoardContext } from "../../utils/hookUtils";
 import NavButton from "../sharedComponents/NavButton";
 import UIContainer from "../sharedComponents/UIContainer";
+import UIFormInput from "../sharedComponents/UIFormInput";
 import UIMessage from "../sharedComponents/UIMessage";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const StyledDiv = styled.div`
   justify-self: ${(props) => (props.mobile ? "center" : "end")};
@@ -25,12 +27,9 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
   min-width: 180px !important;
 `;
 
-const StyledInput = styled(Input)`
-  min-width: 185px !important;
-`;
-
 const StyledDescription = styled(List.Description)`
   font-size: 9px;
+  color: #000;
 `;
 
 export default function BoardHeaderButtons({ mobile, isStarred }) {
@@ -41,8 +40,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
     handleInviteClick,
     handleShowMenuClick,
     inviteDone,
-    loading,
-  } = useContext(BoardContext);
+  } = useBoardContext();
   const { accessLevel } = board;
   let permission;
 
@@ -128,17 +126,20 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
 
             <Dropdown.Divider />
 
-            <StyledInput
-              id="invite-input"
-              onChange={(e) => handleChange(e)}
-              onClick={(e) => e.stopPropagation()}
-              onKeyDown={(e) => (e.key === "Enter" ? validateEmail() : null)}
-              placeholder={
-                inviteDone ? "Invite Sent" : "Add invite email and press Enter"
-              }
-              icon={inviteDone && <Icon name="check" color="green" />}
-              loading={loading}
-            />
+            <UIWrapper className="user-invite-wrap">
+              <UIFormInput
+                id="invite-input"
+                onChange={(e) => handleChange(e)}
+                onClick={(e) => e.stopPropagation()}
+                onKeyDown={(e) => (e.key === "Enter" ? validateEmail() : null)}
+                placeholder={
+                  inviteDone
+                    ? "Invite Sent"
+                    : "Add invite email and press Enter"
+                }
+                icon={inviteDone && <Icon name="check" color="green" />}
+              />
+            </UIWrapper>
           </StyledDropdownMenu>
         </Dropdown>
       </StyledButton>
