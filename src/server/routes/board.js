@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const fetch = require("node-fetch");
 const Board = require("../models/Board");
-const Template = require("../models/Template");
 const List = require("../models/List");
 const User = require("../models/User");
 const auth = require("../utils/middleware/authMiddleware").authMiddleware;
@@ -17,6 +16,14 @@ const {
 } = require("../utils/config");
 const ObjectID = require("mongodb").ObjectID;
 const Notification = require("../models/Notification");
+
+const createUserNotification = async (email, message) => {
+  await User.findOne({ email }).then((user) => {
+    const notification = new Notification({ ...message });
+    user.notifications.push(notification);
+    return user.save();
+  });
+};
 
 router.get("/", auth, async (req, res) => {
   const match = {};
@@ -113,13 +120,14 @@ router.patch("/id/:boardId/invite", auth, async (req, res) => {
       ...DEFAULT_ACCESS_LEVELS,
       team: true,
     };
-    const notification = new Notification({
+
+    const message = {
       subject: `${req.user.fname}, you have been invited by ${req.user.fname} to access their board`,
       description: `${req.user.fname}, click on this link: \n ${redirectLink}\n to accept the invitation or ignore the message if you do not accept the invitation!`,
-    });
-    invitedUser.notifications.push(notification);
-    invitedUser.save();
-    sendInvitationEmail(email, notification);
+    };
+
+    await createUserNotification(email, message);
+    sendInvitationEmail(email, message);
     board.save();
     res.send({ message: "User invited and added to board members!" });
   } catch (error) {
@@ -211,6 +219,11 @@ router.post("/create-template", auth, async (req, res) => {
       board.lists.push(newList);
     });
 
+    await createUserNotification(req.user.email, {
+      subject: "New templated created",
+      description: `Template created from ${template.title} board!`,
+    });
+
     await board.save();
     res.status(203).send(board);
   } catch (error) {
@@ -233,14 +246,7 @@ router.get("/images", auth, async (req, res) => {
 
 router.get("/templates", auth, defaultTemplates, async (req, res) => {
   try {
-    const defaultTemps = req.templates;
-    const templates = await Template.find();
-    const data =
-      templates.length > 0
-        ? [...templates, ...defaultTemps]
-        : [...defaultTemps];
-
-    res.status(203).send(data);
+    res.status(203).send([...req.templates]);
   } catch (error) {
     res.status(400).send({ message: error });
   }
