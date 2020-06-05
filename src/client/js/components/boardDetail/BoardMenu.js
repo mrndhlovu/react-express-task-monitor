@@ -51,9 +51,11 @@ const BoardMenu = ({
         Change Background
       </Menu.Item>
 
-      <Menu.Item as="a" onClick={() => handleMakeTemplate()}>
-        Make Template
-      </Menu.Item>
+      {!board.isTemplate && (
+        <Menu.Item as="a" onClick={() => handleMakeTemplate()}>
+          Make Template
+        </Menu.Item>
+      )}
 
       <Menu.Item as="a">
         <ActivitiesHeader
