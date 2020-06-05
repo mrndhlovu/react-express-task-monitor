@@ -180,7 +180,12 @@ const BoardContainer = ({ match, history, templateBoard }) => {
 
   useEffect(() => {
     if (board) return emptyFunction();
-    const fetchData = async () => {
+    const fetchBoard = async () => {
+      if (templateBoard) {
+        setBoard(templateBoard);
+        return getNavData(templateBoard.styleProperties, boards);
+      }
+
       await requestBoardDetail(id)
         .then((res) => {
           setBoard(res.data);
@@ -189,13 +194,8 @@ const BoardContainer = ({ match, history, templateBoard }) => {
         .catch((error) => notify({ message: error.response.data.message }));
     };
 
-    if (templateBoard) {
-      setBoard(templateBoard);
-      return getNavData(templateBoard.styleProperties, boards);
-    }
-
-    fetchData();
-  }, [board, boards, id, history, getNavData, templateBoard]);
+    fetchBoard();
+  }, [board, boards, id, history, getNavData, templateBoard, notify]);
 
   return (
     board && (
@@ -221,7 +221,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
         <StyledContainer bgStyle={board.styleProperties}>
           <div className="board-content">
             <BoardHeader user={user} />
-            <Board />
+            <Board history={history} />
           </div>
         </StyledContainer>
       </BoardContext.Provider>

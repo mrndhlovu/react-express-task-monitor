@@ -175,7 +175,7 @@ router.post("/create-board", auth, async (req, res) => {
     const savedBoard = await board.save();
     res.send(savedBoard);
   } catch (error) {
-    res.status(400).send({ message: error });
+    res.status(400).send({ message: error.message });
   }
 });
 
@@ -189,15 +189,32 @@ router.post("/:boardId/create-list", auth, async (req, res) => {
     await board.save();
     res.status(203).send(board);
   } catch (error) {
-    res.status(400).send({ message: error });
+    res.status(400).send({ message: "Failed to create a new list!" });
   }
 });
 
 router.post("/create-template", auth, async (req, res) => {
+  const { template } = req.body;
   try {
-    res.status(203).send();
+    const { lists } = template;
+    const board = new Board({ ...template, lists: [], owner: req.user._id });
+
+    const member = {
+      id: `${req.user._id}`,
+      isAdmin: true,
+      fname: req.user.fname,
+    };
+    board.members.push(member);
+
+    lists.map((list) => {
+      const newList = new List({ ...list });
+      board.lists.push(newList);
+    });
+
+    await board.save();
+    res.status(203).send(board);
   } catch (error) {
-    res.status(400).send({ message: error });
+    res.status(400).send(error.message);
   }
 });
 

@@ -1,9 +1,7 @@
-import React, { useContext, useState, memo, lazy, Suspense } from "react";
+import React, { useState, memo, lazy, Suspense } from "react";
 import styled from "styled-components";
 
 import { Sidebar } from "semantic-ui-react";
-
-import { BoardContext, MainContext } from "../../utils/contextUtils";
 
 const ChangeBackGround = lazy(() => import("./ChangeBackGround"));
 const BoardLists = lazy(() => import("./BoardLists"));
@@ -11,8 +9,14 @@ const BoardMenu = lazy(() => import("./BoardMenu"));
 const ChatIcon = lazy(() => import("./ChatIcon"));
 const ChatSideBar = lazy(() => import("./chatSidebar/ChatSideBar"));
 
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import { requestCreateTemplate } from "../../apis/apiRequests";
+import {
+  useMainContext,
+  useBoardContext,
+  useAlert,
+} from "../../utils/hookUtils";
 import AboutBoard from "./AboutBoard";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const BoardWrapper = styled.div`
   padding-left: ${(props) => (props.mobile ? "3px" : "7px")};
@@ -20,15 +24,16 @@ const BoardWrapper = styled.div`
   width: 100vw;
 `;
 
-const Board = () => {
+const Board = ({ history }) => {
   const {
     handleDeleteBoard,
     handleSelectedBackground,
     handleShowMenuClick,
     showSideBar,
-  } = useContext(BoardContext);
-  const { device, showMobileMenu } = useContext(MainContext);
-
+    board,
+  } = useBoardContext();
+  const { device, showMobileMenu } = useMainContext();
+  const { notify } = useAlert;
   const [membersOnline, setMembersOnline] = useState(0);
   const [openChat, setOpenChat] = useState(false);
   const [changeBg, setChangeBg] = useState(false);
@@ -37,6 +42,33 @@ const Board = () => {
   const toggleChangeBg = () => setChangeBg(!changeBg);
   const handleClose = () => setOpenChat(false);
   const getMembersOnline = (users) => setMembersOnline(users);
+
+  const handleMakeTemplate = () => {
+    let template = { ...board, isTemplate: true };
+    const allowedFields = [
+      "description",
+      "isTemplate",
+      "lists",
+      "styleProperties",
+      "title",
+    ];
+
+    Object.keys(template).filter(
+      (field) => !allowedFields.includes(field) && delete template[field]
+    );
+
+    template.lists.map(async (list) => {
+      delete list._id;
+      delete list.cards;
+    });
+
+    const createTemplate = async () => {
+      await requestCreateTemplate({ template })
+        .then((res) => history.push(`/boards/id/${res.data._id}`))
+        .catch((error) => notify({ message: error.response.data }));
+    };
+    createTemplate();
+  };
 
   return (
     <BoardWrapper className="board-wrap" mobile={device.mobile}>
@@ -49,6 +81,7 @@ const Board = () => {
             showSideBar={showSideBar || showMobileMenu}
             handleShowMenuClick={handleShowMenuClick}
             toggleChangeBg={toggleChangeBg}
+            handleMakeTemplate={handleMakeTemplate}
             setShowAboutCard={() => setShowAboutCard(!showAboutCard)}
             handleDeleteBoard={handleDeleteBoard}
           />
@@ -58,6 +91,7 @@ const Board = () => {
             changeBg={changeBg}
             toggleChangeBg={toggleChangeBg}
             handleSelectedBackground={handleSelectedBackground}
+            handleMakeTemplate={handleMakeTemplate}
           />
         </Suspense>
 

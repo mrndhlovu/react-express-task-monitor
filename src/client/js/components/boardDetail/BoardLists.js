@@ -2,16 +2,13 @@ import React, { useContext, useState, Suspense, lazy, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router";
 
-import {
-  BoardContext,
-  BoardListsContext,
-  MainContext,
-} from "../../utils/contextUtils";
+import { BoardListsContext, MainContext } from "../../utils/contextUtils";
 
-import CreateItemForm from "../sharedComponents/CreateItemForm";
-import ListGrid from "./ListGrid";
 import { findArrayItem, emptyFunction } from "../../utils/appUtils";
 import { requestNewBoardList } from "../../apis/apiRequests";
+import { useBoardContext } from "../../utils/hookUtils";
+import CreateItemForm from "../sharedComponents/CreateItemForm";
+import ListGrid from "./ListGrid";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));
@@ -24,9 +21,7 @@ const StyledListContainer = styled.div`
 `;
 
 const BoardLists = ({ history }) => {
-  const { board, handleBoardUpdate, id, saveBoardChanges } = useContext(
-    BoardContext
-  );
+  const { board, handleBoardUpdate, id, saveBoardChanges } = useBoardContext();
   const { mobile } = useContext(MainContext).device;
 
   const { lists } = board;

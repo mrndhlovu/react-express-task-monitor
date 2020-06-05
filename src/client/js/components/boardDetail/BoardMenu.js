@@ -1,8 +1,7 @@
-import React, { useContext, useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 
 import { Menu, Button } from "semantic-ui-react";
 
-import { BoardContext, MainContext } from "../../utils/contextUtils";
 import Activities from "../cardDetail/Activities";
 import ActivitiesHeader from "../cardDetail/ActivitiesHeader";
 import BoardHeaderButtons from "./BoardHeaderButtons";
@@ -10,17 +9,22 @@ import DropdownButton from "../sharedComponents/DropdownButton";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import { useAuth } from "../../utils/hookUtils";
+import {
+  useAuth,
+  useMainContext,
+  useBoardContext,
+} from "../../utils/hookUtils";
 
 const BoardMenu = ({
   toggleChangeBg,
   handleDeleteBoard,
   showSideBar,
   setShowAboutCard,
+  handleMakeTemplate,
 }) => {
-  const { board, handleShowMenuClick } = useContext(BoardContext);
+  const { board, handleShowMenuClick } = useBoardContext();
   const { user } = useAuth();
-  const { device, setShowMobileMenu } = useContext(MainContext);
+  const { device, setShowMobileMenu } = useMainContext();
   const [activities, setActivities] = useState(false);
 
   return (
@@ -45,6 +49,10 @@ const BoardMenu = ({
 
       <Menu.Item as="a" onClick={() => toggleChangeBg()}>
         Change Background
+      </Menu.Item>
+
+      <Menu.Item as="a" onClick={() => handleMakeTemplate()}>
+        Make Template
       </Menu.Item>
 
       <Menu.Item as="a">

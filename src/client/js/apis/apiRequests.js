@@ -20,6 +20,9 @@ export const requestBoardUpdate = (id, body) => {
   return axios.patch(`${BOARDS_EP}/${id}/update-board`, { ...body }, params);
 };
 
+export const requestCreateTemplate = (body) =>
+  axios.post(`${BOARDS_EP}/create-template`, body, params);
+
 export const requestUpload = (type, body, boardId, listId, cardId) =>
   axios.post(
     `${UPLOAD_EP}/${type}/${boardId}/${listId}/${cardId}/upload`,
