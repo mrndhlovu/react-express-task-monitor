@@ -31,9 +31,8 @@ const UserProfile = ({ history }) => {
 
     const loginUser = async () => {
       await requestAuthLogin({ email }, token)
-        .then(() => {
-          auth.authListener();
-          history.push("/profile");
+        .then((res) => {
+          auth.authListener(res.data.data, history.push("/"));
         })
         .catch(() => {
           setAlertText("Login to access this page!");

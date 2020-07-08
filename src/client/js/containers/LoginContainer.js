@@ -26,7 +26,7 @@ const LoginContainer = ({ history, location }) => {
     e.preventDefault();
     setLoading(true);
     await requestAuthLogin(credentials)
-      .then(() => authListener())
+      .then((res) => authListener(res.data.data, history.push("/")))
       .catch((error) => {
         setLoading(false);
         notify({

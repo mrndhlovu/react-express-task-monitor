@@ -17,19 +17,19 @@ const StyledDiv = styled.div`
 `;
 
 const RightNavButtons = ({ history }) => {
-  const { notifications, fname } = useAuth().user;
+  const { user } = useAuth();
   const [activeIndex, setActiveIndex] = useState(null);
-  const unreadNotification = notifications.filter(
+  const unreadNotification = user.notifications.filter(
     (notification) => !notification.read
   );
   const hasUnreadNotification = unreadNotification.length > 0;
-  const hasNotifications = notifications.length > 0;
+  const hasNotifications = user.notifications.length > 0;
 
   const handleClick = (notification, index) => {
     setActiveIndex(index === activeIndex ? null : index);
     if (!notification.read) {
-      notifications.splice(index, 1, { ...notification, read: true });
-      requestUserUpdate({ notifications });
+      user.notifications.splice(index, 1, { ...notification, read: true });
+      requestUserUpdate({ notification });
     }
   };
 
@@ -46,7 +46,7 @@ const RightNavButtons = ({ history }) => {
       >
         <UIWrapper className="notifications">
           {hasNotifications ? (
-            notifications.map((notification, index) => {
+            user.notifications.map((notification, index) => {
               return (
                 <Accordion key={index}>
                   <Accordion.Title
@@ -74,7 +74,7 @@ const RightNavButtons = ({ history }) => {
           )}
         </UIWrapper>
       </DropdownButton>
-      <NavUserAvatar userName={fname} history={history} fontSize="13px" />
+      <NavUserAvatar userName={user.fname} history={history} fontSize="13px" />
     </StyledDiv>
   );
 };

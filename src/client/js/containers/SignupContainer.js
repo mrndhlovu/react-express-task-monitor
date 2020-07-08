@@ -27,7 +27,7 @@ const SignupContainer = ({ history }) => {
     e.preventDefault();
     setLoading(true);
     await requestAuthSignup(credentials)
-      .then(() => authListener())
+      .then((res) => authListener(res.data.data))
       .catch((error) =>
         notify({
           message: error.response.data,
