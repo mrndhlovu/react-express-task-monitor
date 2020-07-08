@@ -3,8 +3,8 @@ import styled from "styled-components";
 
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import DropdownButton from "../sharedComponents/DropdownButton";
-import { Header } from "semantic-ui-react";
 import CardLabelColors from "../sharedComponents/CardLabelColors";
+import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 
 const Container = styled.div`
   margin-left: 10px;
@@ -18,10 +18,6 @@ const Label = styled.div`
   background-color: ${(props) => props.color};
   border-radius: 2px;
   margin-right: 2px;
-`;
-
-const HeaderWrapper = styled.div`
-  padding-bottom: 10px;
 `;
 
 const CardLabels = ({
@@ -82,29 +78,29 @@ const CardLabels = ({
   ]);
 
   return (
-    <CardDetailSegment>
-      <HeaderWrapper>
-        <Header content="Labels" as="h5" />
-      </HeaderWrapper>
-      <Container>
-        {labels.map((color, index) => (
-          <Label key={index} color={color} />
-        ))}
-        <DropdownButton
-          icon="add"
-          header="Labels"
-          fluid={false}
-          buttonText=""
-          labeled={false}
-          size="massive"
-        >
-          <CardLabelColors
-            handleColorClick={handleColorClick}
-            labels={labels}
-          />
-        </DropdownButton>
-      </Container>
-    </CardDetailSegment>
+    <>
+      <CardDetailHeader description="Labels" />
+      <CardDetailSegment>
+        <Container>
+          {labels.map((color, index) => (
+            <Label key={index} color={color} />
+          ))}
+          <DropdownButton
+            icon="add"
+            header="Labels"
+            fluid={false}
+            buttonText=""
+            labeled={false}
+            size="massive"
+          >
+            <CardLabelColors
+              handleColorClick={handleColorClick}
+              labels={labels}
+            />
+          </DropdownButton>
+        </Container>
+      </CardDetailSegment>
+    </>
   );
 };
 

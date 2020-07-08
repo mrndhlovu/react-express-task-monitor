@@ -1,7 +1,7 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import mammoth from "mammoth";
 
-import { Modal, Icon } from "semantic-ui-react";
+import { Modal } from "semantic-ui-react";
 
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
@@ -10,6 +10,7 @@ import ImagePreviewButtons from "./ImagePreviewButtons";
 import TextFilePreviewButtons from "./TextFilePreviewButtons";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import { XCircle } from "react-feather";
 
 const TextPreview = lazy(() => import("./TextPreview"));
 const PDFPreview = lazy(() => import("./PDFPreview.js"));
@@ -104,7 +105,7 @@ const DocumentModal = ({
       open={file !== null}
       onClose={() => setOpenDocument(null)}
       centered={false}
-      closeIcon={<Icon className="close-modal" name="close" />}
+      closeIcon={<XCircle size={32} className="close-modal" />}
     >
       <div className="modal-content-wrapper">
         <Modal.Content className="document-content">

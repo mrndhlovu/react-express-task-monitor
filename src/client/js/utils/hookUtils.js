@@ -9,13 +9,7 @@ import {
   BoardContext,
 } from "./contextUtils";
 
-export const useAuth = () => {
-  const {
-    auth: { data: data },
-    auth,
-  } = useContext(UserContext);
-  return { auth, user: data.data };
-};
+export const useAuth = () => useContext(UserContext);
 
 export const useHomeContext = () => useContext(HomepageContext);
 export const useBoardContext = () => useContext(BoardContext);

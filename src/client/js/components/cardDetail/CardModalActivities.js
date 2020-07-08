@@ -11,9 +11,9 @@ const Activities = lazy(() => import("./Activities"));
 const CardModalActivities = ({ hideActivities, ...props }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
+      <ActivitiesHeader {...props} />
       <CardDetailSegment>
         <UIContainer>
-          <ActivitiesHeader {...props} />
           <CardComments {...props} />
           {!hideActivities && <Activities {...props} />}
         </UIContainer>

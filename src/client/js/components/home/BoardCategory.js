@@ -6,6 +6,7 @@ import { Header, Icon } from "semantic-ui-react";
 import { HomepageContext, MainContext } from "../../utils/contextUtils";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import Summary from "./Summary";
+import { useAuth } from "../../utils/hookUtils";
 
 const Category = styled.div`
   display: grid;
@@ -37,7 +38,8 @@ const BoardCategory = ({
   viewedRecent,
 }) => {
   const { tablet, loading, device } = useContext(MainContext);
-  const { boards, user } = useContext(HomepageContext);
+  const { boards } = useContext(HomepageContext);
+  const { user } = useAuth();
 
   return (
     <Fragment>

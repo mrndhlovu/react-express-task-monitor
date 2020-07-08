@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+
+import { useAuth } from "../../utils/hookUtils";
 import HomeSideMenu from "../home/HomeSideMenu";
 import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import { useAuth } from "../../utils/hookUtils";
 
 const wrapperStyle = {
   background: "#026aa7",

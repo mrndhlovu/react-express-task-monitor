@@ -1,37 +1,45 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
-import { getAuth } from "../selectors/authSelectors";
-import { getCurrentUser } from "../actions/AuthActions";
-import withAlert from "../HOC/withAlert";
 import { UserContext } from "../utils/contextUtils";
+import { userInfo } from "../apis/apiRequests";
+import { withRouter } from "react-router";
 import MainContainer from "./MainContainer";
+import withAlert from "../HOC/withAlert";
 
-class AuthContainer extends Component {
-  componentDidMount() {
-    this.authListener();
-  }
+const AuthContainer = ({ children, history }) => {
+  const [alert, setAlert] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [user, setUser] = useState(null);
 
-  authListener() {
-    this.props.getCurrentUser();
-  }
+  const authListener = (user, cb) => {
+    if (!user) return;
+    setUser(user);
+    setAuthenticated(true);
+    cb && cb();
+  };
 
-  render() {
-    const { auth } = this.props;
+  useEffect(() => {
+    if (user) return;
+    const getCurrentUser = async () => {
+      await userInfo()
+        .then((res) => {
+          authListener(res.data.data, history.push("/"));
+        })
+        .catch((error) => {
+          setAlert(error.response.data);
+          setAuthenticated(false);
+        });
+    };
+    getCurrentUser();
+  }, [user]);
 
-    return (
-      <UserContext.Provider
-        value={{ auth: { ...auth, authListener: () => this.authListener() } }}
-      >
-        <MainContainer>{this.props.children}</MainContainer>
-      </UserContext.Provider>
-    );
-  }
-}
+  return (
+    <UserContext.Provider
+      value={{ auth: { authenticated, authListener }, user, alert, setAlert }}
+    >
+      <MainContainer>{children}</MainContainer>
+    </UserContext.Provider>
+  );
+};
 
-const mapStateToProps = (state) => ({ auth: getAuth(state) });
-
-export default connect(mapStateToProps, { getCurrentUser })(
-  withRouter(withAlert(AuthContainer))
-);
+export default withRouter(withAlert(AuthContainer));

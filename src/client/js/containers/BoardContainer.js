@@ -159,7 +159,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     const serverUpdate = async () => {
       const { fieldId, activity, newId, callback } = updatedField;
 
-      const { fname } = auth.data.data;
+      const { fname } = user;
       const userAction = getActivity(fname, activity);
       activity &&
         board.activities.push({ activity: userAction, createdAt: Date.now() });

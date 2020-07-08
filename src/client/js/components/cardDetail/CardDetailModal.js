@@ -8,7 +8,8 @@ import React, {
 } from "react";
 import { withRouter } from "react-router-dom";
 
-import { Modal, Button, Grid } from "semantic-ui-react";
+import { Modal, Grid } from "semantic-ui-react";
+import { XCircle } from "react-feather";
 
 import {
   BoardListsContext,
@@ -128,11 +129,10 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
       open={card && modalOpen}
       closeOnRootNodeClick={false}
       closeIcon={
-        <Button
+        <XCircle
           onClick={() => handleCardClick()}
-          icon="delete"
-          size="tiny"
-          className="close-modal-icon"
+          size={30}
+          className="close-modal-icon uiIcon"
         />
       }
     >
@@ -218,15 +218,12 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
                           listIndex={index}
                         />
                       ))}
-                    <CardDetailSegment>
-                      <>
-                        <div className="div-flex">
-                          <CardDetailHeader
-                            icon="attach"
-                            description="Attachments"
-                          />
-                        </div>
-
+                    <>
+                      <CardDetailHeader
+                        section="attachments"
+                        description="Attachments"
+                      />
+                      <CardDetailSegment>
                         {hasAttachments &&
                           card.attachments.map((attachment, index) => (
                             <Attachments
@@ -262,8 +259,8 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
                             sourceId={sourceId}
                           />
                         )}
-                      </>
-                    </CardDetailSegment>
+                      </CardDetailSegment>
+                    </>
 
                     <CardModalActivities
                       activeCard={card}
