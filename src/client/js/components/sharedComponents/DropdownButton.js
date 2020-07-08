@@ -2,6 +2,7 @@ import React, { useState, Fragment, useEffect } from "react";
 import styled from "styled-components";
 
 import { Header, Dropdown, Icon } from "semantic-ui-react";
+import { X } from "react-feather";
 import UIDivider from "./UIDivider";
 
 const StyledDropdown = styled(Dropdown)`
@@ -91,14 +92,7 @@ const DropdownButton = ({
           <Fragment>
             <HeaderWrapper>
               <Header size="small" as={as} content={header} />
-              {!closeOnSelect && (
-                <Icon
-                  size="large"
-                  link
-                  name="close"
-                  onClick={() => handleClose(callback)}
-                />
-              )}
+              {!closeOnSelect && <X onClick={() => handleClose(callback)} />}
             </HeaderWrapper>
             <UIDivider />
           </Fragment>

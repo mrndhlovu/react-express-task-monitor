@@ -91,23 +91,23 @@ const CardItem = ({
 
       <BadgeContainer>
         <CardBadge
-          icon="attach"
+          icon="attachment"
           content={card.attachments.length}
           hasBadge={hasAttachments}
         />
 
-        <CardBadge icon="check square outline" hasBadge={hasChecklist} />
+        <CardBadge icon="checklist" hasBadge={hasChecklist} />
 
         <CardBadge
-          icon="comment outline"
+          icon="comment"
           content={card.comments.length}
           hasBadge={hasComments}
         />
 
-        <CardBadge icon="list" hasBadge={hasDescription} />
+        <CardBadge icon="description" hasBadge={hasDescription} />
 
         <CardBadge
-          icon="clock outline"
+          icon="dueDate"
           content={getFormattedDate(card.dueDate.date, "MMM Do")}
           hasBadge={hasDueDate}
           as=""

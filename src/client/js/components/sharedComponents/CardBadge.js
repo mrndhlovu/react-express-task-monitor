@@ -1,28 +1,44 @@
 import React from "react";
-import styled from "styled-components";
 
-import { Icon, Label } from "semantic-ui-react";
-
-const Badge = styled(Label)`
-  font-size: 10px;
-  padding-right: 5px;
-`;
+import { Label } from "semantic-ui-react";
+import {
+  Paperclip,
+  MessageCircle,
+  CheckSquare,
+  Clock,
+  AlignLeft,
+} from "react-feather";
 
 const CardBadge = ({
-  as = "span",
-  flipped,
+  as = "div",
   icon,
   content,
   hasBadge = false,
   color,
   className,
 }) => {
+  const getBadgeIcon = () => {
+    switch (icon) {
+      case "attachment":
+        return <Paperclip size={12} />;
+      case "comment":
+        return <MessageCircle size={12} />;
+      case "checklist":
+        return <CheckSquare size={12} />;
+      case "dueDate":
+        return <Clock size={12} />;
+      case "description":
+        return <AlignLeft size={12} />;
+      default:
+        break;
+    }
+  };
   return (
     hasBadge && (
-      <Badge color={color} as={as} className={className}>
-        <Icon name={icon} flipped={flipped} />
-        {content}
-      </Badge>
+      <Label color={color} as={as} className={`${className} badge-icon`}>
+        {getBadgeIcon()}
+        <span className="badge-content">{content}</span>
+      </Label>
     )
   );
 };

@@ -1,8 +1,9 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-import { Card, Button, Icon, TextArea } from "semantic-ui-react";
+import { Card, Button, TextArea } from "semantic-ui-react";
 import UIWrapper from "./UIWrapper";
+import { X } from "react-feather";
 
 const StyledCardContent = styled(Card.Content)`
   padding-top: 10px !important;
@@ -61,7 +62,7 @@ const CreateInput = ({
         />
         {!hideIcon && (
           <UIWrapper>
-            <Icon name="close" size="large" onClick={close} link />
+            <X onClick={close} className="uiIconWhite" />
           </UIWrapper>
         )}
       </ButtonsWrapper>

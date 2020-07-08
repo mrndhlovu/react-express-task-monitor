@@ -221,3 +221,39 @@
   padding: 4px !important;
   font-size: 10px !important;
 }
+
+.card-header-title {
+  display: flex;
+  align-items: center;
+  min-width: 50%;
+  margin-bottom: 0 !important;
+}
+
+.card-icon-container {
+  padding-right: 20px;
+}
+
+.close-modal {
+  color: #fff !important;
+  z-index: 10000;
+  position: absolute;
+  right: -50px;
+}
+
+.uiIconWhite {
+  color: #fff !important;
+}
+
+.badge-icon {
+  align-items: center !important;
+  justify-content: space-between !important;
+  display: flex !important;
+  flex-direction: row !important;
+  font-size: 10px !important;
+  background: transparent !important;
+  padding: 4px 2px !important;
+}
+
+.badge-content {
+  padding-left: 2px;
+}
