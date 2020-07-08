@@ -93,7 +93,7 @@ const DueDate = ({
 
   return (
     activeCard.dueDate && (
-      <CardDetailSegment>
+      <>
         <HeaderWrapper>
           <Button
             content="Delete"
@@ -102,24 +102,25 @@ const DueDate = ({
             size="tiny"
             onClick={() => handleDeleteDueDate()}
           />
-          <CardDetailHeader description="Due Date" icon="clock outline" />
+          <CardDetailHeader description="Due Date" />
         </HeaderWrapper>
+        <CardDetailSegment>
+          <Container>
+            <Checkbox
+              id="dueDate"
+              label={getFormattedDate(activeCard.dueDate.date, "LLLL")}
+              checked={activeCard.dueDate.complete}
+              onChange={() => handleCheckboxClick()}
+            />
 
-        <Container>
-          <Checkbox
-            id="dueDate"
-            label={getFormattedDate(activeCard.dueDate.date, "LLLL")}
-            checked={activeCard.dueDate.complete}
-            onChange={() => handleCheckboxClick()}
-          />
-
-          {activeCard.dueDate.complete && (
-            <Span>
-              <Label content="Complete" color="green" size="tiny" />
-            </Span>
-          )}
-        </Container>
-      </CardDetailSegment>
+            {activeCard.dueDate.complete && (
+              <Span>
+                <Label content="Complete" color="green" size="tiny" />
+              </Span>
+            )}
+          </Container>
+        </CardDetailSegment>
+      </>
     )
   );
 };

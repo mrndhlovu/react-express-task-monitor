@@ -11,7 +11,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  padding: 10px;
+  padding: 20px;
 `;
 
 const ModalHeader = ({
@@ -33,35 +33,33 @@ const ModalHeader = ({
   });
 
   return (
-    <Container>
-      <CardDetailHeader
-        icon="window maximize outline"
-        description={title.toUpperCase()}
-      />
-
-      <DropdownButton
-        buttonText={`in list ${sourceTitle.toUpperCase()}`}
-        icon={false}
-        className="card-source"
-        button={false}
-        labeled={false}
-        fluid={false}
-        color="transparent"
-        header="Move Card"
-        direction="right"
-        close={close}
-      >
-        <UIWrapper className="move-card-wrapper">
-          <MoveCardDialog
-            originalBoard={originalBoard}
-            originalCard={originalCard}
-            sourceListId={sourceId}
-            setClose={() => setClose(true)}
-            {...otherProps}
-          />
-        </UIWrapper>
-      </DropdownButton>
-    </Container>
+    <>
+      <CardDetailHeader description={title.toUpperCase()} />
+      <Container>
+        <DropdownButton
+          buttonText={`in list ${sourceTitle.toUpperCase()}`}
+          icon={false}
+          className="card-source"
+          button={false}
+          labeled={false}
+          fluid={false}
+          color="transparent"
+          header="Move Card"
+          direction="right"
+          close={close}
+        >
+          <UIWrapper className="move-card-wrapper">
+            <MoveCardDialog
+              originalBoard={originalBoard}
+              originalCard={originalCard}
+              sourceListId={sourceId}
+              setClose={() => setClose(true)}
+              {...otherProps}
+            />
+          </UIWrapper>
+        </DropdownButton>
+      </Container>
+    </>
   );
 };
 

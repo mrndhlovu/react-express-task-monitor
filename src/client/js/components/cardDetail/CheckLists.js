@@ -22,22 +22,6 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import UIButton from "./UIButton";
 
-const display = {
-  display: "grid",
-  gridTemplateColumns: "50% 49%",
-  alignItems: "center",
-  width: "100%",
-  padding: "0",
-};
-
-const wrapperStyle = {
-  padding: "0",
-  display: "flex",
-  justifyContent: "flex-end",
-  alignItems: "baseline",
-  verticalAlign: "top",
-};
-
 const CheckLists = ({
   activeCard,
   board,
@@ -214,14 +198,15 @@ const CheckLists = ({
   ]);
 
   return (
-    <CardDetailSegment className="card-checklist">
-      <UIContainer className="checklist-header" display={display}>
-        <CardDetailHeader
-          description={checklistName}
-          icon="check square outline"
-        />
-
-        <UIWrapper display={wrapperStyle}>
+    <>
+      <UIContainer padding="0px" className="checklist-header">
+        <CardDetailHeader description={checklistName} />
+        <div>
+          <Button
+            onClick={() => deleteChecklist()}
+            size="tiny"
+            content="Delete"
+          />
           {stringsEqual(checklist.status, "complete") && (
             <Button
               onClick={() => setHideCompleted(true)}
@@ -231,79 +216,73 @@ const CheckLists = ({
                   ? "Show completed tasks"
                   : "Hide completed tasks"
               }
-              floated="right"
             />
           )}
-
-          <Button
-            onClick={() => deleteChecklist()}
-            size="tiny"
-            content="Delete"
-            floated="right"
-          />
-        </UIWrapper>
+        </div>
       </UIContainer>
-      <ProgressBar checklist={checklist} />
+      <CardDetailSegment className="card-checklist">
+        <ProgressBar checklist={checklist} />
 
-      {checklist.archived ? (
-        <UIContainer padding="0 0 20px 15px">
-          Everything in this list is complete!
-        </UIContainer>
-      ) : (
-        checklist.tasks.map((task, index) => (
-          <UIWrapper className="checklist-item-wrap" key={task._id}>
-            <ChecklistItem
-              handleCheckboxClick={handleCheckboxClick}
-              item={task}
-              isLoading={isLoading}
-              position={index + 1}
-              isCompleted={stringsEqual(task.status, "done")}
-            />
-            <div className="checklist-edit-wrap">
-              <DropdownButton
-                className="checklist-edit-ellipsis"
-                labeled={false}
-                icon="ellipsis horizontal"
-                header="Item Actions"
-                width="200px"
-                size="tiny"
-              >
-                <div className="checklist-item-actions">
-                  <UIButton
-                    content="Convert to card"
-                    fluid={true}
-                    onClick={() => handleConvertToCard(task)}
-                  />
-                  <UIButton
-                    content="Delete"
-                    fluid={true}
-                    onClick={() => handleDeleteChecklistItem(task)}
-                  />
-                </div>
-              </DropdownButton>
-            </div>
-          </UIWrapper>
-        ))
-      )}
+        {checklist.archived ? (
+          <UIContainer padding="0 0 20px 15px">
+            Everything in this list is complete!
+          </UIContainer>
+        ) : (
+          checklist.tasks.map((task, index) => (
+            <UIWrapper className="checklist-item-wrap" key={task._id}>
+              <ChecklistItem
+                handleCheckboxClick={handleCheckboxClick}
+                item={task}
+                isLoading={isLoading}
+                position={index + 1}
+                isCompleted={stringsEqual(task.status, "done")}
+              />
+              <div className="checklist-edit-wrap">
+                <DropdownButton
+                  className="checklist-edit-ellipsis"
+                  labeled={false}
+                  icon="ellipsis horizontal"
+                  header="Item Actions"
+                  width="200px"
+                  size="tiny"
+                >
+                  <div className="checklist-item-actions">
+                    <UIButton
+                      content="Convert to card"
+                      fluid={true}
+                      onClick={() => handleConvertToCard(task)}
+                    />
+                    <UIButton
+                      content="Delete"
+                      fluid={true}
+                      onClick={() => handleDeleteChecklistItem(task)}
+                    />
+                  </div>
+                </DropdownButton>
+              </div>
+            </UIWrapper>
+          ))
+        )}
 
-      {createItem ? (
-        <CreateInput
-          placeholder="Add an item"
-          buttonText="Add"
-          close={() => setCreateItem(!createItem)}
-          handleChange={handleChange}
-          handleCreateClick={handleAddClick}
-          id="checklist-item"
-          width="100%"
-        />
-      ) : (
-        <Button
-          content="Add an item"
-          compact
-          onClick={() => setCreateItem(!createItem)}
-        />
-      )}
-    </CardDetailSegment>
+        {createItem ? (
+          <CreateInput
+            placeholder="Add an item"
+            buttonText="Add"
+            close={() => setCreateItem(!createItem)}
+            handleChange={handleChange}
+            handleCreateClick={handleAddClick}
+            id="checklist-item"
+            width="100%"
+          />
+        ) : (
+          <Button
+            content="Add an item"
+            compact
+            onClick={() => setCreateItem(!createItem)}
+          />
+        )}
+      </CardDetailSegment>
+    </>
   );
 };
 
