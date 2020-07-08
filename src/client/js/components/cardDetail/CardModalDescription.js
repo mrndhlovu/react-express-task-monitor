@@ -77,57 +77,55 @@ const CardModalDescription = ({
   }, [updated, activeCard, description]);
 
   return (
-    <CardDetailSegment>
-      <>
-        <DescriptionHeader>
-          <CardDetailHeader
-            description="Description"
-            icon="align left"
-            flipped="vertically"
-          />
+    <>
+      <DescriptionHeader>
+        <CardDetailHeader description="Description" />
+        <Button
+          onClick={() => setEditing(!editing)}
+          size="tiny"
+          content="Edit"
+          floated="right"
+        />
+      </DescriptionHeader>
+      <CardDetailSegment>
+        <Description>
+          {editing && (
+            <Form>
+              <StyledTextArea
+                placeholder="Add a more detailed description"
+                defaultValue={description}
+                onFocus={() => setHideSaveButton(!hideSaveButton)}
+                onBlur={_debounce(
+                  () => setHideSaveButton(!hideSaveButton),
+                  500
+                )}
+                onChange={(e) => handleChange(e)}
+              />
+              {!hideSaveButton && (
+                <ButtonsWrapper>
+                  <Button
+                    content="Save"
+                    positive
+                    size="tiny"
+                    onClick={() => handleSave()}
+                  />
+                  <Icon
+                    onClick={() => setHideSaveButton(!hideSaveButton)}
+                    name="close"
+                  />
+                </ButtonsWrapper>
+              )}
+            </Form>
+          )}
 
-          <Button
-            onClick={() => setEditing(!editing)}
-            size="tiny"
-            content="Edit"
-            floated="right"
-          />
-        </DescriptionHeader>
-      </>
-      <Description>
-        {editing && (
-          <Form>
-            <StyledTextArea
-              placeholder="Add a more detailed description"
-              defaultValue={description}
-              onFocus={() => setHideSaveButton(!hideSaveButton)}
-              onBlur={_debounce(() => setHideSaveButton(!hideSaveButton), 500)}
-              onChange={(e) => handleChange(e)}
-            />
-            {!hideSaveButton && (
-              <ButtonsWrapper>
-                <Button
-                  content="Save"
-                  positive
-                  size="tiny"
-                  onClick={() => handleSave()}
-                />
-                <Icon
-                  onClick={() => setHideSaveButton(!hideSaveButton)}
-                  name="close"
-                />
-              </ButtonsWrapper>
-            )}
-          </Form>
-        )}
-
-        {description && !editing && (
-          <DescriptionContent>
-            <p>{description}</p>
-          </DescriptionContent>
-        )}
-      </Description>
-    </CardDetailSegment>
+          {description && !editing && (
+            <DescriptionContent>
+              <p>{description}</p>
+            </DescriptionContent>
+          )}
+        </Description>
+      </CardDetailSegment>
+    </>
   );
 };
 

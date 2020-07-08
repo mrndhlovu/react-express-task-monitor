@@ -7,8 +7,7 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 const ActivitiesHeader = ({ handleShowDetails, hideButton }) => {
   return (
     <UIWrapper className="activities-wrap">
-      <CardDetailHeader description="Activities" icon="sort amount down" />
-
+      <CardDetailHeader description="Activities" />
       {!hideButton && (
         <Button
           onClick={handleShowDetails}

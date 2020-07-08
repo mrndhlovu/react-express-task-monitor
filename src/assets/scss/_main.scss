@@ -48,17 +48,18 @@ ui.form,
   background-color: rgba(0, 0, 0, 0.64) !important;
 }
 
-.ui.button.close-modal-icon {
+.close-modal-icon {
   position: absolute;
   top: 6px;
   right: 5px;
-  z-index: 10;
-  border-radius: 60px !important;
-  background: #000 !important;
   opacity: 0.4;
-  color: #fff !important;
-  width: 35px;
-  height: 36px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.uiIcon {
+  z-index: 10;
+  color: #42526e !important;
 }
 
 .div-flex {

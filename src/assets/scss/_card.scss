@@ -5,7 +5,6 @@
   padding: 0;
   margin-bottom: 10px;
   justify-content: space-between;
-  align-items: baseline;
 }
 
 .card-list::-webkit-scrollbar {
@@ -38,6 +37,13 @@
   display: flex;
   justify-content: space-between;
   padding: 5px 0;
+}
+
+.checklist-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .checklist-edit-wrap {
@@ -220,4 +226,22 @@
 .date-badge {
   padding: 4px !important;
   font-size: 10px !important;
+}
+
+.card-header-title {
+  display: flex;
+  align-items: center;
+  min-width: 50%;
+  margin-bottom: 0 !important;
+}
+
+.card-icon-container {
+  padding-right: 20px;
+}
+
+.close-modal {
+  color: #fff !important;
+  z-index: 10000;
+  position: absolute;
+  right: -50px;
 }
