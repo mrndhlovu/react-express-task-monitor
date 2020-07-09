@@ -11,9 +11,9 @@ import {
   CreditCard,
 } from "react-feather";
 
-const CardDetailHeader = ({ description }) => {
+const CardDetailHeader = ({ description, section }) => {
   const getSectionIcon = () => {
-    switch (description) {
+    switch (description || section) {
       case "Activities":
         return <List size={25} />;
       case "Attachments":

@@ -200,7 +200,7 @@ const CheckLists = ({
   return (
     <>
       <UIContainer padding="0px" className="checklist-header">
-        <CardDetailHeader description={checklistName} />
+        <CardDetailHeader description={checklistName} section="Checklist" />
         <div>
           <Button
             onClick={() => deleteChecklist()}
