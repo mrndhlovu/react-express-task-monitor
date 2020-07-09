@@ -118,16 +118,15 @@
 }
 
 .doc-page-buttons {
-  align-items: baseline;
-  align-items: center;
-  background: transparent !important;
-  border-radius: 3px;
-  bottom: 1%;
   display: flex;
-  height: 80px;
   justify-content: space-around;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  background: transparent !important;
+  bottom: 1%;
+  height: 80px;
   position: fixed;
-  width: 40%;
   font-size: 15px !important;
   color: #fff;
 }
@@ -144,8 +143,8 @@
   flex-direction: column !important;
   align-items: center !important;
   overflow-y: auto;
-  width: 80vw;
-  max-height: 78vh;
+  width: 96vw;
+  max-height: 80vh;
 }
 
 .document-content {
@@ -185,12 +184,6 @@
   max-height: 75vh;
   overflow-y: auto;
   padding: 1% 2%;
-}
-
-.close-modal {
-  position: absolute;
-  top: 0% !important;
-  color: #000 !important;
 }
 
 .docx-container {
@@ -254,7 +247,8 @@
   color: #fff !important;
   z-index: 10000;
   position: absolute;
-  right: 0;
+  left: 50%;
+  top: -30px;
 }
 
 .uiIconWhite {

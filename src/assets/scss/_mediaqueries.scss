@@ -51,6 +51,11 @@
     width: 94vw;
   }
 
+  .checklist-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+
   .document-view-wrap {
     padding-bottom: 36% !important;
   }

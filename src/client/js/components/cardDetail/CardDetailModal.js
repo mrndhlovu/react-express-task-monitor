@@ -219,10 +219,7 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
                         />
                       ))}
                     <>
-                      <CardDetailHeader
-                        section="attachments"
-                        description="Attachments"
-                      />
+                      <CardDetailHeader description="Attachments" />
                       <CardDetailSegment>
                         {hasAttachments &&
                           card.attachments.map((attachment, index) => (
