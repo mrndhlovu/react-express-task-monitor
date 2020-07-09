@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Checkbox, Label, Button } from "semantic-ui-react";
+
+import { getFormattedDate } from "../../utils/appUtils";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import { getFormattedDate } from "../../utils/appUtils";
 
 const Container = styled.div``;
 

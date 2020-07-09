@@ -1,12 +1,18 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
-import { BoardContext } from "../../utils/contextUtils";
 import { findArrayItem, stringsEqual } from "../../utils/appUtils";
 import UIFormInput from "../sharedComponents/UIFormInput";
 
-const EditableHeader = ({ title, type, sourceId }) => {
-  const { handleBoardUpdate, board } = useContext(BoardContext);
-  let sourceList = findArrayItem(board.lists, sourceId, "_id");
+const EditableHeader = ({
+  board,
+  handleBoardUpdate,
+  sourceId,
+  title,
+  type,
+  checklist,
+  updatedChecklistTitle,
+}) => {
+  let sourceList = board && findArrayItem(board.lists, sourceId, "_id");
 
   const [editable, setEditable] = useState(false);
   const [newTitle, setNewTitle] = useState(null);
@@ -17,15 +23,18 @@ const EditableHeader = ({ title, type, sourceId }) => {
   };
 
   const handleUpdate = () => {
+    setEditable(false);
     switch (type) {
       case "boardTitle":
-        setNewBoard({ ...board, title: newTitle });
-        break;
+        return setNewBoard({ ...board, title: newTitle });
+      case "checklist":
+        newTitle && updatedChecklistTitle({ ...checklist, name: newTitle });
+        return setNewTitle(null);
       case "listHeader":
         sourceList.title = newTitle;
         board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-        setNewBoard({ ...board });
-        break;
+        return setNewBoard({ ...board });
+
       default:
         break;
     }
@@ -54,7 +63,7 @@ const EditableHeader = ({ title, type, sourceId }) => {
           className="editable-header-text"
           onClick={() => setEditable(!editable)}
         >
-          {title}{" "}
+          {title}
         </span>
       ) : (
         <UIFormInput

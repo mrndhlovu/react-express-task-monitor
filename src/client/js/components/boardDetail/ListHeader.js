@@ -86,7 +86,13 @@ const ListHeader = ({
 
   return (
     <HeaderWrapper>
-      <EditableHeader type="listHeader" title={title} sourceId={listId} />
+      <EditableHeader
+        board={board}
+        handleBoardUpdate={handleBoardUpdate}
+        sourceId={listId}
+        title={title}
+        type="listHeader"
+      />
 
       <DropdownButton
         icon="ellipsis horizontal"

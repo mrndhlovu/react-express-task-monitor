@@ -11,7 +11,14 @@ import {
   CreditCard,
 } from "react-feather";
 
-const CardDetailHeader = ({ description, section }) => {
+import EditableHeader from "./EditableHeader";
+
+const CardDetailHeader = ({
+  description,
+  section,
+  editable = false,
+  ...rest
+}) => {
   const getSectionIcon = () => {
     switch (section ? section : description) {
       case "Activities":
@@ -34,12 +41,16 @@ const CardDetailHeader = ({ description, section }) => {
   };
 
   return (
-    <Header
-      icon={<div className="card-icon-container">{getSectionIcon()}</div>}
-      content={description}
-      as="h5"
-      className="card-header-title"
-    />
+    <div className="card-section-header">
+      <div className="section-header-container">{getSectionIcon()}</div>
+      {editable ? (
+        <EditableHeader title={description} type="checklist" {...rest} />
+      ) : (
+        <div>
+          <Header content={description} as="h5" />
+        </div>
+      )}
+    </div>
   );
 };
 

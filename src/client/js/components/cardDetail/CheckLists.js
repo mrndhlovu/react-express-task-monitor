@@ -86,6 +86,13 @@ const CheckLists = ({
     }, 2000);
   };
 
+  const updatedChecklistTitle = (newChecklist) => {
+    setChecklist(newChecklist);
+    activeCard.checklists.splice(listIndex, 1, newChecklist);
+
+    updatedChanges();
+  };
+
   useEffect(() => {
     if (!removeChecklist) return emptyFunction();
     activeCard.checklists.splice(listIndex, 1);
@@ -200,7 +207,16 @@ const CheckLists = ({
   return (
     <>
       <UIContainer padding="0px" className="checklist-header">
-        <CardDetailHeader description={checklistName} section="Checklist" />
+        <CardDetailHeader
+          board={board}
+          description={checklistName}
+          handleBoardUpdate={handleBoardUpdate}
+          updatedChecklistTitle={updatedChecklistTitle}
+          section="Checklist"
+          sourceId={sourceId}
+          editable
+          checklist={checklist}
+        />
         <div>
           <Button
             onClick={() => deleteChecklist()}
