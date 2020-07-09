@@ -2,11 +2,12 @@ import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { Button, Card, TextArea, Icon } from "semantic-ui-react";
+import { Button, Card, TextArea } from "semantic-ui-react";
 import { requestCreateNewCard } from "../../apis/apiRequests";
 import { resetForm, emptyFunction } from "../../utils/appUtils";
 import { BoardContext } from "../../utils/contextUtils";
 import UIWrapper from "./UIWrapper";
+import { X, Plus, CreditCard } from "react-feather";
 
 const StyledButton = styled.div`
   text-align: left !important;
@@ -19,6 +20,7 @@ const StyledButton = styled.div`
 
   display: flex;
   justify-content: space-between;
+  align-items: center;
 
   &:hover {
     color: #172b30 !important;
@@ -26,7 +28,10 @@ const StyledButton = styled.div`
   }
 `;
 
-const Span = styled.span``;
+const Span = styled.span`
+  display: flex;
+  align-items: center;
+`;
 
 const StyledCard = styled(Card)`
   padding: 5px !important;
@@ -84,11 +89,11 @@ const CreateCard = ({
           basic
           onClick={() => handleAddCardName(targetList.listId)}
         >
-          <Span>
-            <Icon name="add" />
+          <Span className="uiDarkText">
+            <Plus size={20} className="uiIconDark" />
             Add a card...
           </Span>
-          <Icon name="image" />
+          <CreditCard size={15} className="uiIconDark" />
         </StyledButton>
       ) : (
         <StyledCard fluid>
@@ -110,12 +115,7 @@ const CreateCard = ({
             />
 
             <UIWrapper>
-              <Icon
-                name="close"
-                onClick={() => closeAddCardOption()}
-                size="large"
-                link
-              />
+              <X onClick={() => closeAddCardOption()} className="uiIconDark" />
             </UIWrapper>
           </ButtonWrapper>
         </StyledCard>

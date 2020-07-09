@@ -2,6 +2,7 @@ import React from "react";
 
 import { Button, Input, Icon } from "semantic-ui-react";
 import styled from "styled-components";
+import { X, Plus } from "react-feather";
 
 const StyledWrapper = styled.div`
   width: 272px;
@@ -53,7 +54,7 @@ const CreateItemForm = ({
       <Container>
         {!showInputField && (
           <Span onClick={() => handleAddList()}>
-            <Icon name="add" />
+            <Plus />
             {ctaText}
           </Span>
         )}
@@ -78,12 +79,7 @@ const CreateItemForm = ({
                 floated="left"
               />
               <IconWrapper>
-                <Icon
-                  name="close"
-                  size="large"
-                  onClick={() => handleAddList()}
-                  color={color}
-                />
+                <X onClick={() => handleAddList()} color={color} />
               </IconWrapper>
             </ButtonWrapper>
           </InputWrapper>

@@ -6,10 +6,7 @@ import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import { getFormattedDate } from "../../utils/appUtils";
 
-const Container = styled.div`
-  margin-left: 10px;
-  padding: 0 29px;
-`;
+const Container = styled.div``;
 
 const HeaderWrapper = styled.div`
   padding-bottom: 10px;

@@ -7,8 +7,6 @@ import CardLabelColors from "../sharedComponents/CardLabelColors";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 
 const Container = styled.div`
-  margin-left: 10px;
-  padding: 0 29px;
   display: flex;
 `;
 
