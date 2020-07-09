@@ -13,7 +13,7 @@ import {
 
 const CardDetailHeader = ({ description, section }) => {
   const getSectionIcon = () => {
-    switch (description || section) {
+    switch (section ? section : description) {
       case "Activities":
         return <List size={25} />;
       case "Attachments":
@@ -26,8 +26,10 @@ const CardDetailHeader = ({ description, section }) => {
         return <CheckSquare size={20} />;
       case "Labels":
         return <Tag size={20} />;
-      default:
+      case "Header":
         return <CreditCard size={20} />;
+      default:
+        return;
     }
   };
 

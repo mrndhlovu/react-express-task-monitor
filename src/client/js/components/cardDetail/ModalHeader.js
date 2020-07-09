@@ -34,7 +34,7 @@ const ModalHeader = ({
 
   return (
     <>
-      <CardDetailHeader description={title.toUpperCase()} />
+      <CardDetailHeader description={title.toUpperCase()} section="Header" />
       <Container>
         <DropdownButton
           buttonText={`in list ${sourceTitle.toUpperCase()}`}
