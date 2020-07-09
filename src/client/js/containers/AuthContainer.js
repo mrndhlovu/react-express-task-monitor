@@ -28,6 +28,7 @@ const AuthContainer = ({ children, history }) => {
         .catch((error) => {
           setAlert(error.response.data);
           setAuthenticated(false);
+          localStorage.clear();
         });
     };
     getCurrentUser();
