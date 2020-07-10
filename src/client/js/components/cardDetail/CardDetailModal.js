@@ -61,8 +61,9 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
   const hasMembers = board && board.members.length !== 0;
   const hasCover = card && card.cardCover !== "";
   const hasAttachments = card && card.attachments.length !== 0;
-
   const sourceList = findArrayItem(board.lists, sourceId, "_id");
+  const sourceIndex = board.lists.indexOf(sourceList);
+  const cardIndex = sourceList.cards.indexOf(activeCard);
 
   const saveCardChanges = (changes) => setCard(changes);
 
@@ -80,6 +81,17 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
       saveBoardChanges(res.data);
       setIsLoading("");
     });
+  };
+
+  const updatedChanges = (updatedCard) => {
+    sourceList.cards.splice(cardIndex, 1, updatedCard);
+    updateLists();
+  };
+
+  const updateLists = (newBoard) => {
+    board.lists.splice(sourceIndex, 1, sourceList);
+
+    handleBoardUpdate(newBoard ? newBoard : board, "lists");
   };
 
   const editAttachments = useCallback(
@@ -224,13 +236,18 @@ const CardDetailModal = ({ listId, match, modalOpen, history }) => {
                         {hasAttachments &&
                           card.attachments.map((attachment, index) => (
                             <Attachments
-                              key={index}
-                              activeCover={card.cardCover}
                               attachment={attachment}
+                              board={board}
+                              editAttachments={editAttachments}
+                              handleBoardUpdate={handleBoardUpdate}
                               handleMakeCover={handleMakeCover}
                               handleRemoveCover={handleRemoveCover}
-                              editAttachments={editAttachments}
                               history={history}
+                              key={index}
+                              attachmentIndex={index}
+                              sourceId={sourceId}
+                              activeCard={card}
+                              updatedChanges={updatedChanges}
                             />
                           ))}
                         {stringsEqual(isLoading, "attachment") && (

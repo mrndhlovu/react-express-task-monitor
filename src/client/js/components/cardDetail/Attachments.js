@@ -10,6 +10,7 @@ import {
 } from "../../utils/appUtils";
 
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import EditableHeader from "../sharedComponents/EditableHeader";
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 
 const DocumentModal = lazy(() => import("./DocumentModal"));
@@ -50,19 +51,32 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
 `;
 
 const Attachments = ({
-  activeCover,
   attachment,
   editAttachments,
   handleMakeCover,
   handleRemoveCover,
+  attachmentIndex,
+  activeCard,
+  updatedChanges,
+  ...rest
 }) => {
   const [openDocument, setOpenDocument] = useState(null);
-  const { filetype, name, uploadDate, url } = attachment;
+  const [attachmentItem, setAttachmentItem] = useState(attachment);
+
+  const { filetype, name, uploadDate, url } = attachmentItem;
   const isAnImage = ALLOWED_IMAGE_TYPES.includes(filetype);
   const isActiveCover =
-    activeCover && isAnImage && stringsEqual(url, activeCover);
+    activeCard.cardCover &&
+    isAnImage &&
+    stringsEqual(url, activeCard.cardCover);
 
   const handleClick = (item) => setOpenDocument(item);
+
+  const handleEditAttachmentName = (editedAttachment) => {
+    setAttachmentItem(editedAttachment);
+    activeCard.attachments.splice(attachmentIndex, 1, editedAttachment);
+    updatedChanges(activeCard);
+  };
 
   return (
     <Item.Group divided>
@@ -72,7 +86,7 @@ const Attachments = ({
             className="attachment-thumbnail"
             size="tiny"
             src={url}
-            onClick={() => handleClick(attachment)}
+            onClick={() => handleClick(attachmentItem)}
           />
         ) : (
           <div className="attachment-thumbnail-wrap">
@@ -83,7 +97,7 @@ const Attachments = ({
               target={stringsEqual(filetype, "url") ? "_blank" : ""}
               onClick={() =>
                 !stringsEqual(filetype, "url")
-                  ? handleClick(attachment)
+                  ? handleClick(attachmentItem)
                   : emptyFunction()
               }
             >
@@ -97,30 +111,46 @@ const Attachments = ({
         <Container>
           <AttachmentName>
             {stringsEqual(filetype, "url") ? (
-              <a
-                className="attachment-link-text"
-                rel="noopener noreferrer"
-                target="_blank"
-                href={`${url}`}
-              >
-                {name}
-                <Icon
-                  name="long arrow alternate right"
-                  className="redirect-icon"
+              <>
+                <EditableHeader
+                  title={name}
+                  type="imageTitle"
+                  handleEditAttachmentName={handleEditAttachmentName}
+                  {...rest}
+                  attachment={attachmentItem}
                 />
-              </a>
+                <a
+                  className="attachment-link-text"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={`${url}`}
+                >
+                  <Icon
+                    name="long arrow alternate right"
+                    className="redirect-icon"
+                  />
+                </a>
+              </>
             ) : (
-              <Item.Content
-                verticalAlign="middle"
-                className="attachment-link-text"
-                onClick={() => handleClick(attachment)}
-              >
-                {name}
-                <Icon
-                  name="long arrow alternate right"
-                  className="redirect-icon"
+              <>
+                <EditableHeader
+                  title={name}
+                  type="imageTitle"
+                  handleEditAttachmentName={handleEditAttachmentName}
+                  {...rest}
+                  attachment={attachmentItem}
                 />
-              </Item.Content>
+                <Item.Content
+                  verticalAlign="middle"
+                  className="attachment-link-text"
+                  onClick={() => handleClick(attachmentItem)}
+                >
+                  <Icon
+                    name="long arrow alternate right"
+                    className="redirect-icon"
+                  />
+                </Item.Content>
+              </>
             )}
 
             <DateWrapper>
@@ -139,7 +169,7 @@ const Attachments = ({
                     fluid
                     icon=""
                     size="tiny"
-                    onClick={() => editAttachments(attachment, null, true)}
+                    onClick={() => editAttachments(attachmentItem, null, true)}
                   />
                 </StyledDropdownMenu>
               </Dropdown>

@@ -11,6 +11,8 @@ const EditableHeader = ({
   type,
   checklist,
   updatedChecklistTitle,
+  handleEditAttachmentName,
+  attachment,
 }) => {
   let sourceList = board && findArrayItem(board.lists, sourceId, "_id");
 
@@ -34,7 +36,9 @@ const EditableHeader = ({
         sourceList.title = newTitle;
         board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
         return setNewBoard({ ...board });
-
+      case "imageTitle":
+        newTitle && handleEditAttachmentName({ ...attachment, name: newTitle });
+        return;
       default:
         break;
     }
