@@ -6,6 +6,7 @@ import { Checkbox, Label, Button } from "semantic-ui-react";
 import { getFormattedDate } from "../../utils/appUtils";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
 
 const Container = styled.div``;
 
@@ -17,22 +18,15 @@ const Span = styled.span`
   padding-left: 5px;
 `;
 
-const DueDate = ({
-  activeCard,
-  handleBoardUpdate,
-  board,
-  getSourceList,
-  sourceId,
-  saveCardChanges,
-}) => {
+const DueDate = () => {
+  const { card, saveCardChanges, sourceList } = useCardDetailContext();
+  const { handleBoardUpdate, board } = useBoardContext();
   const [removeDueDate, setRemoveDueDate] = useState(false);
   const [checked, setChecked] = useState(false);
   const [unChecked, setUnChecked] = useState(false);
 
-  const sourceList = getSourceList(sourceId, "_id");
-
   const handleCheckboxClick = () =>
-    activeCard.dueDate.complete ? setUnChecked(true) : setChecked(true);
+    card.dueDate.complete ? setUnChecked(true) : setChecked(true);
 
   const handleDeleteDueDate = () => setRemoveDueDate(true);
 
@@ -43,7 +37,7 @@ const DueDate = ({
     if (removeDueDate) {
       activity = "removeDueDate";
       newCard = {
-        ...activeCard,
+        ...card,
         dueDate: "",
       };
     }
@@ -51,8 +45,8 @@ const DueDate = ({
     if (checked) {
       activity = "dueDateComplete";
       newCard = {
-        ...activeCard,
-        dueDate: { ...activeCard.dueDate, complete: true },
+        ...card,
+        dueDate: { ...card.dueDate, complete: true },
       };
     }
 
@@ -60,14 +54,14 @@ const DueDate = ({
       activity = "openDueDate";
 
       newCard = {
-        ...activeCard,
-        dueDate: { ...activeCard.dueDate, complete: false },
+        ...card,
+        dueDate: { ...card.dueDate, complete: false },
       };
     }
 
     if (removeDueDate || checked || unChecked) {
       saveCardChanges(newCard);
-      sourceList.cards.splice(sourceList.cards.indexOf(activeCard), 1, newCard);
+      sourceList.cards.splice(sourceList.cards.indexOf(card), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
       handleBoardUpdate(board, "lists", activity);
@@ -79,7 +73,7 @@ const DueDate = ({
       setUnChecked(false);
     };
   }, [
-    activeCard,
+    card,
     handleBoardUpdate,
     board,
     checked,
@@ -90,7 +84,7 @@ const DueDate = ({
   ]);
 
   return (
-    activeCard.dueDate && (
+    card.dueDate && (
       <>
         <HeaderWrapper>
           <Button
@@ -106,12 +100,12 @@ const DueDate = ({
           <Container>
             <Checkbox
               id="dueDate"
-              label={getFormattedDate(activeCard.dueDate.date, "LLLL")}
-              checked={activeCard.dueDate.complete}
+              label={getFormattedDate(card.dueDate.date, "LLLL")}
+              checked={card.dueDate.complete}
               onChange={() => handleCheckboxClick()}
             />
 
-            {activeCard.dueDate.complete && (
+            {card.dueDate.complete && (
               <Span>
                 <Label content="Complete" color="green" size="tiny" />
               </Span>

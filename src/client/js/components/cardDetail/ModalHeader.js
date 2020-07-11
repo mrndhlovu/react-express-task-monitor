@@ -5,6 +5,7 @@ import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import MoveCardDialog from "../boardDetail/MoveCardDialog";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import DropdownButton from "../sharedComponents/DropdownButton";
+import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
 
 const Container = styled.div`
   position: relative;
@@ -14,14 +15,15 @@ const Container = styled.div`
   padding: 20px;
 `;
 
-const ModalHeader = ({
-  title,
-  sourceTitle,
-  originalBoard,
-  originalCard,
-  sourceId,
-  ...otherProps
-}) => {
+const ModalHeader = () => {
+  const {
+    card,
+    sourceList,
+    sourceId,
+    history,
+    setSourceId,
+  } = useCardDetailContext();
+  const { board } = useBoardContext();
   const [close, setClose] = useState(false);
 
   useEffect(() => {
@@ -34,10 +36,13 @@ const ModalHeader = ({
 
   return (
     <>
-      <CardDetailHeader description={title.toUpperCase()} section="Header" />
+      <CardDetailHeader
+        description={card.title.toUpperCase()}
+        section="Header"
+      />
       <Container>
         <DropdownButton
-          buttonText={`in list ${sourceTitle.toUpperCase()}`}
+          buttonText={`in list ${sourceList.title.toUpperCase()}`}
           icon={false}
           className="card-source"
           button={false}
@@ -50,11 +55,12 @@ const ModalHeader = ({
         >
           <UIWrapper className="move-card-wrapper">
             <MoveCardDialog
-              originalBoard={originalBoard}
-              originalCard={originalCard}
+              originalBoard={board}
+              originalCard={card}
               sourceListId={sourceId}
               setClose={() => setClose(true)}
-              {...otherProps}
+              history={history}
+              setSourceId={setSourceId}
             />
           </UIWrapper>
         </DropdownButton>

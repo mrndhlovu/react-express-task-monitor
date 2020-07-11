@@ -9,9 +9,14 @@ import {
   emptyFunction,
 } from "../../utils/appUtils";
 
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import EditableHeader from "../sharedComponents/EditableHeader";
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
+import { useCardDetailContext } from "../../utils/hookUtils";
+import AddAttachment from "./AddAttachment";
+import CardDetailHeader from "../sharedComponents/CardDetailHeader";
+import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import EditableHeader from "../sharedComponents/EditableHeader";
+import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const DocumentModal = lazy(() => import("./DocumentModal"));
 
@@ -50,32 +55,64 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
   max-width: 200px !important;
 `;
 
-const Attachments = ({
-  attachment,
-  editAttachments,
-  handleMakeCover,
-  handleRemoveCover,
-  attachmentIndex,
-  activeCard,
-  updatedChanges,
-  ...rest
-}) => {
+const Attachments = () => {
+  const { card, hasAttachments, isLoading } = useCardDetailContext();
+
+  return (
+    <>
+      <CardDetailHeader description="Attachments" />
+      <CardDetailSegment>
+        {hasAttachments &&
+          card.attachments.map((attachment, index) => (
+            <Attachments.Single
+              attachment={attachment}
+              key={index}
+              attachmentIndex={index}
+            />
+          ))}
+        {stringsEqual(isLoading, "attachment") && (
+          <UIWrapper className="loading-attachment-placeholder">
+            Loading...
+          </UIWrapper>
+        )}
+        {hasAttachments && (
+          <AddAttachment
+            buttonText="Add an attachment"
+            direction="right"
+            fluid={false}
+            icon=""
+            labeled={false}
+          />
+        )}
+      </CardDetailSegment>
+    </>
+  );
+};
+
+Attachments.Single = ({ attachment, attachmentIndex }) => {
+  const {
+    card,
+    editAttachments,
+    handleMakeCover,
+    handleRemoveCover,
+    updatedCardChanges,
+    sourceId,
+  } = useCardDetailContext();
+
   const [openDocument, setOpenDocument] = useState(null);
   const [attachmentItem, setAttachmentItem] = useState(attachment);
 
   const { filetype, name, uploadDate, url } = attachmentItem;
   const isAnImage = ALLOWED_IMAGE_TYPES.includes(filetype);
   const isActiveCover =
-    activeCard.cardCover &&
-    isAnImage &&
-    stringsEqual(url, activeCard.cardCover);
+    card.cardCover && isAnImage && stringsEqual(url, card.cardCover);
 
   const handleClick = (item) => setOpenDocument(item);
 
   const handleEditAttachmentName = (editedAttachment) => {
     setAttachmentItem(editedAttachment);
-    activeCard.attachments.splice(attachmentIndex, 1, editedAttachment);
-    updatedChanges(activeCard);
+    card.attachments.splice(attachmentIndex, 1, editedAttachment);
+    updatedCardChanges(card);
   };
 
   return (
@@ -115,9 +152,9 @@ const Attachments = ({
                 <EditableHeader
                   title={name}
                   type="imageTitle"
-                  handleEditAttachmentName={handleEditAttachmentName}
-                  {...rest}
+                  handleEditTitle={handleEditAttachmentName}
                   attachment={attachmentItem}
+                  sourceId={sourceId}
                 />
                 <a
                   className="attachment-link-text"
@@ -136,8 +173,8 @@ const Attachments = ({
                 <EditableHeader
                   title={name}
                   type="imageTitle"
-                  handleEditAttachmentName={handleEditAttachmentName}
-                  {...rest}
+                  handleEditTitle={handleEditAttachmentName}
+                  sourceId={sourceId}
                   attachment={attachmentItem}
                 />
                 <Item.Content
@@ -212,8 +249,6 @@ const Attachments = ({
       {openDocument && (
         <Suspense fallback={<UILoadingSpinner />}>
           <DocumentModal
-            handleMakeCover={handleMakeCover}
-            editAttachments={editAttachments}
             file={openDocument}
             setOpenDocument={setOpenDocument}
           />

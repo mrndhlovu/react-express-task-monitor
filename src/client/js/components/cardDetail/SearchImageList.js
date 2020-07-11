@@ -5,8 +5,10 @@ import { Image, Dropdown } from "semantic-ui-react";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UISmall from "../sharedComponents/UISmall";
+import { useCardDetailContext } from "../../utils/hookUtils";
 
-const SearchImageList = ({ data, handleMakeCover }) => {
+const SearchImageList = ({ data }) => {
+  const { handleMakeCover } = useCardDetailContext();
   const [images, setImages] = useState(null);
   useEffect(() => {
     setImages(data);

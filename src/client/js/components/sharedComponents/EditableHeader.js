@@ -2,18 +2,18 @@ import React, { useState, useEffect } from "react";
 
 import { findArrayItem, stringsEqual } from "../../utils/appUtils";
 import UIFormInput from "../sharedComponents/UIFormInput";
+import { useBoardContext } from "../../utils/hookUtils";
 
 const EditableHeader = ({
-  board,
-  handleBoardUpdate,
   sourceId,
   title,
   type,
   checklist,
-  updatedChecklistTitle,
-  handleEditAttachmentName,
+  handleEditTitle,
   attachment,
 }) => {
+  const { handleBoardUpdate, board } = useBoardContext();
+
   let sourceList = board && findArrayItem(board.lists, sourceId, "_id");
 
   const [editable, setEditable] = useState(false);
@@ -30,14 +30,14 @@ const EditableHeader = ({
       case "boardTitle":
         return setNewBoard({ ...board, title: newTitle });
       case "checklist":
-        newTitle && updatedChecklistTitle({ ...checklist, name: newTitle });
+        newTitle && handleEditTitle({ ...checklist, name: newTitle });
         return setNewTitle(null);
       case "listHeader":
         sourceList.title = newTitle;
         board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
         return setNewBoard({ ...board });
       case "imageTitle":
-        newTitle && handleEditAttachmentName({ ...attachment, name: newTitle });
+        newTitle && handleEditTitle({ ...attachment, name: newTitle });
         return;
       default:
         break;

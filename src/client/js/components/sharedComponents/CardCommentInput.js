@@ -2,9 +2,10 @@ import React, { useState, Fragment } from "react";
 import styled from "styled-components";
 
 import { Form, Button, TextArea } from "semantic-ui-react";
-import UserAvatar from "./UserAvatar";
 import { getUserInitials } from "../../utils/appUtils";
+import { useAuth } from "../../utils/hookUtils";
 import UIWrapper from "./UIWrapper";
+import UserAvatar from "./UserAvatar";
 
 const Container = styled.div`
   display: grid;
@@ -21,7 +22,9 @@ const FormWrapper = styled.div`
   margin-left: 20px;
 `;
 
-const CardCommentInput = ({ comment, saveComment, user }) => {
+const CardCommentInput = ({ comment, saveComment }) => {
+  const { user } = useAuth();
+
   const [newComment, setNewComment] = useState(null);
   const [focus, setFocus] = useState(false);
 
@@ -40,7 +43,10 @@ const CardCommentInput = ({ comment, saveComment, user }) => {
     <Fragment>
       <Container>
         <UIWrapper padding="10px 0 10px 10px">
-          <UserAvatar padding="18px" userInitials={getUserInitials(user)} />
+          <UserAvatar
+            padding="18px"
+            userInitials={getUserInitials(user.fname)}
+          />
         </UIWrapper>
         <FormWrapper>
           <Form>

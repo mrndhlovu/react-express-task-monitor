@@ -8,6 +8,7 @@ import { requestImages } from "../../apis/apiRequests";
 import { SUGGESTED_COVERS } from "../../constants/constants";
 import SearchImageList from "./SearchImageList";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import { useCardDetailContext } from "../../utils/hookUtils";
 
 const displayStyles = {
   display: "flex",
@@ -16,7 +17,8 @@ const displayStyles = {
   marginTop: "5px",
 };
 
-const AddCoverImage = ({ notify, ...props }) => {
+const AddCoverImage = () => {
+  const { notify } = useCardDetailContext();
   const [searchQuery, setSearchQuery] = useState(null);
   const [search, setSearch] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
@@ -124,7 +126,7 @@ const AddCoverImage = ({ notify, ...props }) => {
             </UIWrapper>
           ))}
       </UIWrapper>
-      {searchResult && <SearchImageList data={searchResult} {...props} />}
+      {searchResult && <SearchImageList data={searchResult} />}
     </Fragment>
   );
 };

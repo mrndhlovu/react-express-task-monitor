@@ -11,6 +11,7 @@ import { useDimensions, useAuth, useAlert } from "../utils/hookUtils";
 import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
+import withAlert from "../HOC/withAlert";
 
 const AppWrapper = styled.div`
   padding: 0;
@@ -27,6 +28,9 @@ const AppWrapper = styled.div`
 const MainContainer = ({ children, history }) => {
   const { auth } = useAuth();
   const { notify } = useAlert();
+
+  const alertUser = (message, success = false, cb = () => {}, reason) =>
+    notify({ reason, message, success, cb });
 
   const isHomePage = history.location.pathname === "/";
   const isTemplatePage = history.location.pathname === "/templates";
@@ -78,6 +82,7 @@ const MainContainer = ({ children, history }) => {
         device,
         dimensions,
         getNavData,
+        alertUser,
         handleSearchClick,
         history,
         isHomePage,
@@ -112,4 +117,4 @@ const MainContainer = ({ children, history }) => {
   );
 };
 
-export default withRouter(MainContainer);
+export default withRouter(withAlert(MainContainer));

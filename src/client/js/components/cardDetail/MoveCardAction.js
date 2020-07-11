@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import DropdownButton from "../sharedComponents/DropdownButton";
 import MoveCardDialog from "../boardDetail/MoveCardDialog";
 import UIContainer from "../sharedComponents/UIContainer";
+import { useBoardContext, useCardDetailContext } from "../../utils/hookUtils";
 
-const MoveCardAction = ({ board, activeCard, sourceId, ...otherProps }) => {
+const MoveCardAction = () => {
+  const { board } = useBoardContext();
+  const { card, sourceId, history, setSourceId } = useCardDetailContext();
+
   const [close, setClose] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      setTimeout(() => {
-        setClose(false);
-      }, 500);
-    };
-  });
 
   return (
     <DropdownButton
@@ -26,10 +22,11 @@ const MoveCardAction = ({ board, activeCard, sourceId, ...otherProps }) => {
       <UIContainer>
         <MoveCardDialog
           originalBoard={board}
-          originalCard={activeCard}
+          originalCard={card}
           sourceListId={sourceId}
           setClose={() => setClose(true)}
-          {...otherProps}
+          history={history}
+          setSourceId={setSourceId}
         />
       </UIContainer>
     </DropdownButton>

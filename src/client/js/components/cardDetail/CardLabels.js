@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import CardLabelColors from "../sharedComponents/CardLabelColors";
+import { useBoardContext, useCardDetailContext } from "../../utils/hookUtils";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
+import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import CardLabelColors from "../sharedComponents/CardLabelColors";
+import DropdownButton from "../sharedComponents/DropdownButton";
 
 const Container = styled.div`
   display: flex;
@@ -18,14 +19,10 @@ const Label = styled.div`
   margin-right: 2px;
 `;
 
-const CardLabels = ({
-  activeCard,
-  handleBoardUpdate,
-  board,
-  sourceId,
-  getSourceList,
-}) => {
-  const { labels } = activeCard;
+const CardLabels = () => {
+  const { board, handleBoardUpdate } = useBoardContext();
+  const { sourceId, sourceList, card } = useCardDetailContext();
+  const { labels } = card;
 
   const [label, setLabel] = useState(null);
   const [removeLabel, setRemoveLabel] = useState(null);
@@ -37,24 +34,19 @@ const CardLabels = ({
 
   useEffect(() => {
     let activity;
-    const sourceList = getSourceList(sourceId, "_id");
 
     if (label) {
       activity = "addLabel";
-      activeCard.labels.push(label);
+      card.labels.push(label);
     }
 
     if (removeLabel) {
       activity = "removeLabel";
-      activeCard.labels.splice(labels.indexOf(removeLabel), 1);
+      card.labels.splice(labels.indexOf(removeLabel), 1);
     }
 
     if (activity) {
-      sourceList.cards.splice(
-        sourceList.cards.indexOf(activeCard),
-        1,
-        activeCard
-      );
+      sourceList.cards.splice(sourceList.cards.indexOf(card), 1, card);
 
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
       handleBoardUpdate(board, "lists", activity);
@@ -65,10 +57,10 @@ const CardLabels = ({
       setRemoveLabel(null);
     };
   }, [
-    activeCard,
+    card,
     handleBoardUpdate,
     board,
-    getSourceList,
+    sourceList,
     label,
     labels,
     sourceId,
@@ -90,9 +82,10 @@ const CardLabels = ({
             buttonText=""
             labeled={false}
             size="massive"
+            direction="right"
           >
             <CardLabelColors
-              handleColorClick={() => handleColorClick()}
+              handleColorClick={handleColorClick}
               labels={labels}
             />
           </DropdownButton>

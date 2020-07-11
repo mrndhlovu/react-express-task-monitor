@@ -4,7 +4,6 @@ import { UserContext } from "../utils/contextUtils";
 import { userInfo } from "../apis/apiRequests";
 import { withRouter } from "react-router";
 import MainContainer from "./MainContainer";
-import withAlert from "../HOC/withAlert";
 
 const AuthContainer = ({ children, history }) => {
   const [alert, setAlert] = useState(null);
@@ -43,4 +42,4 @@ const AuthContainer = ({ children, history }) => {
   );
 };
 
-export default withRouter(withAlert(AuthContainer));
+export default withRouter(AuthContainer);

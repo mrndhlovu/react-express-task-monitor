@@ -5,6 +5,7 @@ import _debounce from "debounce";
 import { Icon, TextArea, Form, Button } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import { useBoardContext, useCardDetailContext } from "../../utils/hookUtils";
 
 const Description = styled.div`
   margin-left: 33px;
@@ -28,14 +29,11 @@ const DescriptionHeader = styled.div`
   justify-content: space-between;
 `;
 
-const CardModalDescription = ({
-  board,
-  handleBoardUpdate,
-  listPosition,
-  activeCard,
-}) => {
+const CardModalDescription = () => {
+  const { card, updatedCardChanges } = useCardDetailContext();
+
   const [hideSaveButton, setHideSaveButton] = useState(true);
-  const [description, setDescription] = useState(activeCard.description);
+  const [description, setDescription] = useState(card.description);
   const [editing, setEditing] = useState(false);
   const [updated, setUpdated] = useState(false);
 
@@ -44,29 +42,7 @@ const CardModalDescription = ({
   };
 
   const handleSave = () => {
-    let newBoard;
-
-    newBoard = {
-      ...board,
-      lists: [
-        ...board.lists.map((list) =>
-          list._id === listPosition
-            ? {
-                ...list,
-                cards: [
-                  ...list.cards.map((card) =>
-                    card._id === activeCard._id
-                      ? { ...card, description }
-                      : { ...card }
-                  ),
-                ],
-              }
-            : list
-        ),
-      ],
-    };
-
-    description && handleBoardUpdate(newBoard, "lists", "description");
+    description && updatedCardChanges({ ...card, description });
     setHideSaveButton(!hideSaveButton);
     setUpdated(true);
   };
@@ -74,7 +50,7 @@ const CardModalDescription = ({
   useEffect(() => {
     if (!updated) return;
     setEditing(false);
-  }, [updated, activeCard, description]);
+  }, [updated, card, description]);
 
   return (
     <>

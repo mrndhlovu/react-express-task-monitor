@@ -9,16 +9,14 @@ import TextFilePreviewButtons from "./TextFilePreviewButtons";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIModal from "../sharedComponents/UIModal";
+import { useCardDetailContext } from "../../utils/hookUtils";
 
 const TextPreview = lazy(() => import("./TextPreview"));
 const PDFPreview = lazy(() => import("./PDFPreview.js"));
 
-const DocumentModal = ({
-  file,
-  setOpenDocument,
-  handleMakeCover,
-  editAttachments,
-}) => {
+const DocumentModal = ({ file, setOpenDocument }) => {
+  const { handleMakeCover, editAttachments } = useCardDetailContext();
+
   const [numPages, setNumPages] = useState(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [isLoading, setIsLoading] = useState(true);

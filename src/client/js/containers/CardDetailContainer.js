@@ -7,7 +7,6 @@ import { requestCardUpdate } from "../apis/apiRequests";
 import { useBoardListContext, useBoardContext } from "../utils/hookUtils";
 import CardDetailModal from "../components/cardDetail/CardDetailModal";
 import { CardDetailContext } from "../utils/contextUtils";
-import UIPortal from "../components/sharedComponents/UIPortal";
 
 const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const { activeCard, board, handleBoardUpdate } = useBoardListContext();
@@ -24,6 +23,7 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const hasChecklist = card && card.checklists.length !== 0;
   const hasMembers = board && board.members.length !== 0;
   const hasCover = card && card.cardCover !== "";
+  const hasDueDate = card && card.dueDate.date;
   const hasAttachments = card && card.attachments.length !== 0;
   const sourceList = findArrayItem(board.lists, sourceId, "_id");
   const sourceIndex = board.lists.indexOf(sourceList);
@@ -49,7 +49,7 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
     });
   };
 
-  const updatedChanges = (updatedCard) => {
+  const updatedCardChanges = (updatedCard) => {
     sourceList.cards.splice(cardIndex, 1, updatedCard);
     updateLists();
   };
@@ -100,39 +100,38 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   };
 
   return (
-    <UIPortal>
-      <CardDetailContext.Provider
-        value={{
-          card,
-          cardIndex,
-          editAttachments,
-          handleMakeCover,
-          handleRemoveCover,
-          hasAttachments,
-          hasChecklist,
-          hasCover,
-          hasLabel,
-          hasMembers,
-          hideActivities,
-          history,
-          id,
-          isLoading,
-          match,
-          modalOpen,
-          saveCardChanges,
-          setHideActivities,
-          setIsLoading,
-          setSourceId,
-          sourceId,
-          sourceList,
-          updatedChanges,
-          board,
-          portalRoot,
-        }}
-      >
-        <CardDetailModal />
-      </CardDetailContext.Provider>
-    </UIPortal>
+    <CardDetailContext.Provider
+      value={{
+        card,
+        cardIndex,
+        editAttachments,
+        handleMakeCover,
+        handleRemoveCover,
+        hasAttachments,
+        hasChecklist,
+        hasCover,
+        hasDueDate,
+        hasLabel,
+        hasMembers,
+        hideActivities,
+        history,
+        id,
+        isLoading,
+        match,
+        modalOpen,
+        saveCardChanges,
+        setHideActivities,
+        setIsLoading,
+        setSourceId,
+        sourceId,
+        sourceList,
+        updatedCardChanges,
+        board,
+        portalRoot,
+      }}
+    >
+      <CardDetailModal />
+    </CardDetailContext.Provider>
   );
 };
 

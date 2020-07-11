@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
 
-import UserAvatar from "./UserAvatar";
 import { getUserInitials, findArrayItem } from "../../utils/appUtils";
 import { Icon } from "semantic-ui-react";
+import UserAvatar from "./UserAvatar";
 
 const BoardMember = styled.div`
   display: flex;

@@ -16,6 +16,11 @@ import {
   ALLOWED_IMAGE_TYPES,
   ALLOWED_DOCUMENT_TYPES,
 } from "../../constants/constants";
+import {
+  useBoardContext,
+  useCardDetailContext,
+  useMainContext,
+} from "../../utils/hookUtils";
 
 const StyledInput = styled.input`
   margin: 0;
@@ -33,24 +38,27 @@ const StyledSmall = styled.h6`
 `;
 
 const AddAttachment = ({
-  editAttachments,
-  saveCardChanges,
-  saveBoardChanges,
-  handleLoadingAttachment,
-  mobile,
-  activeCard,
   upward = false,
   fluid = true,
   labeled = true,
   icon = "attach",
   direction,
-  compact,
-  id,
-  sourceId,
+  compact = false,
   buttonText = "Attachment",
 }) => {
+  const { saveBoardChanges } = useBoardContext();
+  const {
+    card,
+    editAttachments,
+    id,
+    saveCardChanges,
+    setIsLoading,
+    sourceId,
+  } = useCardDetailContext();
+  const { mobile } = useMainContext();
+  const { alertUser } = useMainContext();
+
   const [attachment, setAttachment] = useState(null);
-  const [message, setMessage] = useState({ header: null, list: [] });
   const [close, setClose] = useState(false);
 
   useEffect(() => {
@@ -71,30 +79,30 @@ const AddAttachment = ({
       data.append(uploadType, file);
 
       const upload = async () => {
-        handleLoadingAttachment("attachment");
-        await requestUpload(uploadType, data, id, sourceId, activeCard._id)
+        setIsLoading("attachment");
+        await requestUpload(uploadType, data, id, sourceId, card._id)
           .then((res) => {
             const { card, board } = res.data;
             saveCardChanges(card);
             saveBoardChanges(board);
-            handleLoadingAttachment("");
+            setIsLoading("");
             setClose(true);
           })
           .catch((error) => {
-            setMessage({ ...message, header: error.response.data.message });
-            handleLoadingAttachment("");
+            setIsLoading("");
+            alertUser(error.response.data.message);
           });
       };
       file && upload();
     },
-    [handleLoadingAttachment]
+    [setIsLoading]
   );
 
   const handleChange = (e) => setAttachment(e.target.value);
 
   const handleAttachClick = () => {
     const url = isURL(attachment);
-    if (!url) return setMessage({ ...message, header: "Invalid link!" });
+    if (!url) return alertUser("Invalid link!");
 
     const filetype = attachment.split(".").pop();
     const allowedFileTypes = [
@@ -112,14 +120,10 @@ const AddAttachment = ({
     };
 
     const duplicate =
-      findArrayItem(activeCard.attachments, attachment, "url") !== undefined;
+      findArrayItem(card.attachments, attachment, "url") !== undefined;
 
     if (duplicate) {
-      return setMessage({
-        ...message,
-        header: "Duplicate!",
-        list: "You have this link is your attachments!",
-      });
+      return alertUser("You have this link is your attachments!");
     }
 
     return editAttachments(attachmentData, () => {
@@ -142,15 +146,6 @@ const AddAttachment = ({
       close={close}
     >
       <UIContainer width="300px" padding="0">
-        {message.header && (
-          <UIWrapper className="attachment-alert">
-            <UIMessage
-              error={true}
-              handleDismiss={() => setMessage(false)}
-              list={[message.header]}
-            />
-          </UIWrapper>
-        )}
         <AttachmentOption>
           <span>{mobile ? "Phone" : "Computer"}</span>
           <StyledInput type="file" onChange={(e) => handleUpload(e)} />

@@ -4,7 +4,7 @@ import _debounce from "debounce";
 import { Header, Button } from "semantic-ui-react";
 
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
-import { useFetch } from "../../utils/hookUtils";
+import { useFetch, useBoardContext } from "../../utils/hookUtils";
 import DropdownList from "../sharedComponents/DropdownList";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
@@ -19,11 +19,11 @@ const MoveCardDialog = ({
   originalCard,
   history,
   sourceListId,
-  handleBoardUpdate,
   setClose,
   setSourceId,
 }) => {
   const [data, loading] = useFetch(history);
+  const { handleBoardUpdate } = useBoardContext();
 
   const [boards, setBoards] = useState(null);
   const [move, setMove] = useState(false);

@@ -88,7 +88,6 @@ const ListHeader = ({
     <HeaderWrapper>
       <EditableHeader
         board={board}
-        handleBoardUpdate={handleBoardUpdate}
         sourceId={listId}
         title={title}
         type="listHeader"

@@ -1,31 +1,28 @@
 import React from "react";
 
+import { findArrayItem } from "../../utils/appUtils";
+import { requestCardUpdate } from "../../apis/apiRequests";
+import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
+import BoardMembersList from "../sharedComponents/BoardMembersList";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import DropdownButton from "../sharedComponents/DropdownButton";
-import BoardMembersList from "../sharedComponents/BoardMembersList";
-import { requestCardUpdate } from "../../apis/apiRequests";
-import { findArrayItem } from "../../utils/appUtils";
 
-const AddCardMembers = ({
-  boardMembers,
-  activeCard,
-  id,
-  sourceId,
-  saveCardChanges,
-  saveBoardChanges,
-}) => {
+const AddCardMembers = () => {
+  const { card, saveCardChanges, sourceId, id } = useCardDetailContext();
+  const { saveBoardChanges, board } = useBoardContext();
+
   const handleBoardMemberClick = (boardMember) => {
     const isInAssigneeList = findArrayItem(
-      activeCard.assignees,
+      card.assignees,
       boardMember.id,
       "id"
     );
-    const memberIndex = activeCard.assignees.indexOf(boardMember);
+    const memberIndex = card.assignees.indexOf(boardMember);
 
     isInAssigneeList
-      ? activeCard.assignees.splice(memberIndex, 1)
-      : activeCard.assignees.push(boardMember);
-    const body = { newCard: activeCard, listId: sourceId };
+      ? card.assignees.splice(memberIndex, 1)
+      : card.assignees.push(boardMember);
+    const body = { newCard: card, listId: sourceId };
     const update = async () => {
       await requestCardUpdate(body, id).then((res) => {
         saveCardChanges(body.newCard);
@@ -45,9 +42,9 @@ const AddCardMembers = ({
     >
       <CardDetailSegment>
         <BoardMembersList
-          boardMembers={boardMembers}
+          boardMembers={board.members}
           handleBoardMemberClick={handleBoardMemberClick}
-          activeCard={activeCard}
+          activeCard={card}
         />
       </CardDetailSegment>
     </DropdownButton>

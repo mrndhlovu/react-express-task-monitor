@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { Header } from "semantic-ui-react";
 
+import { useCardDetailContext } from "../../utils/hookUtils";
 import AddAttachment from "./AddAttachment";
 import AddCardCheckList from "./AddCardCheckList";
 import AddCardDueDate from "./AddCardDueDate";
@@ -22,19 +23,21 @@ const Container = styled.section`
   margin-right: 5px;
 `;
 
-const CardModalSidebar = ({ hasDueDate, hasCover, ...props }) => {
+const CardModalSidebar = () => {
+  const { hasDueDate, hasCover } = useCardDetailContext();
+
   return (
     <Container>
       <StyledHeader content="ADD TO CARD" />
-      <AddCardMembers {...props} />
-      <AddCardLabel {...props} />
-      <AddCardCheckList {...props} />
-      {!hasDueDate && <AddCardDueDate {...props} />}
-      {<AddAttachment {...props} />}
-      {!hasCover && <AddCover upward={false} {...props} />}
+      <AddCardMembers />
+      <AddCardLabel />
+      <AddCardCheckList />
+      {!hasDueDate && <AddCardDueDate />}
+      <AddAttachment />
+      {!hasCover && <AddCover upward={false} />}
       <StyledHeader content="ACTIONS" />
-      <MoveCardAction {...props} />
-      <CopyCardAction {...props} />
+      <MoveCardAction />
+      <CopyCardAction />
     </Container>
   );
 };

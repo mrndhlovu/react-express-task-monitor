@@ -36,20 +36,19 @@ const EditCommentIcons = ({
   handleEmojiClick,
   handleEditComment,
   handleDeleteComment,
-  commentId,
-  emojis = [],
+  comment,
 }) => {
-  const hasEmojis = emojis.length !== 0;
+  const hasEmojis = comment.emojis.length !== 0;
 
   return (
     <Container>
       {hasEmojis ? (
-        emojis.map((emoji) => (
+        comment.emojis.map((emoji) => (
           <EmojiWrapper key={emoji.id}>
             <Emoji
               emoji={{ id: emoji.id }}
               size={16}
-              onClick={(emoji) => handleEmojiClick(emoji, commentId, "remove")}
+              onClick={(emoji) => handleEmojiClick(emoji, comment, "remove")}
             />
           </EmojiWrapper>
         ))
@@ -64,7 +63,7 @@ const EditCommentIcons = ({
           >
             <Picker
               set="apple"
-              onSelect={(emoji) => handleEmojiClick(emoji, commentId)}
+              onSelect={(emoji) => handleEmojiClick(emoji, comment)}
             />
           </DropdownButton>
         </Suspense>
@@ -73,7 +72,7 @@ const EditCommentIcons = ({
       <CommentLink content="Edit" onClick={() => handleEditComment()} />
       <CommentLink
         content="Delete"
-        onClick={() => handleDeleteComment(commentId)}
+        onClick={() => handleDeleteComment(comment)}
       />
     </Container>
   );

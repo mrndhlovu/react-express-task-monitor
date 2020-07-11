@@ -1,18 +1,15 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 
-import DropdownButton from "../sharedComponents/DropdownButton";
 import { requestCardUpdate } from "../../apis/apiRequests";
+import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
+import DropdownButton from "../sharedComponents/DropdownButton";
 
 const PickDueDate = lazy(() => import("../sharedComponents/PickDueDate"));
 
-const AddCardDueDate = ({
-  activeCard,
-  saveCardChanges,
-  saveBoardChanges,
-  color,
-  id,
-  sourceId,
-}) => {
+const AddCardDueDate = () => {
+  const { card, saveCardChanges, id, sourceId } = useCardDetailContext();
+  const { saveBoardChanges } = useBoardContext();
+
   const [startDate, setStartDate] = useState(new Date());
   const [updated, setUpdated] = useState(false);
 
@@ -21,12 +18,12 @@ const AddCardDueDate = ({
 
     if (removeDate) {
       newCard = {
-        ...activeCard,
+        ...card,
         dueDate: "",
       };
     } else {
       newCard = {
-        ...activeCard,
+        ...card,
         dueDate: { date: `${startDate}`, complete: false },
       };
     }
@@ -51,7 +48,6 @@ const AddCardDueDate = ({
       icon="clock"
       buttonText="Due Date"
       header="Change Due Date."
-      color={color}
       close={updated}
     >
       <Suspense fallback={<div>Loading...</div>}>

@@ -1,26 +1,31 @@
 import React from "react";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import CardLabelColors from "../sharedComponents/CardLabelColors";
-import { requestCardUpdate } from "../../apis/apiRequests";
 
-const AddCardLabel = ({ activeCard, saveBoardChanges, id, sourceId }) => {
-  const { labels } = activeCard;
+import { requestCardUpdate } from "../../apis/apiRequests";
+import CardLabelColors from "../sharedComponents/CardLabelColors";
+import DropdownButton from "../sharedComponents/DropdownButton";
+import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
+
+const AddCardLabel = () => {
+  const { card, id, sourceId } = useCardDetailContext();
+  const { saveBoardChanges } = useBoardContext();
+
+  const { labels } = card;
 
   const handleColorClick = async (color) => {
     if (labels.includes(color)) {
-      activeCard.labels.splice(labels.indexOf(color), 1);
+      card.labels.splice(labels.indexOf(color), 1);
     } else {
-      activeCard.labels.push(color);
+      card.labels.push(color);
     }
 
-    const body = { newCard: activeCard, listId: sourceId };
+    const body = { newCard: card, listId: sourceId };
     await requestCardUpdate(body, id).then((res) => saveBoardChanges(res.data));
   };
 
   return (
     <DropdownButton icon="tags" buttonText="Labels" header="Labels">
       <CardLabelColors
-        labels={activeCard.labels}
+        labels={card.labels}
         handleColorClick={handleColorClick}
       />
     </DropdownButton>

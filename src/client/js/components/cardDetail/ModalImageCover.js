@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import AddCover from "./AddCover";
 import UIContainer from "../sharedComponents/UIContainer";
+import { useCardDetailContext } from "../../utils/hookUtils";
 
 const ButtonWrapper = styled.div`
   position: absolute;
@@ -31,19 +32,15 @@ const style = {
   alignItems: "center",
 };
 
-const ModalImageCover = ({ cardCover, isLoading, ...props }) => {
+const ModalImageCover = () => {
+  const { isLoading, card } = useCardDetailContext();
   return isLoading ? (
     <UIContainer display={style}>Loading...</UIContainer>
   ) : (
-    cardCover && (
-      <CoverContainer className="modal-cover" cover={cardCover}>
+    card.cardCover && (
+      <CoverContainer className="modal-cover" cover={card.cardCover}>
         <ButtonWrapper>
-          <AddCover
-            upward={false}
-            buttonSize="tiny"
-            color="#00000014"
-            {...props}
-          />
+          <AddCover upward={false} buttonSize="tiny" color="#00000014" />
         </ButtonWrapper>
       </CoverContainer>
     )
