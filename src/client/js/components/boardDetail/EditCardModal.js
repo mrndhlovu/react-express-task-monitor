@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
+import styled from "styled-components";
 
-import { Modal, Button } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 import { BoardListsContext } from "../../utils/contextUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
@@ -9,39 +10,27 @@ import CreateInput from "../sharedComponents/CreateInput";
 import EditCardButton from "../sharedComponents/EditCardButton";
 import MoveCardDialog from "./MoveCardDialog";
 import PickDueDate from "../sharedComponents/PickDueDate";
-import styled from "styled-components";
-
-const mobileLayout = {
-  display: "flex",
-  background: "transparent !important",
-  position: "absolute",
-  flexDirection: "column",
-};
-
-const defaultLayout = {
-  display: "grid",
-  gridTemplateColumns: "52% 30%",
-  background: "transparent !important",
-  position: "absolute",
-  width: "495px",
-  left: "-15%",
-};
+import UIModal from "../sharedComponents/UIModal";
 
 const Wrapper = styled.div`
-  ${(props) => (props.mobile ? { ...mobileLayout } : { ...defaultLayout })};
+  display: flex;
+  vertical-align: top;
+  justify-content: space-evenly;
 `;
 
-const StyledModalContent = styled(Modal.Content)`
+const StyledModalContent = styled.div`
   background: transparent !important;
   padding-bottom: 10px;
   padding-left: 10px;
+  width: fit-content;
 `;
 
-const StyledModalActions = styled(Modal.Actions)`
+const StyledModalActions = styled.div`
   background: transparent !important;
   display: flex;
   flex-direction: column;
   margin-top: 10px !important;
+  width: fit-content;
 `;
 
 const EditCardModal = ({
@@ -51,7 +40,6 @@ const EditCardModal = ({
   history,
   id,
   listPosition,
-  mobile,
   openCardModal,
   saveBoardChanges,
   setOpenCardModal,
@@ -151,14 +139,24 @@ const EditCardModal = ({
     };
   });
 
+  const EDIT_CARD_MODAL_STYLE = {
+    top: "6%",
+    left: "28%",
+    bottom: "1%",
+    padding: "0px",
+    width: "45%",
+    border: "none",
+    backgroundColor: "transparent",
+  };
+
   return (
-    <Modal
-      centered={false}
+    <UIModal
       className="create-card-modal"
-      open={openCardModal}
-      size="tiny"
+      isOpen={openCardModal}
+      bgColor="transparent"
+      modalStyle={EDIT_CARD_MODAL_STYLE}
     >
-      <Wrapper mobile={mobile}>
+      <Wrapper className="edit-card-actions">
         <StyledModalContent>
           <CreateInput
             close={() => setOpenCardModal(false)}
@@ -239,7 +237,7 @@ const EditCardModal = ({
           </EditCardButton>
         </StyledModalActions>
       </Wrapper>
-    </Modal>
+    </UIModal>
   );
 };
 

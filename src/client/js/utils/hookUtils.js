@@ -7,14 +7,18 @@ import {
   HomepageContext,
   MainContext,
   BoardContext,
+  CardDetailContext,
+  BoardListsContext,
 } from "./contextUtils";
 
 export const useAuth = () => useContext(UserContext);
 
 export const useHomeContext = () => useContext(HomepageContext);
 export const useBoardContext = () => useContext(BoardContext);
+export const useBoardListContext = () => useContext(BoardListsContext);
 export const useMainContext = () => useContext(MainContext);
 export const useAlert = () => useContext(AlertContext);
+export const useCardDetailContext = () => useContext(CardDetailContext);
 
 export const useFetch = (history) => {
   const [data, setData] = useState(null);

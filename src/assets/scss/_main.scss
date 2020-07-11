@@ -92,6 +92,9 @@ ui.form,
   content: none !important;
 }
 
+.ReactModal__Content::-webkit-scrollbar {
+  display: none;
+}
 .images-container::-webkit-scrollbar {
   display: none;
 }

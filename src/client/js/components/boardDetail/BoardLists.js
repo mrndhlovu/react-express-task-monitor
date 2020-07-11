@@ -11,7 +11,9 @@ import CreateItemForm from "../sharedComponents/CreateItemForm";
 import ListGrid from "./ListGrid";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const CardDetailModal = lazy(() => import("../cardDetail/CardDetailModal"));
+const CardDetailContainer = lazy(() =>
+  import("../../containers/CardDetailContainer")
+);
 
 const StyledListContainer = styled.div`
   display: flex;
@@ -231,7 +233,7 @@ const BoardLists = ({ history }) => {
 
         {!hideCardDetail && (
           <Suspense fallback={<UILoadingSpinner />}>
-            <CardDetailModal
+            <CardDetailContainer
               listId={sourceId}
               history={history}
               modalOpen={!hideCardDetail}

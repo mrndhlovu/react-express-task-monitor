@@ -62,7 +62,7 @@ const CreateInput = ({
         />
         {!hideIcon && (
           <UIWrapper>
-            <X onClick={close} className="uiIconWhite" />
+            <X onClick={close} className="uiIconDark" />
           </UIWrapper>
         )}
       </ButtonsWrapper>

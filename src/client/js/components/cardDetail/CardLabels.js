@@ -92,7 +92,7 @@ const CardLabels = ({
             size="massive"
           >
             <CardLabelColors
-              handleColorClick={handleColorClick}
+              handleColorClick={() => handleColorClick()}
               labels={labels}
             />
           </DropdownButton>

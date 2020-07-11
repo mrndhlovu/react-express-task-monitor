@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Modal } from "semantic-ui-react";
-
 import AddCover from "./AddCover";
 import UIContainer from "../sharedComponents/UIContainer";
 
@@ -12,7 +10,7 @@ const ButtonWrapper = styled.div`
   right: 5px;
 `;
 
-const CoverContainer = styled(Modal.Header)`
+const CoverContainer = styled.div`
   background-color: #e2dfe4 !important;
   background-image: url(${({ cover }) => cover}) !important;
   background-position: center center !important;

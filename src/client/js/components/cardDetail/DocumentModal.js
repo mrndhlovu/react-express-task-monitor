@@ -1,8 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import mammoth from "mammoth";
 
-import { Modal } from "semantic-ui-react";
-
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
 import DocumentPreviewButtons from "./DocumentPreviewButtons";
@@ -10,7 +8,7 @@ import ImagePreviewButtons from "./ImagePreviewButtons";
 import TextFilePreviewButtons from "./TextFilePreviewButtons";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import { XCircle } from "react-feather";
+import UIModal from "../sharedComponents/UIModal";
 
 const TextPreview = lazy(() => import("./TextPreview"));
 const PDFPreview = lazy(() => import("./PDFPreview.js"));
@@ -30,6 +28,16 @@ const DocumentModal = ({
   const lastPage = pageNumber === numPages;
   const firstPage = pageNumber === 1;
   const { url, filetype } = file;
+
+  const DOCUMENT_MODAL_STYLE = {
+    backgroundColor: "transparent",
+    border: "none",
+    display: "flex",
+    justifyContent: "space-around",
+    position: "absolute",
+    top: "4%",
+    bottom: "",
+  };
 
   const renderDocument = () => {
     if (stringsEqual(filetype, "pdf"))
@@ -100,21 +108,21 @@ const DocumentModal = ({
   }, [file]);
 
   return (
-    <Modal
+    <UIModal
       className="document-view-wrap"
-      open={file !== null}
+      isOpen={file !== null}
       onClose={() => setOpenDocument(null)}
-      centered={false}
-      closeIcon={<XCircle size={32} className="close-modal" />}
+      closeIcon
+      modalStyle={DOCUMENT_MODAL_STYLE}
     >
       <div className="modal-content-wrapper">
-        <Modal.Content className="document-content">
+        <div className="document-content">
           {renderDocument()}
           {stringsEqual(filetype, ["docx", "odt"]) && (
             <UIWrapper className="docx-preview" />
           )}
           {isLoading && "Loading..."}
-        </Modal.Content>
+        </div>
 
         {!isLoading && (
           <UIWrapper className="doc-page-buttons">
@@ -148,7 +156,7 @@ const DocumentModal = ({
           </UIWrapper>
         )}
       </div>
-    </Modal>
+    </UIModal>
   );
 };
 
