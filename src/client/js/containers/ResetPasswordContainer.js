@@ -3,12 +3,12 @@ import { withRouter, Redirect } from "react-router-dom";
 
 import { requestUpdatePassword } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
-import { useAuth, useAlert } from "../utils/hookUtils";
+import { useAuth, useMainContext } from "../utils/hookUtils";
 import ResetPassword from "../components/auth/ResetPassword";
 
 const ResetPasswordContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
-  const { notify } = useAlert();
+  const { alertUser } = useMainContext();
 
   const { auth } = useAuth();
   const [credentials, setCredentials] = useState({
@@ -47,18 +47,15 @@ const ResetPasswordContainer = ({ history, location }) => {
         .then((res) => {
           setSave(false);
           setPasswordConfirmed(true);
-          notify({ message: res.data.message, success: true });
+          alertUser(res.data.message, true);
         })
         .catch((error) => {
           setSave(false);
-          notify({
-            message: error.response.data.message,
-            cb: () => clearError(),
-          });
+          alertUser(error.response.data.message, false, () => clearError());
         });
     };
     updatePassword();
-  }, [save, credentials, history, notify]);
+  }, [save, credentials, history, alertUser]);
 
   if (auth.authenticated) return <Redirect to={`${from.pathname}`} />;
 

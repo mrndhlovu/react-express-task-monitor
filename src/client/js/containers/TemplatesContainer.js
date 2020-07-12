@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router";
 
 import { emptyFunction } from "../utils/appUtils";
-import { useAlert } from "../utils/hookUtils";
 import { requestTemplates } from "../apis/apiRequests";
+import { useMainContext } from "../utils/hookUtils";
 import TemplatesPage from "../components/home/TemplatesPage";
-import { withRouter } from "react-router";
 
 const TemplatesContainer = ({ history }) => {
   const [templates, setTemplates] = useState(null);
-  const { notify } = useAlert();
+  const { alertUser } = useMainContext();
 
   useEffect(() => {
     if (templates) return emptyFunction();
@@ -18,9 +18,7 @@ const TemplatesContainer = ({ history }) => {
         .then((res) => {
           setTemplates(res.data);
         })
-        .catch((error) => {
-          notify({ message: error.response.data.message });
-        });
+        .catch((error) => alertUser(error.response.data.message));
     };
     getTemplates();
   }, [templates]);

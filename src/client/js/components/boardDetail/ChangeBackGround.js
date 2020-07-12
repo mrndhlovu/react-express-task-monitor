@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
+import { Button } from "semantic-ui-react";
+
 import { bgColors } from "../../constants/constants";
+import { stringsEqual } from "../../utils/appUtils";
+import AddCoverImage from "../cardDetail/AddCoverImage";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import { stringsEqual } from "../../utils/appUtils";
-import AddCoverImage from "../cardDetail/AddCoverImage";
-import { Button } from "semantic-ui-react";
-import { useAlert } from "../../utils/hookUtils";
 
 const colorStyle = {
   borderRadius: "8px",
@@ -25,7 +25,6 @@ const ChangeBackGround = ({
 }) => {
   const [show, setShow] = useState("");
   const [link, setLink] = useState("");
-  const { notify } = useAlert();
 
   return (
     <SideBarWrapper
@@ -64,10 +63,7 @@ const ChangeBackGround = ({
       )}
       {stringsEqual(show, "image") && (
         <UIWrapper>
-          <AddCoverImage
-            notify={notify}
-            handleMakeCover={handleSelectedBackground}
-          />
+          <AddCoverImage handleMakeCover={handleSelectedBackground} />
           <UIDivider
             content="Paste custom image link"
             inverted={true}

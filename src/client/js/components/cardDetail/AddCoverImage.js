@@ -6,9 +6,9 @@ import { emptyFunction } from "../../utils/appUtils";
 import { getSearchQueryString } from "../../utils/urls";
 import { requestImages } from "../../apis/apiRequests";
 import { SUGGESTED_COVERS } from "../../constants/constants";
+import { useMainContext } from "../../utils/hookUtils";
 import SearchImageList from "./SearchImageList";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import { useCardDetailContext } from "../../utils/hookUtils";
 
 const displayStyles = {
   display: "flex",
@@ -18,7 +18,7 @@ const displayStyles = {
 };
 
 const AddCoverImage = () => {
-  const { notify } = useCardDetailContext();
+  const { alertUser } = useMainContext();
   const [searchQuery, setSearchQuery] = useState(null);
   const [search, setSearch] = useState(false);
   const [searchResult, setSearchResult] = useState(null);
@@ -39,28 +39,24 @@ const AddCoverImage = () => {
   const handlePageChange = async (value) => {
     setPageNum(value);
 
-    await requestImages(searchQuery, value).then((res) => {
-      try {
+    await requestImages(searchQuery, value)
+      .then((res) => {
         setTotalPages(res.data.total_pages);
         setSearchResult(res.data.results);
-      } catch (error) {
-        notify({ message: error.message });
-      }
-    });
+      })
+      .catch((error) => alertUser(error.message));
   };
 
   useEffect(() => {
     if (!search) return emptyFunction();
     const query = getSearchQueryString(searchQuery);
     const getQueryImageList = async () => {
-      await requestImages(query, pageNum).then((res) => {
-        try {
+      await requestImages(query, pageNum)
+        .then((res) => {
           setTotalPages(res.data.total_pages);
           setSearchResult(res.data.results);
-        } catch (error) {
-          notify({ message: error.message });
-        }
-      });
+        })
+        .catch((error) => alertUser(error.message));
     };
     getQueryImageList();
     setSearch(false);

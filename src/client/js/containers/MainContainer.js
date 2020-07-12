@@ -59,7 +59,7 @@ const MainContainer = ({ children, history }) => {
       .then((res) => {
         return history.push(`/boards/id/${res.data._id}`);
       })
-      .catch((error) => notify({ message: error.response.data.message }));
+      .catch((error) => alertUser(error.response.data.message));
   };
 
   const getNavData = useCallback(

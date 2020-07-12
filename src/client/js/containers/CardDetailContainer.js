@@ -4,9 +4,9 @@ import { withRouter } from "react-router-dom";
 import { findArrayItem } from "../utils/appUtils";
 import { requestCardUpdate } from "../apis/apiRequests";
 
+import { CardDetailContext } from "../utils/contextUtils";
 import { useBoardListContext, useBoardContext } from "../utils/hookUtils";
 import CardDetailModal from "../components/cardDetail/CardDetailModal";
-import { CardDetailContext } from "../utils/contextUtils";
 
 const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const { activeCard, board, handleBoardUpdate } = useBoardListContext();
@@ -18,18 +18,16 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const [hideActivities, setHideActivities] = useState(true);
   const [isLoading, setIsLoading] = useState("");
   const [sourceId, setSourceId] = useState(listId);
+  const sourceList = findArrayItem(board.lists, sourceId, "_id");
 
-  const hasLabel = card && card.labels.length !== 0;
+  const cardIndex = sourceList.cards.indexOf(activeCard);
+  const hasAttachments = card && card.attachments.length !== 0;
   const hasChecklist = card && card.checklists.length !== 0;
-  const hasMembers = board && board.members.length !== 0;
   const hasCover = card && card.cardCover !== "";
   const hasDueDate = card && card.dueDate.date;
-  const hasAttachments = card && card.attachments.length !== 0;
-  const sourceList = findArrayItem(board.lists, sourceId, "_id");
+  const hasLabel = card && card.labels.length !== 0;
+  const hasMembers = board && board.members.length !== 0;
   const sourceIndex = board.lists.indexOf(sourceList);
-  const cardIndex = sourceList.cards.indexOf(activeCard);
-
-  const portalRoot = document.getElementById("portal");
 
   const saveCardChanges = (changes) => setCard(changes);
 
@@ -65,9 +63,8 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
       const attachmentIndex = card.attachments.indexOf(attachment);
       setIsLoading("attachment");
 
-      if (remove) {
-        card.attachments.splice(attachmentIndex, 1);
-      } else card.attachments.push(attachment);
+      if (remove) card.attachments.splice(attachmentIndex, 1);
+      else card.attachments.push(attachment);
 
       const cardIndex = sourceList.cards.indexOf(card);
       const sourceIndex = board.lists.indexOf(sourceList);
@@ -127,7 +124,6 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
         sourceList,
         updatedCardChanges,
         board,
-        portalRoot,
       }}
     >
       <CardDetailModal />

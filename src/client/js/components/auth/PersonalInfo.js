@@ -4,12 +4,12 @@ import { Header, Form, TextArea, Button } from "semantic-ui-react";
 
 import { emptyFunction } from "../../utils/appUtils";
 import { requestUserUpdate } from "../../apis/apiRequests";
-import { useAlert } from "../../utils/hookUtils";
+import { useMainContext } from "../../utils/hookUtils";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const PersonalInfo = ({ user }) => {
-  const { notify } = useAlert();
+  const { alertUser } = useMainContext();
 
   const [bio, setBio] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -28,9 +28,9 @@ const PersonalInfo = ({ user }) => {
       await requestUserUpdate(body).then(() => {
         try {
           setLoading(false);
-          notify({ success: true, message: "Saved" });
+          alertUser("Saved", true);
         } catch (error) {
-          notify({ message: "Failed to save changes please try again." });
+          alertUser("Failed to save changes please try again.");
           setLoading(false);
         }
       });
@@ -38,7 +38,7 @@ const PersonalInfo = ({ user }) => {
 
     saveChanges();
     setSave(false);
-  }, [save, username, bio, requestUserUpdate, notify]);
+  }, [save, username, bio, requestUserUpdate, alertUser]);
 
   return (
     <>

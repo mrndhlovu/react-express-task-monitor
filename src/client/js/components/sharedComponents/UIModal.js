@@ -34,8 +34,8 @@ const UIModal = ({
         shouldCloseOnOverlayClick={false}
       >
         {closeIcon && (
-          <IconContainer>
-            <X onClick={onClose} />
+          <IconContainer onClick={onClose}>
+            <X />
           </IconContainer>
         )}
         {children}

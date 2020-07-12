@@ -3,12 +3,12 @@ import { withRouter, Redirect } from "react-router-dom";
 
 import { requestEmailRecovery } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
-import { useAuth, useAlert } from "../utils/hookUtils";
+import { useAuth, useMainContext } from "../utils/hookUtils";
 import EmailRecovery from "../components/auth/EmailRecovery";
 
 const EmailRecoveryContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
-  const { notify } = useAlert();
+  const { alertUser } = useMainContext();
 
   const { auth } = useAuth();
   const [credentials, setCredentials] = useState({ email: null });
@@ -32,18 +32,11 @@ const EmailRecoveryContainer = ({ history, location }) => {
       await requestEmailRecovery(credentials)
         .then((res) => {
           setLoading(false);
-          notify({
-            message: res.data.message,
-            success: true,
-            cb: () => clearMsg(true),
-          });
+          alertUser(res.data.message, true, () => clearMsg(true));
         })
         .catch((error) => {
           setLoading(false);
-          notify({
-            message: error.response.data.message,
-            cb: () => clearMsg(),
-          });
+          alertUser(error.response.data.message, false, () => clearMsg());
         });
     };
     recoverPassword();

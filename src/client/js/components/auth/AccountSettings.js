@@ -8,7 +8,7 @@ import {
   requestUserUpdate,
   requestDeleteAccount,
 } from "../../apis/apiRequests";
-import { useAlert, useAuth } from "../../utils/hookUtils";
+import { useAuth, useMainContext } from "../../utils/hookUtils";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIFormInput from "../sharedComponents/UIFormInput";
@@ -16,7 +16,7 @@ import UISmall from "../sharedComponents/UISmall";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const AccountSettings = ({ history }) => {
-  const { notify } = useAlert();
+  const { alertUser } = useMainContext();
   const { user } = useAuth();
   const [credentials, setCredentials] = useState({
     password: null,
@@ -35,7 +35,7 @@ const AccountSettings = ({ history }) => {
   const handleSave = (e) => {
     e.preventDefault();
     if (!stringsEqual(credentials.password, credentials.confirmPassword))
-      return notify({ message: "Passwords do not match" });
+      return alertUser("Passwords do not match");
     setSave(true);
   };
 
@@ -45,15 +45,12 @@ const AccountSettings = ({ history }) => {
       await requestDeleteAccount()
         .then((res) => {
           setDeleteAccount(false);
-          notify({
-            message: res.data.message,
-            success: true,
-          });
+          alertUser(res.data.message, true);
           history.push("/login");
         })
         .catch((error) => {
           setDeleteAccount(false);
-          notify({ message: error.response.data.message });
+          alertUser(error.response.data.message);
         });
     };
 
@@ -70,18 +67,14 @@ const AccountSettings = ({ history }) => {
         .then(() => {
           setSave(false);
           setPasswordConfirmed(true);
-          notify({
-            message: "Password  updated",
-            success: true,
-            cb: () => {
-              resetForm(["password-confirm-input", "confirm-password-input"]);
-              setCredentials({ password: null, confirmPassword: null });
-            },
+          alertUser("Password  updated", true, () => {
+            resetForm(["password-confirm-input", "confirm-password-input"]);
+            setCredentials({ password: null, confirmPassword: null });
           });
         })
         .catch((error) => {
           setSave(false);
-          notify({ message: error.response.data.message });
+          alertUser(error.response.data.message);
         });
     };
     updatePassword();

@@ -10,11 +10,7 @@ const ChatIcon = lazy(() => import("./ChatIcon"));
 const ChatSideBar = lazy(() => import("./chatSidebar/ChatSideBar"));
 
 import { requestCreateTemplate } from "../../apis/apiRequests";
-import {
-  useMainContext,
-  useBoardContext,
-  useAlert,
-} from "../../utils/hookUtils";
+import { useMainContext, useBoardContext } from "../../utils/hookUtils";
 import AboutBoard from "./AboutBoard";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
@@ -32,8 +28,7 @@ const Board = ({ history }) => {
     showSideBar,
     board,
   } = useBoardContext();
-  const { device, showMobileMenu } = useMainContext();
-  const { notify } = useAlert;
+  const { device, showMobileMenu, alertUser } = useMainContext();
   const [membersOnline, setMembersOnline] = useState(0);
   const [openChat, setOpenChat] = useState(false);
   const [changeBg, setChangeBg] = useState(false);
@@ -65,7 +60,7 @@ const Board = ({ history }) => {
     const createTemplate = async () => {
       await requestCreateTemplate({ template })
         .then((res) => history.push(`/boards/id/${res.data._id}`))
-        .catch((error) => notify({ message: error.response.data }));
+        .catch((error) => alertUser(error.response.data));
     };
     createTemplate();
   };

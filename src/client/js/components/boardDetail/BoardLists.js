@@ -24,7 +24,7 @@ const StyledListContainer = styled.div`
 
 const BoardLists = ({ history }) => {
   const { board, handleBoardUpdate, id, saveBoardChanges } = useBoardContext();
-  const { mobile } = useContext(MainContext).device;
+  const { device, alertUser } = useContext(MainContext);
 
   const { lists } = board;
 
@@ -53,6 +53,7 @@ const BoardLists = ({ history }) => {
   const updateSourceId = (id) => setSourceId(id);
 
   const handleCreateList = () => {
+    if (!newListName) return alertUser("Add list title");
     setCreateList(true);
     setShowInputField(!showInputField);
   };
@@ -197,7 +198,7 @@ const BoardLists = ({ history }) => {
     handleStartDrag,
     hideCardDetail,
     lists,
-    mobile,
+    mobile: device.mobile,
     newCardName,
     showAddCardInput,
     updateBoard,

@@ -20,7 +20,7 @@ import {
   getUpdatedArray,
   findArrayItem,
 } from "../utils/appUtils";
-import { useAuth, useAlert, useMainContext } from "../utils/hookUtils";
+import { useAuth, useMainContext } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
 import BoardHeader from "../components/boardDetail/BoardHeader";
 
@@ -30,9 +30,8 @@ const StyledContainer = styled.div`
 
 const BoardContainer = ({ match, history, templateBoard }) => {
   const { id } = match.params;
-  const { getNavData, boards } = useMainContext();
+  const { getNavData, boards, alertUser } = useMainContext();
   const { auth, user } = useAuth();
-  const { notify } = useAlert();
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
@@ -144,9 +143,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           setInvite(null);
           resetForm("invite-input");
         })
-        .catch((error) => {
-          notify({ message: error.response.data.message });
-        });
+        .catch((error) => alertUser(error.response.data.message));
     };
 
     inviteUser();
@@ -191,11 +188,11 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           setBoard(res.data);
           return getNavData(res.data.styleProperties, boards);
         })
-        .catch((error) => notify({ message: error.response.data.message }));
+        .catch((error) => alertUser(error.response.data.message));
     };
 
     fetchBoard();
-  }, [board, boards, id, history, getNavData, templateBoard, notify]);
+  }, [board, boards, id, history, getNavData, templateBoard, alertUser]);
 
   return (
     board && (

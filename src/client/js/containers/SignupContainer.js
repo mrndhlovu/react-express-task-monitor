@@ -3,12 +3,12 @@ import { withRouter, Redirect } from "react-router-dom";
 
 import { requestAuthSignup } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
-import { useAuth, useAlert } from "../utils/hookUtils";
+import { useAuth, useMainContext } from "../utils/hookUtils";
 import SignupPage from "../components/auth/SignupPage";
 
 const SignupContainer = ({ history }) => {
   const { authenticated, authListener } = useAuth().auth;
-  const { notify } = useAlert();
+  const { alertUser } = useMainContext();
 
   const [loading, setLoading] = useState(false);
   const [credentials, setCredentials] = useState({
@@ -29,12 +29,9 @@ const SignupContainer = ({ history }) => {
     await requestAuthSignup(credentials)
       .then((res) => authListener(res.data.data))
       .catch((error) =>
-        notify({
-          message: error.response.data,
-          cb: () => {
-            resetForm("authForm");
-            setLoading(false);
-          },
+        alertUser(error.response.data, false, () => {
+          resetForm("authForm");
+          setLoading(false);
         })
       );
   };

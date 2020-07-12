@@ -8,6 +8,7 @@ import { resetForm, emptyFunction } from "../../utils/appUtils";
 import { BoardContext } from "../../utils/contextUtils";
 import UIWrapper from "./UIWrapper";
 import { X, Plus, CreditCard } from "react-feather";
+import { useMainContext, useBoardContext } from "../../utils/hookUtils";
 
 const StyledButton = styled.div`
   text-align: left !important;
@@ -55,7 +56,8 @@ const CreateCard = ({
   activeList,
   match,
 }) => {
-  const { saveBoardChanges } = useContext(BoardContext);
+  const { saveBoardChanges } = useBoardContext();
+  const { alertUser } = useMainContext();
   const [newCard, setNewCard] = useState(null);
   const [save, setSave] = useState(false);
   const { id } = match.params;
@@ -76,7 +78,8 @@ const CreateCard = ({
         }
       );
 
-    createCard();
+    if (newCard) createCard();
+    else alertUser("Add card title");
     setSave(false);
     resetForm("create-card-input");
   }, [newCard, save, targetList, saveBoardChanges, id]);
