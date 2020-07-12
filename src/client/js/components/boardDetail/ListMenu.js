@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 
 import styled from "styled-components";
 
-import { listMenuOptions } from "../../constants/constants";
+import { LIST_MENU_OPTIONS } from "../../constants/constants";
 import UIDivider from "../sharedComponents/UIDivider";
 
 const DropdownItem = styled.li`
@@ -49,7 +49,7 @@ const ListMenu = ({
 
   return (
     <div>
-      {listMenuOptions.map((option) => (
+      {LIST_MENU_OPTIONS.map((option) => (
         <Fragment key={option.key}>
           <DropdownItem
             onClick={() => {

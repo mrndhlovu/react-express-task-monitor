@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Button } from "semantic-ui-react";
 
-import { bgColors } from "../../constants/constants";
+import { BG_COLORS } from "../../constants/constants";
 import { stringsEqual } from "../../utils/appUtils";
 import AddCoverImage from "../cardDetail/AddCoverImage";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
@@ -47,7 +47,7 @@ const ChangeBackGround = ({
       <UIDivider inverted={true} hidden={true} />
       {stringsEqual(show, "color") && (
         <UIWrapper className="board-colors-wrap">
-          {bgColors.map((color) => (
+          {BG_COLORS.map((color) => (
             <UIContainer padding="6px" key={color}>
               <UIWrapper
                 display={{ ...colorStyle, backgroundColor: color }}

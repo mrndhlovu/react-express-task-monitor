@@ -13,7 +13,7 @@ import {
   MainContext,
   BoardContext,
 } from "../../utils/contextUtils";
-import { Types } from "../../constants/constants";
+import { DRAG_TYPES } from "../../constants/constants";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
 import ListHeader from "./ListHeader";
@@ -154,6 +154,6 @@ const sortCollect = (connect, monitor) => ({
 });
 
 export default flow(
-  DragSource(Types.LIST, source, collect),
-  DropTarget(Types.LIST, target, sortCollect)
+  DragSource(DRAG_TYPES.LIST, source, collect),
+  DropTarget(DRAG_TYPES.LIST, target, sortCollect)
 )(memo(List));

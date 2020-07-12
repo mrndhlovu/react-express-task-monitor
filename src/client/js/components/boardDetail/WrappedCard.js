@@ -4,7 +4,7 @@ import _debounce from "debounce";
 import { DragSource, DropTarget } from "react-dnd";
 import flow from "lodash/flow";
 
-import { Types } from "../../constants/constants";
+import { DRAG_TYPES } from "../../constants/constants";
 import CardItem from "./CardItem";
 import styled from "styled-components";
 
@@ -102,6 +102,6 @@ const cardCollect = (connect, monitor) => ({
 });
 
 export default flow(
-  DragSource(Types.LIST, source, collect),
-  DropTarget(Types.LIST, target, cardCollect)
+  DragSource(DRAG_TYPES.LIST, source, collect),
+  DropTarget(DRAG_TYPES.LIST, target, cardCollect)
 )(memo(WrappedCard));

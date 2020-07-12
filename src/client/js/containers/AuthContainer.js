@@ -5,7 +5,8 @@ import { userInfo } from "../apis/apiRequests";
 import { withRouter } from "react-router";
 import MainContainer from "./MainContainer";
 
-const AuthContainer = ({ children, history }) => {
+const AuthContainer = ({ children, history, location }) => {
+  const { from } = location.state || { from: { pathname: "/" } };
   const [alert, setAlert] = useState(null);
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState(null);
@@ -22,7 +23,7 @@ const AuthContainer = ({ children, history }) => {
     const getCurrentUser = async () => {
       await userInfo()
         .then((res) => {
-          authListener(res.data.data, history.push("/"));
+          authListener(res.data.data, history.push(`${from.pathname}`));
         })
         .catch((error) => {
           setAlert(error.response.data);

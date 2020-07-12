@@ -6,19 +6,10 @@ export const INITIAL_STATE = {
   isLoading: false,
 };
 
-export const Types = {
+export const DRAG_TYPES = {
   LIST: "list",
   CARD: "card",
 };
-
-export const allowed = [
-  "title",
-  "lists",
-  "styleProperties",
-  "permission",
-  "category",
-  "accessLevel",
-];
 
 export const ACCESS_LEVELS = [
   {
@@ -36,7 +27,7 @@ export const ACCESS_LEVELS = [
 
 export const PERMISSIONS = { private: false, public: false, team: false };
 
-export const bgColors = [
+export const BG_COLORS = [
   "#0079be",
   "#d29034",
   "#519839",
@@ -49,7 +40,7 @@ export const bgColors = [
   "#172b4d",
 ];
 
-export const listMenuOptions = [
+export const LIST_MENU_OPTIONS = [
   { key: 1, value: "Move List" },
   { key: 2, value: "Copy List" },
   { key: 3, value: "Move All Cards in This List" },
@@ -121,7 +112,7 @@ export const ALLOWED_DOCUMENT_TYPES = [
   // "txt",
 ];
 
-export const socialAuthOptions = [
+export const SOCIAL_AUTH_OPTIONS = [
   {
     key: "google",
     name: "Google",

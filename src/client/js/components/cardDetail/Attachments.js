@@ -34,6 +34,10 @@ const DateWrapper = styled.div`
   padding-top: 6px;
 `;
 
+const AttachmentHeader = styled.div`
+  display: flex;
+`;
+
 const AttachmentLink = styled.a`
   color: grey;
   transition-duration: 400ms;
@@ -106,6 +110,7 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
   const isAnImage = ALLOWED_IMAGE_TYPES.includes(filetype);
   const isActiveCover =
     card.cardCover && isAnImage && stringsEqual(url, card.cardCover);
+  const isURL = stringsEqual(filetype, "url");
 
   const handleClick = (item) => setOpenDocument(item);
 
@@ -130,16 +135,14 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
             <a
               className="attachment-link"
               rel="noopener noreferrer"
-              href={stringsEqual(filetype, "url") ? url : ""}
-              target={stringsEqual(filetype, "url") ? "_blank" : ""}
+              href={isURL ? url : ""}
+              target={isURL ? "_blank" : ""}
               onClick={() =>
-                !stringsEqual(filetype, "url")
-                  ? handleClick(attachmentItem)
-                  : emptyFunction()
+                !isURL ? handleClick(attachmentItem) : emptyFunction()
               }
             >
               <span className="attachment-link-span">
-                {stringsEqual(filetype, "url") ? "LINK" : filetype}
+                {isURL ? "LINK" : filetype}
               </span>
             </a>
           </div>
@@ -147,8 +150,8 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
 
         <Container>
           <AttachmentName>
-            {stringsEqual(filetype, "url") ? (
-              <>
+            {isURL ? (
+              <AttachmentHeader className="attachment-header">
                 <EditableHeader
                   title={name}
                   type="imageTitle"
@@ -156,6 +159,7 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
                   attachment={attachmentItem}
                   sourceId={sourceId}
                 />
+
                 <a
                   className="attachment-link-text"
                   rel="noopener noreferrer"
@@ -167,9 +171,9 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
                     className="redirect-icon"
                   />
                 </a>
-              </>
+              </AttachmentHeader>
             ) : (
-              <>
+              <AttachmentHeader className="attachment-header">
                 <EditableHeader
                   title={name}
                   type="imageTitle"
@@ -187,7 +191,7 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
                     className="redirect-icon"
                   />
                 </Item.Content>
-              </>
+              </AttachmentHeader>
             )}
 
             <DateWrapper>

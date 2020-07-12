@@ -9,7 +9,7 @@ import UIContainer from "./UIContainer";
 import UIDivider from "./UIDivider";
 import UISmall from "./UISmall";
 
-import { socialAuthOptions } from "../../constants/constants";
+import { SOCIAL_AUTH_OPTIONS } from "../../constants/constants";
 
 const StyledHeader = styled.div``;
 
@@ -94,7 +94,7 @@ const AuthFormWrapper = ({
         {!resetPasswordPage && <UIDivider content="OR" horizontal={true} />}
         {socialButtons && (
           <>
-            {socialAuthOptions.map((option) => (
+            {SOCIAL_AUTH_OPTIONS.map((option) => (
               <SocialAuthButton
                 key={option.key}
                 hrefTo={option.key}

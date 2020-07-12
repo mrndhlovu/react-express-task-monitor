@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { bgColors } from "../../constants/constants";
+import { BG_COLORS } from "../../constants/constants";
 import { Icon } from "semantic-ui-react";
 
 const ColorsWrapper = styled.div`
@@ -17,7 +17,7 @@ const LabeColor = styled.div`
 `;
 
 const Color = styled.div`
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
   border-radius: 2px;
   height: 30px;
   width: 200px;
@@ -41,7 +41,7 @@ const CardLabelColors = ({ handleColorClick, labels = [] }) => {
   return (
     <Container>
       <ColorsWrapper>
-        {bgColors.map(color => (
+        {BG_COLORS.map((color) => (
           <LabeColor key={color}>
             <Color color={color} onClick={() => handleColorClick(color)}>
               {labels.includes(color) && (
