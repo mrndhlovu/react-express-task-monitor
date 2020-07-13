@@ -1,5 +1,5 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
+// const CopyWebpackPlugin = require("copy-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
@@ -106,13 +106,13 @@ module.exports = {
     new webpack.DefinePlugin({
       __isBrowser__: "true",
     }),
-    new CopyWebpackPlugin({
-      patterns: [
-        {
-          from: "node_modules/pdfjs-dist/cmaps/",
-          to: "cmaps/",
-        },
-      ],
-    }),
+    // new CopyWebpackPlugin({
+    //   patterns: [
+    //     {
+    //       from: "node_modules/pdfjs-dist/cmaps/",
+    //       to: "cmaps/",
+    //     },
+    //   ],
+    // }),
   ],
 };
