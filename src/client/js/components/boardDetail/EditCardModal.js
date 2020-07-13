@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 import { Button } from "semantic-ui-react";
 
-import { BoardListsContext } from "../../utils/contextUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
+import { useBoardContext } from "../../utils/hookUtils";
 import BoardMembersList from "../sharedComponents/BoardMembersList";
 import CreateInput from "../sharedComponents/CreateInput";
 import EditCardButton from "../sharedComponents/EditCardButton";
@@ -35,18 +35,12 @@ const StyledModalActions = styled.div`
 
 const EditCardModal = ({
   cardItem,
-  handleBoardUpdate,
   handleDeleteCard,
-  history,
-  id,
-  listPosition,
   openCardModal,
-  saveBoardChanges,
   setOpenCardModal,
   sourceListId,
-  setSourceId,
 }) => {
-  const { board } = useContext(BoardListsContext);
+  const { board, updateBoardState, boardId, history } = useBoardContext();
 
   const [archive, setArchive] = useState(false);
   const [boardMember, setBoardMember] = useState(null);
@@ -75,9 +69,9 @@ const EditCardModal = ({
         listId: sourceListId,
       };
 
-      await requestCardUpdate(body, id).then((res) => {
+      await requestCardUpdate(body, boardId).then((res) => {
         setCard(newCard);
-        saveBoardChanges(res.data);
+        updateBoardState(res.data);
       });
     };
 
@@ -122,11 +116,11 @@ const EditCardModal = ({
     archive,
     boardMember,
     card,
-    id,
+    boardId,
     sourceListId,
     newDate,
     newTitle,
-    saveBoardChanges,
+    updateBoardState,
     saveCard,
     startDate,
   ]);
@@ -194,13 +188,8 @@ const EditCardModal = ({
               originalBoard={board}
               originalCard={card}
               history={history}
-              originalListPosition={listPosition}
               sourceListId={sourceListId}
-              saveBoardChanges={saveBoardChanges}
-              id={id}
-              handleBoardUpdate={handleBoardUpdate}
               setClose={() => setClose(true)}
-              setSourceId={setSourceId}
             />
           </EditCardButton>
           <EditCardButton

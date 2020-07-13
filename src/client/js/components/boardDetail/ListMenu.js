@@ -1,68 +1,173 @@
-import React, { Fragment } from "react";
-
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import { LIST_MENU_OPTIONS } from "../../constants/constants";
-import UIDivider from "../sharedComponents/UIDivider";
+import CopyListDialog from "./CopyListDialog";
+import DropdownButton from "../sharedComponents/DropdownButton";
+import EditableHeader from "../sharedComponents/EditableHeader";
+import ListMenuOptions from "./ListMenuOptions";
+import MoveListDialog from "./MoveListDialog";
+import UIContainer from "../sharedComponents/UIContainer";
 
-const DropdownItem = styled.li`
-  font-size: 15px !important;
-  cursor: pointer;
-  list-style-type: none;
-  padding: 8px 8px;
-  border-radius: 3px;
+import { Button } from "semantic-ui-react";
+import { useBoardContext } from "../../utils/hookUtils";
 
-  &:hover {
-    background-color: #ebecf0;
-  }
+const HeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 5px;
 `;
 
-const ListMenu = ({
-  handleShowCopyListClick,
-  handleShowMoveListClick,
-  handleDeleteListClick,
-  handleMoveCardsClick,
-  handleDeleteAllClick,
-  setHeader,
-}) => {
-  const handleMenuClick = (key) => {
-    switch (key) {
-      case "menu-item-1":
-        handleShowMoveListClick();
-        break;
-      case "menu-item-2":
-        handleShowCopyListClick();
-        break;
-      case "menu-item-3":
-        handleMoveCardsClick();
-        break;
-      case "menu-item-4":
-        handleDeleteAllClick();
-        break;
-      case "menu-item-5":
-        handleDeleteListClick();
-        break;
-      default:
-        break;
-    }
+const ListMenu = ({ title, listPosition, mobile, listId }) => {
+  const {
+    getSourceList,
+    boardUpdateHandler,
+    board,
+    handleDeleteList,
+  } = useBoardContext();
+
+  const [header, setHeader] = useState("List actions");
+  const [hiddenDelete, setHideDelete] = useState(true);
+  const [hideCopyList, setHideCopyList] = useState(true);
+  const [hideDeleteAll, setHideDeleteAll] = useState(true);
+  const [hideMoveCards, setHideMoveCards] = useState(true);
+  const [hideMoveListOption, setHideMoveListOption] = useState(true);
+  const [newBoard, setNewBoard] = useState(null);
+
+  const handleDeleteAll = () => {
+    setNewBoard({ ...board, lists: [] });
   };
 
+  const handleMoveAllCards = () => {
+    const sourceList = getSourceList(listId);
+
+    board.lists.map(
+      (list) =>
+        list._id !== listId &&
+        list.cards.length !== 0 &&
+        list.cards.map((card) => sourceList.cards.push(card))
+    );
+
+    const updateBoard = {
+      ...board,
+      lists: [
+        ...board.lists.map((list) =>
+          list._id === listId ? { ...sourceList } : { ...list, cards: [] }
+        ),
+      ],
+    };
+
+    setNewBoard(updateBoard);
+  };
+
+  const handleClose = () => {
+    setHeader("List actions");
+    setHideMoveListOption(true);
+    setHideCopyList(true);
+    setHideMoveCards(true);
+    setHideDelete(true);
+    setHideDeleteAll(true);
+  };
+
+  useEffect(() => {
+    if (!newBoard) return;
+    boardUpdateHandler(newBoard);
+    handleClose();
+
+    setNewBoard(null);
+  }, [boardUpdateHandler, newBoard]);
+
   return (
-    <div>
-      {LIST_MENU_OPTIONS.map((option) => (
-        <Fragment key={option.key}>
-          <DropdownItem
-            onClick={() => {
-              setHeader(option.value);
-              handleMenuClick(`menu-item-${option.key}`);
-            }}
-          >
-            <span>{option.value}</span>
-          </DropdownItem>
-          {(option.key === 2 || option.key === 4) && <UIDivider />}
-        </Fragment>
-      ))}
-    </div>
+    <HeaderWrapper>
+      <EditableHeader
+        board={board}
+        sourceId={listId}
+        title={title}
+        type="listHeader"
+      />
+
+      <DropdownButton
+        icon="ellipsis horizontal"
+        labeled={false}
+        button
+        fluid={false}
+        direction={mobile ? "left" : "right"}
+        header={header}
+        callback={() => handleClose()}
+        color="transparent"
+      >
+        <UIContainer width="fit-content">
+          {hideCopyList &&
+            hideMoveListOption &&
+            hideCopyList &&
+            hideMoveCards &&
+            hiddenDelete &&
+            hideDeleteAll && (
+              <ListMenuOptions
+                handleShowCopyListClick={() => setHideCopyList(!hideCopyList)}
+                handleDeleteListClick={() => setHideDelete(!hiddenDelete)}
+                handleMoveAllCards={() => setHideMoveCards(!hideMoveCards)}
+                handleDeleteAllClick={() => setHideDeleteAll(!hideDeleteAll)}
+                handleMoveCardsClick={() => setHideMoveCards(!hideMoveCards)}
+                handleShowMoveListClick={() =>
+                  setHideMoveListOption(!hideMoveListOption)
+                }
+                setHeader={setHeader}
+              />
+            )}
+
+          {!hideMoveListOption && (
+            <MoveListDialog
+              close={handleClose}
+              listPosition={listPosition}
+              title={title}
+              listId={listId}
+            />
+          )}
+
+          {!hideCopyList && (
+            <CopyListDialog
+              close={() => handleClose()}
+              listId={listId}
+              title={title}
+            />
+          )}
+          {header !== "List actions" && (
+            <UIContainer padding="5px" width="200px">
+              {!hideMoveCards && (
+                <Button
+                  negative
+                  content="Move"
+                  fluid
+                  compact
+                  onClick={() => handleMoveAllCards()}
+                />
+              )}
+
+              {!hideDeleteAll && (
+                <Button
+                  negative
+                  content="Delete all lists"
+                  fluid
+                  compact
+                  onClick={() => handleDeleteAll()}
+                />
+              )}
+
+              {!hiddenDelete && (
+                <Button
+                  negative
+                  content="Delete"
+                  fluid
+                  compact
+                  onClick={() => handleDeleteList(listPosition - 1)}
+                />
+              )}
+            </UIContainer>
+          )}
+        </UIContainer>
+      </DropdownButton>
+    </HeaderWrapper>
   );
 };
 

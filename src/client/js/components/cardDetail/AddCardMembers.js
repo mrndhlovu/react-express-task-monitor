@@ -9,7 +9,7 @@ import DropdownButton from "../sharedComponents/DropdownButton";
 
 const AddCardMembers = () => {
   const { card, saveCardChanges, sourceId, id } = useCardDetailContext();
-  const { saveBoardChanges, board } = useBoardContext();
+  const { updateBoardState, board } = useBoardContext();
 
   const handleBoardMemberClick = (boardMember) => {
     const isInAssigneeList = findArrayItem(
@@ -26,7 +26,7 @@ const AddCardMembers = () => {
     const update = async () => {
       await requestCardUpdate(body, id).then((res) => {
         saveCardChanges(body.newCard);
-        saveBoardChanges(res.data);
+        updateBoardState(res.data);
       });
     };
 

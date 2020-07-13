@@ -1,8 +1,7 @@
-import React, { useState, useContext, Fragment } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { BoardListsContext, BoardContext } from "../../utils/contextUtils";
 import {
   getFormattedDate,
   stringsEqual,
@@ -14,6 +13,7 @@ import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
 import EditCardModal from "./EditCardModal";
 import Assignees from "../sharedComponents/Assignees";
+import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -37,6 +37,15 @@ const Container = styled.div`
   padding: 5px;
 `;
 
+const CardContainer = styled.div`
+  position: relative;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 #091e4240;
+  margin-top: 7px;
+  min-height: 20px;
+  background: #fff;
+`;
+
 const BadgeContainer = styled.div`
   padding: 2px 10px;
   display: flex;
@@ -47,16 +56,12 @@ const BadgeContainer = styled.div`
 const CardItem = ({
   card,
   sourceListId,
-  sourceTitle,
-  match,
   history,
   showEditButton,
   listPosition,
 }) => {
-  const { setSourceId, handleCardClick, board, mobile } = useContext(
-    BoardListsContext
-  );
-  const { saveBoardChanges, handleBoardUpdate } = useContext(BoardContext);
+  const { updateBoardState, boardUpdateHandler, board } = useBoardContext();
+  const { handleCardClick } = useBoardListContext();
 
   const hasLabel = card.labels.length !== 0;
   const hasAttachments = card.attachments.length !== 0;
@@ -65,7 +70,6 @@ const CardItem = ({
   const hasComments = card.comments.length !== 0;
   const hasAssignees = card.assignees.length !== 0;
   const hasDueDate = card.dueDate;
-  const { id } = match.params;
 
   const [openCardModal, setOpenCardModal] = useState(false);
 
@@ -74,14 +78,12 @@ const CardItem = ({
     sourceList.cards.splice(sourceList.cards.indexOf(card));
     board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-    return handleBoardUpdate(board);
+    return boardUpdateHandler(board);
   };
 
   return (
-    <Fragment>
-      <ContentWrapper
-        onClick={() => handleCardClick(card, sourceListId, sourceTitle)}
-      >
+    <CardContainer>
+      <ContentWrapper onClick={() => handleCardClick(card, sourceListId)}>
         <LabelsSnippets labels={card.labels} hasLabel={hasLabel} />
         <Container>
           <CardCover card={card} />
@@ -124,18 +126,15 @@ const CardItem = ({
         cardItem={card}
         handleDeleteCard={() => handleDeleteCard()}
         history={history}
-        id={id}
         sourceListId={sourceListId}
         listPosition={listPosition}
-        mobile={mobile}
         openCardModal={openCardModal}
         setOpenCardModal={setOpenCardModal}
-        saveBoardChanges={saveBoardChanges}
-        handleBoardUpdate={handleBoardUpdate}
+        updateBoardState={updateBoardState}
+        boardUpdateHandler={boardUpdateHandler}
         hasDueDate={hasDueDate}
-        setSourceId={setSourceId}
       />
-    </Fragment>
+    </CardContainer>
   );
 };
 

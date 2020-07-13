@@ -20,7 +20,7 @@ const Label = styled.div`
 `;
 
 const CardLabels = () => {
-  const { board, handleBoardUpdate } = useBoardContext();
+  const { board, boardUpdateHandler } = useBoardContext();
   const { sourceId, sourceList, card } = useCardDetailContext();
   const { labels } = card;
 
@@ -49,7 +49,7 @@ const CardLabels = () => {
       sourceList.cards.splice(sourceList.cards.indexOf(card), 1, card);
 
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-      handleBoardUpdate(board, "lists", activity);
+      boardUpdateHandler(board);
     }
 
     return () => {
@@ -58,7 +58,7 @@ const CardLabels = () => {
     };
   }, [
     card,
-    handleBoardUpdate,
+    boardUpdateHandler,
     board,
     sourceList,
     label,

@@ -12,7 +12,7 @@ import UIContainer from "../sharedComponents/UIContainer";
 
 const CopyCardAction = () => {
   const { card, sourceId, id } = useCardDetailContext();
-  const { saveBoardChanges } = useBoardContext();
+  const { updateBoardState } = useBoardContext();
   const { alertUser } = useMainContext();
 
   const [title, setTitle] = useState(`${card.title} clone`);
@@ -31,7 +31,7 @@ const CopyCardAction = () => {
 
     await requestCreateNewCard(body, id)
       .then((res) => {
-        saveBoardChanges(res.data);
+        updateBoardState(res.data);
         setCopied(true);
       })
       .catch((error) => alertUser(error.response.data.message));

@@ -1,14 +1,12 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
 import { Button, Card, TextArea } from "semantic-ui-react";
-import { requestCreateNewCard } from "../../apis/apiRequests";
-import { resetForm, emptyFunction } from "../../utils/appUtils";
-import { BoardContext } from "../../utils/contextUtils";
+
 import UIWrapper from "./UIWrapper";
 import { X, Plus, CreditCard } from "react-feather";
-import { useMainContext, useBoardContext } from "../../utils/hookUtils";
+import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
 
 const StyledButton = styled.div`
   text-align: left !important;
@@ -49,40 +47,15 @@ const StyledContainer = styled.div`
   margin-top: 6%;
 `;
 
-const CreateCard = ({
-  handleAddCardName,
-  closeAddCardOption,
-  targetList,
-  activeList,
-  match,
-}) => {
-  const { saveBoardChanges } = useBoardContext();
-  const { alertUser } = useMainContext();
+const CreateCard = ({ targetList, activeList }) => {
+  const { createCardHandler } = useBoardContext();
+  const { setActiveList, closeAddCardOption } = useBoardListContext();
+
   const [newCard, setNewCard] = useState(null);
-  const [save, setSave] = useState(false);
-  const { id } = match.params;
 
   const handleChange = (event) => {
     setNewCard(event.target.value);
   };
-
-  useEffect(() => {
-    if (!save) return emptyFunction();
-
-    const card = { title: newCard };
-    const createCard = async () =>
-      await requestCreateNewCard({ card, listId: targetList.listId }, id).then(
-        (res) => {
-          setNewCard("");
-          saveBoardChanges(res.data);
-        }
-      );
-
-    if (newCard) createCard();
-    else alertUser("Add card title");
-    setSave(false);
-    resetForm("create-card-input");
-  }, [newCard, save, targetList, saveBoardChanges, id]);
 
   return (
     <StyledContainer>
@@ -90,7 +63,7 @@ const CreateCard = ({
         <StyledButton
           fluid
           basic
-          onClick={() => handleAddCardName(targetList.listId)}
+          onClick={() => setActiveList(targetList.listId)}
         >
           <Span className="uiDarkText">
             <Plus size={20} className="uiIconDark" />
@@ -106,7 +79,11 @@ const CreateCard = ({
             onChange={(e) => handleChange(e)}
             autoFocus
             fluid="true"
-            onKeyDown={(e) => (e.key === "Enter" ? setSave(true) : null)}
+            onKeyDown={(e) =>
+              e.key === "Enter"
+                ? createCardHandler(newCard, targetList.listId)
+                : null
+            }
           />
 
           <ButtonWrapper>
@@ -114,7 +91,7 @@ const CreateCard = ({
               positive
               size="tiny"
               content="Add Card"
-              onClick={() => setSave(true)}
+              onClick={() => createCardHandler(newCard, targetList.listId)}
             />
 
             <UIWrapper>

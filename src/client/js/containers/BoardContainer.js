@@ -11,10 +11,11 @@ import {
   requestBoardDetail,
   requestUserInvite,
   requestUserUpdate,
+  requestNewBoardList,
+  requestCreateNewCard,
 } from "../apis/apiRequests";
 
 import {
-  getActivity,
   emptyFunction,
   resetForm,
   getUpdatedArray,
@@ -29,9 +30,9 @@ const StyledContainer = styled.div`
 `;
 
 const BoardContainer = ({ match, history, templateBoard }) => {
-  const { id } = match.params;
   const { getNavData, boards, alertUser } = useMainContext();
-  const { auth, user } = useAuth();
+  const { user, auth } = useAuth();
+  const { id } = match.params;
 
   const [board, setBoard] = useState(null);
   const [invite, setInvite] = useState(null);
@@ -40,24 +41,36 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   const [showSideBar, setShowSideBar] = useState(false);
   const [starred, setStarred] = useState(false);
   const [unStarred, setUnStarred] = useState(false);
-  const [updatedField, setUpdatedField] = useState(null);
   const [showMobileMenu, setShowMobileMenu] = useState();
+  const [dragCardId, setDragCardId] = useState("");
+
+  const getSourceList = (sourceId) =>
+    findArrayItem(board.lists, sourceId, "_id");
 
   const handleShowMenuClick = () => setShowSideBar(!showSideBar);
 
-  const handleBoardUpdate = (
+  const boardUpdateHandler = async (
     newBoard,
     fieldId = "lists",
-    activity,
-    callback,
+    callback = () => {},
     newId
   ) => {
     if (!newBoard) return setBoard(null);
-    saveBoardChanges(newBoard);
-    setUpdatedField({ fieldId, activity, callback, newId });
+    updateBoardState(newBoard);
+
+    const update = {
+      [fieldId]: board[fieldId],
+    };
+
+    await requestBoardUpdate(newId ? newId : id, update)
+      .then((res) => {
+        getNavData(res.data.styleProperties);
+        callback && callback();
+      })
+      .catch((error) => alertUser(error.response.data.message));
   };
 
-  const saveBoardChanges = (newBoard) => setBoard(newBoard);
+  const updateBoardState = (newBoard) => setBoard(newBoard);
 
   const changeBoardAccessLevel = (option) => {
     const newBoard = {
@@ -65,24 +78,16 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       accessLevel: { ...PERMISSIONS, [option]: true },
     };
 
-    handleBoardUpdate(newBoard, "accessLevel", "changeAccess");
+    boardUpdateHandler(newBoard, "accessLevel");
   };
 
-  const handleDeleteBoard = useCallback(() => {
-    if (user.starred.includes(id))
-      user.starred.splice(user.starred.indexOf(id), 1);
-    requestBoardDelete(id);
-    const updateUser = async () => {
-      await requestUserUpdate({ starred: user.starred }).then(() => {
-        try {
-          history.push("/");
-        } catch (error) {
-          alert(error.message);
-        }
-      });
-    };
-    updateUser();
-  }, [history, id, user]);
+  const handleDeleteBoard = useCallback(async () => {
+    await requestBoardDelete(id)
+      .then((res) => {
+        auth.authListener(res.data.user, history.push("/"));
+      })
+      .catch((error) => alertUser(error.message));
+  }, [history, id]);
 
   const handleSelectedBackground = (option) => {
     const isImageURL = isURL(option);
@@ -105,7 +110,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       getNavData(null, getUpdatedArray(boards, removeIndex, newBoard));
     }
 
-    handleBoardUpdate(newBoard, "styleProperties");
+    boardUpdateHandler(newBoard, "styleProperties");
   };
 
   const handleBoardStarClick = () => {
@@ -152,30 +157,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   const handleInviteClick = (email) => setInvite(email);
 
   useEffect(() => {
-    if (!updatedField) return emptyFunction();
-    const serverUpdate = async () => {
-      const { fieldId, activity, newId, callback } = updatedField;
-
-      const { fname } = user;
-      const userAction = getActivity(fname, activity);
-      activity &&
-        board.activities.push({ activity: userAction, createdAt: Date.now() });
-      const update = {
-        [fieldId]: board[fieldId],
-        activities: board.activities,
-      };
-
-      await requestBoardUpdate(newId ? newId : id, update).then((res) => {
-        getNavData(res.data.styleProperties);
-        if (callback) callback();
-      });
-    };
-
-    serverUpdate();
-    setUpdatedField(null);
-  }, [id, updatedField, board, auth, getNavData]);
-
-  useEffect(() => {
     if (board) return emptyFunction();
     const fetchBoard = async () => {
       if (templateBoard) {
@@ -194,31 +175,91 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     fetchBoard();
   }, [board, boards, id, history, getNavData, templateBoard, alertUser]);
 
+  const createListHandler = async (listData, callback = () => {}) => {
+    if (!listData || !listData.title) return alertUser("Add list title");
+
+    await requestNewBoardList(listData, id)
+      .then((res) => {
+        updateBoardState(res.data);
+        resetForm("create-item-form");
+        callback();
+      })
+      .catch((error) => alertUser(error.response.data.message));
+  };
+
+  const createCardHandler = async (newCard, listId) => {
+    if (!newCard) alertUser("Add card title");
+
+    const card = { title: newCard };
+    await requestCreateNewCard({ card, listId }, id)
+      .then((res) => {
+        updateBoardState(res.data);
+        resetForm("create-card-input");
+      })
+      .catch((error) => alertUser(error.response.data.message));
+  };
+
+  const handleDeleteList = (listPosition) => {
+    board.lists.splice(listPosition, 1);
+    boardUpdateHandler(board);
+  };
+
+  const cardToNewListHandler = (sourceId, dropProps) => {
+    const dropTargetList = getSourceList(dropProps.listId);
+    const sourceList = getSourceList(sourceId);
+    const sourceIndex = board.lists.indexOf(sourceList);
+    const dropTargetListIndex = board.lists.indexOf(dropTargetList);
+    const dropTargetCardIndex = dropTargetList.cards.indexOf(dropTargetCard);
+
+    const card = findArrayItem(sourceList.cards, dragCardId, "_id");
+
+    const dropTargetCard = findArrayItem(
+      sourceList.cards,
+      dropProps.cardId,
+      "_id"
+    );
+
+    sourceList.cards.splice(sourceList.cards.indexOf(card), 1);
+
+    board.lists.splice(sourceIndex, 1, sourceList);
+
+    dropTargetList.cards.splice(dropTargetCardIndex, 0, card);
+    board.lists.splice(dropTargetListIndex, 1, dropTargetList);
+  };
+
   return (
     board && (
       <BoardContext.Provider
         value={{
           board,
+          boardId: id,
+          boardUpdateHandler,
+          cardToNewListHandler,
           changeBoardAccessLevel,
+          createCardHandler,
+          createListHandler,
+          dragCardId,
+          getSourceList,
           handleBoardStarClick,
-          handleBoardUpdate,
-          handleSelectedBackground,
           handleDeleteBoard,
+          handleDeleteList,
           handleInviteClick,
+          handleSelectedBackground,
           handleShowMenuClick,
-          id,
+          history,
           inviteDone,
           loading,
-          saveBoardChanges,
-          showSideBar,
-          showMobileMenu,
           setShowMobileMenu,
+          showMobileMenu,
+          showSideBar,
+          updateBoardState,
+          setDragCardId,
         }}
       >
-        <StyledContainer bgStyle={board.styleProperties}>
+        <StyledContainer>
           <div className="board-content">
-            <BoardHeader user={user} />
-            <Board history={history} />
+            <BoardHeader />
+            <Board />
           </div>
         </StyledContainer>
       </BoardContext.Provider>

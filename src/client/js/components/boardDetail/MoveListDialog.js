@@ -1,24 +1,20 @@
 import React, { useState } from "react";
 
 import CreateInput from "../sharedComponents/CreateInput";
+import { useBoardContext } from "../../utils/hookUtils";
 
-const MoveListDialog = ({
-  close,
-  listPosition,
-  handleBoardUpdate,
-  board,
-  getSourceList,
-}) => {
-  const sourceId = listPosition;
+const MoveListDialog = ({ close, listId, listPosition }) => {
+  const { getSourceList, boardUpdateHandler, board } = useBoardContext();
+
   const { lists } = board;
-  const [targetPosition, setNewListPosition] = useState(sourceId);
+  const [targetPosition, setNewListPosition] = useState(listPosition);
 
   const handleChange = (e) => {
     const validator = /^[0-9\b]+$/;
 
     if (e.target.value === "" || validator.test(e.target.value))
       setNewListPosition(parseInt(e.target.value));
-    else setNewListPosition(sourceId);
+    else setNewListPosition(listPosition);
   };
 
   const handleCreateClick = () => {
@@ -26,14 +22,14 @@ const MoveListDialog = ({
       targetPosition !== 0 && targetPosition <= lists.length;
 
     if (isValidPosition) {
-      const moveList = getSourceList(sourceId - 1);
+      const moveList = getSourceList(listId);
 
       lists.splice(lists.indexOf(moveList), 1);
       lists.splice(targetPosition - 1, 0, moveList);
 
       const newBoard = { ...board, lists };
 
-      handleBoardUpdate(newBoard);
+      boardUpdateHandler(newBoard);
     }
     return close();
   };

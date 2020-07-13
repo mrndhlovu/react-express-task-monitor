@@ -66,7 +66,7 @@ export const makeNewBoard = (newBoard) => {
   };
 };
 
-export const handleBoardUpdate = (id, board) => {
+export const boardUpdateHandler = (id, board) => {
   return (dispatch) => {
     dispatch(makeRequest(REQUEST_UPDATE_BOARD));
     requestBoardUpdate(id, board).then(

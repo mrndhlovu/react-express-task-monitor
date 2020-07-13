@@ -11,6 +11,14 @@ export const DRAG_TYPES = {
   CARD: "card",
 };
 
+export const ALLOWED_TEMPLATE_FIELDS = [
+  "description",
+  "isTemplate",
+  "lists",
+  "styleProperties",
+  "title",
+];
+
 export const ACCESS_LEVELS = [
   {
     option: "Private",

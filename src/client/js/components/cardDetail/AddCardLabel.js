@@ -7,7 +7,7 @@ import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
 
 const AddCardLabel = () => {
   const { card, id, sourceId } = useCardDetailContext();
-  const { saveBoardChanges } = useBoardContext();
+  const { updateBoardState } = useBoardContext();
 
   const { labels } = card;
 
@@ -19,7 +19,7 @@ const AddCardLabel = () => {
     }
 
     const body = { newCard: card, listId: sourceId };
-    await requestCardUpdate(body, id).then((res) => saveBoardChanges(res.data));
+    await requestCardUpdate(body, id).then((res) => updateBoardState(res.data));
   };
 
   return (

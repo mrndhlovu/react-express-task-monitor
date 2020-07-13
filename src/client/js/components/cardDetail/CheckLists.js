@@ -43,7 +43,7 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
     match,
     updatedCardChanges,
   } = useCardDetailContext();
-  const { board, handleBoardUpdate, saveBoardChanges } = useBoardContext();
+  const { updateBoardState } = useBoardContext();
   const { alertUser } = useMainContext();
 
   const [checklist, setChecklist] = useState(listItem);
@@ -72,7 +72,7 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
       .then((res) => {
         setChecklist(res.data.checklist);
         saveCardChanges(res.data.card);
-        saveBoardChanges(res.data.board);
+        updateBoardState(res.data.board);
       })
       .catch((error) => alertUser(error.response.data.message));
 
@@ -93,7 +93,7 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
     handleDeleteChecklistItem(item);
     setTimeout(async () => {
       await requestCreateNewCard({ card, listId: sourceId }, id).then((res) => {
-        saveBoardChanges(res.data);
+        updateBoardState(res.data);
       });
     }, 1000);
   };

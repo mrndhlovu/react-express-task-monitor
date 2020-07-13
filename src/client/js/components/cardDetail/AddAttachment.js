@@ -46,7 +46,7 @@ const AddAttachment = ({
   compact = false,
   buttonText = "Attachment",
 }) => {
-  const { saveBoardChanges } = useBoardContext();
+  const { updateBoardState } = useBoardContext();
   const {
     card,
     editAttachments,
@@ -84,7 +84,7 @@ const AddAttachment = ({
           .then((res) => {
             const { card, board } = res.data;
             saveCardChanges(card);
-            saveBoardChanges(board);
+            updateBoardState(board);
             setIsLoading("");
             setClose(true);
           })

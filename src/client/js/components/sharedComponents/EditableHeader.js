@@ -12,7 +12,7 @@ const EditableHeader = ({
   handleEditTitle,
   attachment,
 }) => {
-  const { handleBoardUpdate, board } = useBoardContext();
+  const { boardUpdateHandler, board } = useBoardContext();
 
   let sourceList = board && findArrayItem(board.lists, sourceId, "_id");
 
@@ -49,12 +49,12 @@ const EditableHeader = ({
   useEffect(() => {
     if (!newBoard) return;
     newTitle &&
-      handleBoardUpdate(
+      boardUpdateHandler(
         newBoard,
         stringsEqual(type, "boardTitle") ? "title" : "lists"
       );
     setNewBoard(null);
-  }, [newBoard, handleBoardUpdate, newTitle]);
+  }, [newBoard, boardUpdateHandler, newTitle]);
 
   return (
     <div

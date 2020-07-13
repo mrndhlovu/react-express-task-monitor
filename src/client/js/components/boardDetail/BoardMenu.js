@@ -17,12 +17,11 @@ import {
 
 const BoardMenu = ({
   toggleChangeBg,
-  handleDeleteBoard,
   showSideBar,
   setShowAboutCard,
   handleMakeTemplate,
 }) => {
-  const { board, handleShowMenuClick } = useBoardContext();
+  const { board, handleShowMenuClick, handleDeleteBoard } = useBoardContext();
   const { user } = useAuth();
   const { device, setShowMobileMenu } = useMainContext();
   const [activities, setActivities] = useState(false);

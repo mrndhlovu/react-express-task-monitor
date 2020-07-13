@@ -92,7 +92,7 @@ router.delete("/:boardId/delete-board", auth, async (req, res) => {
       });
     });
 
-    res.send({ message: "Board deleted" });
+    res.send({ message: "Board deleted", user: req.user });
   } catch (error) {
     res.status(400).send({ message: error });
   }

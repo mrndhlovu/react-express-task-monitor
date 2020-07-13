@@ -5,6 +5,10 @@ ui.form,
   letter-spacing: 0.4px;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
+
 .auth-page {
   align-items: center !important;
   background-color: #fafbfc !important;

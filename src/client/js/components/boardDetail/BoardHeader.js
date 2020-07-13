@@ -1,11 +1,16 @@
 import React from "react";
 
-import { useMainContext, useBoardContext } from "../../utils/hookUtils";
+import {
+  useMainContext,
+  useBoardContext,
+  useAuth,
+} from "../../utils/hookUtils";
 import BoardHeaderButtons from "./BoardHeaderButtons";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
-const BoardHeader = ({ user }) => {
+const BoardHeader = () => {
   const { board, handleShowMenuClick } = useBoardContext();
+  const { user } = useAuth();
   const { mobile } = useMainContext().device;
 
   return (

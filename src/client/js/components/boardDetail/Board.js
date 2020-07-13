@@ -9,6 +9,7 @@ const BoardMenu = lazy(() => import("./BoardMenu"));
 const ChatIcon = lazy(() => import("./ChatIcon"));
 const ChatSideBar = lazy(() => import("./chatSidebar/ChatSideBar"));
 
+import { ALLOWED_TEMPLATE_FIELDS } from "../../constants/constants";
 import { requestCreateTemplate } from "../../apis/apiRequests";
 import { useMainContext, useBoardContext } from "../../utils/hookUtils";
 import AboutBoard from "./AboutBoard";
@@ -20,13 +21,14 @@ const BoardWrapper = styled.div`
   width: 100vw;
 `;
 
-const Board = ({ history }) => {
+const Board = () => {
   const {
     handleDeleteBoard,
     handleSelectedBackground,
     handleShowMenuClick,
     showSideBar,
     board,
+    history,
   } = useBoardContext();
   const { device, showMobileMenu, alertUser } = useMainContext();
   const [membersOnline, setMembersOnline] = useState(0);
@@ -40,19 +42,13 @@ const Board = ({ history }) => {
 
   const handleMakeTemplate = () => {
     let template = { ...board, isTemplate: true };
-    const allowedFields = [
-      "description",
-      "isTemplate",
-      "lists",
-      "styleProperties",
-      "title",
-    ];
 
     Object.keys(template).filter(
-      (field) => !allowedFields.includes(field) && delete template[field]
+      (field) =>
+        !ALLOWED_TEMPLATE_FIELDS.includes(field) && delete template[field]
     );
 
-    template.lists.map(async (list) => {
+    template.lists.map((list) => {
       delete list._id;
       delete list.cards;
     });

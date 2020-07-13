@@ -20,7 +20,7 @@ const Span = styled.span`
 
 const DueDate = () => {
   const { card, saveCardChanges, sourceList } = useCardDetailContext();
-  const { handleBoardUpdate, board } = useBoardContext();
+  const { boardUpdateHandler, board } = useBoardContext();
   const [removeDueDate, setRemoveDueDate] = useState(false);
   const [checked, setChecked] = useState(false);
   const [unChecked, setUnChecked] = useState(false);
@@ -64,7 +64,7 @@ const DueDate = () => {
       sourceList.cards.splice(sourceList.cards.indexOf(card), 1, newCard);
       board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
 
-      handleBoardUpdate(board, "lists", activity);
+      boardUpdateHandler(board);
     }
 
     return () => {
@@ -74,7 +74,7 @@ const DueDate = () => {
     };
   }, [
     card,
-    handleBoardUpdate,
+    boardUpdateHandler,
     board,
     checked,
     removeDueDate,

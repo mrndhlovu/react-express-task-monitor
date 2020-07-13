@@ -14,7 +14,7 @@ import { withRouter } from "react-router";
 
 const AboutBoard = ({ setShowAboutCard, showAboutCard, history }) => {
   const { user } = useAuth();
-  const { board, handleBoardUpdate } = useContext(BoardContext);
+  const { board, boardUpdateHandler } = useContext(BoardContext);
 
   const [description, setDescription] = useState(null);
   const [edit, setEdit] = useState(false);
@@ -22,7 +22,7 @@ const AboutBoard = ({ setShowAboutCard, showAboutCard, history }) => {
   const handleSave = () => {
     board.description = description;
 
-    handleBoardUpdate(board, "description");
+    boardUpdateHandler(board, "description");
     setEdit(false);
     setDescription(null);
   };

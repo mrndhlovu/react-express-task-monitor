@@ -8,7 +8,7 @@ const PickDueDate = lazy(() => import("../sharedComponents/PickDueDate"));
 
 const AddCardDueDate = () => {
   const { card, saveCardChanges, id, sourceId } = useCardDetailContext();
-  const { saveBoardChanges } = useBoardContext();
+  const { updateBoardState } = useBoardContext();
 
   const [startDate, setStartDate] = useState(new Date());
   const [updated, setUpdated] = useState(false);
@@ -30,7 +30,7 @@ const AddCardDueDate = () => {
 
     await requestCardUpdate({ newCard, listId: sourceId }, id).then((res) => {
       saveCardChanges(newCard);
-      saveBoardChanges(res.data);
+      updateBoardState(res.data);
       setUpdated(true);
     });
   };

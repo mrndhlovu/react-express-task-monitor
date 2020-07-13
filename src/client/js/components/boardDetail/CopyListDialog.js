@@ -1,19 +1,10 @@
 import React, { useState } from "react";
 
+import { useBoardContext } from "../../utils/hookUtils";
 import CreateInput from "../sharedComponents/CreateInput";
-import { requestNewBoardList } from "../../apis/apiRequests";
-import { withRouter } from "react-router";
 
-const CopyListDialog = ({
-  close,
-  getSourceList,
-  listPosition,
-  saveBoardChanges,
-  title,
-  match,
-}) => {
-  const sourceId = listPosition;
-  const { id } = match.params;
+const CopyListDialog = ({ close, listId, title }) => {
+  const { getSourceList, createListHandler } = useBoardContext();
 
   const [newListTitle, setListTitle] = useState(`${title} clone`);
 
@@ -22,17 +13,9 @@ const CopyListDialog = ({
   };
 
   const handleCreateClick = () => {
-    const listCopy = getSourceList(sourceId - 1);
-    delete listCopy._id;
-    const updatedClone = { ...listCopy, title: newListTitle };
-
-    const getNewList = async () => {
-      await requestNewBoardList(updatedClone, id).then((res) => {
-        saveBoardChanges(res.data);
-        return close();
-      });
-    };
-    getNewList();
+    const listClone = { ...getSourceList(listId) };
+    delete listClone._id;
+    createListHandler({ ...listClone, title: newListTitle }, () => close());
   };
 
   return (
@@ -42,8 +25,9 @@ const CopyListDialog = ({
       defaultValue={newListTitle}
       handleChange={handleChange}
       handleCreateClick={handleCreateClick}
+      id="create-item-form"
     />
   );
 };
 
-export default withRouter(CopyListDialog);
+export default CopyListDialog;

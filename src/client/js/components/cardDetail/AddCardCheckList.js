@@ -13,7 +13,7 @@ import UIContainer from "../sharedComponents/UIContainer";
 
 const AddCardCheckList = () => {
   const { card, sourceId, saveCardChanges, id } = useCardDetailContext();
-  const { saveBoardChanges } = useBoardContext();
+  const { updateBoardState } = useBoardContext();
   const { alertUser } = useMainContext();
 
   const [close, setClose] = useState(false);
@@ -33,7 +33,7 @@ const AddCardCheckList = () => {
         const sourceList = findArrayItem(res.data.lists, sourceId, "_id");
 
         saveCardChanges(findArrayItem(sourceList.cards, card._id, "_id"));
-        saveBoardChanges(res.data);
+        updateBoardState(res.data);
         setClose(true);
         resetForm("new-checklist");
         setChecklist(null);

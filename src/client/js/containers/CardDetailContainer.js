@@ -9,9 +9,10 @@ import { useBoardListContext, useBoardContext } from "../utils/hookUtils";
 import CardDetailModal from "../components/cardDetail/CardDetailModal";
 
 const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
-  const { activeCard, board, handleBoardUpdate } = useBoardListContext();
+  const { activeCard } = useBoardListContext();
+  const { board, boardUpdateHandler } = useBoardContext();
 
-  const { saveBoardChanges } = useBoardContext();
+  const { updateBoardState } = useBoardContext();
   const { id } = match.params;
 
   const [card, setCard] = useState(activeCard);
@@ -42,7 +43,7 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
 
     await requestCardUpdate(body, id).then((res) => {
       saveCardChanges(newCard);
-      saveBoardChanges(res.data);
+      updateBoardState(res.data);
       setIsLoading("");
     });
   };
@@ -55,7 +56,7 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const updateLists = (newBoard) => {
     board.lists.splice(sourceIndex, 1, sourceList);
 
-    handleBoardUpdate(newBoard ? newBoard : board, "lists");
+    boardUpdateHandler(newBoard ? newBoard : board);
   };
 
   const editAttachments = useCallback(
@@ -72,12 +73,12 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
       sourceList.cards.splice(cardIndex, 1, card);
       board.lists.splice(sourceIndex, 1, sourceList);
 
-      handleBoardUpdate(board, "lists", "addAttachment");
+      boardUpdateHandler(board);
       setIsLoading("");
 
       return callback && callback();
     },
-    [card, board, sourceId, handleBoardUpdate]
+    [card, board, sourceId, boardUpdateHandler]
   );
 
   const handleRemoveCover = async () => {
@@ -90,7 +91,7 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
     };
     await requestCardUpdate(body, id).then((res) => {
       saveCardChanges({ ...card, cardCover: "" });
-      saveBoardChanges(res.data);
+      updateBoardState(res.data);
 
       setIsLoading("");
     });

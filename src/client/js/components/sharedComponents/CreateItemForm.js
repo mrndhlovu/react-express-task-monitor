@@ -62,6 +62,7 @@ const CreateItemForm = ({
           <InputWrapper>
             <Input
               fluid
+              id="create-item-form"
               placeholder={placeholder}
               onChange={(e) => handleChange(e)}
               defaultValue={defaultValue}
