@@ -1,9 +1,11 @@
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { isDevelopment, environment } = require("./src/server/utils/config");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 const webpack = require("webpack");
+
+const { isDevelopment, environment } = require("./src/server/utils/config");
 
 module.exports = {
   entry: {
@@ -103,6 +105,14 @@ module.exports = {
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
     new webpack.DefinePlugin({
       __isBrowser__: "true",
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: "node_modules/pdfjs-dist/cmaps/",
+          to: "cmaps/",
+        },
+      ],
     }),
   ],
 };

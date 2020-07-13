@@ -5,7 +5,7 @@ import _debounce from "debounce";
 import { Icon, TextArea, Form, Button } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import { useBoardContext, useCardDetailContext } from "../../utils/hookUtils";
+import { useCardDetailContext } from "../../utils/hookUtils";
 
 const Description = styled.div`
   margin-left: 33px;

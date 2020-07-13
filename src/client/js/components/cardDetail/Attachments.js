@@ -111,6 +111,7 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
   const isActiveCover =
     card.cardCover && isAnImage && stringsEqual(url, card.cardCover);
   const isURL = stringsEqual(filetype, "url");
+  const isPdf = stringsEqual(filetype, "pdf");
 
   const handleClick = (item) => setOpenDocument(item);
 
@@ -130,6 +131,13 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
             src={url}
             onClick={() => handleClick(attachmentItem)}
           />
+        ) : isPdf ? (
+          <span
+            className="attachment-link-span"
+            onClick={() => handleClick(attachmentItem)}
+          >
+            {filetype}
+          </span>
         ) : (
           <div className="attachment-thumbnail-wrap">
             <a

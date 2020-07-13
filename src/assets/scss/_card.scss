@@ -97,6 +97,7 @@
   text-transform: uppercase;
   text-decoration: none;
   width: 112px;
+  cursor: pointer;
 }
 .attachment-thumbnail,
 .attachment-thumbnail-wrap {
@@ -148,7 +149,8 @@
 }
 
 .document-content {
-  width: 100% !important;
+  min-width: 62%;
+  width: fit-content;
 }
 .page-tracker {
   padding: 5px;
@@ -176,7 +178,6 @@
   display: flex;
   justify-content: center;
   background: #e2dfe4;
-  min-height: 92vh;
 }
 
 .txt-preview {

@@ -32,10 +32,8 @@ const DueDate = () => {
 
   useEffect(() => {
     let newCard;
-    let activity;
 
     if (removeDueDate) {
-      activity = "removeDueDate";
       newCard = {
         ...card,
         dueDate: "",
@@ -43,7 +41,6 @@ const DueDate = () => {
     }
 
     if (checked) {
-      activity = "dueDateComplete";
       newCard = {
         ...card,
         dueDate: { ...card.dueDate, complete: true },
@@ -51,8 +48,6 @@ const DueDate = () => {
     }
 
     if (unChecked) {
-      activity = "openDueDate";
-
       newCard = {
         ...card,
         dueDate: { ...card.dueDate, complete: false },

@@ -9,7 +9,6 @@ import { requestUpload } from "../../apis/apiRequests";
 import AttachmentOption from "../sharedComponents/AttachmentOption";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import UIDivider from "../sharedComponents/UIDivider";
-import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UIContainer from "../sharedComponents/UIContainer";
 import {
