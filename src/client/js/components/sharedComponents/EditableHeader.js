@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { findArrayItem, stringsEqual } from "../../utils/appUtils";
 import UIFormInput from "../sharedComponents/UIFormInput";
@@ -18,24 +18,22 @@ const EditableHeader = ({
 
   const [editable, setEditable] = useState(false);
   const [newTitle, setNewTitle] = useState(null);
-  const [newBoard, setNewBoard] = useState(null);
 
-  const handleChange = (e) => {
-    setNewTitle(e.target.value);
-  };
+  const handleChange = (e) => setNewTitle(e.target.value);
 
   const handleUpdate = () => {
     setEditable(false);
     switch (type) {
       case "boardTitle":
-        return setNewBoard({ ...board, title: newTitle });
+        board.title = newTitle;
+        return boardUpdateHandler(board, "title");
       case "checklist":
         newTitle && handleEditTitle({ ...checklist, name: newTitle });
         return setNewTitle(null);
       case "listHeader":
         sourceList.title = newTitle;
         board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-        return setNewBoard({ ...board });
+        return boardUpdateHandler(board);
       case "imageTitle":
         newTitle && handleEditTitle({ ...attachment, name: newTitle });
         return;
@@ -45,16 +43,6 @@ const EditableHeader = ({
 
     setEditable(false);
   };
-
-  useEffect(() => {
-    if (!newBoard) return;
-    newTitle &&
-      boardUpdateHandler(
-        newBoard,
-        stringsEqual(type, "boardTitle") ? "title" : "lists"
-      );
-    setNewBoard(null);
-  }, [newBoard, boardUpdateHandler, newTitle]);
 
   return (
     <div

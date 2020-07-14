@@ -36,7 +36,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
   const {
     board,
     changeBoardAccessLevel,
-    handleBoardStarClick,
+    starBoardHandler,
     handleInviteClick,
     handleShowMenuClick,
     inviteDone,
@@ -100,7 +100,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
       <NavButton
         iconName="star outline"
         buttonColor={isStarred ? "yellow" : "grey"}
-        redirect={() => handleBoardStarClick()}
+        redirect={() => starBoardHandler()}
         forceText={true}
       />
       <StyledButton size="tiny">

@@ -1,10 +1,11 @@
-import React, { useState, Fragment } from "react";
+import React from "react";
 import styled from "styled-components";
-
-import { Dropdown, Icon } from "semantic-ui-react";
 
 import { useMainContext } from "../../utils/hookUtils";
 import NavButton from "../sharedComponents/NavButton";
+import DropdownButton from "../sharedComponents/DropdownButton";
+import UIWrapper from "../sharedComponents/UIWrapper";
+import NavBoardsCategory from "../sharedComponents/NavBoardsCategory";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -12,64 +13,42 @@ const StyledDiv = styled.div`
   height: 36px;
 `;
 
-const StyledButton = styled(Dropdown)`
-  background-color: #ffffff3d !important;
-`;
-
-const StyledSpan = styled.span`
-  color: ${(props) => props.color};
-  margin-right: 37px;
-`;
-
 const LeftNavButtons = ({ history }) => {
-  const { isLoading, device, boards } = useMainContext();
-  const [showBoardList, setShowBoardList] = useState(false);
+  const { STARRED_BOARDS, PERSONAL_BOARDS, RECENT_BOARDS } = useMainContext();
 
   return (
     <StyledDiv>
       <NavButton iconName="home" redirect={() => history.push("/")} />
-
-      <StyledButton
-        text="Boards"
-        icon={
-          !device.mobile && <Icon name="target" className="nav-button-icon" />
-        }
-        labeled={!device.mobile}
-        button
-        loading={isLoading}
-        className="icon nav-button-text"
-        size="tiny"
-        onClick={() => setShowBoardList(!showBoardList)}
+      <DropdownButton
+        icon="columns"
+        buttonText="Boards"
+        closeOnSelect
+        color="#ffffff3d"
+        compact={false}
+        hasHeader={false}
+        direction="right"
+        className="navBoardsButton"
       >
-        <Dropdown.Menu>
-          {boards &&
-            boards.map((board) => (
-              <Fragment key={board._id}>
-                <Dropdown.Item
-                  onClick={() => history.push(`/boards/id/${board._id}`)}
-                  image={
-                    board.styleProperties.image && (
-                      <img
-                        className="nav-board-image"
-                        src={board.styleProperties.image}
-                      />
-                    )
-                  }
-                  icon={
-                    board.styleProperties.color && (
-                      <StyledSpan color={board.styleProperties.color}>
-                        <Icon size="big" name="window maximize" />
-                      </StyledSpan>
-                    )
-                  }
-                  text={board.title}
-                />
-              </Fragment>
-            ))}
-        </Dropdown.Menu>
-      </StyledButton>
-
-      {/* <SearchBar isLoading={isLoading} results={results} value={value} /> */}
+        <UIWrapper className="nav-boards-list">
+          {/* <UIFormInput placeholder="Find boards by name" /> */}
+          <NavBoardsCategory
+            header="Starred Boards"
+            boards={STARRED_BOARDS}
+            starred
+            history={history}
+          />
+          <NavBoardsCategory
+            header="Recent Boards"
+            boards={RECENT_BOARDS}
+            history={history}
+          />
+          <NavBoardsCategory
+            header="Personal Boards"
+            boards={PERSONAL_BOARDS}
+            history={history}
+          />
+        </UIWrapper>
+      </DropdownButton>
     </StyledDiv>
   );
 };

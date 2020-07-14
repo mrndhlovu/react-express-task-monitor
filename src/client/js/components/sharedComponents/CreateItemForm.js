@@ -1,30 +1,35 @@
 import React from "react";
-
-import { Button, Input } from "semantic-ui-react";
 import styled from "styled-components";
+
+import { Button } from "semantic-ui-react";
 import { X, Plus } from "react-feather";
+
+import UIFormInput from "../sharedComponents/UIFormInput";
 
 const StyledWrapper = styled.div`
   width: 272px;
 `;
 
 const Container = styled.div`
-  width: 272px;
+  width: 100%;
   min-height: 30px;
   background-color: #ffffff3d;
   align-content: center;
-  display: grid;
   border-radius: 3px;
+  display: flex;
 `;
 
 const Span = styled.div`
   padding: 10px 0 10px 10px;
   color: #ffffff;
   cursor: pointer;
+  display: flex;
+  align-items: center;
 `;
 
 const InputWrapper = styled.div`
-  padding: 5px 5px;
+  padding: 5px;
+  width: 100%;
 `;
 
 const ButtonWrapper = styled.div`
@@ -60,8 +65,8 @@ const CreateItemForm = ({
         )}
         {showInputField && (
           <InputWrapper>
-            <Input
-              fluid
+            <UIFormInput
+              autoFocus
               id="create-item-form"
               placeholder={placeholder}
               onChange={(e) => handleChange(e)}
@@ -69,7 +74,6 @@ const CreateItemForm = ({
               onKeyDown={(e) =>
                 e.key === "Enter" ? handleCreateClick() : null
               }
-              autoFocus
             />
             <ButtonWrapper>
               <Button

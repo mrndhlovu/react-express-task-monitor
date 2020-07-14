@@ -74,12 +74,20 @@ body::-webkit-scrollbar {
   border: none !important;
 }
 
-.message-box {
+.message-box,
+.wordWrap {
   white-space: pre-wrap;
   white-space: -moz-pre-wrap;
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
   word-wrap: break-word;
+}
+
+.logo-text {
+  text-transform: uppercase;
+}
+
+.message-box {
   width: 100%;
   position: absolute !important;
   top: 0;

@@ -1,12 +1,12 @@
-import React, { useContext, memo } from "react";
+import React, { memo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 
-import { MainContext } from "../../utils/contextUtils";
 import LeftNavButtons from "./LeftNavButtons";
 import Logo from "./Logo";
 import MobileNavBar from "./MobileNavBar";
 import RightNavButtons from "./RightNavButtons";
+import { useMainContext } from "../../utils/hookUtils";
 
 const NavWrapper = styled.div`
   display: flex;
@@ -26,8 +26,7 @@ const NavContainer = styled.nav`
 `;
 
 const NavHeader = ({ history, color = "transparent", setVisible }) => {
-  const { isHomePage, setShowMobileMenu } = useContext(MainContext);
-
+  const { isHomePage, setShowMobileMenu } = useMainContext();
   return (
     <NavContainer className="nav-container" color={color}>
       <NavWrapper className="desktop-nav-container">

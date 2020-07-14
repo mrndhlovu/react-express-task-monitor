@@ -13,7 +13,7 @@ const HomePageContainer = ({ history }) => {
   const [user, setUser] = useState(useAuth().user);
   const { getNavData } = useMainContext();
 
-  const handleBoardStarClick = async (id, starRef) => {
+  const starBoardHandler = async (id, starRef) => {
     if (!starRef) return;
     if (user.starred.includes(id))
       user.starred.splice(user.starred.indexOf(id));
@@ -36,7 +36,7 @@ const HomePageContainer = ({ history }) => {
         user,
         boards,
         loading,
-        handleBoardStarClick,
+        starBoardHandler,
       }}
     >
       <HomePage history={history} />

@@ -26,7 +26,7 @@ const AppWrapper = styled.div`
 `;
 
 const MainContainer = ({ children, history }) => {
-  const { auth } = useAuth();
+  const { auth, user } = useAuth();
   const { notify } = useAlert();
 
   const alertUser = (message, success = false, cb = () => {}, reason) =>
@@ -42,6 +42,16 @@ const MainContainer = ({ children, history }) => {
   const [visible, setVisible] = useState(false);
 
   const { device, dimensions } = useDimensions();
+
+  const STARRED_BOARDS =
+    boards && boards.map((board) => user.starred.includes(board._id) && board);
+
+  const PERSONAL_BOARDS =
+    boards && boards.map((board) => !user.starred.includes(board._id) && board);
+
+  const RECENT_BOARDS =
+    boards &&
+    boards.map((board) => user.viewedRecent.includes(board._id) && board);
 
   const navBackground =
     !background.color && !background.image
@@ -90,6 +100,9 @@ const MainContainer = ({ children, history }) => {
         search,
         setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
         showMobileMenu,
+        STARRED_BOARDS,
+        PERSONAL_BOARDS,
+        RECENT_BOARDS,
       }}
     >
       <AppWrapper data-test-id="app-container" bg={background}>
@@ -97,10 +110,12 @@ const MainContainer = ({ children, history }) => {
           <Fragment>
             {auth.authenticated && (
               <Fragment>
-                <NavHeader
-                  color={navBackground}
-                  setVisible={() => setVisible(!visible)}
-                />
+                {boards && (
+                  <NavHeader
+                    color={navBackground}
+                    setVisible={() => setVisible(!visible)}
+                  />
+                )}
                 <MobileSideMenu
                   visible={visible}
                   setVisible={setVisible}

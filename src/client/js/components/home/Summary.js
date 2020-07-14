@@ -46,12 +46,12 @@ const Card = styled.div`
 const Summary = ({ board, history, starred }) => {
   const { mobile } = useContext(MainContext).device;
   const [showStar, setShowStar] = useState(false);
-  const { handleBoardStarClick } = useContext(HomepageContext);
+  const { starBoardHandler } = useContext(HomepageContext);
   const { title, _id, styleProperties, isTemplate } = board;
 
   const handleCardClick = (e, star) => {
     e.target.id
-      ? handleBoardStarClick(_id, star)
+      ? starBoardHandler(_id, star)
       : history.push(`/boards/id/${_id}`);
   };
 

@@ -2,56 +2,46 @@ import React, { useState, useEffect } from "react";
 
 import { Header, Button } from "semantic-ui-react";
 
-import { requestNewBoard } from "../../apis/apiRequests";
+import { useMainContext } from "../../utils/hookUtils";
 import BoardContainer from "../../containers/BoardContainer";
 import UISmall from "../sharedComponents/UISmall";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import { useMainContext } from "../../utils/hookUtils";
 
-const TemplatesPage = ({ templates, history }) => {
-  const [openDemo, setOpenDemo] = useState(null);
+const TemplatesPage = ({ templates, handleUseTemplate }) => {
+  const [template, setTemplate] = useState(null);
 
   const { getNavData } = useMainContext();
 
-  const handleUseTemplate = async (board) => {
-    delete board._id;
-    board = { ...board, isTemplate: false };
-
-    await requestNewBoard(board).then((res) => {
-      if (res.status === 200) history.push(`/boards/id/${res.data._id}`);
-    });
-  };
-
   useEffect(() => {
-    if (!openDemo) getNavData({ image: "", color: "" });
-  }, [openDemo]);
+    if (!template) getNavData({ image: "", color: "" });
+  }, [template]);
 
-  return !openDemo ? (
+  return !template ? (
     <UIWrapper className="template-page">
       <Header content="Templates" className="templates-header" />
       <UIWrapper className="templates-wrap">
-        {templates.map((template, index) => {
-          template.lists[0] === null && template.lists.splice(0, 1);
+        {templates.map((item, index) => {
+          item.lists[0] === null && item.lists.splice(0, 1);
           return (
             <UIWrapper className="template-individual" key={index}>
               <img
                 className="template-image"
-                onClick={() => setOpenDemo(template)}
-                src={template.styleProperties.image}
+                onClick={() => setTemplate(item)}
+                src={item.styleProperties.image}
               />
-              <span className="template-text">{template.title}</span>
-              <small className="template-small">{template.description}</small>
+              <span className="template-text">{item.title}</span>
+              <small className="template-small">{item.description}</small>
               <Button
                 positive
                 content="View template"
                 floated="left"
-                onClick={() => setOpenDemo(template)}
+                onClick={() => setTemplate(item)}
               />
               <UISmall
-                handleClick={() => handleUseTemplate(template)}
+                handleClick={() => handleUseTemplate(item)}
                 className="use-template"
               >
-                Category {template.category}: Use Template
+                Category {item.category}: Use Template
               </UISmall>
             </UIWrapper>
           );
@@ -60,12 +50,12 @@ const TemplatesPage = ({ templates, history }) => {
     </UIWrapper>
   ) : (
     <UIWrapper className="template-container">
-      <BoardContainer templateBoard={openDemo} />
+      <BoardContainer templateBoard={template} />
       <Button
         compact
         content="Close Template"
         className="close-template-demo"
-        onClick={() => setOpenDemo(null)}
+        onClick={() => setTemplate(null)}
       />
     </UIWrapper>
   );

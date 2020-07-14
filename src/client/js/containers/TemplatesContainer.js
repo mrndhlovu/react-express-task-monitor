@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router";
 
-import { emptyFunction } from "../utils/appUtils";
-import { requestTemplates } from "../apis/apiRequests";
+import { requestTemplates, requestNewBoard } from "../apis/apiRequests";
 import { useMainContext } from "../utils/hookUtils";
 import TemplatesPage from "../components/home/TemplatesPage";
 
@@ -10,20 +9,33 @@ const TemplatesContainer = ({ history }) => {
   const [templates, setTemplates] = useState(null);
   const { alertUser } = useMainContext();
 
-  useEffect(() => {
-    if (templates) return emptyFunction();
+  const handleUseTemplate = async (board) => {
+    delete board._id;
+    board = { ...board, isTemplate: false };
 
+    await requestNewBoard(board).then((res) => {
+      if (res.status === 200) history.push(`/boards/id/${res.data._id}`);
+    });
+  };
+
+  useEffect(() => {
     const getTemplates = async () => {
       await requestTemplates()
-        .then((res) => {
-          setTemplates(res.data);
-        })
+        .then((res) => setTemplates(res.data))
         .catch((error) => alertUser(error.response.data.message));
     };
     getTemplates();
-  }, [templates]);
+    return setTemplates(null);
+  }, []);
 
-  return templates && <TemplatesPage templates={templates} history={history} />;
+  return (
+    templates && (
+      <TemplatesPage
+        handleUseTemplate={handleUseTemplate}
+        templates={templates}
+      />
+    )
+  );
 };
 
 export default withRouter(TemplatesContainer);

@@ -58,14 +58,12 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     if (!newBoard) return setBoard(null);
     updateBoardState(newBoard);
 
-    const update = {
-      [fieldId]: board[fieldId],
-    };
+    const body = { [fieldId]: board[fieldId] };
 
-    await requestBoardUpdate(newId ? newId : id, update)
+    await requestBoardUpdate(newId ? newId : id, body)
       .then((res) => {
         getNavData(res.data.styleProperties);
-        callback && callback();
+        if (callback) callback();
       })
       .catch((error) => alertUser(error.response.data.message));
   };
@@ -113,7 +111,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     boardUpdateHandler(newBoard, "styleProperties");
   };
 
-  const handleBoardStarClick = () => {
+  const starBoardHandler = () => {
     if (user.starred.includes(id)) {
       user.starred.splice(user.starred.indexOf(id), 1);
       setUnStarred(true);
@@ -240,7 +238,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           createListHandler,
           dragCardId,
           getSourceList,
-          handleBoardStarClick,
+          starBoardHandler,
           handleDeleteBoard,
           handleDeleteList,
           handleInviteClick,
