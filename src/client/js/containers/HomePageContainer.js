@@ -11,7 +11,7 @@ const HomePageContainer = ({ history }) => {
   const [boards, setBoards] = useState("");
   const [data, loading] = useFetch(history);
   const [user, setUser] = useState(useAuth().user);
-  const { getNavData } = useMainContext();
+  const { navDataHandler } = useMainContext();
 
   const starBoardHandler = async (id, starRef) => {
     if (!starRef) return;
@@ -27,8 +27,8 @@ const HomePageContainer = ({ history }) => {
   useEffect(() => {
     if (!data) return;
     setBoards(data);
-    getNavData(null, data);
-  }, [data, getNavData]);
+    navDataHandler(null, data);
+  }, [data, navDataHandler]);
 
   return data && boards && !loading ? (
     <HomepageContext.Provider

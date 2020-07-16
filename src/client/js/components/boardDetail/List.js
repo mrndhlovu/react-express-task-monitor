@@ -1,6 +1,7 @@
 import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import styled from "styled-components";
 import { DragSource, DropTarget } from "react-dnd";
+import { flow } from "lodash";
 
 import { Segment } from "semantic-ui-react";
 
@@ -31,13 +32,21 @@ const CardsContainer = styled.div`
 // eslint-disable-next-line react/display-name
 const List = forwardRef(
   (
-    { connectDragSource, connectDropTarget, list, isDragging, position },
+    {
+      connectDragSource,
+      connectDropTarget,
+      list,
+      isDragging,
+      position,
+      ...rest
+    },
     ref
   ) => {
     const { activeList } = useBoardListContext();
     const { mobile } = useMainContext().device;
 
     const { title, cards, _id } = list;
+
     const dragListRef = useRef(null);
 
     connectDragSource(connectDropTarget(dragListRef));
@@ -71,6 +80,7 @@ const List = forwardRef(
               cards={cards}
               sourceListId={_id}
               listPosition={position}
+              {...rest}
             />
           </CardsContainer>
 
@@ -88,58 +98,76 @@ const List = forwardRef(
 
 const forwardedList = List;
 
-export default DropTarget(
-  DRAG_TYPES.LIST,
-  {
-    hover(props, monitor, component) {
-      if (!component) return null;
-
-      const node = component.getNode();
-      if (!node) return null;
-
-      const dragIndex = monitor.getItem().id;
-      const hoverIndex = props.position - 1;
-      if (dragIndex === hoverIndex) return;
-
-      const hoverBoundingRect = node.getBoundingClientRect();
-
-      const hoverMiddleX = hoverBoundingRect.bottom;
-
-      const clientOffset = monitor.getClientOffset();
-
-      const hoverClientX = clientOffset.x / dragIndex;
-
-      if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) return;
-
-      if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) return;
-
-      props.moveListHandler(hoverIndex);
-
-      monitor.getItem().id = hoverIndex;
-    },
-
-    drop(props) {
-      props.listDropHandler();
-    },
+const listSource = {
+  beginDrag(props) {
+    !props.dragIndex && props.setDragIndex(props.position - 1);
+    return {
+      id: props.dragIndex || props.position - 1,
+      index: props.position - 1,
+    };
   },
-  (connect) => ({
-    connectDropTarget: connect.dropTarget(),
-  })
-)(
-  DragSource(
-    DRAG_TYPES.LIST,
-    {
-      beginDrag: (props) => {
-        !props.dragIndex && props.setDragIndex(props.position - 1);
-        return {
-          id: props.dragIndex || props.position - 1,
-          index: props.position - 1,
-        };
-      },
-    },
-    (connect, monitor) => ({
-      connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging(),
-    })
-  )(forwardedList)
-);
+  endDrag(props) {
+    return props.listDropHandler();
+  },
+};
+
+const listTarget = {
+  hover(props, monitor, component) {
+    const dragIndex = monitor.getItem().id;
+    const hoverIndex = props.position - 1;
+    const isDraggingCard = monitor.getItemType() === DRAG_TYPES.CARD;
+    props.setHoverIndex(hoverIndex);
+
+    if (isDraggingCard) {
+      const sourceIndex = monitor.getItem().listIndex;
+
+      const isSource = props.hoverIndex === hoverIndex;
+
+      if (isSource) return null;
+
+      props.cardToNewListHandler(dragIndex, hoverIndex, sourceIndex);
+
+      return monitor.getItem().id === hoverIndex;
+    }
+
+    if (!component) return null;
+
+    const node = component.getNode();
+    if (!node) return null;
+
+    if (dragIndex === hoverIndex) return;
+
+    const hoverBoundingRect = node.getBoundingClientRect();
+
+    const hoverMiddleX = hoverBoundingRect.bottom;
+
+    const clientOffset = monitor.getClientOffset();
+
+    const hoverClientX = clientOffset.x / dragIndex;
+
+    if (dragIndex < hoverIndex && hoverClientX < hoverMiddleX) return;
+
+    if (dragIndex > hoverIndex && hoverClientX > hoverMiddleX) return;
+
+    props.moveListHandler(hoverIndex);
+
+    monitor.getItem().id = hoverIndex;
+  },
+};
+
+const sourceCollect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging(),
+});
+
+const targetCollect = (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  itemType: monitor.getItemType(),
+  dropResult: monitor.getDropResult(),
+  didDrop: monitor.didDrop(),
+});
+
+export default flow(
+  DragSource(DRAG_TYPES.LIST, listSource, sourceCollect),
+  DropTarget([DRAG_TYPES.LIST, DRAG_TYPES.CARD], listTarget, targetCollect)
+)(forwardedList);

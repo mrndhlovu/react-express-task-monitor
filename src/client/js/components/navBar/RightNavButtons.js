@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Accordion, Icon } from "semantic-ui-react";
 
 import { requestUserUpdate } from "../../apis/apiRequests";
-import { useAuth } from "../../utils/hookUtils";
+import { useAuth, useMainContext } from "../../utils/hookUtils";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 import UIWrapper from "../sharedComponents/UIWrapper";
@@ -17,7 +17,8 @@ const StyledDiv = styled.div`
 `;
 
 const RightNavButtons = ({ history }) => {
-  const { user } = useAuth();
+  const { user, auth } = useAuth();
+  const { alertUser } = useMainContext();
   const [activeIndex, setActiveIndex] = useState(null);
   const unreadNotification = user.notifications.filter(
     (notification) => !notification.read
@@ -25,11 +26,15 @@ const RightNavButtons = ({ history }) => {
   const hasUnreadNotification = unreadNotification.length > 0;
   const hasNotifications = user.notifications.length > 0;
 
-  const handleClick = (notification, index) => {
+  const handleClick = async (notification, index) => {
     setActiveIndex(index === activeIndex ? null : index);
     if (!notification.read) {
       user.notifications.splice(index, 1, { ...notification, read: true });
-      requestUserUpdate({ notification });
+      await requestUserUpdate({ notifications: user.notifications })
+        .then((res) => {
+          auth.authListener(res.data);
+        })
+        .catch((error) => alertUser(error.response.data.error));
     }
   };
 

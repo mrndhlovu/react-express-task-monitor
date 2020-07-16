@@ -10,10 +10,10 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 const TemplatesPage = ({ templates, handleUseTemplate }) => {
   const [template, setTemplate] = useState(null);
 
-  const { getNavData } = useMainContext();
+  const { navDataHandler } = useMainContext();
 
   useEffect(() => {
-    if (!template) getNavData({ image: "", color: "" });
+    if (!template) navDataHandler({ image: "", color: "" });
   }, [template]);
 
   return !template ? (

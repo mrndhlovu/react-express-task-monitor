@@ -4,7 +4,7 @@ import React, {
   useImperativeHandle,
   useRef,
 } from "react";
-
+import flow from "lodash/flow";
 import { DragSource, DropTarget } from "react-dnd";
 
 import { DRAG_TYPES } from "../../constants/constants";
@@ -20,7 +20,6 @@ const WrappedCard = forwardRef(
       connectDropTarget,
       isDragging,
       isLast,
-      isOverCard,
       listPosition,
       sourceListId,
     },
@@ -28,8 +27,6 @@ const WrappedCard = forwardRef(
   ) => {
     const [showEditButton, setShowEditButton] = useState(false);
     const dragCardRef = useRef(null);
-
-    connectDragSource(connectDropTarget(dragCardRef));
 
     useImperativeHandle(ref, () => ({
       getNode: () => dragCardRef.current,
@@ -49,7 +46,6 @@ const WrappedCard = forwardRef(
         onMouseLeave={() => setShowEditButton(false)}
       >
         <CardItem
-          isOverCard={isOverCard}
           card={card}
           sourceListId={sourceListId}
           listPosition={listPosition}
@@ -59,62 +55,68 @@ const WrappedCard = forwardRef(
       </div>
     );
 
-    return wrappedCardItem;
+    return connectDragSource(connectDropTarget(wrappedCardItem));
   }
 );
 
 const forwardedCard = WrappedCard;
 
-export default DropTarget(
-  DRAG_TYPES.CARD,
-  {
-    hover(props, monitor, component) {
-      if (!component) return null;
-
-      const node = component.getNode();
-      if (!node) return null;
-
-      const dragIndex = monitor.getItem().id;
-      const hoverIndex = props.cardIndex;
-      if (dragIndex === hoverIndex) return;
-
-      const hoverBoundingRect = node.getBoundingClientRect();
-
-      const hoverMiddleY =
-        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-      const clientOffset = monitor.getClientOffset();
-
-      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) return;
-
-      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) return;
-
-      props.cardRepositionHandler(dragIndex, hoverIndex);
-
-      monitor.getItem().id = hoverIndex;
-    },
-
-    drop(props, monitor) {
-      props.cardDropHandler(monitor.getItem().id);
-    },
+const cardSource = {
+  beginDrag(props) {
+    !props.dragIndex && props.setDragIndex(props.position - 1);
+    return {
+      id: props.cardIndex,
+      index: props.cardIndex,
+      listIndex: props.listPosition - 1,
+    };
   },
-  (connect) => ({
-    connectDropTarget: connect.dropTarget(),
-  })
-)(
-  DragSource(
-    DRAG_TYPES.CARD,
-    {
-      beginDrag: (props) => ({
-        id: props.cardIndex,
-        index: props.cardIndex,
-      }),
-    },
-    (connect, monitor) => ({
-      connectDragSource: connect.dragSource(),
-      isDragging: monitor.isDragging(),
-    })
-  )(forwardedCard)
-);
+  endDrag(props, monitor) {
+    return props.cardDropHandler(monitor.getItem().id);
+  },
+};
+
+const cardTarget = {
+  hover(props, monitor, component) {
+    if (!component) return null;
+
+    const node = component.getNode();
+    if (!node) return null;
+
+    const cardDragIndex = monitor.getItem().id;
+    const cardHoverIndex = props.cardIndex;
+
+    const listHoverIndex = props.listPosition - 1;
+
+    if (cardDragIndex === cardHoverIndex) return;
+
+    const hoverBoundingRect = node.getBoundingClientRect();
+
+    const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+
+    const clientOffset = monitor.getClientOffset();
+
+    const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+    if (cardDragIndex < cardHoverIndex && hoverClientY < hoverMiddleY) return;
+
+    if (cardDragIndex > cardHoverIndex && hoverClientY > hoverMiddleY) return;
+
+    props.cardRepositionHandler(cardDragIndex, cardHoverIndex, listHoverIndex);
+
+    monitor.getItem().id = cardHoverIndex;
+    monitor.getItem().listIndex = listHoverIndex;
+  },
+};
+
+const targetCollect = (connect) => ({
+  connectDropTarget: connect.dropTarget(),
+});
+
+const sourceCollect = (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging(),
+});
+
+export default flow(
+  DragSource(DRAG_TYPES.CARD, cardSource, sourceCollect),
+  DropTarget(DRAG_TYPES.CARD, cardTarget, targetCollect)
+)(forwardedCard);

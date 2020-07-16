@@ -30,7 +30,7 @@ const StyledContainer = styled.div`
 `;
 
 const BoardContainer = ({ match, history, templateBoard }) => {
-  const { getNavData, boards, alertUser } = useMainContext();
+  const { navDataHandler, boards, alertUser } = useMainContext();
   const { user, auth } = useAuth();
   const { id } = match.params;
 
@@ -62,7 +62,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
 
     await requestBoardUpdate(newId ? newId : id, body)
       .then((res) => {
-        getNavData(res.data.styleProperties);
+        navDataHandler(res.data.styleProperties);
         if (callback) callback();
       })
       .catch((error) => alertUser(error.response.data.message));
@@ -105,7 +105,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       const source = findArrayItem(boards, board._id, "_id");
       const removeIndex = boards.indexOf(source);
 
-      getNavData(null, getUpdatedArray(boards, removeIndex, newBoard));
+      navDataHandler(null, getUpdatedArray(boards, removeIndex, newBoard));
     }
 
     boardUpdateHandler(newBoard, "styleProperties");
@@ -159,19 +159,19 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     const fetchBoard = async () => {
       if (templateBoard) {
         setBoard(templateBoard);
-        return getNavData(templateBoard.styleProperties, boards);
+        return navDataHandler(templateBoard.styleProperties, boards);
       }
 
       await requestBoardDetail(id)
         .then((res) => {
           setBoard(res.data);
-          return getNavData(res.data.styleProperties, boards);
+          return navDataHandler(res.data.styleProperties, boards);
         })
         .catch((error) => alertUser(error.response.data.message));
     };
 
     fetchBoard();
-  }, [board, boards, id, history, getNavData, templateBoard, alertUser]);
+  }, [board, boards, id, history, navDataHandler, templateBoard, alertUser]);
 
   const createListHandler = async (listData, callback = () => {}) => {
     if (!listData || !listData.title) return alertUser("Add list title");

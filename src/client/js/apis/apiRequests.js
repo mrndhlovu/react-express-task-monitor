@@ -48,8 +48,8 @@ export const requestAuthLogout = () =>
 export const userInfo = () =>
   axios.get(`${AUTH_EP}/users/me`, { withCredentials: true });
 
-export const requestUserUpdate = (body, id) =>
-  axios.patch(`${AUTH_EP}/update?id=${id}`, body, params);
+export const requestUserUpdate = (body) =>
+  axios.patch(`${AUTH_EP}/update`, body, params);
 
 export const requestEmailRecovery = (body) => {
   return axios.post(`${AUTH_EP}/recovery`, body, params);

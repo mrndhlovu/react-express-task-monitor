@@ -12,6 +12,7 @@ const StyledDropdown = styled(Dropdown)`
   text-align: left !important;
   font-size: 13px !important;
   font-weight: 500 !important;
+  z-index: 100;
 `;
 
 const HeaderWrapper = styled(Dropdown.Header)`

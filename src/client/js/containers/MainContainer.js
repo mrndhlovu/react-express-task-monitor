@@ -72,7 +72,7 @@ const MainContainer = ({ children, history }) => {
       .catch((error) => alertUser(error.response.data.message));
   };
 
-  const getNavData = useCallback(
+  const navDataHandler = useCallback(
     (style, boards) => {
       style && setBackground({ ...background, ...style });
       boards && setBoards(boards);
@@ -91,7 +91,7 @@ const MainContainer = ({ children, history }) => {
         boards,
         device,
         dimensions,
-        getNavData,
+        navDataHandler,
         alertUser,
         handleSearchClick,
         history,
