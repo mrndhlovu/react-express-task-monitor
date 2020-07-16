@@ -53,6 +53,9 @@ const ListGrid = () => {
   };
 
   const cardToNewListHandler = (cardIndex, listHoverIndex, sourceIndex) => {
+    const dragCard = draggingCard || boardLists[sourceIndex].cards[cardIndex];
+    !draggingCard && setDraggingCard(dragCard);
+
     const isOverCurrent = hoverIndex === listHoverIndex;
     const isOverSource = sourceIndex === listHoverIndex;
     const hasPreviousIndex = previousIndex > -1;
@@ -62,11 +65,8 @@ const ListGrid = () => {
       return undoMoveCard(listHoverIndex);
     if (isOverCurrent) return null;
 
-    const dragCard = draggingCard || boardLists[sourceIndex].cards[cardIndex];
-
-    !draggingCard && setDraggingCard(dragCard);
     removeCardFromSource(sourceIndex, cardIndex);
-    addCardToTarget(listHoverIndex, cardIndex, dragCard, listHoverIndex);
+    addCardToTarget(listHoverIndex, cardIndex, dragCard);
   };
 
   const moveListHandler = (hoverIndex) => {
