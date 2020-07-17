@@ -12,18 +12,20 @@ const StyledButton = styled.div`
   background-color: #dce3eb;
   border-radius: 50px;
   display: flex;
-  justify-content: space-around;
-  max-height: 15px;
-  max-width: 15px;
-  padding: ${(props) => props.padding};
+  justify-content: space-evenly;
 
-  &:after: {
-    content: '${(props) => props.userInitials}';
-  }
+  max-height: 20px;
+  max-width: 18px;
+  padding: ${(props) => props.padding};
 `;
 
-const UserAvatar = ({ userInitials = "M", padding = "17px", fontSize }) => (
-  <StyledButton padding={padding}>
+const UserAvatar = ({
+  userInitials = "M",
+  padding = "18px",
+  fontSize,
+  className,
+}) => (
+  <StyledButton className={className} padding={padding}>
     <Span fontSize={fontSize}>{userInitials}</Span>
   </StyledButton>
 );

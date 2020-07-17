@@ -12,7 +12,6 @@ const StyledDiv = styled.div`
   margin-right: 10px;
   display: flex;
   align-items: baseline;
-  margin-top: 3px;
 `;
 
 const RightNavButtons = ({ history }) => {
@@ -38,11 +37,12 @@ const RightNavButtons = ({ history }) => {
       <DropdownButton
         icon="bell"
         labeled={false}
-        color=""
+        compact={false}
+        className="navButton"
         header="Notifications"
         closeOnSelect={true}
         notificationCount={hasUnreadNotification && unreadNotification.length}
-        iconColor={hasUnreadNotification ? "red" : "grey"}
+        iconColor={hasUnreadNotification ? "red" : "black"}
       >
         <UIWrapper className="notifications">
           {hasNotifications ? (
@@ -74,7 +74,12 @@ const RightNavButtons = ({ history }) => {
           )}
         </UIWrapper>
       </DropdownButton>
-      <NavUserAvatar userName={user.fname} history={history} fontSize="13px" />
+      <NavUserAvatar
+        className="navButton"
+        userName={user.fname}
+        history={history}
+        fontSize="13px"
+      />
     </StyledDiv>
   );
 };

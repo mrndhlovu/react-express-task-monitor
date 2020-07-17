@@ -12,6 +12,7 @@ const NavUserAvatar = ({
   pointing = "top right",
   callback = () => {},
   fontSize,
+  className,
 }) => {
   const handleLogOut = async () =>
     await requestAuthLogout().then(() => history.push("/login"));
@@ -21,11 +22,12 @@ const NavUserAvatar = ({
       padding="15px"
       userInitials={getUserInitials(userName)}
       fontSize={fontSize}
+      className={className}
     />
   );
 
   return (
-    <Dropdown size="huge" trigger={trigger} pointing={pointing} icon={null}>
+    <Dropdown trigger={trigger} pointing={pointing} icon={null}>
       <Dropdown.Menu>
         <Dropdown.Item
           text="Profile and Visibility"

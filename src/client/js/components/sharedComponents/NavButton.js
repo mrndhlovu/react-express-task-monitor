@@ -20,13 +20,14 @@ const NavButton = ({
   redirect,
   float,
   className,
+  compact = true,
 }) => {
   const { mobile } = useContext(MainContext).device;
 
   return mobile && !forceText ? (
     <StyledButton
       className={className}
-      size="tiny"
+      compact={compact}
       onClick={redirect}
       float={float}
       icon={
@@ -40,10 +41,10 @@ const NavButton = ({
     <StyledButton
       id={id}
       className={`${className} ui`}
-      size="tiny"
       onClick={redirect}
       content={buttonText}
       float={float}
+      compact={compact}
       icon={
         iconName && (
           <NavButtonIcon iconName={iconName} iconColor={buttonColor} />

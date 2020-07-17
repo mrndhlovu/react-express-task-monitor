@@ -18,16 +18,19 @@ const LeftNavButtons = ({ history }) => {
 
   return (
     <StyledDiv>
-      <NavButton iconName="home" redirect={() => history.push("/")} />
+      <NavButton
+        buttonColor="black"
+        iconName="home"
+        redirect={() => history.push("/")}
+      />
       <DropdownButton
         icon="columns"
         buttonText="Boards"
         closeOnSelect
-        color="#ffffff3d"
-        compact={false}
         hasHeader={false}
+        compact={false}
         direction="right"
-        className="navBoardsButton"
+        className="navBoardsButton navButton"
       >
         <UIWrapper className="nav-boards-list">
           {/* <UIFormInput placeholder="Find boards by name" /> */}
