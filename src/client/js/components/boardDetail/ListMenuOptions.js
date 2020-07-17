@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 
 import styled from "styled-components";
 
@@ -17,36 +18,7 @@ const DropdownItem = styled.li`
   }
 `;
 
-const ListMenuOptions = ({
-  handleShowCopyListClick,
-  handleShowMoveListClick,
-  handleDeleteListClick,
-  handleMoveCardsClick,
-  handleDeleteAllClick,
-  setHeader,
-}) => {
-  const handleMenuClick = (key) => {
-    switch (key) {
-      case "menu-item-1":
-        handleShowMoveListClick();
-        break;
-      case "menu-item-2":
-        handleShowCopyListClick();
-        break;
-      case "menu-item-3":
-        handleMoveCardsClick();
-        break;
-      case "menu-item-4":
-        handleDeleteAllClick();
-        break;
-      case "menu-item-5":
-        handleDeleteListClick();
-        break;
-      default:
-        break;
-    }
-  };
-
+const ListMenuOptions = ({ handleClick, setHeader }) => {
   return (
     <div>
       {LIST_MENU_OPTIONS.map((option) => (
@@ -54,7 +26,7 @@ const ListMenuOptions = ({
           <DropdownItem
             onClick={() => {
               setHeader(option.value);
-              handleMenuClick(`menu-item-${option.key}`);
+              handleClick(option.value);
             }}
           >
             <span>{option.value}</span>
@@ -64,6 +36,11 @@ const ListMenuOptions = ({
       ))}
     </div>
   );
+};
+
+ListMenuOptions.propTypes = {
+  setHeader: PropTypes.func.isRequired,
+  handleClick: PropTypes.func.isRequired,
 };
 
 export default ListMenuOptions;

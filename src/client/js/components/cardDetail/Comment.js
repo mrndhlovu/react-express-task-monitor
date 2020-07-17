@@ -97,7 +97,7 @@ const Comment = ({ comment }) => {
             close={handleEditComment}
             buttonText="Add"
             defaultValue={comment.comment}
-            handleCreateClick={handleAddClick}
+            createItemClickHandler={handleAddClick}
             handleChange={handleChange}
             id="edit-comment-input"
           />

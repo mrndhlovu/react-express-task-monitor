@@ -88,7 +88,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       .catch((error) => alertUser(error.message));
   }, [history, id]);
 
-  const handleSelectedBackground = (option) => {
+  const bgColorSelectHandler = (option) => {
     const isImageURL = isURL(option);
     let newBoard;
 
@@ -205,7 +205,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           handleDeleteBoard,
           handleDeleteList,
           handleInviteClick,
-          handleSelectedBackground,
+          bgColorSelectHandler,
           handleShowMenuClick,
           history,
           inviteDone,

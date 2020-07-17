@@ -1,11 +1,12 @@
 import React, { Fragment, useState } from "react";
 import styled from "styled-components";
 import isEmail from "validator/lib/isEmail";
+import PropTypes from "prop-types";
 
 import { Dropdown, Button, Icon, List } from "semantic-ui-react";
 
 import { ACCESS_LEVELS } from "../../constants/constants";
-import { useBoardContext } from "../../utils/hookUtils";
+import { useBoardContext, useMainContext } from "../../utils/hookUtils";
 import NavButton from "../sharedComponents/NavButton";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIFormInput from "../sharedComponents/UIFormInput";
@@ -32,7 +33,7 @@ const StyledDescription = styled(List.Description)`
   color: #000;
 `;
 
-export default function BoardHeaderButtons({ mobile, isStarred }) {
+const BoardHeaderButtons = ({ isStarred }) => {
   const {
     board,
     changeBoardAccessLevel,
@@ -41,6 +42,7 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
     handleShowMenuClick,
     inviteDone,
   } = useBoardContext();
+  const { mobile } = useMainContext().device;
   const { accessLevel } = board;
   let permission;
 
@@ -156,4 +158,10 @@ export default function BoardHeaderButtons({ mobile, isStarred }) {
       )}
     </StyledDiv>
   );
-}
+};
+
+BoardHeaderButtons.propTypes = {
+  isStarred: PropTypes.bool.isRequired,
+};
+
+export default BoardHeaderButtons;

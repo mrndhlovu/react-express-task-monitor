@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 import ReactEmoji from "react-emoji";
+import PropTypes from "prop-types";
 
 import { Comment, Icon } from "semantic-ui-react";
 import { getFormattedDate } from "../../../utils/appUtils";
@@ -13,8 +14,6 @@ const Message = styled.div`
   overflow-wrap: break-word;
   padding: 6px;
   color: ${(props) => (props.isCurrentUserMessage ? "black" : "white")};
-
-}
 `;
 
 const StyledSpan = styled.span`
@@ -49,6 +48,17 @@ const Thread = ({ message, isCurrentUserMessage }) => {
       </Message>
     </div>
   );
+};
+
+Thread.propTypes = {
+  message: PropTypes.shape({
+    user: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
+    date: PropTypes.number,
+    room: PropTypes.string.isRequired,
+    time: PropTypes.number.isRequired,
+  }),
+  isCurrentUserMessage: PropTypes.bool.isRequired,
 };
 
 export default memo(Thread);

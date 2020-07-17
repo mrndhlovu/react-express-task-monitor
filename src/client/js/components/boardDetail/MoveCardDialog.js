@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import _debounce from "debounce";
+import PropTypes from "prop-types";
 
 import { Header, Button } from "semantic-ui-react";
 
@@ -203,6 +204,14 @@ const MoveCardDialog = ({
       />
     </Fragment>
   );
+};
+
+MoveCardDialog.propTypes = {
+  originalBoard: PropTypes.object.isRequired,
+  originalCard: PropTypes.object.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  sourceListId: PropTypes.string.isRequired,
+  setClose: PropTypes.func.isRequired,
 };
 
 export default MoveCardDialog;

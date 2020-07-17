@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 
@@ -34,7 +35,7 @@ const StyledModalActions = styled.div`
 
 const EditCardModal = ({
   cardItem,
-  handleDeleteCard,
+  deleteCardHandler,
   openCardModal,
   setOpenCardModal,
   sourceListId,
@@ -105,7 +106,7 @@ const EditCardModal = ({
             defaultValue={cardItem.title}
             buttonText="Save"
             placeholder="Update cardItem title"
-            handleCreateClick={() => saveCardHandler()}
+            createItemClickHandler={() => saveCardHandler()}
             handleChange={handleChange}
           />
         </StyledModalContent>
@@ -122,7 +123,7 @@ const EditCardModal = ({
               negative
               compact
               size="tiny"
-              onClick={() => handleDeleteCard()}
+              onClick={() => deleteCardHandler()}
               fluid
             />
           </EditCardButton>
@@ -176,6 +177,14 @@ const EditCardModal = ({
       </Wrapper>
     </UIModal>
   );
+};
+
+EditCardModal.propTypes = {
+  cardItem: PropTypes.object.isRequired,
+  deleteCardHandler: PropTypes.func.isRequired,
+  openCardModal: PropTypes.bool.isRequired,
+  setOpenCardModal: PropTypes.func.isRequired,
+  sourceListId: PropTypes.string.isRequired,
 };
 
 export default EditCardModal;

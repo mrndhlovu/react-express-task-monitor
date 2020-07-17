@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import {
   getFormattedDate,
   stringsEqual,
   findArrayItem,
 } from "../../utils/appUtils";
+import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
+import Assignees from "../sharedComponents/Assignees";
 import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
+import EditCardModal from "./EditCardModal";
 import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
-import EditCardModal from "./EditCardModal";
-import Assignees from "../sharedComponents/Assignees";
-import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -61,7 +62,7 @@ const CardItem = ({
   listPosition,
 }) => {
   const { updateBoardState, boardUpdateHandler, board } = useBoardContext();
-  const { handleCardClick } = useBoardListContext();
+  const { cardClickHandler } = useBoardListContext();
 
   const hasLabel = card.labels.length !== 0;
   const hasAttachments = card.attachments.length !== 0;
@@ -73,7 +74,7 @@ const CardItem = ({
 
   const [openCardModal, setOpenCardModal] = useState(false);
 
-  const handleDeleteCard = () => {
+  const deleteCardHandler = () => {
     const sourceList = findArrayItem(board.lists, sourceListId, "_id");
     sourceList.cards.splice(sourceList.cards.indexOf(card));
     board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
@@ -83,7 +84,7 @@ const CardItem = ({
 
   return (
     <CardContainer>
-      <ContentWrapper onClick={() => handleCardClick(card, sourceListId)}>
+      <ContentWrapper onClick={() => cardClickHandler(card, sourceListId)}>
         <LabelsSnippets labels={card.labels} hasLabel={hasLabel} />
         <Container>
           <CardCover card={card} />
@@ -124,7 +125,7 @@ const CardItem = ({
       )}
       <EditCardModal
         cardItem={card}
-        handleDeleteCard={() => handleDeleteCard()}
+        deleteCardHandler={() => deleteCardHandler()}
         history={history}
         sourceListId={sourceListId}
         listPosition={listPosition}
@@ -136,6 +137,14 @@ const CardItem = ({
       />
     </CardContainer>
   );
+};
+
+CardItem.propTypes = {
+  card: PropTypes.object.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
+  listPosition: PropTypes.number.isRequired,
+  showEditButton: PropTypes.bool.isRequired,
+  sourceListId: PropTypes.string.isRequired,
 };
 
 export default withRouter(CardItem);

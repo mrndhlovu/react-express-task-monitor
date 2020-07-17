@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import { useBoardContext } from "../../utils/hookUtils";
 import CreateInput from "../sharedComponents/CreateInput";
@@ -12,7 +13,7 @@ const CopyListDialog = ({ close, listId, title }) => {
     setListTitle(e.target.value);
   };
 
-  const handleCreateClick = () => {
+  const createItemClickHandler = () => {
     const listClone = { ...getSourceList(listId) };
     delete listClone._id;
     createListHandler({ ...listClone, title: newListTitle }, () => close());
@@ -24,10 +25,16 @@ const CopyListDialog = ({ close, listId, title }) => {
       close={close}
       defaultValue={newListTitle}
       handleChange={handleChange}
-      handleCreateClick={handleCreateClick}
+      createItemClickHandler={createItemClickHandler}
       id="create-item-form"
     />
   );
+};
+
+CopyListDialog.propTypes = {
+  close: PropTypes.func.isRequired,
+  listId: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default CopyListDialog;

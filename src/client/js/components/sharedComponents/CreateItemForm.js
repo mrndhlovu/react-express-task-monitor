@@ -44,7 +44,7 @@ const IconWrapper = styled.span`
 `;
 
 const CreateItemForm = ({
-  handleCreateClick,
+  createItemClickHandler,
   handleChange,
   buttonText,
   handleAddList,
@@ -72,14 +72,14 @@ const CreateItemForm = ({
               onChange={(e) => handleChange(e)}
               defaultValue={defaultValue}
               onKeyDown={(e) =>
-                e.key === "Enter" ? handleCreateClick() : null
+                e.key === "Enter" ? createItemClickHandler() : null
               }
             />
             <ButtonWrapper>
               <Button
                 positive
                 size="tiny"
-                onClick={() => handleCreateClick()}
+                onClick={() => createItemClickHandler()}
                 content={buttonText}
                 floated="left"
               />

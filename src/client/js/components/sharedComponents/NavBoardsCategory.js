@@ -98,7 +98,7 @@ const NavBoardsCategory = ({ boards = [], header, starred = false }) => {
     updateUserRequestHandler({ starred: [...user.starred] });
   };
 
-  const handleCardClick = (e, id, star) => {
+  const cardClickHandler = (e, id, star) => {
     e.target.id ? starBoardHandler(id, star) : history.push(`/boards/id/${id}`);
   };
 
@@ -123,7 +123,7 @@ const NavBoardsCategory = ({ boards = [], header, starred = false }) => {
               key={index}
               onMouseLeave={() => setIsOverCurrent(null)}
               onMouseEnter={() => setIsOverCurrent(board._id)}
-              onClick={(e) => handleCardClick(e, board._id)}
+              onClick={(e) => cardClickHandler(e, board._id)}
             >
               <BoardLabelContext styles={board.styleProperties}>
                 <Span className="wordWrap uiTextWhite">{board.title}</Span>
@@ -131,7 +131,7 @@ const NavBoardsCategory = ({ boards = [], header, starred = false }) => {
                   <Star
                     id={index}
                     size={18}
-                    onClick={(e) => handleCardClick(e, board._id, true)}
+                    onClick={(e) => cardClickHandler(e, board._id, true)}
                     className={starred ? "uiStarYellow" : "uiStarWhite"}
                   />
                 )}

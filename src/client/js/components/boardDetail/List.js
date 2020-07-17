@@ -2,6 +2,7 @@ import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import styled from "styled-components";
 import { DragSource, DropTarget } from "react-dnd";
 import { flow } from "lodash";
+import PropTypes from "prop-types";
 
 import { Segment } from "semantic-ui-react";
 
@@ -42,7 +43,7 @@ const List = forwardRef(
     },
     ref
   ) => {
-    const { activeList } = useBoardListContext();
+    const { activeListId } = useBoardListContext();
     const { mobile } = useMainContext().device;
 
     const { title, cards, _id } = list;
@@ -86,7 +87,7 @@ const List = forwardRef(
 
           <CreateCard
             targetList={{ position, listId: _id }}
-            activeList={activeList === _id}
+            activeListId={activeListId === _id}
           />
         </ListSegment>
       </div>
@@ -95,8 +96,19 @@ const List = forwardRef(
     return wrappedList;
   }
 );
-
 const forwardedList = List;
+
+forwardedList.propTypes = {
+  connectDragSource: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
+  list: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    cards: PropTypes.arrayOf(PropTypes.object),
+    _id: PropTypes.string.isRequired,
+  }),
+  isDragging: PropTypes.bool.isRequired,
+  position: PropTypes.number.isRequired,
+};
 
 const listSource = {
   beginDrag(props) {

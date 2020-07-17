@@ -51,7 +51,7 @@ const Summary = ({ board, history, starred }) => {
   const [showStar, setShowStar] = useState(false);
   const { title, _id, styleProperties, isTemplate } = board;
 
-  const handleCardClick = (e, star) => {
+  const cardClickHandler = (e, star) => {
     e.target.id
       ? starBoardHandler(_id, star)
       : history.push(`/boards/id/${_id}`);
@@ -66,7 +66,7 @@ const Summary = ({ board, history, starred }) => {
       <Card
         bgStyle={styleProperties}
         mobile={mobile}
-        onClick={(e) => handleCardClick(e)}
+        onClick={(e) => cardClickHandler(e)}
       >
         {isTemplate && (
           <Label
@@ -79,7 +79,7 @@ const Summary = ({ board, history, starred }) => {
 
         {(starred || showStar) && (
           <Icon
-            onClick={(e) => handleCardClick(e, "star")}
+            onClick={(e) => cardClickHandler(e, "star")}
             id={_id}
             name="star outline"
             className={starred ? "yellow-star" : "white-star star"}

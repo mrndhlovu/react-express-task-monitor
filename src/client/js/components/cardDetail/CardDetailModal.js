@@ -30,7 +30,7 @@ const CardDetailModal = () => {
     hasDueDate,
   } = useCardDetailContext();
 
-  const { handleCardClick } = useBoardListContext();
+  const { cardClickHandler } = useBoardListContext();
 
   const CARD_DETAIL_MODAL_STYLE = {
     top: "3%",
@@ -44,7 +44,7 @@ const CardDetailModal = () => {
   return (
     <UIModal
       isOpen={card && modalOpen}
-      onClose={handleCardClick}
+      onClose={cardClickHandler}
       closeIcon
       modalStyle={CARD_DETAIL_MODAL_STYLE}
     >

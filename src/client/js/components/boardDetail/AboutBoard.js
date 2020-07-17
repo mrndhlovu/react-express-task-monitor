@@ -1,20 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import { withRouter } from "react-router";
+import PropTypes from "prop-types";
 
 import { Icon, Button } from "semantic-ui-react";
 
 import { getUserInitials } from "../../utils/appUtils";
-import { useAuth } from "../../utils/hookUtils";
+import { useAuth, useBoardContext } from "../../utils/hookUtils";
 import SideBarWrapper from "../sharedComponents/SideBarWrapper";
 import UIDivider from "../sharedComponents/UIDivider";
-import UIWrapper from "../sharedComponents/UIWrapper";
 import UISmall from "../sharedComponents/UISmall";
+import UIWrapper from "../sharedComponents/UIWrapper";
 import UserAvatar from "../sharedComponents/UserAvatar";
-import { BoardContext } from "../../utils/contextUtils";
-import { withRouter } from "react-router";
 
 const AboutBoard = ({ setShowAboutCard, showAboutCard, history }) => {
   const { user } = useAuth();
-  const { board, boardUpdateHandler } = useContext(BoardContext);
+  const { board, boardUpdateHandler } = useBoardContext();
 
   const [description, setDescription] = useState(null);
   const [edit, setEdit] = useState(false);
@@ -83,6 +83,14 @@ const AboutBoard = ({ setShowAboutCard, showAboutCard, history }) => {
       </SideBarWrapper>
     </UIWrapper>
   );
+};
+
+AboutBoard.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  setShowAboutCard: PropTypes.func.isRequired,
+  showAboutCard: PropTypes.bool.isRequired,
 };
 
 export default withRouter(AboutBoard);

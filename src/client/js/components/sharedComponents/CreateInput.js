@@ -28,7 +28,7 @@ const TextAreaWrapper = styled.div`
 
 const CreateInput = ({
   close,
-  handleCreateClick,
+  createItemClickHandler,
   handleChange,
   placeholder,
   defaultValue,
@@ -57,7 +57,7 @@ const CreateInput = ({
           positive={positive}
           size="tiny"
           content={buttonText}
-          onClick={() => handleCreateClick()}
+          onClick={() => createItemClickHandler()}
           fluid={fluid}
         />
         {!hideIcon && (

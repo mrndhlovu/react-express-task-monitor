@@ -23,7 +23,7 @@ const NEW_BOARD_MODAL_STYLE = {
 const NewBoardModal = ({
   createBoard,
   handleChange,
-  handleCreateClick,
+  createItemClickHandler,
   showNewBoardModal,
 }) => {
   return (
@@ -37,7 +37,7 @@ const NewBoardModal = ({
         <CreateInput
           placeholder="Add board title"
           buttonText="Create Board"
-          handleCreateClick={handleCreateClick}
+          createItemClickHandler={createItemClickHandler}
           close={() => showNewBoardModal()}
           handleChange={handleChange}
         />

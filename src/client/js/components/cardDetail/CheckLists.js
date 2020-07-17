@@ -210,7 +210,7 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
             buttonText="Add"
             close={() => setCreateItem(!createItem)}
             handleChange={handleChange}
-            handleCreateClick={handleAddClick}
+            createItemClickHandler={handleAddClick}
             id="checklist-item"
             width="100%"
           />

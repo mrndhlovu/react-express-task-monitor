@@ -47,9 +47,9 @@ const StyledContainer = styled.div`
   margin-top: 6%;
 `;
 
-const CreateCard = ({ targetList, activeList }) => {
+const CreateCard = ({ targetList, activeListId }) => {
   const { createCardHandler } = useBoardContext();
-  const { setActiveList, closeAddCardOption } = useBoardListContext();
+  const { setActiveListId, closeAddCardOption } = useBoardListContext();
 
   const [newCard, setNewCard] = useState(null);
 
@@ -59,11 +59,11 @@ const CreateCard = ({ targetList, activeList }) => {
 
   return (
     <StyledContainer>
-      {!activeList ? (
+      {!activeListId ? (
         <StyledButton
           fluid
           basic
-          onClick={() => setActiveList(targetList.listId)}
+          onClick={() => setActiveListId(targetList.listId)}
         >
           <Span className="uiDarkText">
             <Plus size={20} className="uiIconDark" />

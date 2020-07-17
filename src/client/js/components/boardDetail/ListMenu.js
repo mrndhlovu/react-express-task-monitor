@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
+import { Button } from "semantic-ui-react";
+
+import { useBoardContext } from "../../utils/hookUtils";
 import CopyListDialog from "./CopyListDialog";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import EditableHeader from "../sharedComponents/EditableHeader";
 import ListMenuOptions from "./ListMenuOptions";
 import MoveListDialog from "./MoveListDialog";
 import UIContainer from "../sharedComponents/UIContainer";
-
-import { Button } from "semantic-ui-react";
-import { useBoardContext } from "../../utils/hookUtils";
 
 const HeaderWrapper = styled.div`
   display: flex;
@@ -27,15 +28,11 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
   } = useBoardContext();
 
   const [header, setHeader] = useState("List actions");
-  const [hiddenDelete, setHideDelete] = useState(true);
-  const [hideCopyList, setHideCopyList] = useState(true);
-  const [hideDeleteAll, setHideDeleteAll] = useState(true);
-  const [hideMoveCards, setHideMoveCards] = useState(true);
-  const [hideMoveListOption, setHideMoveListOption] = useState(true);
-  const [newBoard, setNewBoard] = useState(null);
+  const [active, setActive] = useState(null);
 
   const handleDeleteAll = () => {
-    setNewBoard({ ...board, lists: [] });
+    boardUpdateHandler({ ...board, lists: [] });
+    handleClose();
   };
 
   const handleMoveAllCards = () => {
@@ -57,25 +54,14 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
       ],
     };
 
-    setNewBoard(updateBoard);
+    boardUpdateHandler(updateBoard);
+    handleClose();
   };
 
   const handleClose = () => {
     setHeader("List actions");
-    setHideMoveListOption(true);
-    setHideCopyList(true);
-    setHideMoveCards(true);
-    setHideDelete(true);
-    setHideDeleteAll(true);
+    setActive(null);
   };
-
-  useEffect(() => {
-    if (!newBoard) return;
-    boardUpdateHandler(newBoard);
-    handleClose();
-
-    setNewBoard(null);
-  }, [boardUpdateHandler, newBoard]);
 
   return (
     <HeaderWrapper>
@@ -97,26 +83,11 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
         color="transparent"
       >
         <UIContainer width="fit-content">
-          {hideCopyList &&
-            hideMoveListOption &&
-            hideCopyList &&
-            hideMoveCards &&
-            hiddenDelete &&
-            hideDeleteAll && (
-              <ListMenuOptions
-                handleShowCopyListClick={() => setHideCopyList(!hideCopyList)}
-                handleDeleteListClick={() => setHideDelete(!hiddenDelete)}
-                handleMoveAllCards={() => setHideMoveCards(!hideMoveCards)}
-                handleDeleteAllClick={() => setHideDeleteAll(!hideDeleteAll)}
-                handleMoveCardsClick={() => setHideMoveCards(!hideMoveCards)}
-                handleShowMoveListClick={() =>
-                  setHideMoveListOption(!hideMoveListOption)
-                }
-                setHeader={setHeader}
-              />
-            )}
+          {header === "List actions" && (
+            <ListMenuOptions handleClick={setActive} setHeader={setHeader} />
+          )}
 
-          {!hideMoveListOption && (
+          {active == "Move List" && (
             <MoveListDialog
               close={handleClose}
               listPosition={listPosition}
@@ -125,7 +96,7 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
             />
           )}
 
-          {!hideCopyList && (
+          {active === "Copy List" && (
             <CopyListDialog
               close={() => handleClose()}
               listId={listId}
@@ -134,7 +105,7 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
           )}
           {header !== "List actions" && (
             <UIContainer padding="5px" width="200px">
-              {!hideMoveCards && (
+              {active === "Move All Cards in This List" && (
                 <Button
                   negative
                   content="Move"
@@ -144,7 +115,7 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
                 />
               )}
 
-              {!hideDeleteAll && (
+              {active === "Delete All Lists" && (
                 <Button
                   negative
                   content="Delete all lists"
@@ -154,7 +125,7 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
                 />
               )}
 
-              {!hiddenDelete && (
+              {active === "Delete List" && (
                 <Button
                   negative
                   content="Delete"
@@ -169,6 +140,13 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
       </DropdownButton>
     </HeaderWrapper>
   );
+};
+
+ListMenu.propTypes = {
+  mobile: PropTypes.bool.isRequired,
+  listId: PropTypes.string.isRequired,
+  listPosition: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default ListMenu;

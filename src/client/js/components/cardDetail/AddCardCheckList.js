@@ -61,7 +61,7 @@ const AddCardCheckList = () => {
         <CreateInput
           buttonText="Add"
           handleChange={(e) => setChecklist(e.target.value)}
-          handleCreateClick={() => handleCreateChecklist()}
+          createItemClickHandler={() => handleCreateChecklist()}
           hideIcon={true}
           defaultValue="Checklist"
           id="new-checklist"

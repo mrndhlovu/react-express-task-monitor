@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from "react";
+import PropTypes from "prop-types";
 
 import { Menu, Button } from "semantic-ui-react";
 
@@ -16,10 +17,10 @@ import {
 } from "../../utils/hookUtils";
 
 const BoardMenu = ({
-  toggleChangeBg,
-  showSideBar,
-  setShowAboutCard,
   handleMakeTemplate,
+  setShowAboutCard,
+  showSideBar,
+  toggleChangeBg,
 }) => {
   const { board, handleShowMenuClick, handleDeleteBoard } = useBoardContext();
   const { user } = useAuth();
@@ -93,6 +94,13 @@ const BoardMenu = ({
       </div>
     </SideBarWrapper>
   );
+};
+
+BoardMenu.propTypes = {
+  handleMakeTemplate: PropTypes.func.isRequired,
+  setShowAboutCard: PropTypes.func.isRequired,
+  showSideBar: PropTypes.bool.isRequired,
+  toggleChangeBg: PropTypes.func.isRequired,
 };
 
 export default BoardMenu;

@@ -38,7 +38,7 @@ const BoardsSummary = () => {
     setNewBoardName(e.target.value);
   };
 
-  const handleCreateClick = () => {
+  const createItemClickHandler = () => {
     const body = {
       title: newBoardName,
     };
@@ -81,7 +81,7 @@ const BoardsSummary = () => {
           showNewBoardModal={showNewBoardModal}
           createBoard={createBoard}
           handleChange={handleChange}
-          handleCreateClick={handleCreateClick}
+          createItemClickHandler={createItemClickHandler}
         />
       </Suspense>
     </StyledContainer>
