@@ -60,6 +60,7 @@ const BoardMenu = ({
       <Menu.Item as="a">
         <ActivitiesHeader
           handleShowDetails={() => setActivities(!activities)}
+          hideButton={activities}
         />
         <div className="sidebar-activities-wrap">
           {activities && (

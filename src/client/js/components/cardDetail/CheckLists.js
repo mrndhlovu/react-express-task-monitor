@@ -18,9 +18,9 @@ import ChecklistItem from "./ChecklistItem";
 import CreateInput from "../sharedComponents/CreateInput";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import ProgressBar from "./ProgressBar";
-import UIButton from "./UIButton";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import UIButton from "../sharedComponents/UIButton";
 
 const CheckLists = () => {
   const { card } = useCardDetailContext();

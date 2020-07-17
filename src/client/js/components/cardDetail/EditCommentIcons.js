@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Picker, Emoji } from "emoji-mart";
 
@@ -76,6 +77,19 @@ const EditCommentIcons = ({
       />
     </Container>
   );
+};
+
+EditCommentIcons.propTypes = {
+  handleEmojiClick: PropTypes.func.isRequired,
+  handleEditComment: PropTypes.func.isRequired,
+  handleDeleteComment: PropTypes.func.isRequired,
+  comment: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    comment: PropTypes.string.isRequired,
+    emojis: PropTypes.arrayOf(PropTypes.object).isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default EditCommentIcons;

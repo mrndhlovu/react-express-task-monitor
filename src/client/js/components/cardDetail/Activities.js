@@ -5,6 +5,7 @@ import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import UserAvatar from "../sharedComponents/UserAvatar";
 import UIContainer from "../sharedComponents/UIContainer";
+import { useBoardContext, useAuth } from "../../utils/hookUtils";
 
 const display = {
   display: "flex",
@@ -24,7 +25,10 @@ const Detail = styled.span`
   margin-left: 20px;
 `;
 
-const Activities = ({ board, user }) => {
+const Activities = () => {
+  const { board } = useBoardContext();
+  const { user } = useAuth();
+
   return (
     <CardDetailSegment>
       {board.activities.map((activity) => {

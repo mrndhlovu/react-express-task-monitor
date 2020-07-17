@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 
@@ -17,6 +18,13 @@ const UIButton = ({ content, compact = true, fluid = false, onClick }) => {
       onClick={onClick}
     />
   );
+};
+
+UIButton.propTypes = {
+  content: PropTypes.string.isRequired,
+  compact: PropTypes.bool,
+  fluid: PropTypes.bool,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default UIButton;

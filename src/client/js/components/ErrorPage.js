@@ -1,7 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 
-import UIButton from "./cardDetail/UIButton";
+import UIButton from "./sharedComponents/UIButton";
 
 const ErrorPage = ({ history }) => {
   return (

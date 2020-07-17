@@ -1,5 +1,7 @@
 import React from "react";
-import { Icon } from "semantic-ui-react";
+import PropTypes from "prop-types";
+
+import { X } from "react-feather";
 
 const TextFilePreviewButtons = ({ editAttachments, file, setOpenDocument }) => {
   return (
@@ -11,11 +13,22 @@ const TextFilePreviewButtons = ({ editAttachments, file, setOpenDocument }) => {
           setOpenDocument(false);
         }}
       >
-        <Icon name="delete" />
+        <X />
         <span>Delete</span>
       </div>
     </>
   );
+};
+
+TextFilePreviewButtons.propTypes = {
+  editAttachments: PropTypes.func.isRequired,
+  setOpenDocument: PropTypes.func.isRequired,
+  file: PropTypes.shape({
+    filetype: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    uploadDate: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default TextFilePreviewButtons;

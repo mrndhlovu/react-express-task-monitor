@@ -1,14 +1,15 @@
 import React, { useState, Fragment } from "react";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 
+import { useCardDetailContext } from "../../utils/hookUtils";
 import AddCoverImage from "./AddCoverImage";
 import DropdownButton from "../sharedComponents/DropdownButton";
+import UIContainer from "../sharedComponents/UIContainer";
+import UIDivider from "../sharedComponents/UIDivider";
 import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import UIDivider from "../sharedComponents/UIDivider";
-import UIContainer from "../sharedComponents/UIContainer";
-import { useCardDetailContext } from "../../utils/hookUtils";
 
 const AddCover = ({ color, buttonSize, upward = true }) => {
   const { hasCover, handleRemoveCover } = useCardDetailContext();
@@ -62,6 +63,12 @@ const AddCover = ({ color, buttonSize, upward = true }) => {
       )}
     </DropdownButton>
   );
+};
+
+AddCover.propTypes = {
+  buttonSize: PropTypes.string,
+  color: PropTypes.string,
+  upward: PropTypes.bool,
 };
 
 export default AddCover;

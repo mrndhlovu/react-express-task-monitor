@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
 import { Image, Dropdown } from "semantic-ui-react";
 
@@ -7,12 +8,8 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 import UISmall from "../sharedComponents/UISmall";
 import { useCardDetailContext } from "../../utils/hookUtils";
 
-const SearchImageList = ({ data }) => {
+const SearchImageList = ({ images }) => {
   const { handleMakeCover } = useCardDetailContext();
-  const [images, setImages] = useState(null);
-  useEffect(() => {
-    setImages(data);
-  }, [data]);
 
   return (
     <UIWrapper className="images-container">
@@ -48,6 +45,19 @@ const SearchImageList = ({ data }) => {
       )}
     </UIWrapper>
   );
+};
+
+SearchImageList.propTypes = {
+  images: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      urls: PropTypes.shape({ full: PropTypes.string.isRequired }),
+      user: PropTypes.shape({
+        first_name: PropTypes.string.isRequired,
+        links: PropTypes.shape({ html: PropTypes.string.isRequired }),
+      }),
+    })
+  ).isRequired,
 };
 
 export default SearchImageList;
