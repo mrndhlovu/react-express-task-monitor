@@ -63,40 +63,29 @@ const Header = styled.div`
   align-items: center;
 `;
 
-const NavBoardsCategory = ({
-  boards = [],
-  header,
-  starred = false,
-  history,
-}) => {
+const NavBoardsCategory = ({ boards = [], header, starred = false }) => {
   const { user } = useAuth();
-  const { updateUserRequestHandler } = useMainContext();
+  const {
+    updateUserRequestHandler,
+    showNavBoard,
+    toggleMenuHandler,
+    history,
+  } = useMainContext();
+  const field = header.toLowerCase();
 
-  const [hidden, setHidden] = useState([]);
   const [isOverCurrent, setIsOverCurrent] = useState(null);
-
-  const isHidden = hidden.includes(header);
 
   const getIcon = () => {
     switch (header) {
-      case "Starred Boards":
+      case "Starred":
         return <Star size={15} />;
-      case "Recent Boards":
+      case "Recent":
         return <Clock size={15} />;
-      case "Personal Boards":
+      case "Personal":
         return <Columns size={15} />;
       default:
         break;
     }
-  };
-
-  const toggleMenuHandler = (menu) => {
-    if (isHidden) {
-      const menuIndex = hidden.indexOf(menu);
-      hidden.splice(menuIndex, 1);
-      return setHidden(hidden);
-    }
-    setHidden(hidden.push(menu));
   };
 
   const starBoardHandler = async (id, starRef) => {
@@ -117,7 +106,7 @@ const NavBoardsCategory = ({
       <Header>
         <HeaderWrapper>
           <span> {getIcon()}</span>
-          <Span>{header}</Span>
+          <Span>{`${header} Boards`}</Span>
         </HeaderWrapper>
         <MoreHorizontal
           size={18}
@@ -126,7 +115,7 @@ const NavBoardsCategory = ({
         />
       </Header>
 
-      {!isHidden &&
+      {showNavBoard[field] &&
         boards.map(
           (board, index) =>
             board && (

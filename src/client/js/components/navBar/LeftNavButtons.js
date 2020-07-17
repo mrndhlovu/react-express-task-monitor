@@ -31,22 +31,9 @@ const LeftNavButtons = ({ history }) => {
       >
         <UIWrapper className="nav-boards-list">
           {/* <UIFormInput placeholder="Find boards by name" /> */}
-          <NavBoardsCategory
-            header="Starred Boards"
-            boards={STARRED_BOARDS}
-            starred
-            history={history}
-          />
-          <NavBoardsCategory
-            header="Recent Boards"
-            boards={RECENT_BOARDS}
-            history={history}
-          />
-          <NavBoardsCategory
-            header="Personal Boards"
-            boards={PERSONAL_BOARDS}
-            history={history}
-          />
+          <NavBoardsCategory header="Starred" boards={STARRED_BOARDS} starred />
+          <NavBoardsCategory header="Recent" boards={RECENT_BOARDS} />
+          <NavBoardsCategory header="Personal" boards={PERSONAL_BOARDS} />
         </UIWrapper>
       </DropdownButton>
     </StyledDiv>

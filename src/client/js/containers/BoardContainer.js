@@ -44,7 +44,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   const [loading, setLoading] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState();
-  const [dragCardId, setDragCardId] = useState("");
 
   const getSourceList = (sourceId) =>
     findArrayItem(board.lists, sourceId, "_id");
@@ -131,25 +130,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       .catch((error) => alertUser(error.response.data.message));
   };
 
-  useEffect(() => {
-    if (board) return emptyFunction();
-    const fetchBoard = async () => {
-      if (templateBoard) {
-        setBoard(templateBoard);
-        return navDataHandler(templateBoard.styleProperties, boards);
-      }
-
-      await requestBoardDetail(id)
-        .then((res) => {
-          setBoard(res.data);
-          return navDataHandler(res.data.styleProperties, boards);
-        })
-        .catch((error) => alertUser(error.response.data.message));
-    };
-
-    fetchBoard();
-  }, [board, boards, id, history, navDataHandler, templateBoard, alertUser]);
-
   const createListHandler = async (listData, callback = () => {}) => {
     if (!listData || !listData.title) return alertUser("Add list title");
 
@@ -190,6 +170,25 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     boardUpdateHandler(board);
   };
 
+  useEffect(() => {
+    if (board) return emptyFunction();
+    const fetchBoard = async () => {
+      if (templateBoard) {
+        setBoard(templateBoard);
+        return navDataHandler(templateBoard.styleProperties, boards);
+      }
+
+      await requestBoardDetail(id)
+        .then((res) => {
+          navDataHandler(res.data.styleProperties, boards);
+          setBoard(res.data);
+        })
+        .catch((error) => alertUser(error.response.data.message));
+    };
+
+    fetchBoard();
+  }, [board, boards, id, history, navDataHandler, templateBoard, alertUser]);
+
   return (
     board && (
       <BoardContext.Provider
@@ -201,7 +200,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           changeBoardAccessLevel,
           createCardHandler,
           createListHandler,
-          dragCardId,
           getSourceList,
           starBoardHandler,
           handleDeleteBoard,
@@ -216,7 +214,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           showMobileMenu,
           showSideBar,
           updateBoardState,
-          setDragCardId,
         }}
       >
         <StyledContainer>

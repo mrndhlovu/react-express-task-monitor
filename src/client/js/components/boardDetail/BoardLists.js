@@ -20,13 +20,7 @@ const StyledListContainer = styled.div`
 `;
 
 const BoardLists = () => {
-  const {
-    board,
-    createListHandler,
-    dragCardId,
-    setDragCardId,
-    history,
-  } = useBoardContext();
+  const { board, createListHandler, history } = useBoardContext();
 
   const [activeCard, setActiveCard] = useState(false);
   const [activeList, setActiveList] = useState("");
@@ -51,11 +45,9 @@ const BoardLists = () => {
     activeCard,
     activeList,
     closeAddCardOption: () => setActiveList(""),
-    dragCardId,
     handleCardClick,
     hideCardDetail,
     setActiveList,
-    setDragCardId,
     setSourceId,
   };
 

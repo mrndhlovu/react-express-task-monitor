@@ -44,14 +44,18 @@ const MainContainer = ({ children, history }) => {
   const [search, setSearch] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [showNavBoard, setShowNavBoards] = useState({
+    starred: false,
+    recent: false,
+    personal: true,
+  });
 
   const { device, dimensions } = useDimensions();
 
   const STARRED_BOARDS =
     boards && boards.map((board) => user.starred.includes(board._id) && board);
 
-  const PERSONAL_BOARDS =
-    boards && boards.map((board) => !user.starred.includes(board._id) && board);
+  const PERSONAL_BOARDS = boards;
 
   const RECENT_BOARDS =
     boards &&
@@ -63,6 +67,11 @@ const MainContainer = ({ children, history }) => {
       : background.image
       ? "transparent"
       : background.color;
+
+  const toggleMenuHandler = (name) => {
+    const field = name.toLowerCase();
+    setShowNavBoards({ ...showNavBoard, [field]: !showNavBoard[field] });
+  };
 
   const handleSearchClick = useCallback((e) => {
     setSearch(e.target.value);
@@ -130,6 +139,8 @@ const MainContainer = ({ children, history }) => {
         STARRED_BOARDS,
         updateUserRequestHandler,
         deleteAccountRequestHandler,
+        showNavBoard,
+        toggleMenuHandler,
       }}
     >
       <AppWrapper data-test-id="app-container" bg={background}>
