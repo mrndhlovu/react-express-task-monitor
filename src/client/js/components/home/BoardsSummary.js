@@ -30,13 +30,9 @@ const BoardsSummary = () => {
   const [createBoard, setCreateBoard] = useState(false);
   const [newBoardName, setNewBoardName] = useState(false);
 
-  const showNewBoardModal = () => {
-    setCreateBoard(!createBoard);
-  };
+  const openCreateBoardModalHandler = () => setCreateBoard(!createBoard);
 
-  const handleChange = (e) => {
-    setNewBoardName(e.target.value);
-  };
+  const handleChange = (e) => setNewBoardName(e.target.value);
 
   const createItemClickHandler = () => {
     const body = {
@@ -44,7 +40,7 @@ const BoardsSummary = () => {
     };
 
     makeNewBoard(body);
-    showNewBoardModal();
+    openCreateBoardModalHandler();
   };
 
   return (
@@ -69,7 +65,7 @@ const BoardsSummary = () => {
           <BoardCategory
             icon="user"
             header="Personal Boards"
-            showNewBoardModal={showNewBoardModal}
+            openCreateBoardModalHandler={openCreateBoardModalHandler}
             isDefault={true}
             isLast={true}
             boards={PERSONAL_BOARDS}
@@ -78,7 +74,7 @@ const BoardsSummary = () => {
       </UIContainer>
       <Suspense fallback={<div>Loading...</div>}>
         <NewBoardModal
-          showNewBoardModal={showNewBoardModal}
+          openCreateBoardModalHandler={openCreateBoardModalHandler}
           createBoard={createBoard}
           handleChange={handleChange}
           createItemClickHandler={createItemClickHandler}

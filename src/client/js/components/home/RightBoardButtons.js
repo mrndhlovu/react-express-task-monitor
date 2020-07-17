@@ -1,11 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import NavButton from "../sharedComponents/NavButton";
 
 const StyledDiv = styled.div`
   padding-right: 4px;
-  justify-self: ${props => (props.mobile ? "start" : "end")};
+  justify-self: ${(props) => (props.mobile ? "start" : "end")};
 `;
 
 const RightBoardButtons = ({ handleShowMenuClick, mobile }) => {
@@ -20,6 +21,11 @@ const RightBoardButtons = ({ handleShowMenuClick, mobile }) => {
       />
     </StyledDiv>
   );
+};
+
+RightBoardButtons.propTypes = {
+  handleShowMenuClick: PropTypes.func.isRequired,
+  mobile: PropTypes.bool.isRequired,
 };
 
 export default RightBoardButtons;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Icon, Label } from "semantic-ui-react";
 
@@ -88,6 +89,19 @@ const Summary = ({ board, history, starred }) => {
       </Card>
     </Wrapper>
   );
+};
+
+Summary.propTypes = {
+  board: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    _id: PropTypes.string.isRequired,
+    isTemplate: PropTypes.bool.isRequired,
+    styleProperties: PropTypes.shape({
+      image: PropTypes.string,
+      color: PropTypes.string.isRequired,
+    }),
+  }).isRequired,
+  starred: PropTypes.bool.isRequired,
 };
 
 export default withRouter(Summary);

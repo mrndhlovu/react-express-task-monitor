@@ -12,13 +12,13 @@ const StyledContainer = styled.div`
   overflow-y: auto;
 `;
 
-const HomePage = ({ history, user }) => {
+const HomePage = ({ history }) => {
   return (
     <StyledContainer className="boards-container">
       <UIWrapper className="boards-grid-wrap">
         <UIWrapper className="boards-grid">
           <HomeSideMenu history={history} className="sidebar-wrap" />
-          <BoardsSummary user={user} />
+          <BoardsSummary />
         </UIWrapper>
       </UIWrapper>
     </StyledContainer>

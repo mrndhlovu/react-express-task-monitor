@@ -34,11 +34,11 @@ const CreateNewBoardHeader = styled.span`
   }
 `;
 
-const CreateNewBoard = ({ showNewBoardModal }) => {
+const CreateNewBoard = ({ openCreateBoardModalHandler }) => {
   const { mobile } = useContext(MainContext).device;
 
   return (
-    <Wrapper mobile={mobile} onClick={() => showNewBoardModal()}>
+    <Wrapper mobile={mobile} onClick={() => openCreateBoardModalHandler()}>
       <Card mobile={mobile} color="grey">
         <CreateNewBoardHeader />
       </Card>

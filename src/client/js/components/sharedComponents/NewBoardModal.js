@@ -24,7 +24,7 @@ const NewBoardModal = ({
   createBoard,
   handleChange,
   createItemClickHandler,
-  showNewBoardModal,
+  openCreateBoardModalHandler,
 }) => {
   return (
     <UIModal
@@ -38,7 +38,7 @@ const NewBoardModal = ({
           placeholder="Add board title"
           buttonText="Create Board"
           createItemClickHandler={createItemClickHandler}
-          close={() => showNewBoardModal()}
+          close={() => openCreateBoardModalHandler()}
           handleChange={handleChange}
         />
       </StyledDiv>
