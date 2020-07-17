@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 
 import { Button } from "semantic-ui-react";
-import { MainContext } from "../../utils/contextUtils";
+
+import { useMainContext } from "../../utils/hookUtils";
 import NavButtonIcon from "./NavButtonIcon";
 
 const StyledButton = styled(Button)`
@@ -22,7 +23,7 @@ const NavButton = ({
   className,
   compact = true,
 }) => {
-  const { mobile } = useContext(MainContext).device;
+  const { mobile } = useMainContext().device;
 
   return mobile && !forceText ? (
     <StyledButton

@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Header, Loader } from "semantic-ui-react";
 
 import { getUserInitials, stringsEqual } from "../../utils/appUtils";
+import { useAuth, useMainContext } from "../../utils/hookUtils";
+import UIButton from "../cardDetail/UIButton";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UserAvatar from "../sharedComponents/UserAvatar";
-import UIButton from "../cardDetail/UIButton";
 
 const Small = styled.span`
   font-size: 14px;
@@ -15,7 +17,10 @@ const Small = styled.span`
   color: #5e6c84;
 `;
 
-const TabPaneHeader = ({ user, device, alertText, history }) => {
+const TabPaneHeader = ({ alertText, history }) => {
+  const { user } = useAuth();
+  const { device } = useMainContext();
+
   const displayStyle = {
     alignItems: "center",
     background: "#f4f5f7",
@@ -51,6 +56,13 @@ const TabPaneHeader = ({ user, device, alertText, history }) => {
       <Small>{user && `@${user.username}`}</Small>
     </UIContainer>
   );
+};
+
+TabPaneHeader.propTypes = {
+  alertText: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default TabPaneHeader;

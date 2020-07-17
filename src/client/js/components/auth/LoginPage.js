@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
 import UIFormInput from "../sharedComponents/UIFormInput";
@@ -41,6 +42,11 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
       />
     </AuthFormWrapper>
   );
+};
+
+LoginPage.propTypes = {
+  handleLoginClick: PropTypes.func.isRequired,
+  onHandleChange: PropTypes.func.isRequired,
 };
 
 export default LoginPage;

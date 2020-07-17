@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
+import PropTypes from "prop-types";
 
 import { Button, Header } from "semantic-ui-react";
 
@@ -17,8 +18,8 @@ const AccountSettings = () => {
     updateUserRequestHandler,
     deleteAccountRequestHandler,
   } = useMainContext();
-
   const { user } = useAuth();
+
   const [credentials, setCredentials] = useState({
     password: null,
     confirmPassword: null,
@@ -108,6 +109,14 @@ const AccountSettings = () => {
       </UIWrapper>
     </UIContainer>
   );
+};
+
+AccountSettings.propTypes = {
+  user: PropTypes.shape({
+    socialAuth: PropTypes.shape({
+      provider: PropTypes.oneOf(["google", "facebook"]),
+    }),
+  }),
 };
 
 export default withRouter(AccountSettings);

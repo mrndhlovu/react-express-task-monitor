@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
 import UIFormInput from "../sharedComponents/UIFormInput";
@@ -24,6 +25,11 @@ const EmailRecovery = ({ handleEmailPassword, onHandleChange, ...rest }) => {
       />
     </AuthFormWrapper>
   );
+};
+
+EmailRecovery.propTypes = {
+  handleEmailPassword: PropTypes.func.isRequired,
+  onHandleChange: PropTypes.func.isRequired,
 };
 
 export default EmailRecovery;

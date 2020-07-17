@@ -6,8 +6,10 @@ import PersonalInfo from "./PersonalInfo";
 import TabContainer from "../sharedComponents/TabContainer";
 import UIContainer from "../sharedComponents/UIContainer";
 import AccountSettings from "./AccountSettings";
+import { useMainContext } from "../../utils/hookUtils";
 
-const TabProfileContent = ({ user, device }) => {
+const TabProfileContent = () => {
+  const { device } = useMainContext();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const displayStyle = {
@@ -30,7 +32,7 @@ const TabProfileContent = ({ user, device }) => {
         content: (
           <TabContainer mobile={device.mobile}>
             <Tab.Pane className="tab-container">
-              <PersonalInfo user={user} device={device} />
+              <PersonalInfo />
             </Tab.Pane>
           </TabContainer>
         ),
