@@ -6,7 +6,11 @@ import { Sidebar } from "semantic-ui-react";
 
 import { DEFAULT_NAV_COLOR } from "../constants/constants";
 import { MainContext } from "../utils/contextUtils";
-import { requestNewBoard } from "../apis/apiRequests";
+import {
+  requestNewBoard,
+  requestUserUpdate,
+  requestDeleteAccount,
+} from "../apis/apiRequests";
 import { useDimensions, useAuth, useAlert } from "../utils/hookUtils";
 import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
@@ -80,6 +84,27 @@ const MainContainer = ({ children, history }) => {
     [background]
   );
 
+  const updateUserRequestHandler = async (data, field, cb = () => {}) => {
+    const body = field ? { [field]: data } : data;
+    await requestUserUpdate(body)
+      .then((res) => {
+        auth.authListener(res.data);
+        cb && cb();
+      })
+      .catch((error) =>
+        alertUser(error.response.data.message || error.response.data.error)
+      );
+  };
+
+  const deleteAccountRequestHandler = async () => {
+    await requestDeleteAccount()
+      .then((res) => {
+        alertUser(res.data.message, true);
+        history.push("/login");
+      })
+      .catch((error) => alertUser(error.response.data.message));
+  };
+
   useEffect(() => {
     (isHomePage || isTemplatePage || !background.image) &&
       setBackground({ image: "", color: "" });
@@ -88,21 +113,23 @@ const MainContainer = ({ children, history }) => {
   return (
     <MainContext.Provider
       value={{
+        alertUser,
         boards,
         device,
         dimensions,
-        navDataHandler,
-        alertUser,
         handleSearchClick,
         history,
         isHomePage,
         makeNewBoard,
+        navDataHandler,
+        PERSONAL_BOARDS,
+        RECENT_BOARDS,
         search,
         setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
         showMobileMenu,
         STARRED_BOARDS,
-        PERSONAL_BOARDS,
-        RECENT_BOARDS,
+        updateUserRequestHandler,
+        deleteAccountRequestHandler,
       }}
     >
       <AppWrapper data-test-id="app-container" bg={background}>

@@ -1,9 +1,9 @@
-import React, { useContext, useState, lazy, Suspense } from "react";
+import React, { useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 
-import { MainContext, HomepageContext } from "../../utils/contextUtils";
-
 import UIContainer from "../sharedComponents/UIContainer";
+import { useAuth, useMainContext, useHomeContext } from "../../utils/hookUtils";
+
 const BoardCategory = lazy(() => import("./BoardCategory"));
 const NewBoardModal = lazy(() => import("../sharedComponents/NewBoardModal"));
 
@@ -13,8 +13,15 @@ const StyledContainer = styled.div`
 `;
 
 const BoardsSummary = () => {
-  const { makeNewBoard, device } = useContext(MainContext);
-  const { boards, user } = useContext(HomepageContext);
+  const {
+    makeNewBoard,
+    device,
+    STARRED_BOARDS,
+    PERSONAL_BOARDS,
+    RECENT_BOARDS,
+  } = useMainContext();
+  const { boards } = useHomeContext();
+  const { user } = useAuth();
 
   const hasBoards = boards.length > 0;
   const hasStarredBoards = user && user.starred.length !== 0;
@@ -45,13 +52,18 @@ const BoardsSummary = () => {
       <UIContainer>
         <Suspense fallback={<div>Loading...</div>}>
           {hasBoards && hasStarredBoards && (
-            <BoardCategory icon="star" header="Starred Boards" starred={true} />
+            <BoardCategory
+              icon="star"
+              header="Starred Boards"
+              starred={true}
+              boards={STARRED_BOARDS}
+            />
           )}
           {hasBoards && hasViewRecent && (
             <BoardCategory
               icon="clock"
               header="Recently Viewed"
-              viewedRecent={true}
+              boards={RECENT_BOARDS}
             />
           )}
           <BoardCategory
@@ -60,6 +72,7 @@ const BoardsSummary = () => {
             showNewBoardModal={showNewBoardModal}
             isDefault={true}
             isLast={true}
+            boards={PERSONAL_BOARDS}
           />
         </Suspense>
       </UIContainer>

@@ -1,9 +1,10 @@
-import React, { useContext, useState } from "react";
-
-import { MainContext, HomepageContext } from "../../utils/contextUtils";
-import { Icon, Label } from "semantic-ui-react";
+import React, { useState } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
+
+import { Icon, Label } from "semantic-ui-react";
+
+import { useHomeContext, useMainContext } from "../../utils/hookUtils";
 
 const CardHeader = styled.div`
   position: absolute;
@@ -44,9 +45,10 @@ const Card = styled.div`
 `;
 
 const Summary = ({ board, history, starred }) => {
-  const { mobile } = useContext(MainContext).device;
+  const { mobile } = useMainContext().device;
+  const { starBoardHandler } = useHomeContext();
+
   const [showStar, setShowStar] = useState(false);
-  const { starBoardHandler } = useContext(HomepageContext);
   const { title, _id, styleProperties, isTemplate } = board;
 
   const handleCardClick = (e, star) => {

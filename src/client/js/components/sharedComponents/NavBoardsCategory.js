@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled, { css } from "styled-components";
 
 import { Star, Clock, Columns, MoreHorizontal } from "react-feather";
+
 import { useAuth, useMainContext } from "../../utils/hookUtils";
-import { requestUserUpdate } from "../../apis/apiRequests";
 
 const Span = styled.h3`
   font-size: 10px !important;
@@ -69,8 +69,8 @@ const NavBoardsCategory = ({
   starred = false,
   history,
 }) => {
-  const { auth, user } = useAuth();
-  const { alertUser } = useMainContext();
+  const { user } = useAuth();
+  const { updateUserRequestHandler } = useMainContext();
 
   const [hidden, setHidden] = useState([]);
   const [isOverCurrent, setIsOverCurrent] = useState(null);
@@ -105,11 +105,7 @@ const NavBoardsCategory = ({
       user.starred.splice(user.starred.indexOf(id));
     else user.starred.push(id);
 
-    await requestUserUpdate({ starred: [...user.starred] }, id)
-      .then((res) => {
-        auth.authListener(res.data);
-      })
-      .catch((error) => alertUser(error.response.data.message));
+    updateUserRequestHandler({ starred: [...user.starred] });
   };
 
   const handleCardClick = (e, id, star) => {

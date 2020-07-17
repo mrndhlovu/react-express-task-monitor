@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 
 import { Button, Header } from "semantic-ui-react";
 
-import { emptyFunction, stringsEqual, resetForm } from "../../utils/appUtils";
-import {
-  requestUserUpdate,
-  requestDeleteAccount,
-} from "../../apis/apiRequests";
+import { stringsEqual, resetForm } from "../../utils/appUtils";
 import { useAuth, useMainContext } from "../../utils/hookUtils";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
@@ -15,16 +11,19 @@ import UIFormInput from "../sharedComponents/UIFormInput";
 import UISmall from "../sharedComponents/UISmall";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
-const AccountSettings = ({ history }) => {
-  const { alertUser } = useMainContext();
+const AccountSettings = () => {
+  const {
+    alertUser,
+    updateUserRequestHandler,
+    deleteAccountRequestHandler,
+  } = useMainContext();
+
   const { user } = useAuth();
   const [credentials, setCredentials] = useState({
     password: null,
     confirmPassword: null,
   });
-  const [deleteAccount, setDeleteAccount] = useState(false);
   const [passwordChanged, setPasswordConfirmed] = useState(false);
-  const [save, setSave] = useState(false);
   const [showDeleteButton, setShowDeleteButton] = useState(false);
 
   const onHandleChange = (e) => {
@@ -32,64 +31,33 @@ const AccountSettings = ({ history }) => {
     setCredentials({ ...credentials, [name]: value });
   };
 
-  const handleSave = (e) => {
+  const updatePasswordHandler = async (e) => {
     e.preventDefault();
     if (!stringsEqual(credentials.password, credentials.confirmPassword))
       return alertUser("Passwords do not match");
-    setSave(true);
+
+    updateUserRequestHandler(credentials.confirmPassword, "password", () => {
+      setPasswordConfirmed(true);
+      alertUser("Password  updated", true, () => {
+        resetForm(["password-confirm-input", "confirm-password-input"]);
+        setCredentials({ password: null, confirmPassword: null });
+      });
+    });
   };
-
-  useEffect(() => {
-    if (!deleteAccount) return emptyFunction();
-    const closeAccount = async () => {
-      await requestDeleteAccount()
-        .then((res) => {
-          setDeleteAccount(false);
-          alertUser(res.data.message, true);
-          history.push("/login");
-        })
-        .catch((error) => {
-          setDeleteAccount(false);
-          alertUser(error.response.data.message);
-        });
-    };
-
-    closeAccount();
-  }, [deleteAccount]);
-
-  useEffect(() => {
-    if (!save) return emptyFunction();
-
-    const updatePassword = async () => {
-      const body = { password: credentials.confirmPassword };
-
-      await requestUserUpdate(body)
-        .then(() => {
-          setSave(false);
-          setPasswordConfirmed(true);
-          alertUser("Password  updated", true, () => {
-            resetForm(["password-confirm-input", "confirm-password-input"]);
-            setCredentials({ password: null, confirmPassword: null });
-          });
-        })
-        .catch((error) => {
-          setSave(false);
-          alertUser(error.response.data.message);
-        });
-    };
-    updatePassword();
-  }, [save, credentials, history]);
 
   return (
     <UIContainer>
       {user && !user.socialAuth.provider && (
         <>
           {!passwordChanged && <Header as="h3" content="Change Password" />}
-          <form id="change-password-form" onSubmit={(e) => handleSave(e)}>
+          <form
+            id="change-password-form"
+            onSubmit={(e) => updatePasswordHandler(e)}
+          >
             <UIFormInput
               id="password-confirm-input"
               autoFocus={true}
-              placeholder="Email"
+              placeholder="Password"
               type="password"
               name="password"
               onChange={(e) => onHandleChange(e)}
@@ -103,11 +71,7 @@ const AccountSettings = ({ history }) => {
             />
             <UIWrapper padding="10px 0">
               <Button
-                loading={save}
-                disabled={
-                  (!credentials.password || !credentials.confirmPassword) &&
-                  !save
-                }
+                disabled={!credentials.password || !credentials.confirmPassword}
                 fluid
                 positive
                 content={passwordChanged ? "Done" : "Save"}
@@ -134,7 +98,7 @@ const AccountSettings = ({ history }) => {
         </UISmall>
         {showDeleteButton && (
           <Button
-            onClick={() => setDeleteAccount(true)}
+            onClick={() => deleteAccountRequestHandler()}
             content="Yes delete my account."
             negative
             floated="right"

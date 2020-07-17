@@ -27,7 +27,9 @@ const SignupContainer = ({ history }) => {
     e.preventDefault();
     setLoading(true);
     await requestAuthSignup(credentials)
-      .then((res) => authListener(res.data.data))
+      .then((res) => {
+        authListener(res.data, () => history.push("/"));
+      })
       .catch((error) =>
         alertUser(error.response.data, false, () => {
           resetForm("authForm");

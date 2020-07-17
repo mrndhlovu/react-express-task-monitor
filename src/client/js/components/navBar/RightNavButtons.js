@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import { Accordion, Icon } from "semantic-ui-react";
 
-import { requestUserUpdate } from "../../apis/apiRequests";
 import { useAuth, useMainContext } from "../../utils/hookUtils";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import NavUserAvatar from "../sharedComponents/NavUserAvatar";
@@ -17,8 +16,8 @@ const StyledDiv = styled.div`
 `;
 
 const RightNavButtons = ({ history }) => {
-  const { user, auth } = useAuth();
-  const { alertUser } = useMainContext();
+  const { user } = useAuth();
+  const { updateUserRequestHandler } = useMainContext();
   const [activeIndex, setActiveIndex] = useState(null);
   const unreadNotification = user.notifications.filter(
     (notification) => !notification.read
@@ -26,15 +25,11 @@ const RightNavButtons = ({ history }) => {
   const hasUnreadNotification = unreadNotification.length > 0;
   const hasNotifications = user.notifications.length > 0;
 
-  const handleClick = async (notification, index) => {
+  const openNotificationHandler = (notification, index) => {
     setActiveIndex(index === activeIndex ? null : index);
     if (!notification.read) {
       user.notifications.splice(index, 1, { ...notification, read: true });
-      await requestUserUpdate({ notifications: user.notifications })
-        .then((res) => {
-          auth.authListener(res.data);
-        })
-        .catch((error) => alertUser(error.response.data.error));
+      updateUserRequestHandler({ notifications: user.notifications });
     }
   };
 
@@ -57,7 +52,7 @@ const RightNavButtons = ({ history }) => {
                   <Accordion.Title
                     active={activeIndex === index}
                     index={0}
-                    onClick={() => handleClick(notification, index)}
+                    onClick={() => openNotificationHandler(notification, index)}
                     className={`single-notification ${
                       notification.read ? "note-read" : "note-unread"
                     }`}

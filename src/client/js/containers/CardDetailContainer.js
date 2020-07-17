@@ -2,7 +2,6 @@ import React, { useState, memo, useCallback } from "react";
 import { withRouter } from "react-router-dom";
 
 import { findArrayItem } from "../utils/appUtils";
-import { requestCardUpdate } from "../apis/apiRequests";
 
 import { CardDetailContext } from "../utils/contextUtils";
 import { useBoardListContext, useBoardContext } from "../utils/hookUtils";
@@ -10,9 +9,12 @@ import CardDetailModal from "../components/cardDetail/CardDetailModal";
 
 const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const { activeCard } = useBoardListContext();
-  const { board, boardUpdateHandler } = useBoardContext();
+  const {
+    board,
+    boardUpdateHandler,
+    cardUpdateRequestHandler,
+  } = useBoardContext();
 
-  const { updateBoardState } = useBoardContext();
   const { id } = match.params;
 
   const [card, setCard] = useState(activeCard);
@@ -34,16 +36,9 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
 
   const handleMakeCover = async (cover) => {
     setIsLoading("cover");
-    let newCard = { ...card, cardCover: cover };
 
-    const body = {
-      newCard,
-      listId: sourceId,
-    };
-
-    await requestCardUpdate(body, id).then((res) => {
-      saveCardChanges(newCard);
-      updateBoardState(res.data);
+    cardUpdateRequestHandler({ ...card, sourceId, cardCover: cover }, () => {
+      saveCardChanges({ ...card, cardCover: cover });
       setIsLoading("");
     });
   };
@@ -84,15 +79,8 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const handleRemoveCover = async () => {
     setIsLoading("cover");
 
-    const body = {
-      cardId: card._id,
-      listId: sourceId,
-      newCard: { ...card, cardCover: "" },
-    };
-    await requestCardUpdate(body, id).then((res) => {
+    cardUpdateRequestHandler({ ...card, cardCover: "" }, sourceId, () => {
       saveCardChanges({ ...card, cardCover: "" });
-      updateBoardState(res.data);
-
       setIsLoading("");
     });
   };

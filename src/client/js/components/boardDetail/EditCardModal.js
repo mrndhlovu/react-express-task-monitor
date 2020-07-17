@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 import { Button } from "semantic-ui-react";
 
-import { requestCardUpdate } from "../../apis/apiRequests";
-import { useBoardContext } from "../../utils/hookUtils";
+import { useBoardContext, useMainContext } from "../../utils/hookUtils";
 import BoardMembersList from "../sharedComponents/BoardMembersList";
 import CreateInput from "../sharedComponents/CreateInput";
 import EditCardButton from "../sharedComponents/EditCardButton";
@@ -40,98 +39,47 @@ const EditCardModal = ({
   setOpenCardModal,
   sourceListId,
 }) => {
-  const { board, updateBoardState, boardId, history } = useBoardContext();
+  const { board, history, cardUpdateRequestHandler } = useBoardContext();
+  const { alertUser } = useMainContext();
 
-  const [archive, setArchive] = useState(false);
-  const [boardMember, setBoardMember] = useState(null);
-  const [card, setCard] = useState(cardItem);
-  const [newDate, setNewDate] = useState({ add: false, remove: false });
-  const [newTitle, setNewTitle] = useState(false);
-  const [saveCard, setSaveCard] = useState(false);
-  const [startDate, setStartDate] = useState(new Date());
   const [close, setClose] = useState(false);
+  const [newTitle, setNewTitle] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
 
   const handleChange = (e) => setNewTitle(e.target.value);
 
-  const handleChangeMembers = (member) => setBoardMember(member);
-
-  const handleUpdateDueDate = (remove) => {
-    remove
-      ? setNewDate({ ...newDate, remove: true })
-      : setNewDate({ ...newDate, add: true });
+  const archiveCardHandler = () => {
+    cardUpdateRequestHandler({ ...cardItem, title: newTitle }, sourceListId);
   };
 
-  useEffect(() => {
-    let newCard;
-    const saveCardChanges = async () => {
-      const body = {
-        newCard,
-        listId: sourceListId,
-      };
+  const saveCardHandler = () => {
+    cardUpdateRequestHandler({ ...cardItem, archived: true }, sourceListId);
+    setNewTitle(null);
+  };
 
-      await requestCardUpdate(body, boardId).then((res) => {
-        setCard(newCard);
-        updateBoardState(res.data);
-      });
+  const boardMembersHandler = (boardMember) => {
+    const isInAssigneeList = cardItem.assignees.some(
+      (member) => member._id === boardMember._id
+    );
+
+    isInAssigneeList
+      ? cardItem.assignees.splice(cardItem.assignees.indexOf(boardMember), 1)
+      : cardItem.assignees.push(boardMember);
+
+    cardUpdateRequestHandler(cardItem, sourceListId);
+  };
+
+  const dueDateHandler = (remove) => {
+    const newCard = {
+      ...cardItem,
+      dueDate: remove ? "" : { date: `${startDate}`, complete: false },
     };
-
-    if (saveCard) {
-      newCard = { ...card, title: newTitle };
-      setSaveCard(false);
-      setNewTitle(null);
-      saveCardChanges();
-    }
-
-    if (newDate.add || newDate.remove) {
-      newCard = {
-        ...card,
-        dueDate: newDate.add ? { date: `${startDate}`, complete: false } : "",
-      };
-
-      setNewDate({ add: false, remove: false });
-      saveCardChanges();
-    }
-    if (archive) {
-      newCard = { ...card, archived: true };
-      setArchive(false);
-      saveCardChanges();
-    }
-
-    if (boardMember) {
-      const isInAssigneeList = card.assignees.some(
-        (member) => member._id === boardMember._id
-      );
-
-      isInAssigneeList
-        ? card.assignees.splice(card.assignees.indexOf(boardMember), 1)
-        : card.assignees.push(boardMember);
-      newCard = { ...card };
-
-      saveCardChanges();
-    }
-    return () => {
-      setBoardMember(null);
-    };
-  }, [
-    archive,
-    boardMember,
-    card,
-    boardId,
-    sourceListId,
-    newDate,
-    newTitle,
-    updateBoardState,
-    saveCard,
-    startDate,
-  ]);
-
-  useEffect(() => {
-    return () => {
-      setTimeout(() => {
-        setClose(false);
-      }, 500);
-    };
-  });
+    cardUpdateRequestHandler(
+      newCard,
+      sourceListId,
+      alertUser("Due Date Updated", true)
+    );
+  };
 
   const EDIT_CARD_MODAL_STYLE = {
     top: "6%",
@@ -145,19 +93,19 @@ const EditCardModal = ({
 
   return (
     <UIModal
-      className="create-card-modal"
+      className="create-cardItem-modal"
       isOpen={openCardModal}
       bgColor="transparent"
       modalStyle={EDIT_CARD_MODAL_STYLE}
     >
-      <Wrapper className="edit-card-actions">
+      <Wrapper className="edit-cardItem-actions">
         <StyledModalContent>
           <CreateInput
             close={() => setOpenCardModal(false)}
-            defaultValue={card.title}
+            defaultValue={cardItem.title}
             buttonText="Save"
-            placeholder="Update card title"
-            handleCreateClick={() => setSaveCard(true)}
+            placeholder="Update cardItem title"
+            handleCreateClick={() => saveCardHandler()}
             handleChange={handleChange}
           />
         </StyledModalContent>
@@ -186,7 +134,7 @@ const EditCardModal = ({
           >
             <MoveCardDialog
               originalBoard={board}
-              originalCard={card}
+              originalCard={cardItem}
               history={history}
               sourceListId={sourceListId}
               setClose={() => setClose(true)}
@@ -199,8 +147,8 @@ const EditCardModal = ({
           >
             <BoardMembersList
               boardMembers={board.members}
-              handleBoardMemberClick={handleChangeMembers}
-              activeCard={card}
+              handleBoardMemberClick={boardMembersHandler}
+              activeCard={cardItem}
             />
           </EditCardButton>
 
@@ -208,7 +156,7 @@ const EditCardModal = ({
             <PickDueDate
               startDate={startDate}
               setStartDate={setStartDate}
-              handleUpdateDueDate={handleUpdateDueDate}
+              handleUpdateDueDate={dueDateHandler}
             />
           </EditCardButton>
           <EditCardButton
@@ -221,7 +169,7 @@ const EditCardModal = ({
               negative
               compact
               fluid
-              onClick={() => setArchive(true)}
+              onClick={() => archiveCardHandler()}
             />
           </EditCardButton>
         </StyledModalActions>

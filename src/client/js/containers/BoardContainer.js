@@ -10,9 +10,9 @@ import {
   requestBoardDelete,
   requestBoardDetail,
   requestUserInvite,
-  requestUserUpdate,
   requestNewBoardList,
   requestCreateNewCard,
+  requestCardUpdate,
 } from "../apis/apiRequests";
 
 import {
@@ -30,17 +30,19 @@ const StyledContainer = styled.div`
 `;
 
 const BoardContainer = ({ match, history, templateBoard }) => {
-  const { navDataHandler, boards, alertUser } = useMainContext();
+  const {
+    navDataHandler,
+    boards,
+    alertUser,
+    updateUserRequestHandler,
+  } = useMainContext();
   const { user, auth } = useAuth();
   const { id } = match.params;
 
   const [board, setBoard] = useState(null);
-  const [invite, setInvite] = useState(null);
   const [inviteDone, setInviteDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
-  const [starred, setStarred] = useState(false);
-  const [unStarred, setUnStarred] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState();
   const [dragCardId, setDragCardId] = useState("");
 
@@ -112,47 +114,22 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   };
 
   const starBoardHandler = () => {
-    if (user.starred.includes(id)) {
+    if (user.starred.includes(id))
       user.starred.splice(user.starred.indexOf(id), 1);
-      setUnStarred(true);
-    } else {
-      user.starred.push(id);
-      setStarred(true);
-    }
+    else user.starred.push(id);
+
+    updateUserRequestHandler({ starred: user.starred });
   };
 
-  useEffect(() => {
-    if (!starred && !unStarred) return emptyFunction();
-
-    const updateUser = async () => {
-      await requestUserUpdate({ starred: user.starred });
-      return () => {
-        setStarred(false);
-        setUnStarred(false);
-      };
-    };
-
-    updateUser();
-  }, [starred, user, unStarred]);
-
-  useEffect(() => {
-    if (!invite) return emptyFunction();
-    setLoading(true);
-    const inviteUser = async () => {
-      await requestUserInvite(id, invite)
-        .then(() => {
-          setInviteDone(true);
-          setLoading(false);
-          setInvite(null);
-          resetForm("invite-input");
-        })
-        .catch((error) => alertUser(error.response.data.message));
-    };
-
-    inviteUser();
-  }, [invite, id]);
-
-  const handleInviteClick = (email) => setInvite(email);
+  const handleInviteClick = async (email) => {
+    await requestUserInvite(id, email)
+      .then(() => {
+        setInviteDone(true);
+        setLoading(false);
+        resetForm("invite-input");
+      })
+      .catch((error) => alertUser(error.response.data.message));
+  };
 
   useEffect(() => {
     if (board) return emptyFunction();
@@ -185,6 +162,17 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       .catch((error) => alertUser(error.response.data.message));
   };
 
+  const cardUpdateRequestHandler = async (newCard, sourceId, cb = () => {}) => {
+    const body = { listId: sourceId, newCard };
+
+    await requestCardUpdate(body, id)
+      .then((res) => {
+        updateBoardState(res.data);
+        cb && cb();
+      })
+      .catch((error) => alertUser(error.response.data.message));
+  };
+
   const createCardHandler = async (newCard, listId) => {
     if (!newCard) alertUser("Add card title");
 
@@ -202,29 +190,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     boardUpdateHandler(board);
   };
 
-  const cardToNewListHandler = (sourceId, dropProps) => {
-    const dropTargetList = getSourceList(dropProps.listId);
-    const sourceList = getSourceList(sourceId);
-    const sourceIndex = board.lists.indexOf(sourceList);
-    const dropTargetListIndex = board.lists.indexOf(dropTargetList);
-    const dropTargetCardIndex = dropTargetList.cards.indexOf(dropTargetCard);
-
-    const card = findArrayItem(sourceList.cards, dragCardId, "_id");
-
-    const dropTargetCard = findArrayItem(
-      sourceList.cards,
-      dropProps.cardId,
-      "_id"
-    );
-
-    sourceList.cards.splice(sourceList.cards.indexOf(card), 1);
-
-    board.lists.splice(sourceIndex, 1, sourceList);
-
-    dropTargetList.cards.splice(dropTargetCardIndex, 0, card);
-    board.lists.splice(dropTargetListIndex, 1, dropTargetList);
-  };
-
   return (
     board && (
       <BoardContext.Provider
@@ -232,7 +197,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
           board,
           boardId: id,
           boardUpdateHandler,
-          cardToNewListHandler,
+          cardUpdateRequestHandler,
           changeBoardAccessLevel,
           createCardHandler,
           createListHandler,

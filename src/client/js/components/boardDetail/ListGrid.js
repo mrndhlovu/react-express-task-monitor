@@ -7,11 +7,12 @@ import List from "./List";
 const ListGrid = () => {
   const { board, boardUpdateHandler, updateBoardState } = useBoardContext();
 
-  const [lists, setLists] = useState(undefined);
+  const [draggingCard, setDraggingCard] = useState(undefined);
   const [dragIndex, setDragIndex] = useState(undefined);
   const [hoverIndex, setHoverIndex] = useState(undefined);
+  const [lists, setLists] = useState(undefined);
   const [previousIndex, setPreviousIndex] = useState(undefined);
-  const [draggingCard, setDraggingCard] = useState(undefined);
+
   const boardLists = lists || board.lists;
 
   const listDropHandler = () => {
@@ -27,10 +28,12 @@ const ListGrid = () => {
   };
 
   const undoMoveCard = (listHoverIndex) => {
-    const cardIndex = boardLists[previousIndex].cards.indexOf(draggingCard);
-    boardLists[previousIndex].cards.splice(cardIndex, 1);
+    if (previousIndex) {
+      const cardIndex = boardLists[previousIndex].cards.indexOf(draggingCard);
+      boardLists[previousIndex].cards.splice(cardIndex, 1);
 
-    addCardToTarget(listHoverIndex, cardIndex, draggingCard);
+      addCardToTarget(listHoverIndex, cardIndex, draggingCard);
+    }
   };
 
   const removeCardFromSource = (sourceIndex, cardIndex) => {
@@ -87,15 +90,15 @@ const ListGrid = () => {
     <List
       cardToNewListHandler={cardToNewListHandler}
       dragIndex={dragIndex}
+      hoverIndex={hoverIndex}
       key={key}
       list={boardLists[key]}
       listDropHandler={listDropHandler}
       moveListHandler={moveListHandler}
       position={index + 1}
-      setDragIndex={setDragIndex}
-      hoverIndex={hoverIndex}
-      setHoverIndex={setHoverIndex}
       resetListsState={resetListsState}
+      setDragIndex={setDragIndex}
+      setHoverIndex={setHoverIndex}
     />
   ));
 };

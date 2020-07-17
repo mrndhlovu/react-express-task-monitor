@@ -12,6 +12,7 @@ const AuthContainer = ({ children, history, location }) => {
   const [user, setUser] = useState(null);
 
   const authListener = (user, cb) => {
+    console.log("authListener -> user", user, cb);
     if (!user) return;
     setUser(user);
     setAuthenticated(true);

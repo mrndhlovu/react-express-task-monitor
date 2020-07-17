@@ -1,12 +1,11 @@
-import React, { useContext, Fragment } from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
 import { Header, Icon } from "semantic-ui-react";
 
-import { HomepageContext, MainContext } from "../../utils/contextUtils";
 import CreateNewBoard from "../sharedComponents/CreateNewBoard";
 import Summary from "./Summary";
-import { useAuth } from "../../utils/hookUtils";
+import { useAuth, useMainContext } from "../../utils/hookUtils";
 
 const Category = styled.div`
   display: grid;
@@ -34,11 +33,10 @@ const BoardCategory = ({
   isDefault,
   isLast,
   showNewBoardModal,
-  starred,
-  viewedRecent,
+  boards,
 }) => {
-  const { tablet, loading, device } = useContext(MainContext);
-  const { boards } = useContext(HomepageContext);
+  const { tablet, loading, device } = useMainContext();
+
   const { user } = useAuth();
 
   return (
@@ -50,9 +48,7 @@ const BoardCategory = ({
         {!loading &&
           boards.map(
             (board) =>
-              ((user.starred.includes(board._id) && starred) ||
-                (user.viewedRecent.includes(board._id) && viewedRecent) ||
-                isDefault) && (
+              board && (
                 <Summary
                   key={board._id}
                   starred={user.starred.includes(board._id)}
@@ -60,6 +56,7 @@ const BoardCategory = ({
                 />
               )
           )}
+
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
       </Category>
     </Fragment>

@@ -1,7 +1,7 @@
 import React, { Fragment, lazy, Suspense, useState } from "react";
 import styled from "styled-components";
 
-import { Button, Message } from "semantic-ui-react";
+import { Button } from "semantic-ui-react";
 
 const DatePicker = lazy(() => import("react-datepicker"));
 
@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  padding: 10px 10px;
+  padding: 10px;
 `;
 
 const PickDueDate = ({ startDate, setStartDate, handleUpdateDueDate }) => {
@@ -22,15 +22,6 @@ const PickDueDate = ({ startDate, setStartDate, handleUpdateDueDate }) => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Fragment>
-        {message && (
-          <Message
-            positive
-            fluid
-            content="Due Date Updated"
-            size="tiny"
-            onDismiss={() => setMessage(false)}
-          />
-        )}
         <Container>
           <DatePicker
             className="ui fluid focus input"
