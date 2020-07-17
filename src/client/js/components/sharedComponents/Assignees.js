@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { getUserInitials } from "../../utils/appUtils";
 import { Label } from "semantic-ui-react";
@@ -24,6 +25,10 @@ const Assignees = ({ assignees }) => {
       ))}
     </Wrapper>
   );
+};
+
+Assignees.propTypes = {
+  assignees: PropTypes.shape({ fname: PropTypes.string.isRequired }).isRequired,
 };
 
 export default Assignees;

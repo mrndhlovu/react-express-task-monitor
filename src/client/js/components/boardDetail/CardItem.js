@@ -54,14 +54,8 @@ const BadgeContainer = styled.div`
   align-items: flex-end;
 `;
 
-const CardItem = ({
-  card,
-  sourceListId,
-  history,
-  showEditButton,
-  listPosition,
-}) => {
-  const { updateBoardState, boardUpdateHandler, board } = useBoardContext();
+const CardItem = ({ card, sourceListId, showEditButton }) => {
+  const { boardUpdateHandler, board } = useBoardContext();
   const { cardClickHandler } = useBoardListContext();
 
   const hasLabel = card.labels.length !== 0;
@@ -70,7 +64,7 @@ const CardItem = ({
   const hasDescription = !stringsEqual(card.shortDescription, "");
   const hasComments = card.comments.length !== 0;
   const hasAssignees = card.assignees.length !== 0;
-  const hasDueDate = card.dueDate;
+  const hasDueDate = card.dueDate && card.dueDate.date !== "";
 
   const [openCardModal, setOpenCardModal] = useState(false);
 
@@ -126,14 +120,9 @@ const CardItem = ({
       <EditCardModal
         cardItem={card}
         deleteCardHandler={() => deleteCardHandler()}
-        history={history}
         sourceListId={sourceListId}
-        listPosition={listPosition}
         openCardModal={openCardModal}
         setOpenCardModal={setOpenCardModal}
-        updateBoardState={updateBoardState}
-        boardUpdateHandler={boardUpdateHandler}
-        hasDueDate={hasDueDate}
       />
     </CardContainer>
   );
@@ -141,8 +130,6 @@ const CardItem = ({
 
 CardItem.propTypes = {
   card: PropTypes.object.isRequired,
-  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
-  listPosition: PropTypes.number.isRequired,
   showEditButton: PropTypes.bool.isRequired,
   sourceListId: PropTypes.string.isRequired,
 };

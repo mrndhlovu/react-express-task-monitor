@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { createPortal } from "react-dom";
+import PropTypes from "prop-types";
 
 const portalRoot = document.getElementById("portal");
 
@@ -22,5 +23,9 @@ class UIPortal extends Component {
     return createPortal(children, this.el);
   }
 }
+
+UIPortal.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 export default UIPortal;

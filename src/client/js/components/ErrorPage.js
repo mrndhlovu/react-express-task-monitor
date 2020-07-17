@@ -1,5 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
+import PropTypes from "prop-types";
 
 import UIButton from "./sharedComponents/UIButton";
 
@@ -13,6 +14,10 @@ const ErrorPage = ({ history }) => {
       <UIButton content="Back" onClick={() => history.goBack()} />
     </div>
   );
+};
+
+ErrorPage.propTypes = {
+  history: PropTypes.shape({ goBack: PropTypes.func.isRequired }),
 };
 
 export default withRouter(ErrorPage);

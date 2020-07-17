@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { getUserInitials, findArrayItem } from "../../utils/appUtils";
 import { Icon } from "semantic-ui-react";
@@ -46,6 +47,16 @@ const BoardMembersList = ({
       ))}
     </Fragment>
   );
+};
+
+BoardMembersList.propTypes = {
+  boardMembers: PropTypes.arrayOf(
+    PropTypes.shape({
+      fname: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      assignees: PropTypes.arrayOf(PropTypes.object).isRequired,
+    })
+  ).isRequired,
 };
 
 export default BoardMembersList;

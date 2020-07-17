@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Container = styled.div`
   padding: 10px;
@@ -16,5 +17,9 @@ const Container = styled.div`
 `;
 
 const AttachmentOption = ({ children }) => <Container>{children}</Container>;
+
+AttachmentOption.propTypes = {
+  children: PropTypes.element.isRequired,
+};
 
 export default AttachmentOption;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled, { css } from "styled-components";
+import PropTypes from "prop-types";
 
 import { Star, Clock, Columns, MoreHorizontal } from "react-feather";
 
@@ -141,6 +142,17 @@ const NavBoardsCategory = ({ boards = [], header, starred = false }) => {
       </Container>
     )
   );
+};
+
+NavBoardsCategory.propTypes = {
+  boards: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  header: PropTypes.string.isRequired,
+  starred: PropTypes.bool,
 };
 
 export default NavBoardsCategory;

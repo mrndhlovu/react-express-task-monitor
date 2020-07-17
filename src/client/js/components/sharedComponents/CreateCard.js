@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { Button, Card, TextArea } from "semantic-ui-react";
 
@@ -102,6 +103,12 @@ const CreateCard = ({ targetList, activeListId }) => {
       )}
     </StyledContainer>
   );
+};
+
+CreateCard.propTypes = {
+  activeListId: PropTypes.bool.isRequired,
+  targetList: PropTypes.shape({ listId: PropTypes.string.isRequired })
+    .isRequired,
 };
 
 export default withRouter(CreateCard);

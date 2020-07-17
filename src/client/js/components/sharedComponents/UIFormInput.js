@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Icon } from "semantic-ui-react";
 
@@ -47,6 +48,22 @@ const UIFormInput = ({
       <Icon {...iconProps} data-test-id="password-input-field-eye-icon" />
     </InputWrapper>
   );
+};
+
+UIFormInput.propTypes = {
+  autoFocus: PropTypes.bool,
+  className: PropTypes.string,
+  dataTestId: PropTypes.string,
+  defaultValue: PropTypes.string,
+  iconProps: PropTypes.object,
+  id: PropTypes.string,
+  name: PropTypes.string,
+  onBlur: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onKeyDown: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default UIFormInput;

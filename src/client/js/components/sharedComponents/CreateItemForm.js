@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 import { X, Plus } from "react-feather";
@@ -92,6 +93,18 @@ const CreateItemForm = ({
       </Container>
     </StyledWrapper>
   );
+};
+
+CreateItemForm.propTypes = {
+  createItemClickHandler: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  buttonText: PropTypes.string,
+  handleAddList: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  showInputField: PropTypes.bool,
+  defaultValue: PropTypes.string,
+  ctaText: PropTypes.string,
+  color: PropTypes.string,
 };
 
 export default CreateItemForm;

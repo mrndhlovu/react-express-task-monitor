@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import UIWrapper from "./UIWrapper";
 
@@ -11,6 +12,11 @@ const TabContainer = ({ children, mobile }) => {
   };
 
   return <UIWrapper display={displayStyle}>{children}</UIWrapper>;
+};
+
+TabContainer.propTypes = {
+  children: PropTypes.element.isRequired,
+  mobile: PropTypes.bool.isRequired,
 };
 
 export default TabContainer;

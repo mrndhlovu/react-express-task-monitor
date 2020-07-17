@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Message } from "semantic-ui-react";
 
@@ -27,6 +28,15 @@ const UIMessage = ({
       key="list"
     />
   );
+};
+
+UIMessage.propTypes = {
+  dataTestId: PropTypes.string,
+  error: PropTypes.bool,
+  handleDismiss: PropTypes.func,
+  list: PropTypes.string.isRequired,
+  message: PropTypes.string,
+  success: PropTypes.bool,
 };
 
 export default UIMessage;

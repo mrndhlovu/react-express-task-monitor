@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledSmall = styled.small`
   cursor: pointer;
@@ -33,6 +34,16 @@ const UISmall = ({
       {children}
     </StyledSmall>
   );
+};
+
+UISmall.propTypes = {
+  bottom: PropTypes.string,
+  children: PropTypes.element.isRequired,
+  className: PropTypes.string,
+  dataTestId: PropTypes.string,
+  handleClick: PropTypes.func.isRequired,
+  left: PropTypes.string,
+  margin: PropTypes.string,
 };
 
 export default UISmall;

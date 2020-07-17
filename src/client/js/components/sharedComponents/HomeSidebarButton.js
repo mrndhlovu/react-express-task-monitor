@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Icon } from "semantic-ui-react";
 
@@ -44,6 +45,13 @@ const HomeSidebarButton = ({
       </StyledMenuButton>
     </Wrapper>
   );
+};
+
+HomeSidebarButton.propTypes = {
+  iconName: PropTypes.string.isRequired,
+  buttonText: PropTypes.string,
+  onClick: PropTypes.func.isRequired,
+  active: PropTypes.bool,
 };
 
 export default HomeSidebarButton;

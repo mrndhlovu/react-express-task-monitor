@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import { findArrayItem, stringsEqual } from "../../utils/appUtils";
 import UIFormInput from "../sharedComponents/UIFormInput";
@@ -69,6 +70,19 @@ const EditableHeader = ({
       )}
     </div>
   );
+};
+
+EditableHeader.propTypes = {
+  sourceId: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  handleEditTitle: PropTypes.func.isRequired,
+  checklist: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+  attachment: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default EditableHeader;

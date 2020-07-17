@@ -1,5 +1,6 @@
 import React, { Fragment, lazy, Suspense, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 
@@ -61,6 +62,12 @@ const PickDueDate = ({ startDate, setStartDate, handleUpdateDueDate }) => {
       </Fragment>
     </Suspense>
   );
+};
+
+PickDueDate.propTypes = {
+  startDate: PropTypes.bool.isRequired,
+  setStartDate: PropTypes.func.isRequired,
+  handleUpdateDueDate: PropTypes.func.isRequired,
 };
 
 export default PickDueDate;

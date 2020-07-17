@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import CreateInput from "./CreateInput";
 import UIModal from "./UIModal";
@@ -44,6 +45,13 @@ const NewBoardModal = ({
       </StyledDiv>
     </UIModal>
   );
+};
+
+NewBoardModal.propTypes = {
+  createBoard: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  createItemClickHandler: PropTypes.func.isRequired,
+  openCreateBoardModalHandler: PropTypes.func.isRequired,
 };
 
 export default NewBoardModal;

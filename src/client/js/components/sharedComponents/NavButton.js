@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 
@@ -54,6 +55,18 @@ const NavButton = ({
       color={buttonColor}
     />
   );
+};
+
+NavButton.propTypes = {
+  buttonColor: PropTypes.string,
+  buttonText: PropTypes.string,
+  className: PropTypes.string,
+  compact: PropTypes.bool,
+  float: PropTypes.bool,
+  forceText: PropTypes.bool,
+  iconName: PropTypes.string,
+  id: PropTypes.string,
+  redirect: PropTypes.func.isRequired,
 };
 
 export default NavButton;

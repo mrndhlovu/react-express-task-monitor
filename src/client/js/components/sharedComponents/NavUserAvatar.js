@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Dropdown } from "semantic-ui-react";
 
@@ -46,6 +47,15 @@ const NavUserAvatar = ({
       </Dropdown.Menu>
     </Dropdown>
   );
+};
+
+NavUserAvatar.propTypes = {
+  userName: PropTypes.string.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  pointing: PropTypes.string,
+  callback: PropTypes.func,
+  fontSize: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default NavUserAvatar;

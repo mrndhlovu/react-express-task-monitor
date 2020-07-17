@@ -1,5 +1,6 @@
 import React, { useState, Fragment } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Form, Button, TextArea } from "semantic-ui-react";
 import { getUserInitials } from "../../utils/appUtils";
@@ -75,6 +76,17 @@ const CardCommentInput = ({ comment, saveComment }) => {
       )}
     </Fragment>
   );
+};
+
+CardCommentInput.propTypes = {
+  comment: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    comment: PropTypes.string.isRequired,
+    emojis: PropTypes.arrayOf(PropTypes.object).isRequired,
+    createdAt: PropTypes.string.isRequired,
+    updatedAt: PropTypes.string.isRequired,
+  }).isRequired,
+  saveComment: PropTypes.func.isRequired,
 };
 
 export default CardCommentInput;

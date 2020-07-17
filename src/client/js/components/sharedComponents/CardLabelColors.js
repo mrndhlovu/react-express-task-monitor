@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { BG_COLORS } from "../../constants/constants";
 import { Icon } from "semantic-ui-react";
@@ -53,6 +54,11 @@ const CardLabelColors = ({ handleColorClick, labels = [] }) => {
       </ColorsWrapper>
     </Container>
   );
+};
+
+CardLabelColors.propTypes = {
+  handleColorClick: PropTypes.func.isRequired,
+  labels: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default CardLabelColors;

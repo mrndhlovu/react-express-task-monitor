@@ -1,5 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Header, Dropdown, Icon } from "semantic-ui-react";
 import { X } from "react-feather";
@@ -101,6 +102,30 @@ const DropdownButton = ({
       </Dropdown.Menu>
     </StyledDropdown>
   );
+};
+
+DropdownButton.propTypes = {
+  as: PropTypes.string,
+  button: PropTypes.bool,
+  buttonText: PropTypes.string,
+  callback: PropTypes.func,
+  children: PropTypes.element.isRequired,
+  className: PropTypes.string,
+  close: PropTypes.func,
+  closeOnSelect: PropTypes.bool,
+  color: PropTypes.string,
+  compact: PropTypes.bool,
+  direction: PropTypes.string,
+  fluid: PropTypes.bool,
+  hasHeader: PropTypes.bool,
+  header: PropTypes.string,
+  icon: PropTypes.string,
+  iconColor: PropTypes.string,
+  labeled: PropTypes.bool,
+  notificationCount: PropTypes.bool,
+  pointing: PropTypes.string,
+  size: PropTypes.string,
+  upward: PropTypes.bool,
 };
 
 export default DropdownButton;
