@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button, Icon } from "semantic-ui-react";
 import UIWrapper from "../sharedComponents/UIWrapper";
@@ -47,6 +48,13 @@ const MobileNavBar = ({
       )}
     </UIWrapper>
   );
+};
+
+MobileNavBar.propTypes = {
+  isHomePage: PropTypes.bool.isRequired,
+  setShowMobileMenu: PropTypes.func.isRequired,
+  setVisible: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
 
 export default MobileNavBar;

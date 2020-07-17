@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { useAuth } from "../../utils/hookUtils";
 import HomeSideMenu from "../home/HomeSideMenu";
@@ -58,6 +59,12 @@ const MobileSideMenu = ({ visible, setVisible, history }) => {
       <UIDivider margin="0" />
     </SideBarWrapper>
   );
+};
+
+MobileSideMenu.propTypes = {
+  visible: PropTypes.bool.isRequired,
+  setVisible: PropTypes.func.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
 
 export default MobileSideMenu;

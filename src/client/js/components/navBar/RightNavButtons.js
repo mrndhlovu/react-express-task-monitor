@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Accordion, Icon } from "semantic-ui-react";
 
@@ -82,6 +83,10 @@ const RightNavButtons = ({ history }) => {
       />
     </StyledDiv>
   );
+};
+
+RightNavButtons.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
 
 export default RightNavButtons;
