@@ -52,14 +52,12 @@ const MainContainer = ({ children, history }) => {
 
   const { device, dimensions } = useDimensions();
 
-  const STARRED_BOARDS =
-    boards && boards.map((board) => user.starred.includes(board._id) && board);
-
   const PERSONAL_BOARDS = boards;
 
   const RECENT_BOARDS =
-    boards &&
-    boards.map((board) => user.viewedRecent.includes(board._id) && board);
+    boards && boards.filter((board) => user.viewedRecent.includes(board._id));
+  const STARRED_BOARDS =
+    boards && boards.filter((board) => user.starred.includes(board._id));
 
   const navBackground =
     !background.color && !background.image

@@ -72,6 +72,7 @@ const NavBoardsCategory = ({ boards = [], header, starred = false }) => {
     history,
   } = useMainContext();
   const field = header.toLowerCase();
+  const hasBoards = boards.length > 0;
 
   const [isOverCurrent, setIsOverCurrent] = useState(null);
 
@@ -102,44 +103,43 @@ const NavBoardsCategory = ({ boards = [], header, starred = false }) => {
   };
 
   return (
-    <Container>
-      <Header>
-        <HeaderWrapper>
-          <span> {getIcon()}</span>
-          <Span>{`${header} Boards`}</Span>
-        </HeaderWrapper>
-        <MoreHorizontal
-          size={18}
-          className="uiIconDark"
-          onClick={() => toggleMenuHandler(header)}
-        />
-      </Header>
+    hasBoards && (
+      <Container>
+        <Header>
+          <HeaderWrapper>
+            <span> {getIcon()}</span>
+            <Span>{`${header} Boards`}</Span>
+          </HeaderWrapper>
+          <MoreHorizontal
+            size={18}
+            className="uiIconDark"
+            onClick={() => toggleMenuHandler(header)}
+          />
+        </Header>
 
-      {showNavBoard[field] &&
-        boards.map(
-          (board, index) =>
-            board && (
-              <BoardItem
-                key={index}
-                onMouseLeave={() => setIsOverCurrent(null)}
-                onMouseEnter={() => setIsOverCurrent(board._id)}
-                onClick={(e) => handleCardClick(e, board._id)}
-              >
-                <BoardLabelContext styles={board && board.styleProperties}>
-                  <Span className="wordWrap uiTextWhite">{board.title}</Span>
-                  {(isOverCurrent === board._id || starred) && (
-                    <Star
-                      id={index}
-                      size={18}
-                      onClick={(e) => handleCardClick(e, board._id, true)}
-                      className={starred ? "uiStarYellow" : "uiStarWhite"}
-                    />
-                  )}
-                </BoardLabelContext>
-              </BoardItem>
-            )
-        )}
-    </Container>
+        {showNavBoard[field] &&
+          boards.map((board, index) => (
+            <BoardItem
+              key={index}
+              onMouseLeave={() => setIsOverCurrent(null)}
+              onMouseEnter={() => setIsOverCurrent(board._id)}
+              onClick={(e) => handleCardClick(e, board._id)}
+            >
+              <BoardLabelContext styles={board.styleProperties}>
+                <Span className="wordWrap uiTextWhite">{board.title}</Span>
+                {(isOverCurrent === board._id || starred) && (
+                  <Star
+                    id={index}
+                    size={18}
+                    onClick={(e) => handleCardClick(e, board._id, true)}
+                    className={starred ? "uiStarYellow" : "uiStarWhite"}
+                  />
+                )}
+              </BoardLabelContext>
+            </BoardItem>
+          ))}
+      </Container>
+    )
   );
 };
 

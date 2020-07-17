@@ -46,16 +46,13 @@ const BoardCategory = ({
       </Span>
       <Category mobile={device.mobile} tablet={tablet} isLast={isLast}>
         {!loading &&
-          boards.map(
-            (board) =>
-              board && (
-                <Summary
-                  key={board._id}
-                  starred={user.starred.includes(board._id)}
-                  board={board}
-                />
-              )
-          )}
+          boards.map((board) => (
+            <Summary
+              key={board._id}
+              starred={user.starred.includes(board._id)}
+              board={board}
+            />
+          ))}
 
         {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
       </Category>
