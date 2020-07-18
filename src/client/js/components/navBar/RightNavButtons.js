@@ -10,9 +10,9 @@ import NavUserAvatar from "../sharedComponents/NavUserAvatar";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const StyledDiv = styled.div`
-  margin-right: 10px;
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-evenly;
 `;
 
 const RightNavButtons = ({ history }) => {
@@ -38,9 +38,11 @@ const RightNavButtons = ({ history }) => {
       <DropdownButton
         icon="bell"
         labeled={false}
-        compact={false}
         className="navButton"
         header="Notifications"
+        compact={false}
+        size="tiny"
+        margin="0 3px"
         closeOnSelect={true}
         notificationCount={hasUnreadNotification && unreadNotification.length}
         iconColor={hasUnreadNotification ? "red" : "black"}

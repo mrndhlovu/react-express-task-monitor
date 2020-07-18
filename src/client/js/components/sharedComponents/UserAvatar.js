@@ -14,7 +14,6 @@ const StyledButton = styled.div`
   border-radius: 50px;
   display: flex;
   justify-content: space-evenly;
-
   max-height: 20px;
   max-width: 18px;
   padding: ${(props) => props.padding};

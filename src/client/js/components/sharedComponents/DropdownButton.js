@@ -7,9 +7,8 @@ import { X } from "react-feather";
 import UIDivider from "./UIDivider";
 
 const StyledDropdown = styled(Dropdown)`
-  margin-bottom: 10px !important;
-  padding-bottom: 15px;
-  background: ${(props) => props.color} !important;
+  background: ${({ color }) => color} !important;
+  margin: ${({ margin }) => margin} !important;
   text-align: left !important;
   font-size: 13px !important;
   font-weight: 500 !important;
@@ -44,6 +43,7 @@ const DropdownButton = ({
   pointing,
   size = "tiny",
   upward = false,
+  margin,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -59,6 +59,7 @@ const DropdownButton = ({
   return (
     <StyledDropdown
       upward={upward}
+      margin={margin ? margin : "0px"}
       lazyLoad
       button={button}
       className={`${className || ""} icon`}
@@ -126,6 +127,7 @@ DropdownButton.propTypes = {
   pointing: PropTypes.string,
   size: PropTypes.string,
   upward: PropTypes.bool,
+  margin: PropTypes.string,
 };
 
 export default DropdownButton;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useCallback } from "react";
-import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import isURL from "validator/lib/isURL";
 import PropTypes from "prop-types";
@@ -24,11 +23,6 @@ import {
 } from "../utils/appUtils";
 import { useAuth, useMainContext } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
-import BoardHeader from "../components/boardDetail/BoardHeader";
-
-const StyledContainer = styled.div`
-  height: 100vh;
-`;
 
 const BoardContainer = ({ match, history, templateBoard }) => {
   const {
@@ -44,7 +38,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   const [inviteDone, setInviteDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const getSourceList = (sourceId) =>
     findArrayItem(board.lists, sourceId, "_id");
@@ -208,8 +201,6 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     history,
     inviteDone,
     loading,
-    setShowMobileMenu,
-    showMobileMenu,
     showSideBar,
     updateBoardState,
   };
@@ -217,12 +208,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   return (
     board && (
       <BoardContext.Provider value={context}>
-        <StyledContainer>
-          <div className="board-content">
-            <BoardHeader />
-            <Board />
-          </div>
-        </StyledContainer>
+        <Board />
       </BoardContext.Provider>
     )
   );
@@ -248,8 +234,6 @@ BoardContainer.propTypes = {
     handleShowMenuClick: PropTypes.func.isRequired,
     inviteDone: PropTypes.bool.isRequired,
     loading: PropTypes.bool.isRequired,
-    setShowMobileMenu: PropTypes.func.isRequired,
-    showMobileMenu: PropTypes.bool.isRequired,
     showSideBar: PropTypes.bool.isRequired,
     updateBoardState: PropTypes.func.isRequired,
   }),

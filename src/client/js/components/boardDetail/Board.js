@@ -1,8 +1,7 @@
 import React, { useState, memo, lazy, Suspense } from "react";
 import styled from "styled-components";
 
-import { Sidebar } from "semantic-ui-react";
-
+import BoardHeader from "./BoardHeader";
 const ChangeBackGround = lazy(() => import("./ChangeBackGround"));
 const BoardLists = lazy(() => import("./BoardLists"));
 const BoardMenu = lazy(() => import("./BoardMenu"));
@@ -15,10 +14,12 @@ import { useMainContext, useBoardContext } from "../../utils/hookUtils";
 import AboutBoard from "./AboutBoard";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
-const BoardWrapper = styled.div`
-  padding-left: ${(props) => (props.mobile ? "3px" : "7px")};
+const Container = styled.div`
+  margin-left: 5px;
   position: relative;
   width: 100vw;
+  height: 90vh;
+  margin-top: 5vh;
 `;
 
 const Board = () => {
@@ -30,7 +31,7 @@ const Board = () => {
     board,
     history,
   } = useBoardContext();
-  const { device, showMobileMenu, alertUser } = useMainContext();
+  const { device, alertUser } = useMainContext();
   const [membersOnline, setMembersOnline] = useState(0);
   const [openChat, setOpenChat] = useState(false);
   const [changeBg, setChangeBg] = useState(false);
@@ -62,14 +63,15 @@ const Board = () => {
   };
 
   return (
-    <BoardWrapper className="board-wrap" mobile={device.mobile}>
-      <Sidebar.Pushable>
+    <>
+      <BoardHeader />
+      <Container className="board-wrap" mobile={device.mobile}>
         <Suspense fallback={<UILoadingSpinner />}>
           <BoardLists />
         </Suspense>
         <Suspense fallback={<UILoadingSpinner />}>
           <BoardMenu
-            showSideBar={showSideBar || showMobileMenu}
+            showSideBar={showSideBar}
             handleShowMenuClick={handleShowMenuClick}
             toggleChangeBg={toggleChangeBg}
             handleMakeTemplate={handleMakeTemplate}
@@ -109,8 +111,8 @@ const Board = () => {
             />
           </Suspense>
         )}
-      </Sidebar.Pushable>
-    </BoardWrapper>
+      </Container>
+    </>
   );
 };
 

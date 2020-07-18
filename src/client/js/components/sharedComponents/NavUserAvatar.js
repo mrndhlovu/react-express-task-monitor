@@ -20,7 +20,7 @@ const NavUserAvatar = ({
 
   const trigger = (
     <UserAvatar
-      padding="15px"
+      padding="18px"
       userInitials={getUserInitials(userName)}
       fontSize={fontSize}
       className={className}
