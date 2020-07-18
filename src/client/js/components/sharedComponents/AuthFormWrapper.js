@@ -122,9 +122,8 @@ const AuthFormWrapper = ({
             dataTestId="forgot-password-link"
             margin="10%"
             handleClick={() => history.push("/recovery")}
-          >
-            Forgot password.
-          </UISmall>
+            content="Forgot password."
+          />
         )}
       </FormWrapper>
     </UIContainer>

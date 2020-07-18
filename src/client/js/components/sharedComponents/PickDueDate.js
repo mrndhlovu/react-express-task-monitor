@@ -65,7 +65,7 @@ const PickDueDate = ({ startDate, setStartDate, handleUpdateDueDate }) => {
 };
 
 PickDueDate.propTypes = {
-  startDate: PropTypes.bool.isRequired,
+  startDate: PropTypes.instanceOf(Date).isRequired,
   setStartDate: PropTypes.func.isRequired,
   handleUpdateDueDate: PropTypes.func.isRequired,
 };

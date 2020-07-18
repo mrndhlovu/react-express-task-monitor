@@ -35,7 +35,7 @@ UserAvatar.propTypes = {
   className: PropTypes.string,
   fontSize: PropTypes.string,
   padding: PropTypes.string,
-  userInitials: PropTypes.string.isRequired,
+  userInitials: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default UserAvatar;

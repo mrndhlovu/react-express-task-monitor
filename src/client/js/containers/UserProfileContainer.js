@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+
 import UserProfile from "../components/auth/UserProfile";
 import { withRouter } from "react-router";
 import { requestAuthLogin } from "../apis/apiRequests";
@@ -33,4 +35,9 @@ const UserProfileContainer = ({ history }) => {
 
   return <UserProfile history={history} alertText={alertText} />;
 };
+
+UserProfileContainer.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
+};
+
 export default withRouter(UserProfileContainer);

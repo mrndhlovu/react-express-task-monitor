@@ -73,7 +73,7 @@ const CreateInput = ({
 };
 
 CreateInput.propTypes = {
-  close: PropTypes.func.isRequired,
+  close: PropTypes.func,
   createItemClickHandler: PropTypes.func.isRequired,
   handleChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string,

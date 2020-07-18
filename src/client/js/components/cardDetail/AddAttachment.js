@@ -147,8 +147,10 @@ const AddAttachment = ({
     >
       <UIContainer width="300px" padding="0">
         <AttachmentOption>
-          <span>{mobile ? "Phone" : "Computer"}</span>
-          <StyledInput type="file" onChange={(e) => handleUpload(e)} />
+          <>
+            <span>{mobile ? "Phone" : "Computer"}</span>
+            <StyledInput type="file" onChange={(e) => handleUpload(e)} />
+          </>
         </AttachmentOption>
         {/* <AttachmentOption>
           <span>Google Drive</span>

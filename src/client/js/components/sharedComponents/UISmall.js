@@ -14,7 +14,7 @@ const StyledSmall = styled.small`
 `;
 
 const UISmall = ({
-  children,
+  content,
   handleClick,
   bottom = "10%",
   left = "13%",
@@ -31,14 +31,14 @@ const UISmall = ({
       onClick={handleClick}
       margin={margin}
     >
-      {children}
+      {content}
     </StyledSmall>
   );
 };
 
 UISmall.propTypes = {
   bottom: PropTypes.string,
-  children: PropTypes.element.isRequired,
+  content: PropTypes.string.isRequired,
   className: PropTypes.string,
   dataTestId: PropTypes.string,
   handleClick: PropTypes.func.isRequired,

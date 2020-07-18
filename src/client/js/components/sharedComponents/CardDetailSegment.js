@@ -20,7 +20,6 @@ const CardDetailSegment = ({ children, className }) => (
 );
 
 CardDetailSegment.propTypes = {
-  children: PropTypes.element.isRequired,
   className: PropTypes.string,
 };
 

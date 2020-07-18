@@ -111,7 +111,7 @@ DropdownButton.propTypes = {
   callback: PropTypes.func,
   children: PropTypes.element.isRequired,
   className: PropTypes.string,
-  close: PropTypes.func,
+  close: PropTypes.bool,
   closeOnSelect: PropTypes.bool,
   color: PropTypes.string,
   compact: PropTypes.bool,

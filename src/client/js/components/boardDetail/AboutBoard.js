@@ -49,9 +49,10 @@ const AboutBoard = ({ setShowAboutCard, showAboutCard, history }) => {
           <div className="board-creator-small">
             <span>{user.fname}</span>
             <small>@{user.username}</small>
-            <UISmall handleClick={() => history.push("/profile")}>
-              Edit profile info
-            </UISmall>
+            <UISmall
+              handleClick={() => history.push("/profile")}
+              content=" Edit profile info"
+            />
           </div>
         </div>
         <div>

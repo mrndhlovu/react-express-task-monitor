@@ -21,8 +21,10 @@ const SearchImageList = ({ images }) => {
             className="search-images-wrap"
             key={image.id}
             content={
-              <UISmall className="image-owner">
-                Image by:{" "}
+              <UISmall
+                className="image-owner"
+                content={`Image by:  
+              ${(
                 <a
                   className="image-owner"
                   target="_blank"
@@ -31,7 +33,8 @@ const SearchImageList = ({ images }) => {
                 >
                   {image.user.first_name}
                 </a>
-              </UISmall>
+              )}`}
+              />
             }
             image={
               <Image

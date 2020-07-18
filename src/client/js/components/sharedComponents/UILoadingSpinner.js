@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Dimmer, Loader } from "semantic-ui-react";
 
@@ -19,5 +20,9 @@ const UILoadingSpinner = ({ inverted = true }) => (
     </Dimmer>
   </Container>
 );
+
+UILoadingSpinner.propTypes = {
+  inverted: PropTypes.bool,
+};
 
 export default UILoadingSpinner;

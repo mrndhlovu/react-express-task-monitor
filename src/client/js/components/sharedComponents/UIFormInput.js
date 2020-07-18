@@ -58,10 +58,10 @@ UIFormInput.propTypes = {
   iconProps: PropTypes.object,
   id: PropTypes.string,
   name: PropTypes.string,
-  onBlur: PropTypes.func.isRequired,
+  onBlur: PropTypes.func,
   onChange: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onKeyDown: PropTypes.func.isRequired,
+  onClick: PropTypes.func,
+  onKeyDown: PropTypes.func,
   placeholder: PropTypes.string,
   type: PropTypes.string,
 };

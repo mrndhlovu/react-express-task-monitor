@@ -30,12 +30,12 @@ const EditCardButton = ({
 };
 
 EditCardButton.propTypes = {
-  handleClick: PropTypes.func.isRequired,
+  handleClick: PropTypes.func,
   icon: PropTypes.string,
   children: PropTypes.element.isRequired,
   closeOnSelect: PropTypes.bool,
   buttonText: PropTypes.string.isRequired,
-  close: PropTypes.func,
+  close: PropTypes.bool,
 };
 
 export default EditCardButton;

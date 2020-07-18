@@ -75,16 +75,16 @@ const DropdownList = ({
 };
 
 DropdownList.propTypes = {
-  list: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
-  }).isRequired,
+  list: PropTypes.arrayOf(
+    PropTypes.shape({ _id: PropTypes.string.isRequired })
+  ),
   header: PropTypes.string,
   position: PropTypes.number,
   title: PropTypes.string,
   handleSelection: PropTypes.func.isRequired,
-  hasList: PropTypes.bool.isRequired,
-  hasCards: PropTypes.bool.isRequired,
-  current: PropTypes.func.isRequired,
+  hasList: PropTypes.bool,
+  hasCards: PropTypes.bool,
+  current: PropTypes.string.isRequired,
 };
 
 export default DropdownList;

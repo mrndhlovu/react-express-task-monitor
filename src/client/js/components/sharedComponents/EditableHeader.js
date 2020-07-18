@@ -73,16 +73,16 @@ const EditableHeader = ({
 };
 
 EditableHeader.propTypes = {
-  sourceId: PropTypes.string.isRequired,
+  sourceId: PropTypes.string,
   title: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
-  handleEditTitle: PropTypes.func.isRequired,
+  handleEditTitle: PropTypes.func,
   checklist: PropTypes.shape({
     name: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
   attachment: PropTypes.shape({
     name: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
 };
 
 export default EditableHeader;

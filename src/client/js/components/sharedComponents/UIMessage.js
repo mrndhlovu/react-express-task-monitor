@@ -34,7 +34,7 @@ UIMessage.propTypes = {
   dataTestId: PropTypes.string,
   error: PropTypes.bool,
   handleDismiss: PropTypes.func,
-  list: PropTypes.string.isRequired,
+  list: PropTypes.arrayOf(PropTypes.string),
   message: PropTypes.string,
   success: PropTypes.bool,
 };

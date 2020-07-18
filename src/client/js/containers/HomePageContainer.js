@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { HomepageContext } from "../utils/contextUtils";
 import { useFetch, useAuth, useMainContext } from "../utils/hookUtils";
@@ -42,6 +43,10 @@ const HomePageContainer = ({ history }) => {
   ) : (
     <UILoadingSpinner />
   );
+};
+
+HomePageContainer.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(HomePageContainer);

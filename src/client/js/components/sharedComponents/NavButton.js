@@ -62,7 +62,7 @@ NavButton.propTypes = {
   buttonText: PropTypes.string,
   className: PropTypes.string,
   compact: PropTypes.bool,
-  float: PropTypes.bool,
+  float: PropTypes.string,
   forceText: PropTypes.bool,
   iconName: PropTypes.string,
   id: PropTypes.string,

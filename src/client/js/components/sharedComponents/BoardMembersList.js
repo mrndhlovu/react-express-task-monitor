@@ -54,7 +54,7 @@ BoardMembersList.propTypes = {
     PropTypes.shape({
       fname: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
-      assignees: PropTypes.arrayOf(PropTypes.object).isRequired,
+      assignees: PropTypes.arrayOf(PropTypes.object),
     })
   ).isRequired,
 };

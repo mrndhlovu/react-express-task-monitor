@@ -39,7 +39,7 @@ const UIContainer = ({
 UIContainer.propTypes = {
   className: PropTypes.string,
   dataTestId: PropTypes.string,
-  display: PropTypes.string,
+  display: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   nested: PropTypes.bool,
   padding: PropTypes.string,
   width: PropTypes.string,

@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, Fragment } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Sidebar } from "semantic-ui-react";
 
@@ -117,30 +118,30 @@ const MainContainer = ({ children, history }) => {
       setBackground({ image: "", color: "" });
   }, [isHomePage, isTemplatePage]);
 
+  const context = {
+    alertUser,
+    boards,
+    device,
+    dimensions,
+    handleSearchClick,
+    history,
+    isHomePage,
+    makeNewBoard,
+    navDataHandler,
+    PERSONAL_BOARDS,
+    RECENT_BOARDS,
+    search,
+    setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
+    showMobileMenu,
+    STARRED_BOARDS,
+    updateUserRequestHandler,
+    deleteAccountRequestHandler,
+    showNavBoard,
+    toggleMenuHandler,
+  };
+
   return (
-    <MainContext.Provider
-      value={{
-        alertUser,
-        boards,
-        device,
-        dimensions,
-        handleSearchClick,
-        history,
-        isHomePage,
-        makeNewBoard,
-        navDataHandler,
-        PERSONAL_BOARDS,
-        RECENT_BOARDS,
-        search,
-        setShowMobileMenu: () => setShowMobileMenu(!showMobileMenu),
-        showMobileMenu,
-        STARRED_BOARDS,
-        updateUserRequestHandler,
-        deleteAccountRequestHandler,
-        showNavBoard,
-        toggleMenuHandler,
-      }}
-    >
+    <MainContext.Provider value={context}>
       <AppWrapper data-test-id="app-container" bg={background}>
         <Sidebar.Pushable>
           <Fragment>
@@ -166,6 +167,37 @@ const MainContainer = ({ children, history }) => {
       </AppWrapper>
     </MainContext.Provider>
   );
+};
+
+MainContainer.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
+  context: PropTypes.shape({
+    alertUser: PropTypes.func.isRequired,
+    boards: PropTypes.arrayOf(PropTypes.object),
+    device: PropTypes.shape({
+      mobile: PropTypes.bool.isRequired,
+      tablet: PropTypes.bool.isRequired,
+      desktop: PropTypes.bool.isRequired,
+    }),
+    handleSearchClick: PropTypes.func.isRequired,
+    isHomePage: PropTypes.bool.isRequired,
+    makeNewBoard: PropTypes.func.isRequired,
+    navDataHandler: PropTypes.func.isRequired,
+    PERSONAL_BOARD: PropTypes.object,
+    RECENT_BOARDS: PropTypes.object,
+    search: PropTypes.bool.isRequired,
+    setShowMobileMenu: PropTypes.func.isRequired,
+    showMobileMenu: PropTypes.bool.isRequired,
+    STARRED_BOARDS: PropTypes.object,
+    updateUserRequestHandler: PropTypes.func.isRequired,
+    deleteAccountRequestHandler: PropTypes.func.isRequired,
+    showNavBoard: PropTypes.shape({
+      starred: PropTypes.bool.isRequired,
+      recent: PropTypes.bool.isRequired,
+      personal: PropTypes.bool.isRequired,
+    }).isRequired,
+    toggleMenuHandler: PropTypes.func.isRequired,
+  }),
 };
 
 export default withRouter(withAlert(MainContainer));

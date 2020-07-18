@@ -45,14 +45,14 @@ const SideBarWrapper = ({
 };
 
 SideBarWrapper.propTypes = {
-  className: PropTypes.string.isRequired,
-  direction: PropTypes.string.isRequired,
+  className: PropTypes.string,
+  direction: PropTypes.string,
   handleClose: PropTypes.func.isRequired,
   hasHeader: PropTypes.bool,
   header: PropTypes.string,
-  icon: PropTypes.string.isRequired,
+  icon: PropTypes.string,
   inverted: PropTypes.bool,
-  onHide: PropTypes.func.isRequired,
+  onHide: PropTypes.func,
   open: PropTypes.bool.isRequired,
 };
 

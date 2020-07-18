@@ -64,7 +64,7 @@ const CardItem = ({ card, sourceListId, showEditButton }) => {
   const hasDescription = !stringsEqual(card.shortDescription, "");
   const hasComments = card.comments.length !== 0;
   const hasAssignees = card.assignees.length !== 0;
-  const hasDueDate = card.dueDate && card.dueDate.date !== "";
+  const hasDueDate = Object.values(card.dueDate).length !== 0;
 
   const [openCardModal, setOpenCardModal] = useState(false);
 

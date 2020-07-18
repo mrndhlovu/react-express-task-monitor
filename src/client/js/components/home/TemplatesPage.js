@@ -41,9 +41,8 @@ const TemplatesPage = ({ templates, handleUseTemplate }) => {
               <UISmall
                 handleClick={() => handleUseTemplate(item)}
                 className="use-template"
-              >
-                Category {item.category}: Use Template
-              </UISmall>
+                content={`Category ${item.category}: Use Template`}
+              />
             </UIWrapper>
           );
         })}

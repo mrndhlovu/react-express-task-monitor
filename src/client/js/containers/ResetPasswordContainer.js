@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { requestUpdatePassword } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
@@ -69,6 +70,10 @@ const ResetPasswordContainer = ({ history, location }) => {
       disabled={!credentials.password || !credentials.confirmPassword}
     />
   );
+};
+
+ResetPasswordContainer.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(ResetPasswordContainer);

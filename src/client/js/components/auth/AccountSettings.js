@@ -94,9 +94,9 @@ const AccountSettings = () => {
         <UISmall
           position="relative"
           handleClick={() => setShowDeleteButton(!showDeleteButton)}
-        >
-          {!showDeleteButton ? "Delete Account" : "Cancel"}
-        </UISmall>
+          content={!showDeleteButton ? "Delete Account" : "Cancel"}
+        />
+
         {showDeleteButton && (
           <Button
             onClick={() => deleteAccountRequestHandler()}

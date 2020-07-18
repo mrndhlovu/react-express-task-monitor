@@ -85,7 +85,7 @@ CardCommentInput.propTypes = {
     emojis: PropTypes.arrayOf(PropTypes.object).isRequired,
     createdAt: PropTypes.string.isRequired,
     updatedAt: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
   saveComment: PropTypes.func.isRequired,
 };
 
