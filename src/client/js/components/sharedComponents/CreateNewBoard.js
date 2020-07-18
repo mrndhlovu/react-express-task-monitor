@@ -1,6 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
-import { MainContext } from "../../utils/contextUtils";
+
+import { useMainContext } from "../../utils/hookUtils";
 
 const Card = styled.div`
   display: flex;
@@ -34,16 +36,20 @@ const CreateNewBoardHeader = styled.span`
   }
 `;
 
-const CreateNewBoard = ({ showNewBoardModal }) => {
-  const { mobile } = useContext(MainContext).device;
+const CreateNewBoard = ({ openCreateBoardModalHandler }) => {
+  const { mobile } = useMainContext().device;
 
   return (
-    <Wrapper mobile={mobile} onClick={() => showNewBoardModal()}>
+    <Wrapper mobile={mobile} onClick={() => openCreateBoardModalHandler()}>
       <Card mobile={mobile} color="grey">
         <CreateNewBoardHeader />
       </Card>
     </Wrapper>
   );
+};
+
+CreateNewBoard.propTypes = {
+  openCreateBoardModalHandler: PropTypes.func.isRequired,
 };
 
 export default CreateNewBoard;

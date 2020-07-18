@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { withRouter, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { requestAuthSignup } from "../apis/apiRequests";
 import { resetForm } from "../utils/appUtils";
@@ -48,6 +49,10 @@ const SignupContainer = ({ history }) => {
       loading={loading}
     />
   );
+};
+
+SignupContainer.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(SignupContainer);

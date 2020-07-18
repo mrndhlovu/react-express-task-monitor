@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 import { UserContext } from "../utils/contextUtils";
 import { userInfo } from "../apis/apiRequests";
@@ -41,6 +42,14 @@ const AuthContainer = ({ children, history, location }) => {
       <MainContainer>{children}</MainContainer>
     </UserContext.Provider>
   );
+};
+
+AuthContainer.propTypes = {
+  children: PropTypes.element.isRequired,
+  location: PropTypes.shape({
+    state: PropTypes.shape({ from: PropTypes.string.isRequired }),
+  }),
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(AuthContainer);

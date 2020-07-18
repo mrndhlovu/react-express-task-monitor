@@ -43,7 +43,6 @@ const ModalHeader = () => {
       <Container>
         <DropdownButton
           buttonText={`in list ${sourceList.title.toUpperCase()}`}
-          icon={false}
           className="card-source"
           button={false}
           labeled={false}

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 
 import { Header, Button } from "semantic-ui-react";
 
@@ -40,9 +41,8 @@ const TemplatesPage = ({ templates, handleUseTemplate }) => {
               <UISmall
                 handleClick={() => handleUseTemplate(item)}
                 className="use-template"
-              >
-                Category {item.category}: Use Template
-              </UISmall>
+                content={`Category ${item.category}: Use Template`}
+              />
             </UIWrapper>
           );
         })}
@@ -59,6 +59,22 @@ const TemplatesPage = ({ templates, handleUseTemplate }) => {
       />
     </UIWrapper>
   );
+};
+
+TemplatesPage.propTypes = {
+  handleUseTemplate: PropTypes.func.isRequired,
+  templates: PropTypes.arrayOf(
+    PropTypes.shape({
+      lists: PropTypes.arrayOf(PropTypes.object),
+      category: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      styleProperties: PropTypes.shape({
+        image: PropTypes.string,
+        color: PropTypes.string.isRequired,
+      }),
+    })
+  ).isRequired,
 };
 
 export default TemplatesPage;

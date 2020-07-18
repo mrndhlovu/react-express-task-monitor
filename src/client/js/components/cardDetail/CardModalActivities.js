@@ -10,17 +10,18 @@ const CardDetailSegment = lazy(() =>
 const ActivitiesHeader = lazy(() => import("./ActivitiesHeader"));
 const Activities = lazy(() => import("./Activities"));
 
-const CardModalActivities = ({ ...props }) => {
+const CardModalActivities = () => {
   const { setHideActivities, hideActivities } = useCardDetailContext();
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <ActivitiesHeader
         handleShowDetails={() => setHideActivities(!hideActivities)}
+        hideActivities={hideActivities}
       />
       <CardDetailSegment>
         <UIContainer>
           <CardComments />
-          {!hideActivities && <Activities {...props} />}
+          {!hideActivities && <Activities />}
         </UIContainer>
       </CardDetailSegment>
     </Suspense>

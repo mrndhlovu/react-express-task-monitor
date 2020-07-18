@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Sidebar, Menu } from "semantic-ui-react";
 
@@ -41,6 +42,18 @@ const SideBarWrapper = ({
       </UIContainer>
     </Sidebar>
   );
+};
+
+SideBarWrapper.propTypes = {
+  className: PropTypes.string,
+  direction: PropTypes.string,
+  handleClose: PropTypes.func.isRequired,
+  hasHeader: PropTypes.bool,
+  header: PropTypes.string,
+  icon: PropTypes.string,
+  inverted: PropTypes.bool,
+  onHide: PropTypes.func,
+  open: PropTypes.bool.isRequired,
 };
 
 export default SideBarWrapper;

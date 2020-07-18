@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import isURL from "validator/lib/isURL";
+import PropTypes from "prop-types";
 
 import { BoardContext } from "../utils/contextUtils";
 import { PERMISSIONS } from "../constants/constants";
@@ -43,7 +44,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   const [inviteDone, setInviteDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
-  const [showMobileMenu, setShowMobileMenu] = useState();
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const getSourceList = (sourceId) =>
     findArrayItem(board.lists, sourceId, "_id");
@@ -88,7 +89,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       .catch((error) => alertUser(error.message));
   }, [history, id]);
 
-  const handleSelectedBackground = (option) => {
+  const bgColorSelectHandler = (option) => {
     const isImageURL = isURL(option);
     let newBoard;
 
@@ -189,33 +190,33 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     fetchBoard();
   }, [board, boards, id, history, navDataHandler, templateBoard, alertUser]);
 
+  const context = {
+    board,
+    boardId: id,
+    boardUpdateHandler,
+    cardUpdateRequestHandler,
+    changeBoardAccessLevel,
+    createCardHandler,
+    createListHandler,
+    getSourceList,
+    starBoardHandler,
+    handleDeleteBoard,
+    handleDeleteList,
+    handleInviteClick,
+    bgColorSelectHandler,
+    handleShowMenuClick,
+    history,
+    inviteDone,
+    loading,
+    setShowMobileMenu,
+    showMobileMenu,
+    showSideBar,
+    updateBoardState,
+  };
+
   return (
     board && (
-      <BoardContext.Provider
-        value={{
-          board,
-          boardId: id,
-          boardUpdateHandler,
-          cardUpdateRequestHandler,
-          changeBoardAccessLevel,
-          createCardHandler,
-          createListHandler,
-          getSourceList,
-          starBoardHandler,
-          handleDeleteBoard,
-          handleDeleteList,
-          handleInviteClick,
-          handleSelectedBackground,
-          handleShowMenuClick,
-          history,
-          inviteDone,
-          loading,
-          setShowMobileMenu,
-          showMobileMenu,
-          showSideBar,
-          updateBoardState,
-        }}
-      >
+      <BoardContext.Provider value={context}>
         <StyledContainer>
           <div className="board-content">
             <BoardHeader />
@@ -225,6 +226,34 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       </BoardContext.Provider>
     )
   );
+};
+
+BoardContainer.propTypes = {
+  context: PropTypes.shape({
+    board: PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+    }).isRequired,
+    boardId: PropTypes.string.isRequired,
+    boardUpdateHandler: PropTypes.func.isRequired,
+    cardUpdateRequestHandler: PropTypes.func.isRequired,
+    changeBoardAccessLevel: PropTypes.func.isRequired,
+    createCardHandler: PropTypes.func.isRequired,
+    createListHandler: PropTypes.func.isRequired,
+    getSourceList: PropTypes.func.isRequired,
+    starBoardHandler: PropTypes.func.isRequired,
+    handleDeleteBoard: PropTypes.func.isRequired,
+    handleDeleteList: PropTypes.func.isRequired,
+    handleInviteClick: PropTypes.func.isRequired,
+    bgColorSelectHandler: PropTypes.func.isRequired,
+    handleShowMenuClick: PropTypes.func.isRequired,
+    inviteDone: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
+    setShowMobileMenu: PropTypes.func.isRequired,
+    showMobileMenu: PropTypes.bool.isRequired,
+    showSideBar: PropTypes.bool.isRequired,
+    updateBoardState: PropTypes.func.isRequired,
+  }),
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(BoardContainer);

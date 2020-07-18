@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Icon } from "semantic-ui-react";
 
@@ -33,6 +34,16 @@ const DocumentPreviewButtons = ({
       <Icon link name="add" onClick={() => setScale(scale + 0.25)} />
     </>
   );
+};
+
+DocumentPreviewButtons.propTypes = {
+  firstPage: PropTypes.bool.isRequired,
+  lastPage: PropTypes.bool.isRequired,
+  numPages: PropTypes.number.isRequired,
+  pageNumber: PropTypes.number.isRequired,
+  scale: PropTypes.number.isRequired,
+  setPageNumber: PropTypes.func.isRequired,
+  setScale: PropTypes.func.isRequired,
 };
 
 export default DocumentPreviewButtons;

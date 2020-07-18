@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import {
   getFormattedDate,
   stringsEqual,
   findArrayItem,
 } from "../../utils/appUtils";
+import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
+import Assignees from "../sharedComponents/Assignees";
 import CardBadge from "../sharedComponents/CardBadge";
 import CardCover from "../cardDetail/CardCover";
+import EditCardModal from "./EditCardModal";
 import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
-import EditCardModal from "./EditCardModal";
-import Assignees from "../sharedComponents/Assignees";
-import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -53,15 +54,9 @@ const BadgeContainer = styled.div`
   align-items: flex-end;
 `;
 
-const CardItem = ({
-  card,
-  sourceListId,
-  history,
-  showEditButton,
-  listPosition,
-}) => {
-  const { updateBoardState, boardUpdateHandler, board } = useBoardContext();
-  const { handleCardClick } = useBoardListContext();
+const CardItem = ({ card, sourceListId, showEditButton }) => {
+  const { boardUpdateHandler, board } = useBoardContext();
+  const { cardClickHandler } = useBoardListContext();
 
   const hasLabel = card.labels.length !== 0;
   const hasAttachments = card.attachments.length !== 0;
@@ -69,11 +64,11 @@ const CardItem = ({
   const hasDescription = !stringsEqual(card.shortDescription, "");
   const hasComments = card.comments.length !== 0;
   const hasAssignees = card.assignees.length !== 0;
-  const hasDueDate = card.dueDate;
+  const hasDueDate = Object.values(card.dueDate).length !== 0;
 
   const [openCardModal, setOpenCardModal] = useState(false);
 
-  const handleDeleteCard = () => {
+  const deleteCardHandler = () => {
     const sourceList = findArrayItem(board.lists, sourceListId, "_id");
     sourceList.cards.splice(sourceList.cards.indexOf(card));
     board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
@@ -83,7 +78,7 @@ const CardItem = ({
 
   return (
     <CardContainer>
-      <ContentWrapper onClick={() => handleCardClick(card, sourceListId)}>
+      <ContentWrapper onClick={() => cardClickHandler(card, sourceListId)}>
         <LabelsSnippets labels={card.labels} hasLabel={hasLabel} />
         <Container>
           <CardCover card={card} />
@@ -124,18 +119,19 @@ const CardItem = ({
       )}
       <EditCardModal
         cardItem={card}
-        handleDeleteCard={() => handleDeleteCard()}
-        history={history}
+        deleteCardHandler={() => deleteCardHandler()}
         sourceListId={sourceListId}
-        listPosition={listPosition}
         openCardModal={openCardModal}
         setOpenCardModal={setOpenCardModal}
-        updateBoardState={updateBoardState}
-        boardUpdateHandler={boardUpdateHandler}
-        hasDueDate={hasDueDate}
       />
     </CardContainer>
   );
+};
+
+CardItem.propTypes = {
+  card: PropTypes.object.isRequired,
+  showEditButton: PropTypes.bool.isRequired,
+  sourceListId: PropTypes.string.isRequired,
 };
 
 export default withRouter(CardItem);

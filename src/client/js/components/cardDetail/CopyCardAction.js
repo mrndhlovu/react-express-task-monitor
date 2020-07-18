@@ -52,7 +52,7 @@ const CopyCardAction = () => {
           placeholder="Enter a new card title"
           defaultValue={title}
           handleChange={(e) => setTitle(e.target.value)}
-          handleCreateClick={() => handleCopyCard()}
+          createItemClickHandler={() => handleCopyCard()}
         />
       </UIContainer>
     </DropdownButton>

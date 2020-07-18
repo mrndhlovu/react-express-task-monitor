@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import update from "immutability-helper";
+import PropTypes from "prop-types";
 
 import WrappedCard from "./WrappedCard";
 import { useBoardContext } from "../../utils/hookUtils";
@@ -69,6 +70,12 @@ const CardsWrapper = ({
       {...rest}
     />
   ));
+};
+
+CardsWrapper.propTypes = {
+  listPosition: PropTypes.number.isRequired,
+  sourceListId: PropTypes.string.isRequired,
+  resetListsState: PropTypes.func.isRequired,
 };
 
 export default CardsWrapper;

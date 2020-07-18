@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Span = styled.span`
   font-weight: 700;
@@ -29,5 +30,12 @@ const UserAvatar = ({
     <Span fontSize={fontSize}>{userInitials}</Span>
   </StyledButton>
 );
+
+UserAvatar.propTypes = {
+  className: PropTypes.string,
+  fontSize: PropTypes.string,
+  padding: PropTypes.string,
+  userInitials: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 
 export default UserAvatar;

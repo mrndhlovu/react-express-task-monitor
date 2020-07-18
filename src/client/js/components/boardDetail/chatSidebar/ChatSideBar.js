@@ -1,7 +1,6 @@
 import React, {
   useEffect,
   useMemo,
-  useContext,
   useState,
   useCallback,
   Fragment,
@@ -11,6 +10,7 @@ import React, {
 import { withRouter } from "react-router-dom";
 import socketIOClient from "socket.io-client";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { TextArea, Form } from "semantic-ui-react";
 
@@ -19,9 +19,8 @@ import {
   emptyFunction,
   getFormattedString,
 } from "../../../utils/appUtils";
-import { BoardContext } from "../../../utils/contextUtils";
 import { getRootUrl } from "../../../utils/urls";
-import { useAuth } from "../../../utils/hookUtils";
+import { useAuth, useBoardContext } from "../../../utils/hookUtils";
 
 import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
 import UIMessage from "../../sharedComponents/UIMessage";
@@ -47,7 +46,7 @@ const FormWrapper = styled.div`
 
 const ChatSideBar = ({ openChat, handleClose }) => {
   const { fname } = useAuth().user;
-  const { board, boardUpdateHandler } = useContext(BoardContext);
+  const { board, boardUpdateHandler } = useBoardContext();
   const name = getFormattedString(fname);
 
   const [message, setMessage] = useState(undefined);
@@ -189,6 +188,11 @@ const ChatSideBar = ({ openChat, handleClose }) => {
       )}
     </SideBarWrapper>
   );
+};
+
+ChatSideBar.propTypes = {
+  openChat: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default withRouter(ChatSideBar);

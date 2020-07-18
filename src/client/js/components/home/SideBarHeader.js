@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
-import { Icon } from "semantic-ui-react";
+import { X } from "react-feather";
 
 import UIContainer from "../sharedComponents/UIContainer";
 
@@ -15,15 +16,24 @@ const HeadWrapper = styled.div`
   justify-content: space-between;
 `;
 
-const SideBarHeader = ({ handleClose, header = "Board" }) => {
+const SideBarHeader = ({ handleClose, header }) => {
   return (
     <UIContainer>
       <HeadWrapper>
-        <Icon name="close" onClick={() => handleClose()} />
+        <X name="close" onClick={() => handleClose()} />
         <Header>{header}</Header>
       </HeadWrapper>
     </UIContainer>
   );
+};
+
+SideBarHeader.defaultProps = {
+  header: "Board",
+};
+
+SideBarHeader.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  header: PropTypes.string.isRequired,
 };
 
 export default SideBarHeader;

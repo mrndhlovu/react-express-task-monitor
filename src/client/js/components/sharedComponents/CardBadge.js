@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Label } from "semantic-ui-react";
 import {
@@ -41,6 +42,15 @@ const CardBadge = ({
       </Label>
     )
   );
+};
+
+CardBadge.propTypes = {
+  as: PropTypes.string,
+  icon: PropTypes.string,
+  content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  hasBadge: PropTypes.bool,
+  color: PropTypes.string,
+  className: PropTypes.string,
 };
 
 export default CardBadge;

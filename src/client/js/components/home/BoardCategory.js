@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { Header, Icon } from "semantic-ui-react";
@@ -31,8 +32,8 @@ const BoardCategory = ({
   header,
   icon,
   isDefault,
-  isLast,
-  showNewBoardModal,
+  isLast = false,
+  openCreateBoardModalHandler,
   boards,
 }) => {
   const { tablet, loading, device } = useMainContext();
@@ -54,10 +55,26 @@ const BoardCategory = ({
             />
           ))}
 
-        {isDefault && <CreateNewBoard showNewBoardModal={showNewBoardModal} />}
+        {isDefault && (
+          <CreateNewBoard
+            openCreateBoardModalHandler={openCreateBoardModalHandler}
+          />
+        )}
       </Category>
     </Fragment>
   );
+};
+
+BoardCategory.defaultProps = {
+  isLast: false,
+  isDefault: false,
+  openCreateBoardModalHandler: () => {},
+};
+
+BoardCategory.propTypes = {
+  openCreateBoardModalHandler: PropTypes.func.isRequired,
+  isDefault: PropTypes.bool.isRequired,
+  isLast: PropTypes.bool.isRequired,
 };
 
 export default BoardCategory;

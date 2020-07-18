@@ -1,5 +1,6 @@
 import React, { useState, memo, useCallback } from "react";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { findArrayItem } from "../utils/appUtils";
 
@@ -85,39 +86,71 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
     });
   };
 
+  const context = {
+    card,
+    cardIndex,
+    editAttachments,
+    handleMakeCover,
+    handleRemoveCover,
+    hasAttachments,
+    hasChecklist,
+    hasCover,
+    hasDueDate,
+    hasLabel,
+    hasMembers,
+    hideActivities,
+    history,
+    id,
+    isLoading,
+    match,
+    modalOpen,
+    saveCardChanges,
+    setHideActivities,
+    setIsLoading,
+    setSourceId,
+    sourceId,
+    sourceList,
+    updatedCardChanges,
+  };
+
   return (
-    <CardDetailContext.Provider
-      value={{
-        card,
-        cardIndex,
-        editAttachments,
-        handleMakeCover,
-        handleRemoveCover,
-        hasAttachments,
-        hasChecklist,
-        hasCover,
-        hasDueDate,
-        hasLabel,
-        hasMembers,
-        hideActivities,
-        history,
-        id,
-        isLoading,
-        match,
-        modalOpen,
-        saveCardChanges,
-        setHideActivities,
-        setIsLoading,
-        setSourceId,
-        sourceId,
-        sourceList,
-        updatedCardChanges,
-        board,
-      }}
-    >
+    <CardDetailContext.Provider value={context}>
       <CardDetailModal />
     </CardDetailContext.Provider>
   );
+};
+
+CardDetailContainer.propTypes = {
+  context: PropTypes.shape({
+    card: PropTypes.shape({ _id: PropTypes.string.isRequired }).isRequired,
+    cardIndex: PropTypes.number.isRequired,
+    editAttachments: PropTypes.func.isRequired,
+    handleMakeCover: PropTypes.func.isRequired,
+    handleRemoveCover: PropTypes.func.isRequired,
+    hasAttachments: PropTypes.bool.isRequired,
+    hasChecklist: PropTypes.bool.isRequired,
+    hasCover: PropTypes.bool.isRequired,
+    hasDueDate: PropTypes.bool.isRequired,
+    hasLabel: PropTypes.bool.isRequired,
+    hasMembers: PropTypes.bool.isRequired,
+    hideActivities: PropTypes.bool.isRequired,
+    history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+    id: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    match: PropTypes.shape({
+      params: PropTypes.shape({ id: PropTypes.string.isRequired }).isRequired,
+    }).isRequired,
+    modalOpen: PropTypes.bool.isRequired,
+    saveCardChanges: PropTypes.func.isRequired,
+    setHideActivities: PropTypes.func.isRequired,
+    setIsLoading: PropTypes.func.isRequired,
+    setSourceId: PropTypes.func.isRequired,
+    sourceId: PropTypes.string.isRequired,
+    sourceList: PropTypes.shape({ _id: PropTypes.string.isRequired })
+      .isRequired,
+    updatedCardChanges: PropTypes.func.isRequired,
+  }),
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(memo(CardDetailContainer));

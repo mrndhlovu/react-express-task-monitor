@@ -1,8 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
-import { MainContext } from "../../utils/contextUtils";
+
+import { useMainContext } from "../../utils/hookUtils";
 import NavButtonIcon from "./NavButtonIcon";
 
 const StyledButton = styled(Button)`
@@ -22,7 +24,7 @@ const NavButton = ({
   className,
   compact = true,
 }) => {
-  const { mobile } = useContext(MainContext).device;
+  const { mobile } = useMainContext().device;
 
   return mobile && !forceText ? (
     <StyledButton
@@ -53,6 +55,18 @@ const NavButton = ({
       color={buttonColor}
     />
   );
+};
+
+NavButton.propTypes = {
+  buttonColor: PropTypes.string,
+  buttonText: PropTypes.string,
+  className: PropTypes.string,
+  compact: PropTypes.bool,
+  float: PropTypes.string,
+  forceText: PropTypes.bool,
+  iconName: PropTypes.string,
+  id: PropTypes.string,
+  redirect: PropTypes.func.isRequired,
 };
 
 export default NavButton;

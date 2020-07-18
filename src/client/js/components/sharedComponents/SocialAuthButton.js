@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Icon } from "semantic-ui-react";
 
@@ -27,6 +28,14 @@ const SocialAuthButton = ({ icon, buttonText, hrefTo, color, size }) => {
       <Icon name={icon} color={color} size={size} />
     </StyledSegment>
   );
+};
+
+SocialAuthButton.propTypes = {
+  buttonText: PropTypes.string.isRequired,
+  color: PropTypes.string,
+  hrefTo: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+  size: PropTypes.string,
 };
 
 export default SocialAuthButton;

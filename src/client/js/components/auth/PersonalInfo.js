@@ -2,12 +2,13 @@ import React, { useState } from "react";
 
 import { Header, Form, TextArea, Button } from "semantic-ui-react";
 
-import { useMainContext } from "../../utils/hookUtils";
+import { useMainContext, useAuth } from "../../utils/hookUtils";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
-const PersonalInfo = ({ user }) => {
+const PersonalInfo = () => {
   const { alertUser, updateUserRequestHandler } = useMainContext();
+  const { user } = useAuth();
 
   const [bio, setBio] = useState(null);
   const [loading, setLoading] = useState(false);

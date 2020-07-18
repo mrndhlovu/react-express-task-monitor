@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import flow from "lodash/flow";
 import { DragSource, DropTarget } from "react-dnd";
+import PropTypes from "prop-types";
 
 import { DRAG_TYPES } from "../../constants/constants";
 
@@ -60,6 +61,16 @@ const WrappedCard = forwardRef(
 );
 
 const forwardedCard = WrappedCard;
+
+forwardedCard.propTypes = {
+  connectDragSource: PropTypes.func.isRequired,
+  connectDropTarget: PropTypes.func.isRequired,
+  card: PropTypes.shape({ _id: PropTypes.string.isRequired }),
+  isDragging: PropTypes.bool.isRequired,
+  listPosition: PropTypes.number.isRequired,
+  sourceListId: PropTypes.string.isRequired,
+  isLast: PropTypes.bool.isRequired,
+};
 
 const cardSource = {
   beginDrag(props) {

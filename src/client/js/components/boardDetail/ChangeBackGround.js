@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 
@@ -21,7 +22,7 @@ const colorStyle = {
 const ChangeBackGround = ({
   changeBg,
   toggleChangeBg,
-  handleSelectedBackground,
+  bgColorSelectHandler,
 }) => {
   const [show, setShow] = useState("");
   const [link, setLink] = useState("");
@@ -53,7 +54,7 @@ const ChangeBackGround = ({
                 display={{ ...colorStyle, backgroundColor: color }}
                 color={color}
                 handleClick={() => {
-                  handleSelectedBackground(color);
+                  bgColorSelectHandler(color);
                   setLink("");
                 }}
               />
@@ -63,7 +64,7 @@ const ChangeBackGround = ({
       )}
       {stringsEqual(show, "image") && (
         <UIWrapper>
-          <AddCoverImage handleMakeCover={handleSelectedBackground} />
+          <AddCoverImage handleMakeCover={bgColorSelectHandler} />
           <UIDivider
             content="Paste custom image link"
             inverted={true}
@@ -81,12 +82,18 @@ const ChangeBackGround = ({
             compact
             positive
             content="Add"
-            onClick={() => handleSelectedBackground(link)}
+            onClick={() => bgColorSelectHandler(link)}
           />
         </UIWrapper>
       )}
     </SideBarWrapper>
   );
+};
+
+ChangeBackGround.propTypes = {
+  changeBg: PropTypes.bool.isRequired,
+  toggleChangeBg: PropTypes.func.isRequired,
+  bgColorSelectHandler: PropTypes.func.isRequired,
 };
 
 export default ChangeBackGround;

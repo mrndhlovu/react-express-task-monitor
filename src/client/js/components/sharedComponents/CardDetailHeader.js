@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Header } from "semantic-ui-react";
 import {
@@ -52,6 +53,12 @@ const CardDetailHeader = ({
       )}
     </div>
   );
+};
+
+CardDetailHeader.propTypes = {
+  description: PropTypes.string.isRequired,
+  section: PropTypes.string,
+  editable: PropTypes.bool,
 };
 
 export default CardDetailHeader;

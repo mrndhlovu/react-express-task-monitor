@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Edit2 } from "react-feather";
 
@@ -27,6 +28,10 @@ const EditCardPenIcon = ({ setOpenCardModal }) => {
       <StyledButton />
     </EditIconWrapper>
   );
+};
+
+EditCardPenIcon.propTypes = {
+  setOpenCardModal: PropTypes.func.isRequired,
 };
 
 export default EditCardPenIcon;

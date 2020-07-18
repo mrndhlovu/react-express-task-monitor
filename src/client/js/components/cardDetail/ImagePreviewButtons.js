@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { Icon } from "semantic-ui-react";
 
 const ImagePreviewButtons = ({
@@ -28,6 +30,18 @@ const ImagePreviewButtons = ({
       </div>
     </>
   );
+};
+
+ImagePreviewButtons.propTypes = {
+  editAttachments: PropTypes.func.isRequired,
+  handleMakeCover: PropTypes.func.isRequired,
+  setOpenDocument: PropTypes.func.isRequired,
+  file: PropTypes.shape({
+    filetype: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    uploadDate: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default ImagePreviewButtons;

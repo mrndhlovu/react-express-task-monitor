@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Divider } from "semantic-ui-react";
 
@@ -24,5 +25,14 @@ const UIDivider = ({
     inverted={inverted}
   />
 );
+
+UIDivider.propTypes = {
+  content: PropTypes.string,
+  hidden: PropTypes.bool,
+  horizontal: PropTypes.bool,
+  inverted: PropTypes.bool,
+  margin: PropTypes.string,
+  vertical: PropTypes.bool,
+};
 
 export default UIDivider;

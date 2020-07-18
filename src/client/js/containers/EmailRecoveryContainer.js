@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { requestEmailRecovery } from "../apis/apiRequests";
 import { resetForm, emptyFunction } from "../utils/appUtils";
@@ -56,6 +57,13 @@ const EmailRecoveryContainer = ({ history, location }) => {
       disabled={!credentials.email}
     />
   );
+};
+
+EmailRecoveryContainer.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({ from: PropTypes.string.isRequired }),
+  }),
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(EmailRecoveryContainer);

@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import styled from "styled-components";
 import isURL from "validator/lib/isURL";
+import PropTypes from "prop-types";
 
 import { Input, Button } from "semantic-ui-react";
 
@@ -146,8 +147,10 @@ const AddAttachment = ({
     >
       <UIContainer width="300px" padding="0">
         <AttachmentOption>
-          <span>{mobile ? "Phone" : "Computer"}</span>
-          <StyledInput type="file" onChange={(e) => handleUpload(e)} />
+          <>
+            <span>{mobile ? "Phone" : "Computer"}</span>
+            <StyledInput type="file" onChange={(e) => handleUpload(e)} />
+          </>
         </AttachmentOption>
         {/* <AttachmentOption>
           <span>Google Drive</span>
@@ -179,6 +182,16 @@ const AddAttachment = ({
       </UIContainer>
     </DropdownButton>
   );
+};
+
+AddAttachment.propTypes = {
+  buttonText: PropTypes.string,
+  compact: PropTypes.bool,
+  direction: PropTypes.string,
+  fluid: PropTypes.bool,
+  icon: PropTypes.string,
+  labeled: PropTypes.bool,
+  upward: PropTypes.bool,
 };
 
 export default AddAttachment;

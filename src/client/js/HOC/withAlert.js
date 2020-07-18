@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import UIMessage from "../components/sharedComponents/UIMessage";
-import { emptyFunction } from "../utils/appUtils";
 import { AlertContext } from "../utils/contextUtils";
+import { emptyFunction } from "../utils/appUtils";
+import UIMessage from "../components/sharedComponents/UIMessage";
 
 import UIPortal from "../components/sharedComponents/UIPortal";
 

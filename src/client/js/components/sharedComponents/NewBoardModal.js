@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import CreateInput from "./CreateInput";
 import UIModal from "./UIModal";
@@ -23,8 +24,8 @@ const NEW_BOARD_MODAL_STYLE = {
 const NewBoardModal = ({
   createBoard,
   handleChange,
-  handleCreateClick,
-  showNewBoardModal,
+  createItemClickHandler,
+  openCreateBoardModalHandler,
 }) => {
   return (
     <UIModal
@@ -37,13 +38,20 @@ const NewBoardModal = ({
         <CreateInput
           placeholder="Add board title"
           buttonText="Create Board"
-          handleCreateClick={handleCreateClick}
-          close={() => showNewBoardModal()}
+          createItemClickHandler={createItemClickHandler}
+          close={() => openCreateBoardModalHandler()}
           handleChange={handleChange}
         />
       </StyledDiv>
     </UIModal>
   );
+};
+
+NewBoardModal.propTypes = {
+  createBoard: PropTypes.bool.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  createItemClickHandler: PropTypes.func.isRequired,
+  openCreateBoardModalHandler: PropTypes.func.isRequired,
 };
 
 export default NewBoardModal;

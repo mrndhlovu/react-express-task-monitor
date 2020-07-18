@@ -1,9 +1,11 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+
+import { X } from "react-feather";
 
 import { Card, Button, TextArea } from "semantic-ui-react";
 import UIWrapper from "./UIWrapper";
-import { X } from "react-feather";
 
 const StyledCardContent = styled(Card.Content)`
   padding-top: 10px !important;
@@ -28,7 +30,7 @@ const TextAreaWrapper = styled.div`
 
 const CreateInput = ({
   close,
-  handleCreateClick,
+  createItemClickHandler,
   handleChange,
   placeholder,
   defaultValue,
@@ -57,7 +59,7 @@ const CreateInput = ({
           positive={positive}
           size="tiny"
           content={buttonText}
-          onClick={() => handleCreateClick()}
+          onClick={() => createItemClickHandler()}
           fluid={fluid}
         />
         {!hideIcon && (
@@ -68,6 +70,20 @@ const CreateInput = ({
       </ButtonsWrapper>
     </Fragment>
   );
+};
+
+CreateInput.propTypes = {
+  close: PropTypes.func,
+  createItemClickHandler: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  defaultValue: PropTypes.string,
+  buttonText: PropTypes.string,
+  id: PropTypes.string,
+  hideIcon: PropTypes.bool,
+  width: PropTypes.string,
+  fluid: PropTypes.bool,
+  positive: PropTypes.bool,
 };
 
 export default CreateInput;

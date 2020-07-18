@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Icon, Button } from "semantic-ui-react";
 
@@ -121,13 +122,28 @@ const AuthFormWrapper = ({
             dataTestId="forgot-password-link"
             margin="10%"
             handleClick={() => history.push("/recovery")}
-          >
-            Forgot password.
-          </UISmall>
+            content="Forgot password."
+          />
         )}
       </FormWrapper>
     </UIContainer>
   );
+};
+
+AuthFormWrapper.defaultProps = {};
+
+AuthFormWrapper.propTypes = {
+  buttonText: PropTypes.string,
+  disabled: PropTypes.bool,
+  handleClick: PropTypes.func,
+  headText: PropTypes.string,
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
+  loading: PropTypes.bool,
+  socialButtons: PropTypes.string,
+  authCta: PropTypes.string,
+  redirect: PropTypes.string,
+  passwordChanged: PropTypes.bool,
+  dataTestId: PropTypes.string,
 };
 
 export default AuthFormWrapper;

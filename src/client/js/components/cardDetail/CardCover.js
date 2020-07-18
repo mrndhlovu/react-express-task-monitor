@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Image } from "semantic-ui-react";
 
@@ -13,6 +14,13 @@ const CardCover = ({ card }) => {
       />
     )
   );
+};
+
+CardCover.propTypes = {
+  card: PropTypes.shape({
+    cardCover: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
 export default CardCover;

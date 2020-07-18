@@ -24,7 +24,7 @@ const BoardWrapper = styled.div`
 const Board = () => {
   const {
     handleDeleteBoard,
-    handleSelectedBackground,
+    bgColorSelectHandler,
     handleShowMenuClick,
     showSideBar,
     board,
@@ -81,7 +81,7 @@ const Board = () => {
           <ChangeBackGround
             changeBg={changeBg}
             toggleChangeBg={toggleChangeBg}
-            handleSelectedBackground={handleSelectedBackground}
+            bgColorSelectHandler={bgColorSelectHandler}
             handleMakeTemplate={handleMakeTemplate}
           />
         </Suspense>

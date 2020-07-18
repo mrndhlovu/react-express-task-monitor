@@ -1,5 +1,6 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import mammoth from "mammoth";
+import PropTypes from "prop-types";
 
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
@@ -156,6 +157,16 @@ const DocumentModal = ({ file, setOpenDocument }) => {
       </div>
     </UIModal>
   );
+};
+
+DocumentModal.propTypes = {
+  setOpenDocument: PropTypes.func.isRequired,
+  file: PropTypes.shape({
+    filetype: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    uploadDate: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default DocumentModal;

@@ -1,9 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-import { emptyFunction } from "../../utils/appUtils";
-import { parseUrl } from "../../utils/urls";
-import { MainContext } from "../../utils/contextUtils";
-import { requestAuthLogin } from "../../apis/apiRequests";
 import { useAuth } from "../../utils/hookUtils";
 import TabPaneHeader from "./TabPaneHeader";
 import TabProfileContent from "./TabProfileContent";
@@ -15,43 +12,23 @@ const displayStyle = {
   flexDirection: "column",
 };
 
-const UserProfile = ({ history }) => {
-  const { device } = useContext(MainContext);
-  const { user, auth } = useAuth();
-
-  const [alertText, setAlertText] = useState("Login to access this page!");
-
-  useEffect(() => {
-    const { search } = history.location;
-    if (!search) return emptyFunction();
-    const { email, token } = parseUrl(search.slice(1));
-
-    if (!token) return emptyFunction;
-    setAlertText("Loading!");
-
-    const loginUser = async () => {
-      await requestAuthLogin({ email }, token)
-        .then((res) => {
-          auth.authListener(res.data.data, history.push("/"));
-        })
-        .catch(() => {
-          setAlertText("Login to access this page!");
-        });
-    };
-    token && email && loginUser();
-  }, [user, auth, history]);
+const UserProfile = ({ history, alertText }) => {
+  const { user } = useAuth();
 
   return (
     <UIContainer padding="0" display={displayStyle}>
-      <TabPaneHeader
-        user={user}
-        device={device}
-        alertText={alertText}
-        history={history}
-      />
-      {user && <TabProfileContent user={user} device={device} />}
+      <TabPaneHeader alertText={alertText} history={history} />
+      {user && <TabProfileContent />}
     </UIContainer>
   );
+};
+
+UserProfile.propTypes = {
+  alertText: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+    location: PropTypes.shape({ search: PropTypes.string }).isRequired,
+  }).isRequired,
 };
 
 export default UserProfile;

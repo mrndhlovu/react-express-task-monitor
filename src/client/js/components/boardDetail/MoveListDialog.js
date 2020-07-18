@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 
-import CreateInput from "../sharedComponents/CreateInput";
 import { useBoardContext } from "../../utils/hookUtils";
+import CreateInput from "../sharedComponents/CreateInput";
 
 const MoveListDialog = ({ close, listId, listPosition }) => {
   const { getSourceList, boardUpdateHandler, board } = useBoardContext();
@@ -17,7 +18,7 @@ const MoveListDialog = ({ close, listId, listPosition }) => {
     else setNewListPosition(listPosition);
   };
 
-  const handleCreateClick = () => {
+  const moveListHandler = () => {
     const isValidPosition =
       targetPosition !== 0 && targetPosition <= lists.length;
 
@@ -40,9 +41,15 @@ const MoveListDialog = ({ close, listId, listPosition }) => {
       close={close}
       placeholder="Enter new position"
       handleChange={handleChange}
-      handleCreateClick={handleCreateClick}
+      createItemClickHandler={moveListHandler}
     />
   );
+};
+
+MoveListDialog.propTypes = {
+  close: PropTypes.func.isRequired,
+  listId: PropTypes.string.isRequired,
+  listPosition: PropTypes.func,
 };
 
 export default MoveListDialog;

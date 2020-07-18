@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Input } from "semantic-ui-react";
 import NavButton from "../sharedComponents/NavButton";
@@ -19,6 +20,10 @@ const SearchBar = ({ handleSearchClick }) => {
   ) : (
     <StyledSearchInput placeholder="Search..." icon="search" />
   );
+};
+
+SearchBar.propTypes = {
+  handleSearchClick: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

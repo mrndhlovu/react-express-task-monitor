@@ -1,5 +1,6 @@
 import React, { Fragment } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { stringsEqual } from "../../utils/appUtils";
 import { Dropdown, Header } from "semantic-ui-react";
@@ -71,6 +72,19 @@ const DropdownList = ({
       )}
     </UIContainer>
   );
+};
+
+DropdownList.propTypes = {
+  list: PropTypes.arrayOf(
+    PropTypes.shape({ _id: PropTypes.string.isRequired })
+  ),
+  header: PropTypes.string,
+  position: PropTypes.number,
+  title: PropTypes.string,
+  handleSelection: PropTypes.func.isRequired,
+  hasList: PropTypes.bool,
+  hasCards: PropTypes.bool,
+  current: PropTypes.string.isRequired,
 };
 
 export default DropdownList;

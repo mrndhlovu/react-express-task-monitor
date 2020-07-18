@@ -1,13 +1,15 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 // import { Document, Page } from "react-pdf/dist/entry.webpack";
 // import "react-pdf/dist/Page/AnnotationLayer.css";
 
-const options = {
-  cMapUrl: "cmaps/",
-  cMapPacked: true,
-};
+// const options = {
+//   cMapUrl: "cmaps/",
+//   cMapPacked: true,
+// };
 
 const PDFPreview = ({ file, setNumPages, pageNumber, scale }) => {
   return (
@@ -21,6 +23,18 @@ const PDFPreview = ({ file, setNumPages, pageNumber, scale }) => {
       </Document> */}
     </UIWrapper>
   );
+};
+
+PDFPreview.propTypes = {
+  setNumPages: PropTypes.func.isRequired,
+  scale: PropTypes.number.isRequired,
+  pageNumber: PropTypes.number.isRequired,
+  file: PropTypes.shape({
+    filetype: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    uploadDate: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default PDFPreview;

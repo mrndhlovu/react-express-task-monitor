@@ -1,5 +1,6 @@
 import React, { useState, Suspense, lazy } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { BoardListsContext } from "../../utils/contextUtils";
 
@@ -22,8 +23,8 @@ const StyledListContainer = styled.div`
 const BoardLists = () => {
   const { board, createListHandler, history } = useBoardContext();
 
-  const [activeCard, setActiveCard] = useState(false);
-  const [activeList, setActiveList] = useState("");
+  const [activeCard, setActiveCard] = useState(undefined);
+  const [activeListId, setActiveListId] = useState("");
   const [hideCardDetail, setHideCardDetail] = useState(true);
   const [newListName, setNewListName] = useState("");
   const [showInputField, setShowInputField] = useState(false);
@@ -33,7 +34,7 @@ const BoardLists = () => {
 
   const handleAddList = (event) => setNewListName(event.target.value);
 
-  const handleCardClick = (card, sourceId) => {
+  const cardClickHandler = (card, sourceId) => {
     if (sourceId) {
       setActiveCard(card);
       setSourceId(sourceId);
@@ -43,11 +44,11 @@ const BoardLists = () => {
 
   const context = {
     activeCard,
-    activeList,
-    closeAddCardOption: () => setActiveList(""),
-    handleCardClick,
+    activeListId,
+    closeAddCardOption: () => setActiveListId(""),
+    cardClickHandler,
     hideCardDetail,
-    setActiveList,
+    setActiveListId,
     setSourceId,
   };
 
@@ -63,7 +64,9 @@ const BoardLists = () => {
           handleAddList={() => setShowInputField(!showInputField)}
           showInputField={showInputField}
           handleChange={handleAddList}
-          handleCreateClick={() => createListHandler({ title: newListName })}
+          createItemClickHandler={() =>
+            createListHandler({ title: newListName })
+          }
         />
 
         {!hideCardDetail && (
@@ -78,6 +81,18 @@ const BoardLists = () => {
       </StyledListContainer>
     </BoardListsContext.Provider>
   );
+};
+
+BoardLists.propTypes = {
+  context: PropTypes.shape({
+    activeCard: PropTypes.object,
+    activeListId: PropTypes.string,
+    closeAddCardOption: PropTypes.func.isRequired,
+    cardClickHandler: PropTypes.func.isRequired,
+    hideCardDetail: PropTypes.bool.isRequired,
+    setActiveListId: PropTypes.func.isRequired,
+    setSourceId: PropTypes.func.isRequired,
+  }),
 };
 
 export default BoardLists;

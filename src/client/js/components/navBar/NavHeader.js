@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import LeftNavButtons from "./LeftNavButtons";
 import Logo from "./Logo";
@@ -25,7 +26,7 @@ const NavContainer = styled.nav`
   z-index: 100;
 `;
 
-const NavHeader = ({ history, color = "transparent", setVisible }) => {
+const NavHeader = ({ history, color, setVisible }) => {
   const { isHomePage, setShowMobileMenu } = useMainContext();
   return (
     <NavContainer className="nav-container" color={color}>
@@ -43,6 +44,14 @@ const NavHeader = ({ history, color = "transparent", setVisible }) => {
       />
     </NavContainer>
   );
+};
+
+NavHeader.defaultProps = { color: "transparent" };
+
+NavHeader.propTypes = {
+  setVisible: PropTypes.func.isRequired,
+  color: PropTypes.string.isRequired,
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
 };
 
 export default withRouter(memo(NavHeader));

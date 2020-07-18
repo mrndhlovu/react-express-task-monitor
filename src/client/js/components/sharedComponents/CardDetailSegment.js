@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Container = styled.div`
   border-radius: 3px;
@@ -17,5 +18,9 @@ const Container = styled.div`
 const CardDetailSegment = ({ children, className }) => (
   <Container className={className}>{children}</Container>
 );
+
+CardDetailSegment.propTypes = {
+  className: PropTypes.string,
+};
 
 export default CardDetailSegment;

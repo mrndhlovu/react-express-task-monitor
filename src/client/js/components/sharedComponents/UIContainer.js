@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const Container = styled.div`
   padding: ${(props) => props.padding};
@@ -33,6 +34,15 @@ const UIContainer = ({
       {children}
     </Container>
   );
+};
+
+UIContainer.propTypes = {
+  className: PropTypes.string,
+  dataTestId: PropTypes.string,
+  display: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  nested: PropTypes.bool,
+  padding: PropTypes.string,
+  width: PropTypes.string,
 };
 
 export default UIContainer;

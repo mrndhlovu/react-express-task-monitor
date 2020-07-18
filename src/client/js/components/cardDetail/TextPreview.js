@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const TextPreview = ({ file }) => {
@@ -27,6 +29,15 @@ const TextPreview = ({ file }) => {
   };
 
   return renderText();
+};
+
+TextPreview.propTypes = {
+  file: PropTypes.shape({
+    filetype: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+    uploadDate: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default TextPreview;

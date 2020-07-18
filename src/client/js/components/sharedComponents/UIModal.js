@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import Modal from "react-modal";
 
@@ -42,6 +43,14 @@ const UIModal = ({
       </Modal>
     )
   );
+};
+
+UIModal.propTypes = {
+  children: PropTypes.element.isRequired,
+  closeIcon: PropTypes.bool,
+  isOpen: PropTypes.bool.isRequired,
+  modalStyle: PropTypes.object,
+  onClose: PropTypes.func,
 };
 
 export default UIModal;

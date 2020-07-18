@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { Button, Card, TextArea } from "semantic-ui-react";
 
@@ -47,9 +48,9 @@ const StyledContainer = styled.div`
   margin-top: 6%;
 `;
 
-const CreateCard = ({ targetList, activeList }) => {
+const CreateCard = ({ targetList, activeListId }) => {
   const { createCardHandler } = useBoardContext();
-  const { setActiveList, closeAddCardOption } = useBoardListContext();
+  const { setActiveListId, closeAddCardOption } = useBoardListContext();
 
   const [newCard, setNewCard] = useState(null);
 
@@ -59,11 +60,11 @@ const CreateCard = ({ targetList, activeList }) => {
 
   return (
     <StyledContainer>
-      {!activeList ? (
+      {!activeListId ? (
         <StyledButton
           fluid
           basic
-          onClick={() => setActiveList(targetList.listId)}
+          onClick={() => setActiveListId(targetList.listId)}
         >
           <Span className="uiDarkText">
             <Plus size={20} className="uiIconDark" />
@@ -102,6 +103,12 @@ const CreateCard = ({ targetList, activeList }) => {
       )}
     </StyledContainer>
   );
+};
+
+CreateCard.propTypes = {
+  activeListId: PropTypes.bool.isRequired,
+  targetList: PropTypes.shape({ listId: PropTypes.string.isRequired })
+    .isRequired,
 };
 
 export default withRouter(CreateCard);

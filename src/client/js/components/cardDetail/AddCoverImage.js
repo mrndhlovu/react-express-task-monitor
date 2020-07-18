@@ -122,7 +122,7 @@ const AddCoverImage = () => {
             </UIWrapper>
           ))}
       </UIWrapper>
-      {searchResult && <SearchImageList data={searchResult} />}
+      {searchResult && <SearchImageList images={searchResult} />}
     </Fragment>
   );
 };

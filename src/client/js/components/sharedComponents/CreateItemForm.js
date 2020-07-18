@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 import { Button } from "semantic-ui-react";
 import { X, Plus } from "react-feather";
@@ -44,7 +45,7 @@ const IconWrapper = styled.span`
 `;
 
 const CreateItemForm = ({
-  handleCreateClick,
+  createItemClickHandler,
   handleChange,
   buttonText,
   handleAddList,
@@ -72,14 +73,14 @@ const CreateItemForm = ({
               onChange={(e) => handleChange(e)}
               defaultValue={defaultValue}
               onKeyDown={(e) =>
-                e.key === "Enter" ? handleCreateClick() : null
+                e.key === "Enter" ? createItemClickHandler() : null
               }
             />
             <ButtonWrapper>
               <Button
                 positive
                 size="tiny"
-                onClick={() => handleCreateClick()}
+                onClick={() => createItemClickHandler()}
                 content={buttonText}
                 floated="left"
               />
@@ -92,6 +93,18 @@ const CreateItemForm = ({
       </Container>
     </StyledWrapper>
   );
+};
+
+CreateItemForm.propTypes = {
+  createItemClickHandler: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  buttonText: PropTypes.string,
+  handleAddList: PropTypes.func.isRequired,
+  placeholder: PropTypes.string,
+  showInputField: PropTypes.bool,
+  defaultValue: PropTypes.string,
+  ctaText: PropTypes.string,
+  color: PropTypes.string,
 };
 
 export default CreateItemForm;

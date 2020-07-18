@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router";
+import PropTypes from "prop-types";
 
 import { requestTemplates, requestNewBoard } from "../apis/apiRequests";
 import { useMainContext } from "../utils/hookUtils";
@@ -36,6 +37,10 @@ const TemplatesContainer = ({ history }) => {
       />
     )
   );
+};
+
+TemplatesContainer.propTypes = {
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(TemplatesContainer);

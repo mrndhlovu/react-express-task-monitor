@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 import { Progress } from "semantic-ui-react";
 
@@ -23,6 +24,15 @@ const ProgressBar = ({ checklist }) => {
       />
     </div>
   );
+};
+
+ProgressBar.propTypes = {
+  checklist: PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    status: PropTypes.string.isRequired,
+    tasks: PropTypes.arrayOf(PropTypes.object).isRequired,
+  }).isRequired,
 };
 
 export default ProgressBar;

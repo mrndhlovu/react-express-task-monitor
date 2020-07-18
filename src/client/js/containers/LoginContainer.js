@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { withRouter, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
 
 import { requestAuthLogin } from "../apis/apiRequests";
 import { useAuth, useMainContext } from "../utils/hookUtils";
@@ -53,6 +54,13 @@ const LoginContainer = ({ history, location }) => {
       onHandleChange={onHandleChange}
     />
   );
+};
+
+LoginContainer.propTypes = {
+  location: PropTypes.shape({
+    state: PropTypes.shape({ from: PropTypes.string.isRequired }),
+  }),
+  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
 export default withRouter(LoginContainer);

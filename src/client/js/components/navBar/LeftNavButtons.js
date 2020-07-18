@@ -13,8 +13,13 @@ const StyledDiv = styled.div`
   height: 36px;
 `;
 
-const LeftNavButtons = ({ history }) => {
-  const { STARRED_BOARDS, PERSONAL_BOARDS, RECENT_BOARDS } = useMainContext();
+const LeftNavButtons = () => {
+  const {
+    STARRED_BOARDS,
+    PERSONAL_BOARDS,
+    RECENT_BOARDS,
+    history,
+  } = useMainContext();
 
   return (
     <StyledDiv>
