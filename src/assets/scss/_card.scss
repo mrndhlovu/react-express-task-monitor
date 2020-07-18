@@ -118,6 +118,13 @@
   color: #172b4d;
 }
 
+.center {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2px;
+}
+
 .doc-page-buttons {
   display: flex;
   justify-content: space-around;

@@ -3,54 +3,39 @@ import PropTypes from "prop-types";
 
 import { Image, Dropdown } from "semantic-ui-react";
 
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIWrapper from "../sharedComponents/UIWrapper";
 import UISmall from "../sharedComponents/UISmall";
-import { useCardDetailContext } from "../../utils/hookUtils";
 
-const SearchImageList = ({ images }) => {
-  const { handleMakeCover } = useCardDetailContext();
-
+const SearchImageList = ({ images, handleMakeCover }) => {
   return (
     <UIWrapper className="images-container">
-      {!images ? (
-        <UILoadingSpinner />
-      ) : (
-        images.map((image) => (
-          <Dropdown.Item
-            className="search-images-wrap"
-            key={image.id}
-            content={
-              <UISmall
-                className="image-owner"
-                content={`Image by:  
-              ${(
-                <a
-                  className="image-owner"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={image.user.links.html}
-                >
-                  {image.user.first_name}
-                </a>
-              )}`}
-              />
-            }
-            image={
-              <Image
-                onClick={() => handleMakeCover(image.urls.full)}
-                className="search-image"
-                src={image.urls.small}
-              />
-            }
-          />
-        ))
-      )}
+      {images.map((image) => (
+        <Dropdown.Item
+          className="search-images-wrap"
+          key={image.id}
+          content={
+            <UISmall
+              className="image-owner"
+              link={image.user.links.html}
+              linkText={image.user.first_name}
+              content="Image by: "
+            />
+          }
+          image={
+            <Image
+              onClick={() => handleMakeCover(image.urls.full)}
+              className="search-image"
+              src={image.urls.small}
+            />
+          }
+        />
+      ))}
     </UIWrapper>
   );
 };
 
 SearchImageList.propTypes = {
+  handleMakeCover: PropTypes.func.isRequired,
   images: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string.isRequired,

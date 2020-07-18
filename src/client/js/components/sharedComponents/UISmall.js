@@ -21,6 +21,8 @@ const UISmall = ({
   margin,
   dataTestId,
   className,
+  link,
+  linkText,
 }) => {
   return (
     <StyledSmall
@@ -31,7 +33,21 @@ const UISmall = ({
       onClick={handleClick}
       margin={margin}
     >
-      {content}
+      {link ? (
+        <>
+          {content}{" "}
+          <a
+            className="image-owner"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={link}
+          >
+            {linkText}
+          </a>
+        </>
+      ) : (
+        content
+      )}
     </StyledSmall>
   );
 };
@@ -39,9 +55,11 @@ const UISmall = ({
 UISmall.propTypes = {
   bottom: PropTypes.string,
   content: PropTypes.string.isRequired,
+  link: PropTypes.string,
+  linkText: PropTypes.string,
   className: PropTypes.string,
   dataTestId: PropTypes.string,
-  handleClick: PropTypes.func.isRequired,
+  handleClick: PropTypes.func,
   left: PropTypes.string,
   margin: PropTypes.string,
 };
