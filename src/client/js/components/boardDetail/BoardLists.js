@@ -68,17 +68,17 @@ const BoardLists = () => {
             createListHandler({ title: newListName })
           }
         />
-
-        {!hideCardDetail && (
-          <Suspense fallback={<UILoadingSpinner />}>
-            <CardDetailContainer
-              listId={sourceId}
-              history={history}
-              modalOpen={!hideCardDetail}
-            />
-          </Suspense>
-        )}
       </StyledListContainer>
+
+      {!hideCardDetail && (
+        <Suspense fallback={<UILoadingSpinner />}>
+          <CardDetailContainer
+            listId={sourceId}
+            history={history}
+            modalOpen={!hideCardDetail}
+          />
+        </Suspense>
+      )}
     </BoardListsContext.Provider>
   );
 };

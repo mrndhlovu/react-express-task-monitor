@@ -38,7 +38,7 @@ const CardDetailContainer = ({ listId, match, history, modalOpen }) => {
   const handleMakeCover = async (cover) => {
     setIsLoading("cover");
 
-    cardUpdateRequestHandler({ ...card, sourceId, cardCover: cover }, () => {
+    cardUpdateRequestHandler({ ...card, cardCover: cover }, sourceId, () => {
       saveCardChanges({ ...card, cardCover: cover });
       setIsLoading("");
     });

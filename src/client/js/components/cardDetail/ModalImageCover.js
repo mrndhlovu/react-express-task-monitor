@@ -7,7 +7,7 @@ import { useCardDetailContext } from "../../utils/hookUtils";
 
 const ButtonWrapper = styled.div`
   position: absolute;
-  bottom: 0px;
+  bottom: 10px;
   right: 5px;
 `;
 

@@ -1,32 +1,84 @@
 import React, { memo } from "react";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 
 import { Checkbox } from "semantic-ui-react";
+import DropdownButton from "../sharedComponents/DropdownButton";
+import EditableHeader from "../sharedComponents/EditableHeader";
+import UIButton from "../sharedComponents/UIButton";
+import UIWrapper from "../sharedComponents/UIWrapper";
+
+const TextContainer = styled.div`
+  display: flex !important;
+  width: 100%;
+  position: relative;
+  margin-left: 10px;
+  cursor: pointer;
+`;
 
 const ChecklistItem = ({
-  item,
-  handleCheckboxClick,
+  editCheckListHandler,
+  handleConvertToCard,
+  handleDeleteChecklistItem,
   isCompleted,
+  isOverCurrent,
+  task,
   position,
+  setIsOverCurrent,
 }) => {
   return (
-    <Checkbox
-      className={isCompleted ? "item-complete" : "item-doing"}
-      id={item._id}
-      label={item.description}
-      checked={isCompleted}
-      onChange={() =>
-        handleCheckboxClick(position - 1, isCompleted ? "doing" : "done")
-      }
-    />
+    <UIWrapper className="checklist-task-wrap">
+      <Checkbox
+        id={task._id}
+        checked={isCompleted}
+        onChange={() =>
+          editCheckListHandler(position - 1, isCompleted ? "doing" : "done")
+        }
+      />
+      <TextContainer onMouseEnter={() => setIsOverCurrent(task._id)}>
+        <EditableHeader
+          title={task.description}
+          type="checkListTask"
+          fontSize="12px"
+          className={isCompleted ? "task-complete" : "task-doing"}
+          editItem={task}
+          handleEditTitle={editCheckListHandler}
+          sourceId={position - 1}
+        />
+        {isOverCurrent === task._id && (
+          <div className="checklist-edit-button">
+            <DropdownButton
+              className="checklist-edit-ellipsis"
+              labeled={false}
+              icon="ellipsis horizontal"
+              header="Item Actions"
+              width="200px"
+            >
+              <div className="checklist-task-actions">
+                <UIButton
+                  content="Convert to card"
+                  fluid={true}
+                  onClick={() => handleConvertToCard(task)}
+                />
+                <UIButton
+                  content="Delete"
+                  fluid={true}
+                  onClick={() => handleDeleteChecklistItem(task)}
+                />
+              </div>
+            </DropdownButton>
+          </div>
+        )}
+      </TextContainer>
+    </UIWrapper>
   );
 };
 
 ChecklistItem.propTypes = {
-  handleCheckboxClick: PropTypes.func.isRequired,
+  editCheckListHandler: PropTypes.func.isRequired,
   isCompleted: PropTypes.bool.isRequired,
   position: PropTypes.number.isRequired,
-  item: PropTypes.shape({
+  task: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     description: PropTypes.string.isRequired,
   }).isRequired,

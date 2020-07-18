@@ -12,7 +12,11 @@ import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const AddCover = ({ color, buttonSize, upward = true }) => {
-  const { hasCover, handleRemoveCover } = useCardDetailContext();
+  const {
+    hasCover,
+    handleRemoveCover,
+    handleMakeCover,
+  } = useCardDetailContext();
 
   const [addCover, setAddCover] = useState(false);
 
@@ -46,7 +50,7 @@ const AddCover = ({ color, buttonSize, upward = true }) => {
         </UIContainer>
       ) : (
         <UIWrapper className="add-image-container">
-          <AddCoverImage />
+          <AddCoverImage handleMakeCover={handleMakeCover} />
 
           {hasCover && (
             <Fragment>

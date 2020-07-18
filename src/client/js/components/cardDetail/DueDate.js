@@ -25,7 +25,7 @@ const DueDate = () => {
   const [checked, setChecked] = useState(false);
   const [unChecked, setUnChecked] = useState(false);
 
-  const handleCheckboxClick = () =>
+  const editCheckListHandler = () =>
     card.dueDate.complete ? setUnChecked(true) : setChecked(true);
 
   const handleDeleteDueDate = () => setRemoveDueDate(true);
@@ -97,7 +97,7 @@ const DueDate = () => {
               id="dueDate"
               label={getFormattedDate(card.dueDate.date, "LLLL")}
               checked={card.dueDate.complete}
-              onChange={() => handleCheckboxClick()}
+              onChange={() => editCheckListHandler()}
             />
 
             {card.dueDate.complete && (
