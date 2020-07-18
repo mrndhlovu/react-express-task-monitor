@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, Fragment } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -13,12 +13,11 @@ import {
   requestDeleteAccount,
 } from "../apis/apiRequests";
 import { useDimensions, useAuth, useAlert } from "../utils/hookUtils";
-import MobileSideMenu from "../components/navBar/MobileSideMenu";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
 import withAlert from "../HOC/withAlert";
 
-const AppWrapper = styled.div`
+const Container = styled.div`
   padding: 0;
   margin: 0;
   position: absolute;
@@ -44,7 +43,6 @@ const MainContainer = ({ children, history }) => {
   const [boards, setBoards] = useState(null);
   const [search, setSearch] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [showNavBoard, setShowNavBoards] = useState({
     starred: false,
     recent: false,
@@ -142,29 +140,11 @@ const MainContainer = ({ children, history }) => {
 
   return (
     <MainContext.Provider value={context}>
-      <AppWrapper data-test-id="app-container" bg={background}>
-        <Sidebar.Pushable>
-          <Fragment>
-            {auth.authenticated && (
-              <Fragment>
-                {boards && (
-                  <NavHeader
-                    color={navBackground}
-                    setVisible={() => setVisible(!visible)}
-                  />
-                )}
-                <MobileSideMenu
-                  visible={visible}
-                  setVisible={setVisible}
-                  history={history}
-                />
-              </Fragment>
-            )}
-            {children}
-            {search && <SearchPage />}
-          </Fragment>
-        </Sidebar.Pushable>
-      </AppWrapper>
+      <Container data-test-id="app-container" bg={background}>
+        {auth.authenticated && boards && <NavHeader color={navBackground} />}
+        {search && <SearchPage />}
+        <Sidebar.Pushable>{children}</Sidebar.Pushable>
+      </Container>
     </MainContext.Provider>
   );
 };

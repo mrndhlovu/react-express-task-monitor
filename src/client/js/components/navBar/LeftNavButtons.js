@@ -27,13 +27,14 @@ const LeftNavButtons = () => {
         buttonColor="black"
         iconName="home"
         redirect={() => history.push("/")}
+        padding="10px"
       />
       <DropdownButton
         icon="columns"
         buttonText="Boards"
         closeOnSelect
+        size="tiny"
         hasHeader={false}
-        compact={false}
         direction="right"
         className="navBoardsButton navButton"
       >

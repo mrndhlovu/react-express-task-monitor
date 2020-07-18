@@ -4,11 +4,9 @@ import PropTypes from "prop-types";
 import { Target } from "react-feather";
 
 const Logo = ({ history }) => (
-  <div className="logo">
-    <h2 onClick={() => history.push("/")}>
-      <Target />
-      <span>Task Monitor</span>
-    </h2>
+  <div className="logo" onClick={() => history.push("/")}>
+    <Target className="logoIcon" />
+    <h2>Trello Clone</h2>
   </div>
 );
 

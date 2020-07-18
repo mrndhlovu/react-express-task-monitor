@@ -24,12 +24,12 @@ const BoardMenu = ({
 }) => {
   const { board, handleShowMenuClick, handleDeleteBoard } = useBoardContext();
   const { user } = useAuth();
-  const { device, setShowMobileMenu } = useMainContext();
+  const { device } = useMainContext();
   const [activities, setActivities] = useState(false);
 
   return (
     <SideBarWrapper
-      handleClose={device.mobile ? setShowMobileMenu : handleShowMenuClick}
+      handleClose={handleShowMenuClick}
       open={showSideBar}
       header={board.title}
       className="board-menu-sidebar"
