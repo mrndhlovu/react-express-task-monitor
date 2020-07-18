@@ -16,11 +16,8 @@ import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import ChecklistItem from "./ChecklistItem";
 import CreateInput from "../sharedComponents/CreateInput";
-import DropdownButton from "../sharedComponents/DropdownButton";
 import ProgressBar from "./ProgressBar";
 import UIContainer from "../sharedComponents/UIContainer";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UIButton from "../sharedComponents/UIButton";
 
 const CheckLists = () => {
   const { card } = useCardDetailContext();
@@ -48,6 +45,7 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
 
   const [checklist, setChecklist] = useState(listItem);
   const [createItem, setCreateItem] = useState(false);
+  const [isOverCurrent, setIsOverCurrent] = useState(null);
   const [task, setTask] = useState(null);
 
   const { id } = match.params;
@@ -113,18 +111,21 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
     updatedCardChanges(card);
   };
 
-  const handleCheckboxClick = (id, status) => {
+  const editCheckListHandler = (id, status, description) => {
     const targetTask = findArrayItem(checklist.tasks, id);
-    targetTask.status = status;
+    targetTask[status ? "status" : "description"] = status
+      ? status
+      : description;
 
     checklist.tasks.splice(id, 1, targetTask);
+    if (status) {
+      const inProgress = checklist.tasks.find((task) =>
+        stringsEqual(task.status, "doing")
+      );
 
-    const inProgress = checklist.tasks.find((task) =>
-      stringsEqual(task.status, "doing")
-    );
-
-    if (!inProgress) checklist.status = "complete";
-    else checklist.status = "doing";
+      if (!inProgress) checklist.status = "complete";
+      else checklist.status = "doing";
+    }
 
     setChecklist(checklist);
     card.checklists.splice(listIndex, 1, checklist);
@@ -170,37 +171,17 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
           </UIContainer>
         ) : (
           checklist.tasks.map((task, index) => (
-            <UIWrapper className="checklist-item-wrap" key={index}>
-              <ChecklistItem
-                handleCheckboxClick={handleCheckboxClick}
-                item={task}
-                position={index + 1}
-                isCompleted={stringsEqual(task.status, "done")}
-              />
-              <div className="checklist-edit-wrap">
-                <DropdownButton
-                  className="checklist-edit-ellipsis"
-                  labeled={false}
-                  icon="ellipsis horizontal"
-                  header="Item Actions"
-                  width="200px"
-                  size="tiny"
-                >
-                  <div className="checklist-item-actions">
-                    <UIButton
-                      content="Convert to card"
-                      fluid={true}
-                      onClick={() => handleConvertToCard(task)}
-                    />
-                    <UIButton
-                      content="Delete"
-                      fluid={true}
-                      onClick={() => handleDeleteChecklistItem(task)}
-                    />
-                  </div>
-                </DropdownButton>
-              </div>
-            </UIWrapper>
+            <ChecklistItem
+              editCheckListHandler={editCheckListHandler}
+              handleConvertToCard={handleConvertToCard}
+              handleDeleteChecklistItem={handleDeleteChecklistItem}
+              isCompleted={stringsEqual(task.status, "done")}
+              isOverCurrent={isOverCurrent}
+              task={task}
+              position={index + 1}
+              setIsOverCurrent={setIsOverCurrent}
+              key={index}
+            />
           ))
         )}
 

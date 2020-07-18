@@ -10,7 +10,12 @@ const BoardHeader = () => {
 
   return (
     <div className="board-header">
-      <EditableHeader title={board.title} type="boardTitle" />
+      <EditableHeader
+        title={board.title}
+        type="boardTitle"
+        color="white"
+        fontSize="18px"
+      />
       <BoardHeaderButtons isBoardMenu={mobile} />
     </div>
   );

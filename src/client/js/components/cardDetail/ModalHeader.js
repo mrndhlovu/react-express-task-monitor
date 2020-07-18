@@ -51,6 +51,7 @@ const ModalHeader = () => {
           header="Move Card"
           direction="right"
           close={close}
+          icon={null}
         >
           <UIWrapper className="move-card-wrapper">
             <MoveCardDialog
