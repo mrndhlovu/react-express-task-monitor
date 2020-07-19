@@ -23,7 +23,7 @@ const CardTitle = styled.div`
   letter-spacing: 0.8px;
   padding: 5px 10px;
   &:after {
-    content: '${(props) => props.title}';
+    content: '${({ title }) => title}';
   }
 `;
 
@@ -54,7 +54,7 @@ const BadgeContainer = styled.div`
   align-items: flex-end;
 `;
 
-const CardItem = ({ card, sourceListId, showEditButton }) => {
+const CardDetail = ({ card, sourceListId, showEditButton }) => {
   const { boardUpdateHandler, board } = useBoardContext();
   const { cardClickHandler } = useBoardListContext();
 
@@ -128,10 +128,10 @@ const CardItem = ({ card, sourceListId, showEditButton }) => {
   );
 };
 
-CardItem.propTypes = {
+CardDetail.propTypes = {
   card: PropTypes.object.isRequired,
   showEditButton: PropTypes.bool.isRequired,
   sourceListId: PropTypes.string.isRequired,
 };
 
-export default withRouter(CardItem);
+export default withRouter(CardDetail);

@@ -10,10 +10,10 @@ import PropTypes from "prop-types";
 
 import { DRAG_TYPES } from "../../constants/constants";
 
-import CardItem from "./CardItem";
+import CardDetail from "./CardDetail";
 
 // eslint-disable-next-line react/display-name
-const WrappedCard = forwardRef(
+const Card = forwardRef(
   (
     {
       card,
@@ -46,7 +46,7 @@ const WrappedCard = forwardRef(
         onMouseEnter={() => setShowEditButton(true)}
         onMouseLeave={() => setShowEditButton(false)}
       >
-        <CardItem
+        <CardDetail
           card={card}
           sourceListId={sourceListId}
           listPosition={listPosition}
@@ -60,7 +60,7 @@ const WrappedCard = forwardRef(
   }
 );
 
-const forwardedCard = WrappedCard;
+const forwardedCard = Card;
 
 forwardedCard.propTypes = {
   connectDragSource: PropTypes.func.isRequired,

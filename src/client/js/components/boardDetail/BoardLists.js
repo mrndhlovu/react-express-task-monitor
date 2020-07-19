@@ -6,7 +6,7 @@ import { BoardListsContext } from "../../utils/contextUtils";
 
 import { useBoardContext } from "../../utils/hookUtils";
 import CreateItemForm from "../sharedComponents/CreateItemForm";
-import ListGrid from "./ListGrid";
+import Lists from "./Lists";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 
 const CardDetailContainer = lazy(() =>
@@ -55,7 +55,7 @@ const BoardLists = () => {
   return (
     <BoardListsContext.Provider value={context}>
       <StyledListContainer className="lists-container">
-        <ListGrid />
+        <Lists />
 
         <CreateItemForm
           buttonText="Create List"

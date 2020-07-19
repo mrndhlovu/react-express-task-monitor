@@ -33,7 +33,9 @@ const AddCover = ({ color, buttonSize, upward = true }) => {
       {!hasCover && !addCover ? (
         <UIContainer width="300px">
           <div className="wordWrap padded">
-            <span>Seems you don't have card covers. Lets add one now!</span>
+            <span>
+              Seems you don&apos;t have card covers. Lets add one now!
+            </span>
           </div>
 
           <Button

@@ -8,10 +8,9 @@ import { Segment } from "semantic-ui-react";
 
 import { DRAG_TYPES } from "../../constants/constants";
 import { useBoardListContext, useMainContext } from "../../utils/hookUtils";
-import CardsWrapper from "./CardsWrapper";
+import Cards from "./Cards";
 import CreateCard from "../sharedComponents/CreateCard";
 import ListMenu from "./ListMenu";
-import _debounce from "debounce";
 
 const ListSegment = styled(Segment)`
   background-color: #ebecf0 !important;
@@ -78,7 +77,7 @@ const List = forwardRef(
           />
 
           <CardsContainer className="card-list">
-            <CardsWrapper
+            <Cards
               cards={cards}
               sourceListId={_id}
               listPosition={position}
@@ -138,10 +137,7 @@ const listTarget = {
 
       if (isSource) return null;
 
-      _debounce(
-        props.cardToNewListHandler(dragIndex, hoverIndex, sourceIndex),
-        500
-      );
+      props.cardToNewListHandler(dragIndex, hoverIndex, sourceIndex);
 
       return monitor.getItem().id === hoverIndex;
     }

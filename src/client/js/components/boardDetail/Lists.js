@@ -28,23 +28,24 @@ const ListGrid = () => {
   };
 
   const undoMoveCard = (listHoverIndex) => {
-    if (previousIndex) {
+    if (previousIndex > -1) {
       const cardIndex = boardLists[previousIndex].cards.indexOf(draggingCard);
       boardLists[previousIndex].cards.splice(cardIndex, 1);
 
-      addCardToTarget(listHoverIndex, cardIndex, draggingCard);
+      moveCard(listHoverIndex, cardIndex, draggingCard);
     }
   };
 
-  const removeCardFromSource = (sourceIndex, cardIndex) => {
+  const removeCardFromSource = (sourceIndex, cardIndex, cb) => {
     const cards = update(boardLists[sourceIndex].cards, {
       $splice: [[cardIndex, 1]],
     });
     const updatedSource = { ...boardLists[sourceIndex], cards };
     boardLists.splice(sourceIndex, 1, updatedSource);
+    cb();
   };
 
-  const addCardToTarget = (listHoverIndex, cardIndex, dragCard) => {
+  const moveCard = (listHoverIndex, cardIndex, dragCard) => {
     const targetCards = update(boardLists[listHoverIndex].cards, {
       $splice: [[cardIndex, 0, dragCard]],
     });
@@ -59,17 +60,16 @@ const ListGrid = () => {
     const dragCard = draggingCard || boardLists[sourceIndex].cards[cardIndex];
     !draggingCard && setDraggingCard(dragCard);
 
-    const isOverCurrent = hoverIndex === listHoverIndex;
     const isOverSource = sourceIndex === listHoverIndex;
     const hasPreviousIndex = previousIndex > -1;
     const skipUndo = hasPreviousIndex && previousIndex === sourceIndex;
 
     if (hasPreviousIndex || skipUndo || isOverSource)
       return undoMoveCard(listHoverIndex);
-    if (isOverCurrent) return null;
 
-    removeCardFromSource(sourceIndex, cardIndex);
-    addCardToTarget(listHoverIndex, cardIndex, dragCard);
+    removeCardFromSource(sourceIndex, cardIndex, () =>
+      moveCard(listHoverIndex, cardIndex, dragCard)
+    );
   };
 
   const moveListHandler = (hoverIndex) => {
@@ -83,24 +83,26 @@ const ListGrid = () => {
     });
     setLists(updatedLists);
     updateBoardState({ ...board, lists: updatedLists });
-    setDragIndex(null);
   };
 
-  return Object.keys(boardLists).map((key, index) => (
-    <List
-      cardToNewListHandler={cardToNewListHandler}
-      dragIndex={dragIndex}
-      hoverIndex={hoverIndex}
-      key={key}
-      list={boardLists[key]}
-      listDropHandler={listDropHandler}
-      moveListHandler={moveListHandler}
-      position={index + 1}
-      resetListsState={resetListsState}
-      setDragIndex={setDragIndex}
-      setHoverIndex={setHoverIndex}
-    />
-  ));
+  return Object.keys(boardLists).map(
+    (list, index) =>
+      list && (
+        <List
+          cardToNewListHandler={cardToNewListHandler}
+          dragIndex={dragIndex}
+          hoverIndex={hoverIndex}
+          key={list}
+          list={boardLists[list]}
+          listDropHandler={listDropHandler}
+          moveListHandler={moveListHandler}
+          position={index + 1}
+          resetListsState={resetListsState}
+          setDragIndex={setDragIndex}
+          setHoverIndex={setHoverIndex}
+        />
+      )
+  );
 };
 
 export default ListGrid;

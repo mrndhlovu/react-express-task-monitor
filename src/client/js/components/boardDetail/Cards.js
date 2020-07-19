@@ -2,15 +2,10 @@ import React, { useState } from "react";
 import update from "immutability-helper";
 import PropTypes from "prop-types";
 
-import WrappedCard from "./WrappedCard";
+import Card from "./Card";
 import { useBoardContext } from "../../utils/hookUtils";
 
-const CardsWrapper = ({
-  listPosition,
-  sourceListId,
-  resetListsState,
-  ...rest
-}) => {
+const Cards = ({ listPosition, sourceListId, resetListsState, ...rest }) => {
   const { board, boardUpdateHandler, updateBoardState } = useBoardContext();
 
   const [lists, setLists] = useState(null);
@@ -57,25 +52,28 @@ const CardsWrapper = ({
     }
   };
 
-  return (cards || sourceList.cards).map((card, index) => (
-    <WrappedCard
-      key={card._id}
-      card={card}
-      cardIndex={index}
-      isLast={sourceList.cards.length === index + 1}
-      cardRepositionHandler={cardRepositionHandler}
-      sourceListId={sourceListId}
-      cardDropHandler={cardDropHandler}
-      listPosition={listPosition}
-      {...rest}
-    />
-  ));
+  return (cards || sourceList.cards).map(
+    (card, index) =>
+      card && (
+        <Card
+          key={card._id}
+          card={card}
+          cardIndex={index}
+          isLast={sourceList.cards.length === index + 1}
+          cardRepositionHandler={cardRepositionHandler}
+          sourceListId={sourceListId}
+          cardDropHandler={cardDropHandler}
+          listPosition={listPosition}
+          {...rest}
+        />
+      )
+  );
 };
 
-CardsWrapper.propTypes = {
+Cards.propTypes = {
   listPosition: PropTypes.number.isRequired,
   sourceListId: PropTypes.string.isRequired,
   resetListsState: PropTypes.func.isRequired,
 };
 
-export default CardsWrapper;
+export default Cards;
