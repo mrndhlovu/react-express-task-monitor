@@ -11,6 +11,7 @@ import { useBoardListContext, useMainContext } from "../../utils/hookUtils";
 import CardsWrapper from "./CardsWrapper";
 import CreateCard from "../sharedComponents/CreateCard";
 import ListMenu from "./ListMenu";
+import _debounce from "debounce";
 
 const ListSegment = styled(Segment)`
   background-color: #ebecf0 !important;
@@ -62,7 +63,7 @@ const List = forwardRef(
       marginRight: "8px",
       opacity: isDragging ? 0 : 1,
       whiteSpace: "nowrap",
-      maxHeight: mobile ? "91vh" : "92vh",
+      minHeight: mobile ? "91vh" : "92vh",
       WebkitTransform: "transform",
     };
 
@@ -137,7 +138,10 @@ const listTarget = {
 
       if (isSource) return null;
 
-      props.cardToNewListHandler(dragIndex, hoverIndex, sourceIndex);
+      _debounce(
+        props.cardToNewListHandler(dragIndex, hoverIndex, sourceIndex),
+        500
+      );
 
       return monitor.getItem().id === hoverIndex;
     }

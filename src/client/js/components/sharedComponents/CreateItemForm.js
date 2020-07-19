@@ -8,7 +8,7 @@ import { X, Plus } from "react-feather";
 import UIFormInput from "../sharedComponents/UIFormInput";
 
 const StyledWrapper = styled.div`
-  width: 272px;
+  min-width: 272px;
 `;
 
 const Container = styled.div`
@@ -31,6 +31,7 @@ const Span = styled.div`
 const InputWrapper = styled.div`
   padding: 5px;
   width: 100%;
+  min-width: 272px;
 `;
 
 const ButtonWrapper = styled.div`
