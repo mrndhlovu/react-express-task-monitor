@@ -2,7 +2,7 @@
 
 #### React Task monitor | MERN stack, Inspired by Trello.
 
-## [Task Monitor](https://moneat.herokuapp.com/)
+## [Trello Clone](https://moneat.herokuapp.com/)
 
 ## Setup 
 
