@@ -8,7 +8,6 @@ import AddCoverImage from "./AddCoverImage";
 import DropdownButton from "../sharedComponents/DropdownButton";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
-import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const AddCover = ({ color, buttonSize, upward = true }) => {
@@ -33,12 +32,9 @@ const AddCover = ({ color, buttonSize, upward = true }) => {
     >
       {!hasCover && !addCover ? (
         <UIContainer width="300px">
-          <UIMessage
-            success={true}
-            fontSize="11px"
-            margin="10px 10px"
-            message="Seems you don't have card covers. Lets add one now!"
-          />
+          <div className="wordWrap padded">
+            <span>Seems you don't have card covers. Lets add one now!</span>
+          </div>
 
           <Button
             content="Add cover"

@@ -5,7 +5,7 @@ import { Button, Header, Input, Pagination } from "semantic-ui-react";
 
 import { getSearchQueryString } from "../../utils/urls";
 import { requestImages } from "../../apis/apiRequests";
-import { SUGGESTED_COVERS } from "../../constants/constants";
+import { SUGGESTED_COVERS, BUTTON_COLORS } from "../../constants/constants";
 import { useMainContext } from "../../utils/hookUtils";
 import SearchImageList from "./SearchImageList";
 import UIWrapper from "../sharedComponents/UIWrapper";
@@ -115,6 +115,7 @@ const AddCoverImage = ({ handleMakeCover }) => {
                 <Button
                   key={index}
                   content={suggestion}
+                  color={BUTTON_COLORS[index]}
                   size="tiny"
                   compact
                   onClick={() => handleSuggestionClick(suggestion)}

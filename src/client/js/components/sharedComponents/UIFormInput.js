@@ -27,10 +27,11 @@ const UIFormInput = ({
   onKeyDown,
   className = "ui-form-input",
   onClick,
+  rows,
 }) => {
   return (
     <InputWrapper>
-      <input
+      <textarea
         className={className}
         autoFocus={autoFocus}
         data-test-id={dataTestId}
@@ -43,7 +44,8 @@ const UIFormInput = ({
         type={type}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
-      />
+        rows={rows}
+      ></textarea>
 
       <Icon {...iconProps} data-test-id="password-input-field-eye-icon" />
     </InputWrapper>

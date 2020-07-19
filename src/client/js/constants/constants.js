@@ -48,6 +48,20 @@ export const BG_COLORS = [
   "#172b4d",
 ];
 
+export const BUTTON_COLORS = [
+  "orange",
+  "yellow",
+  "olive",
+  "green",
+  "teal",
+  "blue",
+  "violet",
+  "purple",
+  "pink",
+  "brown",
+  "grey",
+];
+
 export const LIST_MENU_OPTIONS = [
   { key: 1, value: "Move List" },
   { key: 2, value: "Copy List" },
@@ -100,12 +114,14 @@ export const SUGGESTED_COVERS = [
   "Productivity",
   "Perspective",
   "Organization",
-  "Colorful",
   "Nature",
+  "Colorful",
+  "AI",
   "Business",
   "Minimal",
   "Space",
   "Animals",
+  "Computer",
 ];
 
 export const ALLOWED_IMAGE_TYPES = ["png", "jpg", "gif", "jpeg"];

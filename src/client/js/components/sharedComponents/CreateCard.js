@@ -3,11 +3,12 @@ import styled from "styled-components";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { Button, Card, TextArea } from "semantic-ui-react";
-
-import UIWrapper from "./UIWrapper";
+import { Button, Card } from "semantic-ui-react";
 import { X, Plus, CreditCard } from "react-feather";
+
 import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
+import UIFormInput from "./UIFormInput";
+import UIWrapper from "./UIWrapper";
 
 const StyledButton = styled.div`
   text-align: left !important;
@@ -74,12 +75,12 @@ const CreateCard = ({ targetList, activeListId }) => {
         </StyledButton>
       ) : (
         <StyledCard fluid>
-          <TextArea
+          <UIFormInput
             id="create-card-input"
+            fluid={true}
             placeholder="Enter a title for this card..."
             onChange={(e) => handleChange(e)}
             autoFocus
-            fluid="true"
             onKeyDown={(e) =>
               e.key === "Enter"
                 ? createCardHandler(newCard, targetList.listId)
