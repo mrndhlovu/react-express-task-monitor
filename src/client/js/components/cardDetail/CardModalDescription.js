@@ -7,9 +7,7 @@ import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import { useCardDetailContext } from "../../utils/hookUtils";
 
-const Description = styled.div`
-  margin-left: 33px;
-`;
+const Description = styled.div``;
 
 const StyledTextArea = styled(TextArea)`
   background-color: #091e420a !important;
@@ -73,7 +71,7 @@ const CardModalDescription = () => {
                 onFocus={() => setHideSaveButton(!hideSaveButton)}
                 onBlur={_debounce(
                   () => setHideSaveButton(!hideSaveButton),
-                  500
+                  1000
                 )}
                 onChange={(e) => handleChange(e)}
               />

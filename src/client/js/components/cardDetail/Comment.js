@@ -101,6 +101,7 @@ const Comment = ({ comment }) => {
             createItemClickHandler={handleAddClick}
             handleChange={handleChange}
             id="edit-comment-input"
+            width="100%"
           />
         </EditCommentInputWrapper>
       )}
