@@ -16,7 +16,7 @@ const StyledDiv = styled.div`
 `;
 
 const RightNavButtons = ({ history }) => {
-  const { user } = useAuth();
+  const { user, handleLogOut } = useAuth();
   const { updateUserRequestHandler } = useMainContext();
   const [activeIndex, setActiveIndex] = useState(null);
   const unreadNotification = user.notifications.filter(
@@ -82,6 +82,7 @@ const RightNavButtons = ({ history }) => {
         userName={user.fname}
         history={history}
         fontSize="13px"
+        handleLogOut={handleLogOut}
       />
     </StyledDiv>
   );

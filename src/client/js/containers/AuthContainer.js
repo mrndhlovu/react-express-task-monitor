@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { UserContext } from "../utils/contextUtils";
-import { userInfo } from "../apis/apiRequests";
+import { userInfo, requestAuthLogout } from "../apis/apiRequests";
 import { withRouter } from "react-router";
 import MainContainer from "./MainContainer";
 
 const AuthContainer = ({ children, history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
-  const [alert, setAlert] = useState(null);
+
   const [authenticated, setAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   const authListener = (user, cb) => {
@@ -19,15 +20,20 @@ const AuthContainer = ({ children, history, location }) => {
     cb && cb();
   };
 
+  const handleLogOut = async () =>
+    await requestAuthLogout().then(() => history.push("/login"));
+
   useEffect(() => {
     if (user) return;
     const getCurrentUser = async () => {
+      setIsLoading(true);
       await userInfo()
         .then((res) => {
+          setIsLoading(false);
           authListener(res.data.data, history.push(`${from.pathname}`));
         })
-        .catch((error) => {
-          setAlert(error.response.data);
+        .catch(() => {
+          setIsLoading(false);
           setAuthenticated(false);
           localStorage.clear();
         });
@@ -37,7 +43,13 @@ const AuthContainer = ({ children, history, location }) => {
 
   return (
     <UserContext.Provider
-      value={{ auth: { authenticated, authListener }, user, alert, setAlert }}
+      value={{
+        alert,
+        auth: { authenticated, authListener },
+        handleLogOut,
+        isLoading,
+        user,
+      }}
     >
       <MainContainer>{children}</MainContainer>
     </UserContext.Provider>
@@ -46,9 +58,13 @@ const AuthContainer = ({ children, history, location }) => {
 
 AuthContainer.propTypes = {
   children: PropTypes.element.isRequired,
-  location: PropTypes.shape({
-    state: PropTypes.shape({ from: PropTypes.string.isRequired }),
-  }),
+  location: PropTypes.oneOfType([
+    PropTypes.shape({
+      state: PropTypes.shape({
+        from: PropTypes.shape({ pathname: PropTypes.string }),
+      }),
+    }),
+  ]),
   history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
