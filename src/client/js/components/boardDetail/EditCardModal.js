@@ -50,11 +50,11 @@ const EditCardModal = ({
   const handleChange = (e) => setNewTitle(e.target.value);
 
   const archiveCardHandler = () => {
-    cardUpdateRequestHandler({ ...cardItem, title: newTitle }, sourceListId);
+    cardUpdateRequestHandler({ ...cardItem, archived: true }, sourceListId);
   };
 
   const saveCardHandler = () => {
-    cardUpdateRequestHandler({ ...cardItem, archived: true }, sourceListId);
+    cardUpdateRequestHandler({ ...cardItem, title: newTitle }, sourceListId);
     setNewTitle(null);
   };
 

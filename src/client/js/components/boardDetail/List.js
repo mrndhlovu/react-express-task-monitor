@@ -21,8 +21,9 @@ const ListSegment = styled(Segment)`
   margin: 0 !important;
   position: relative;
   white-space: normal;
-  border-radius: px !important;
+  border-radius: 2px !important;
   padding: 6px !important;
+  max-height: ${({ height }) => height} !important;
 `;
 
 const CardsContainer = styled.div`
@@ -62,13 +63,13 @@ const List = forwardRef(
       marginRight: "8px",
       opacity: isDragging ? 0 : 1,
       whiteSpace: "nowrap",
-      minHeight: mobile ? "91vh" : "92vh",
+      height: mobile ? "88vh" : "90vh",
       WebkitTransform: "transform",
     };
 
     const wrappedList = (
       <div ref={dragListRef} style={styles}>
-        <ListSegment>
+        <ListSegment height={mobile ? "88vh" : "90vh"}>
           <ListMenu
             listId={_id}
             listPosition={position}
