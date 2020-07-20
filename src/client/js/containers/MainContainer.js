@@ -33,9 +33,6 @@ const MainContainer = ({ children, history }) => {
   const { auth, user } = useAuth();
   const { notify } = useAlert();
 
-  const alertUser = (message, success = false, cb = () => {}, reason) =>
-    notify({ reason, message, success, cb });
-
   const isHomePage = history.location.pathname === "/";
   const isTemplatePage = history.location.pathname === "/templates";
 
@@ -64,6 +61,9 @@ const MainContainer = ({ children, history }) => {
       : background.image
       ? "transparent"
       : background.color;
+
+  const alertUser = (message, success = false, cb = () => {}, reason) =>
+    notify({ reason, message, success, cb });
 
   const toggleMenuHandler = (name) => {
     const field = name.toLowerCase();

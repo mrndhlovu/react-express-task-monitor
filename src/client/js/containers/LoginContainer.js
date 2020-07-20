@@ -8,6 +8,7 @@ import LoginPage from "../components/auth/LoginPage";
 
 const LoginContainer = ({ history, location }) => {
   const { from } = location.state || { from: { pathname: "/" } };
+
   const { alertUser } = useMainContext();
   const { authenticated, authListener } = useAuth().auth;
 
@@ -30,7 +31,7 @@ const LoginContainer = ({ history, location }) => {
       .then((res) =>
         authListener(res.data, () => {
           setLoading(false);
-          history.push("/");
+          history.push(from.pathname);
         })
       )
       .catch((error) => {
@@ -44,7 +45,7 @@ const LoginContainer = ({ history, location }) => {
       });
   };
 
-  if (authenticated) return <Redirect to={`${from.pathname}`} />;
+  if (authenticated) return <Redirect to={from.pathname} />;
 
   return (
     <LoginPage
@@ -58,7 +59,10 @@ const LoginContainer = ({ history, location }) => {
 
 LoginContainer.propTypes = {
   location: PropTypes.shape({
-    state: PropTypes.shape({ from: PropTypes.string.isRequired }),
+    state: PropTypes.shape({
+      from: PropTypes.shape({ pathname: PropTypes.string.isRequired })
+        .isRequired,
+    }),
   }),
   history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };

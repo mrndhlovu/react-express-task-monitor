@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { Dropdown } from "semantic-ui-react";
 
 import { getUserInitials } from "../../utils/appUtils";
-import { requestAuthLogout } from "../../apis/apiRequests";
 import UserAvatar from "./UserAvatar";
 
 const NavUserAvatar = ({
@@ -14,10 +13,8 @@ const NavUserAvatar = ({
   callback = () => {},
   fontSize,
   className,
+  handleLogOut,
 }) => {
-  const handleLogOut = async () =>
-    await requestAuthLogout().then(() => history.push("/login"));
-
   const trigger = (
     <UserAvatar
       padding="18px"
@@ -56,6 +53,7 @@ NavUserAvatar.propTypes = {
   callback: PropTypes.func,
   fontSize: PropTypes.string,
   className: PropTypes.string,
+  handleLogOut: PropTypes.func.isRequired,
 };
 
 export default NavUserAvatar;
