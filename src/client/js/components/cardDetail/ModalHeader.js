@@ -43,7 +43,7 @@ const ModalHeader = () => {
         handleEditTitle={updatedCardChanges}
         editable
         editItem={card}
-        fontSize="15px"
+        fontSize="20px"
         icon={() => <CreditCard />}
       />
       <Container>
@@ -58,6 +58,7 @@ const ModalHeader = () => {
           direction="right"
           close={close}
           icon={null}
+          textClassName="card-source-text"
         >
           <UIWrapper className="move-card-wrapper">
             <MoveCardDialog

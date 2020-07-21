@@ -44,6 +44,7 @@ const DropdownButton = ({
   size = "tiny",
   upward = false,
   margin,
+  textClassName,
 }) => {
   const [open, setOpen] = useState(false);
 
@@ -81,7 +82,7 @@ const DropdownButton = ({
       onClick={() => setOpen(true)}
       open={open}
       size={size}
-      text={buttonText}
+      text={<span className={textClassName}>{buttonText}</span>}
       direction={direction}
       pointing={pointing}
       onBlur={() => (closeOnSelect ? handleClose(callback) : () => {})}
@@ -128,6 +129,7 @@ DropdownButton.propTypes = {
   size: PropTypes.string,
   upward: PropTypes.bool,
   margin: PropTypes.string,
+  textClassName: PropTypes.string,
 };
 
 export default DropdownButton;

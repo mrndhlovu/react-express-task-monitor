@@ -227,7 +227,11 @@
   box-shadow: 0px 0px 35px -8px #000000bf;
 }
 
-.card-source > div {
+.card-source {
+  width: fit-content;
+}
+
+.card-source-text {
   text-decoration: underline;
 }
 
