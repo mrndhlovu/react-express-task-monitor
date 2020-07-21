@@ -41,9 +41,9 @@ const MainContainer = ({ children, history }) => {
   const [search, setSearch] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showNavBoard, setShowNavBoards] = useState({
-    starred: false,
+    starred: true,
     recent: false,
-    personal: true,
+    personal: false,
   });
 
   const { device, dimensions } = useDimensions();
