@@ -33,12 +33,15 @@ const CardDetailModal = () => {
   const { cardClickHandler } = useBoardListContext();
 
   const CARD_DETAIL_MODAL_STYLE = {
-    top: "3%",
-    left: "28%",
-    bottom: "1%",
+    top: "4%",
+    left: "33%",
     padding: "0px",
-    width: "45%",
+    width: "37%",
     border: "none",
+    height: "max-content",
+    marginBottom: "2%",
+    minHeight: "56%",
+    borderRadius: "0px",
   };
 
   return (

@@ -102,13 +102,12 @@ body::-webkit-scrollbar {
 .ReactModal__Content::-webkit-scrollbar {
   display: none;
 }
+.ReactModal__Overlay {
+  overflow-y: auto !important;
+}
 .images-container::-webkit-scrollbar {
   display: none;
 }
-
-// .ReactModal__Content {
-//   min-height: max-content;
-// }
 
 .upload {
   opacity: 0;
