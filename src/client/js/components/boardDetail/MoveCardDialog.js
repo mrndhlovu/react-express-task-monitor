@@ -9,10 +9,12 @@ import {
   useFetch,
   useBoardContext,
   useBoardListContext,
+  useMainContext,
 } from "../../utils/hookUtils";
 import DropdownList from "../sharedComponents/DropdownList";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
+import { requestBoardList } from "../../apis/apiRequests";
 
 const style = {
   display: "flex",
@@ -26,11 +28,11 @@ const MoveCardDialog = ({
   sourceListId,
   setClose,
 }) => {
-  const [data, loading] = useFetch(history);
+  const { alertUser } = useMainContext();
   const { boardUpdateHandler } = useBoardContext();
   const { setSourceId } = useBoardListContext();
+  const [boards] = useFetch(requestBoardList, alertUser);
 
-  const [boards, setBoards] = useState(null);
   const [move, setMove] = useState(false);
   const [moveDestination, setMoveDestination] = useState({
     board: originalBoard,
@@ -140,11 +142,6 @@ const MoveCardDialog = ({
     sourceList,
     setSourceId,
   ]);
-
-  useEffect(() => {
-    if (!loading && !data) return emptyFunction();
-    setBoards(data);
-  }, [data, loading]);
 
   return (
     <Fragment>

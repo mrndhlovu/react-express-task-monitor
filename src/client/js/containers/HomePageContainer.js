@@ -6,13 +6,18 @@ import { HomepageContext } from "../utils/contextUtils";
 import { useFetch, useAuth, useMainContext } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import { requestBoardList } from "../apis/apiRequests";
 
 const HomePageContainer = ({ history }) => {
-  const { updateUserRequestHandler, navDataHandler } = useMainContext();
+  const {
+    updateUserRequestHandler,
+    navDataHandler,
+    alertUser,
+  } = useMainContext();
   const { user } = useAuth();
 
   const [boards, setBoards] = useState("");
-  const [data, loading] = useFetch(history);
+  const [data] = useFetch(requestBoardList, alertUser);
 
   const starBoardHandler = async (id, starRef) => {
     if (!starRef) return;
@@ -30,11 +35,10 @@ const HomePageContainer = ({ history }) => {
     navDataHandler(null, data);
   }, [data, navDataHandler]);
 
-  return data && boards && !loading ? (
+  return data && boards ? (
     <HomepageContext.Provider
       value={{
         boards,
-        loading,
         starBoardHandler,
       }}
     >

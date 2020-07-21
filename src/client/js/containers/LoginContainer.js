@@ -31,16 +31,13 @@ const LoginContainer = ({ history, location }) => {
       .then((res) =>
         authListener(res.data, () => {
           setLoading(false);
-          history.push(from.pathname);
+          history.push(`${from.pathname}`);
         })
       )
       .catch((error) => {
         setLoading(false);
         alertUser(error.response.data, false, () => {
-          setCredentials({
-            password: null,
-            email: null,
-          });
+          setCredentials({ password: null, email: null });
         });
       });
   };

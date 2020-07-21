@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef, useContext } from "react";
 
-import { requestBoardList } from "../apis/apiRequests";
 import {
   AlertContext,
   UserContext,
@@ -11,40 +10,39 @@ import {
   BoardListsContext,
 } from "./contextUtils";
 
+export const useAlert = () => useContext(AlertContext);
 export const useAuth = () => useContext(UserContext);
-
-export const useHomeContext = () => useContext(HomepageContext);
 export const useBoardContext = () => useContext(BoardContext);
 export const useBoardListContext = () => useContext(BoardListsContext);
-export const useMainContext = () => useContext(MainContext);
-export const useAlert = () => useContext(AlertContext);
 export const useCardDetailContext = () => useContext(CardDetailContext);
+export const useHomeContext = () => useContext(HomepageContext);
+export const useMainContext = () => useContext(MainContext);
 
-export const useFetch = (history) => {
+export const useFetch = (endPoint, cb) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let isMounted = true;
     const fetchData = async () => {
-      await requestBoardList()
+      await endPoint()
         .then((res) => {
           if (isMounted) {
             setData(res.data);
             setLoading(false);
           }
         })
-        .catch(() => {
+        .catch((error) => {
           setLoading(false);
-          window.location.reload();
+          cb && cb(error.response.data);
         });
     };
 
-    fetchData();
+    endPoint && fetchData();
     return () => {
       isMounted = false;
     };
-  }, [history]);
+  }, []);
 
   return [data, loading];
 };

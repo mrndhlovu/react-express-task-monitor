@@ -15,14 +15,10 @@ import {
   requestCardUpdate,
 } from "../apis/apiRequests";
 
-import {
-  emptyFunction,
-  resetForm,
-  getUpdatedArray,
-  findArrayItem,
-} from "../utils/appUtils";
-import { useAuth, useMainContext } from "../utils/hookUtils";
+import { resetForm, getUpdatedArray, findArrayItem } from "../utils/appUtils";
+import { useAuth, useMainContext, useFetch } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
+import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const BoardContainer = ({ match, history, templateBoard }) => {
   const {
@@ -33,8 +29,12 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   } = useMainContext();
   const { user, auth } = useAuth();
   const { id } = match.params;
+  const [data] = useFetch(
+    !templateBoard && (() => requestBoardDetail(id)),
+    alertUser
+  );
 
-  const [board, setBoard] = useState(null);
+  const [board, setBoard] = useState(undefined);
   const [inviteDone, setInviteDone] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showSideBar, setShowSideBar] = useState(false);
@@ -103,7 +103,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       navDataHandler(null, getUpdatedArray(boards, removeIndex, newBoard));
     }
 
-    boardUpdateHandler(newBoard, "styleProperties");
+    newBoard && boardUpdateHandler(newBoard, "styleProperties");
   };
 
   const starBoardHandler = () => {
@@ -165,23 +165,16 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   };
 
   useEffect(() => {
-    if (board) return emptyFunction();
-    const fetchBoard = async () => {
-      if (templateBoard) {
-        setBoard(templateBoard);
-        return navDataHandler(templateBoard.styleProperties, boards);
-      }
+    if (templateBoard) {
+      setBoard(templateBoard);
+      return navDataHandler(templateBoard.styleProperties, boards);
+    }
 
-      await requestBoardDetail(id)
-        .then((res) => {
-          navDataHandler(res.data.styleProperties, boards);
-          setBoard(res.data);
-        })
-        .catch((error) => alertUser(error.response.data.message));
-    };
-
-    fetchBoard();
-  }, [board, boards, id, history, navDataHandler, templateBoard, alertUser]);
+    if (data) {
+      navDataHandler(data.styleProperties, boards);
+      setBoard(data);
+    }
+  }, [templateBoard, data]);
 
   const context = {
     board,
@@ -206,11 +199,9 @@ const BoardContainer = ({ match, history, templateBoard }) => {
   };
 
   return (
-    board && (
-      <BoardContext.Provider value={context}>
-        <Board />
-      </BoardContext.Provider>
-    )
+    <BoardContext.Provider value={context}>
+      {board ? <Board /> : <UILoadingSpinner />}
+    </BoardContext.Provider>
   );
 };
 
