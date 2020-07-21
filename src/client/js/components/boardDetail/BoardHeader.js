@@ -5,16 +5,16 @@ import BoardHeaderButtons from "./BoardHeaderButtons";
 import EditableHeader from "../sharedComponents/EditableHeader";
 
 const BoardHeader = () => {
-  const { board } = useBoardContext();
+  const { board, boardUpdateHandler } = useBoardContext();
   const { mobile } = useMainContext().device;
 
   return (
     <div className="board-header">
       <EditableHeader
-        title={board.title}
-        type="boardTitle"
+        editItem={board}
         color="white"
         fontSize="18px"
+        handleEditTitle={(newBoard) => boardUpdateHandler(newBoard, "title")}
       />
       <BoardHeaderButtons isBoardMenu={mobile} />
     </div>

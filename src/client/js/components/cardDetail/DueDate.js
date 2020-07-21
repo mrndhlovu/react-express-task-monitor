@@ -7,6 +7,7 @@ import { getFormattedDate } from "../../utils/appUtils";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
+import { Clock } from "react-feather";
 
 const Container = styled.div``;
 
@@ -89,7 +90,7 @@ const DueDate = () => {
             size="tiny"
             onClick={() => handleDeleteDueDate()}
           />
-          <CardDetailHeader description="Due Date" />
+          <CardDetailHeader description="Due Date" icon={() => <Clock />} />
         </HeaderWrapper>
         <CardDetailSegment>
           <Container>

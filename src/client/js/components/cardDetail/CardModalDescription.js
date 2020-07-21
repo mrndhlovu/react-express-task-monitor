@@ -6,6 +6,7 @@ import { Icon, TextArea, Form, Button } from "semantic-ui-react";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import { useCardDetailContext } from "../../utils/hookUtils";
+import { AlignLeft } from "react-feather";
 
 const Description = styled.div``;
 
@@ -53,7 +54,10 @@ const CardModalDescription = () => {
   return (
     <>
       <DescriptionHeader>
-        <CardDetailHeader description="Description" />
+        <CardDetailHeader
+          description="Description"
+          icon={() => <AlignLeft />}
+        />
         <Button
           onClick={() => setEditing(!editing)}
           size="tiny"

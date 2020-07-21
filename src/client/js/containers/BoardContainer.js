@@ -53,7 +53,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
     if (!newBoard) return setBoard(null);
     updateBoardState(newBoard);
 
-    const body = { [fieldId]: board[fieldId] };
+    const body = { [fieldId]: newBoard[fieldId] };
 
     await requestBoardUpdate(newId ? newId : id, body)
       .then((res) => {

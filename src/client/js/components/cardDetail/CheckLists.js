@@ -18,26 +18,22 @@ import ChecklistItem from "./ChecklistItem";
 import CreateInput from "../sharedComponents/CreateInput";
 import ProgressBar from "./ProgressBar";
 import UIContainer from "../sharedComponents/UIContainer";
+import { CheckSquare } from "react-feather";
 
 const CheckLists = () => {
   const { card } = useCardDetailContext();
 
   return card.checklists.map((list, index) => (
-    <CheckLists.Single
-      checklistName={list.name}
-      key={index}
-      listIndex={index}
-      listItem={list}
-    />
+    <CheckLists.Single key={index} listIndex={index} listItem={list} />
   ));
 };
 
-CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
+CheckLists.Single = ({ listItem, listIndex }) => {
   const {
     card,
-    sourceId,
-    saveCardChanges,
     match,
+    saveCardChanges,
+    sourceId,
     updatedCardChanges,
   } = useCardDetailContext();
   const { updateBoardState } = useBoardContext();
@@ -99,7 +95,6 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
   const updatedChecklistTitle = (newChecklist) => {
     setChecklist(newChecklist);
     card.checklists.splice(listIndex, 1, newChecklist);
-
     updatedCardChanges(card);
   };
 
@@ -111,7 +106,7 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
     updatedCardChanges(card);
   };
 
-  const editCheckListHandler = (id, status, description) => {
+  const editCheckListTaskHandler = (id, status, description) => {
     const targetTask = findArrayItem(checklist.tasks, id);
     targetTask[status ? "status" : "description"] = status
       ? status
@@ -137,11 +132,12 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
     <>
       <UIContainer padding="0px" className="checklist-header">
         <CardDetailHeader
-          description={checklistName}
-          updatedChecklistTitle={updatedChecklistTitle}
+          field="name"
+          handleEditTitle={updatedChecklistTitle}
           section="Checklist"
           editable
-          checklist={checklist}
+          editItem={checklist}
+          icon={() => <CheckSquare />}
         />
         <div>
           <Button
@@ -172,7 +168,7 @@ CheckLists.Single = ({ checklistName, listItem, listIndex }) => {
         ) : (
           checklist.tasks.map((task, index) => (
             <ChecklistItem
-              editCheckListHandler={editCheckListHandler}
+              editCheckListTaskHandler={editCheckListTaskHandler}
               handleConvertToCard={handleConvertToCard}
               handleDeleteChecklistItem={handleDeleteChecklistItem}
               isCompleted={stringsEqual(task.status, "done")}

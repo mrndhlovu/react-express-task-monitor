@@ -17,7 +17,7 @@ const TextContainer = styled.div`
 `;
 
 const ChecklistItem = ({
-  editCheckListHandler,
+  editCheckListTaskHandler,
   handleConvertToCard,
   handleDeleteChecklistItem,
   isCompleted,
@@ -32,17 +32,18 @@ const ChecklistItem = ({
         id={task._id}
         checked={isCompleted}
         onChange={() =>
-          editCheckListHandler(position - 1, isCompleted ? "doing" : "done")
+          editCheckListTaskHandler(position - 1, isCompleted ? "doing" : "done")
         }
       />
       <TextContainer onMouseEnter={() => setIsOverCurrent(task._id)}>
         <EditableHeader
-          title={task.description}
-          type="checkListTask"
+          field="description"
           fontSize="12px"
           className={isCompleted ? "task-complete" : "task-doing"}
           editItem={task}
-          handleEditTitle={editCheckListHandler}
+          handleEditTitle={(newTask) =>
+            editCheckListTaskHandler(position - 1, null, newTask.description)
+          }
           sourceId={position - 1}
         />
         {isOverCurrent === task._id && (
@@ -75,7 +76,7 @@ const ChecklistItem = ({
 };
 
 ChecklistItem.propTypes = {
-  editCheckListHandler: PropTypes.func.isRequired,
+  editCheckListTaskHandler: PropTypes.func.isRequired,
   isCompleted: PropTypes.bool.isRequired,
   position: PropTypes.number.isRequired,
   task: PropTypes.shape({

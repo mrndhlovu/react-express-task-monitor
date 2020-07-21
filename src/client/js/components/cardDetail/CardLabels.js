@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { Tag } from "react-feather";
+
 import { useBoardContext, useCardDetailContext } from "../../utils/hookUtils";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
 import CardDetailSegment from "../sharedComponents/CardDetailSegment";
@@ -69,7 +71,7 @@ const CardLabels = () => {
 
   return (
     <>
-      <CardDetailHeader description="Labels" />
+      <CardDetailHeader description="Labels" icon={() => <Tag />} />
       <CardDetailSegment>
         <Container>
           {labels.map((color, index) => (

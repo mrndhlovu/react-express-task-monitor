@@ -17,6 +17,7 @@ import CardDetailSegment from "../sharedComponents/CardDetailSegment";
 import EditableHeader from "../sharedComponents/EditableHeader";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import { Paperclip } from "react-feather";
 
 const DocumentModal = lazy(() => import("./DocumentModal"));
 
@@ -64,7 +65,7 @@ const Attachments = () => {
 
   return (
     <>
-      <CardDetailHeader description="Attachments" />
+      <CardDetailHeader description="Attachments" icon={() => <Paperclip />} />
       <CardDetailSegment>
         {hasAttachments &&
           card.attachments.map((attachment, index) => (
@@ -100,13 +101,12 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
     handleMakeCover,
     handleRemoveCover,
     updatedCardChanges,
-    sourceId,
   } = useCardDetailContext();
 
   const [openDocument, setOpenDocument] = useState(null);
   const [attachmentItem, setAttachmentItem] = useState(attachment);
 
-  const { filetype, name, uploadDate, url } = attachmentItem;
+  const { filetype, uploadDate, url } = attachmentItem;
   const isAnImage = ALLOWED_IMAGE_TYPES.includes(filetype);
   const isActiveCover =
     card.cardCover && isAnImage && stringsEqual(url, card.cardCover);
@@ -161,11 +161,9 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
             {isURL ? (
               <AttachmentHeader className="attachment-header">
                 <EditableHeader
-                  title={name}
-                  type="imageTitle"
+                  field="name"
                   handleEditTitle={handleEditAttachmentName}
-                  attachment={attachmentItem}
-                  sourceId={sourceId}
+                  editItem={attachmentItem}
                 />
 
                 <a
@@ -183,11 +181,9 @@ Attachments.Single = ({ attachment, attachmentIndex }) => {
             ) : (
               <AttachmentHeader className="attachment-header">
                 <EditableHeader
-                  title={name}
-                  type="imageTitle"
+                  field="name"
                   handleEditTitle={handleEditAttachmentName}
-                  sourceId={sourceId}
-                  attachment={attachmentItem}
+                  editItem={attachmentItem}
                 />
                 <Item.Content
                   verticalAlign="middle"

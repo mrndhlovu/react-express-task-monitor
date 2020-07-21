@@ -2,53 +2,34 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { Header } from "semantic-ui-react";
-import {
-  AlignLeft,
-  Paperclip,
-  Clock,
-  List,
-  CheckSquare,
-  Tag,
-  CreditCard,
-} from "react-feather";
 
 import EditableHeader from "./EditableHeader";
 
 const CardDetailHeader = ({
-  description,
-  section,
   editable = false,
-  ...rest
+  handleEditTitle,
+  editItem,
+  field = "title",
+  fontSize,
+  description,
+  icon,
 }) => {
-  const getSectionIcon = () => {
-    switch (section ? section : description) {
-      case "Activities":
-        return <List size={25} />;
-      case "Attachments":
-        return <Paperclip size={20} />;
-      case "Description":
-        return <AlignLeft size={20} />;
-      case "Due Date":
-        return <Clock size={20} />;
-      case "Checklist":
-        return <CheckSquare size={20} />;
-      case "Labels":
-        return <Tag size={20} />;
-      case "Header":
-        return <CreditCard size={20} />;
-      default:
-        return;
-    }
-  };
-
+  const Icon = icon;
   return (
     <div className="card-section-header">
-      <div className="section-header-container">{getSectionIcon()}</div>
+      <div className="section-header-container">
+        <Icon />
+      </div>
       {editable ? (
-        <EditableHeader title={description} type="checklist" {...rest} />
+        <EditableHeader
+          handleEditTitle={handleEditTitle}
+          editItem={editItem}
+          field={field}
+          fontSize={fontSize}
+        />
       ) : (
         <div>
-          <Header content={description} as="h5" />
+          <Header content={description || editItem[field]} as="h5" />
         </div>
       )}
     </div>
@@ -56,9 +37,14 @@ const CardDetailHeader = ({
 };
 
 CardDetailHeader.propTypes = {
-  description: PropTypes.string.isRequired,
-  section: PropTypes.string,
+  description: PropTypes.string,
   editable: PropTypes.bool,
+  editItem: PropTypes.object,
+  field: PropTypes.string,
+  fontSize: PropTypes.string,
+  handleEditTitle: PropTypes.func,
+  section: PropTypes.string,
+  icon: PropTypes.func,
 };
 
 export default CardDetailHeader;

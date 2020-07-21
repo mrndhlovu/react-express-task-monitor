@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import { CreditCard } from "react-feather";
+
+import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
 import CardDetailHeader from "../sharedComponents/CardDetailHeader";
+import DropdownButton from "../sharedComponents/DropdownButton";
 import MoveCardDialog from "../boardDetail/MoveCardDialog";
 import UIWrapper from "../sharedComponents/UIWrapper";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
 
 const Container = styled.div`
   position: relative;
@@ -22,6 +24,7 @@ const ModalHeader = () => {
     sourceId,
     history,
     setSourceId,
+    updatedCardChanges,
   } = useCardDetailContext();
   const { board } = useBoardContext();
   const [close, setClose] = useState(false);
@@ -37,8 +40,11 @@ const ModalHeader = () => {
   return (
     <>
       <CardDetailHeader
-        description={card.title.toUpperCase()}
-        section="Header"
+        handleEditTitle={updatedCardChanges}
+        editable
+        editItem={card}
+        fontSize="15px"
+        icon={() => <CreditCard />}
       />
       <Container>
         <DropdownButton

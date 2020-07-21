@@ -29,6 +29,12 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
 
   const [header, setHeader] = useState("List actions");
   const [active, setActive] = useState(null);
+  const sourceList = getSourceList(listId);
+
+  const updateListHandler = (newList) => {
+    board.lists.splice(board.lists.indexOf(sourceList), 1, newList);
+    return boardUpdateHandler(board);
+  };
 
   const handleDeleteAll = () => {
     boardUpdateHandler({ ...board, lists: [] });
@@ -36,8 +42,6 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
   };
 
   const handleMoveAllCards = () => {
-    const sourceList = getSourceList(listId);
-
     board.lists.map(
       (list) =>
         list._id !== listId &&
@@ -66,10 +70,8 @@ const ListMenu = ({ title, listPosition, mobile, listId }) => {
   return (
     <HeaderWrapper>
       <EditableHeader
-        board={board}
-        sourceId={listId}
-        title={title}
-        type="listHeader"
+        editItem={sourceList}
+        handleEditTitle={(list) => updateListHandler(list)}
       />
 
       <DropdownButton

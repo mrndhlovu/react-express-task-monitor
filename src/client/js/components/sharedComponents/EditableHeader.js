@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-
-import { findArrayItem, stringsEqual } from "../../utils/appUtils";
-import UIFormInput from "../sharedComponents/UIFormInput";
-import { useBoardContext } from "../../utils/hookUtils";
 import styled from "styled-components";
+
+import UIFormInput from "../sharedComponents/UIFormInput";
 
 const Span = styled.span`
   font-size: ${({ fontSize }) => fontSize};
@@ -12,62 +10,25 @@ const Span = styled.span`
 `;
 
 const EditableHeader = ({
-  sourceId,
-  title,
-  type,
-  editItem,
-  handleEditTitle,
-  attachment,
-  fontSize,
-  color,
   className,
+  color,
+  editItem,
+  field = "title",
+  fontSize,
+  handleEditTitle,
 }) => {
-  const { boardUpdateHandler, board } = useBoardContext();
-
-  const sourceList =
-    stringsEqual(type, "listHeader") &&
-    findArrayItem(board.lists, sourceId, "_id");
-
   const [editable, setEditable] = useState(false);
-  const [newTitle, setNewTitle] = useState(title);
+  const [newTitle, setNewTitle] = useState(editItem[field]);
 
   const handleChange = (e) => setNewTitle(e.target.value);
 
   const handleUpdate = () => {
-    setEditable(false);
-    switch (type) {
-      case "boardTitle":
-        board.title = newTitle;
-        return boardUpdateHandler(board, "title");
-      case "checklist":
-        newTitle && handleEditTitle({ ...editItem, name: newTitle });
-        return setNewTitle(null);
-      case "listHeader":
-        sourceList.title = newTitle;
-        board.lists.splice(board.lists.indexOf(sourceList), 1, sourceList);
-        return boardUpdateHandler(board);
-      case "imageTitle":
-        newTitle && handleEditTitle({ ...attachment, name: newTitle });
-        return;
-      case "checkListTask":
-        return handleEditTitle(sourceId, null, newTitle);
-      default:
-        break;
-    }
-
-    setEditable(false);
+    handleEditTitle({ ...editItem, [field]: newTitle });
+    return setEditable(false);
   };
 
   return (
-    <div
-      className={`${
-        stringsEqual(type, "listHeader")
-          ? "list"
-          : stringsEqual(type, "board")
-          ? "board"
-          : className
-      }-header-editable`}
-    >
+    <div className={`${className} editable-header`}>
       {!editable ? (
         <Span
           color={color}
@@ -75,12 +36,12 @@ const EditableHeader = ({
           className={`${className ? className : "editable-header-text"}`}
           onClick={() => setEditable(!editable)}
         >
-          {title}
+          {newTitle}
         </Span>
       ) : (
         <UIFormInput
           className="editable-header-input"
-          defaultValue={title}
+          defaultValue={newTitle}
           onBlur={() => handleUpdate()}
           onChange={(e) => handleChange(e)}
           autoFocus={true}
@@ -92,18 +53,15 @@ const EditableHeader = ({
 };
 
 EditableHeader.propTypes = {
+  className: PropTypes.string,
   color: PropTypes.string,
+  field: PropTypes.string,
   fontSize: PropTypes.string,
-  sourceId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  title: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  handleEditTitle: PropTypes.func,
+  handleEditTitle: PropTypes.func.isRequired,
   editItem: PropTypes.shape({
     name: PropTypes.string,
     description: PropTypes.string,
-  }),
-  attachment: PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    title: PropTypes.string,
   }),
 };
 
