@@ -84,7 +84,9 @@ const CardDetail = ({ card, sourceListId, showEditButton }) => {
       hasTasks &&
       CHECKLIST_TASKS.flat().filter((task) => task.status === "done").length;
 
-    return hasTasks ? `${COMPLETED_TASKS}/${CHECKLIST_TASKS.length}` : null;
+    return hasTasks
+      ? `${COMPLETED_TASKS}/${CHECKLIST_TASKS.flat().length}`
+      : null;
   };
 
   const [openCardModal, setOpenCardModal] = useState(false);
