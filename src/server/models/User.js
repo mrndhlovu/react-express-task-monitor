@@ -166,8 +166,8 @@ UserSchema.statics.findByCredentials = async (email, password, token) => {
 };
 
 UserSchema.pre("save", function (next) {
-  var user = this;
-  var SALT_FACTOR = 12;
+  const user = this;
+  const SALT_FACTOR = 12;
 
   if (!user.isModified("password")) return next();
 

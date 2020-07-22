@@ -15,22 +15,25 @@ const UserProfileContainer = ({ history }) => {
 
   useEffect(() => {
     const { search } = history.location;
+
     if (!search) return emptyFunction();
     const { email, token } = parseUrl(search.slice(1));
 
     if (!token) return emptyFunction;
-    setAlertText("Loading!");
 
     const loginUser = async () => {
+      setAlertText("Logging in!");
       await requestAuthLogin({ email }, token)
         .then((res) => {
-          auth.authListener(res.data.data, history.push("/"));
+          setAlertText("Success!");
+          auth.authListener(res.data.data, window.location.reload());
         })
-        .catch(() => {
-          setAlertText("Login to access this page!");
-        });
+        .catch(() => setAlertText("Login to access this page!"));
     };
-    token && email && loginUser();
+
+    setTimeout(() => {
+      token && email && loginUser();
+    }, 500);
   }, [user, auth, history]);
 
   return <UserProfile history={history} alertText={alertText} />;

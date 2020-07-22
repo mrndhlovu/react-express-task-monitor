@@ -11,6 +11,7 @@ import UIDivider from "./UIDivider";
 import UISmall from "./UISmall";
 
 import { SOCIAL_AUTH_OPTIONS } from "../../constants/constants";
+import { Target } from "react-feather";
 
 const StyledHeader = styled.div``;
 
@@ -56,7 +57,7 @@ const AuthFormWrapper = ({
   children,
   disabled,
   handleClick,
-  headText,
+  headText = "Log in to continue",
   history,
   loading,
   socialButtons = true,
@@ -73,12 +74,11 @@ const AuthFormWrapper = ({
 
   return (
     <UIContainer dataTestId={dataTestId} className="auth-page">
-      <StyledHeader className="logo-container">
-        <Icon name="bullseye" size="large" />
-        Task Monitor
-      </StyledHeader>
-
       <FormWrapper data-test-id="login-form" id="authForm">
+        <StyledHeader className="logo-container">
+          <Target className="logoIcon" />
+          <span>Trello Clone</span>
+        </StyledHeader>
         <Subheader>{headText} </Subheader>
         {children}
 

@@ -18,8 +18,8 @@ export const useCardDetailContext = () => useContext(CardDetailContext);
 export const useHomeContext = () => useContext(HomepageContext);
 export const useMainContext = () => useContext(MainContext);
 
-export const useFetch = (endPoint, cb) => {
-  const [data, setData] = useState(null);
+export const useFetch = (endPoint, cb, logout) => {
+  const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export const useFetch = (endPoint, cb) => {
         })
         .catch((error) => {
           setLoading(false);
-          cb && cb(error.response.data);
+          cb && cb(error.response.data.error, null, logout(true));
         });
     };
 

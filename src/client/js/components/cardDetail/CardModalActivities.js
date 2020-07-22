@@ -12,6 +12,7 @@ const Activities = lazy(() => import("./Activities"));
 
 const CardModalActivities = () => {
   const { setHideActivities, hideActivities } = useCardDetailContext();
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <ActivitiesHeader

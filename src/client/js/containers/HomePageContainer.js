@@ -3,10 +3,10 @@ import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { HomepageContext } from "../utils/contextUtils";
+import { requestBoardList } from "../apis/apiRequests";
 import { useFetch, useAuth, useMainContext } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
-import { requestBoardList } from "../apis/apiRequests";
 
 const HomePageContainer = ({ history }) => {
   const {
@@ -14,10 +14,10 @@ const HomePageContainer = ({ history }) => {
     navDataHandler,
     alertUser,
   } = useMainContext();
-  const { user } = useAuth();
+  const { user, handleLogOut } = useAuth();
 
   const [boards, setBoards] = useState("");
-  const [data] = useFetch(requestBoardList, alertUser);
+  const [data] = useFetch(requestBoardList, alertUser, handleLogOut);
 
   const starBoardHandler = async (id, starRef) => {
     if (!starRef) return;
