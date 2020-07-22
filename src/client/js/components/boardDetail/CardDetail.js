@@ -15,6 +15,13 @@ import CardCover from "../cardDetail/CardCover";
 import EditCardModal from "./EditCardModal";
 import EditCardPenIcon from "./EditCardPenIcon";
 import LabelsSnippets from "./LabelsSnippets";
+import {
+  Paperclip,
+  CheckSquare,
+  MessageCircle,
+  AlignLeft,
+  Clock,
+} from "react-feather";
 
 const CardTitle = styled.div`
   color: #172b4d;
@@ -66,6 +73,13 @@ const CardDetail = ({ card, sourceListId, showEditButton }) => {
   const hasAssignees = card.assignees.length !== 0;
   const hasDueDate = Object.values(card.dueDate).length !== 0;
 
+  const ALL_CHECKLISTS = hasChecklist && card.checklists.flat();
+
+  const COMPLETED_TASKS = ALL_CHECKLISTS.map(
+    (checklist) =>
+      checklist.tasks.filter((task) => task.status === "done").length
+  ).reduce((accumulator, currentValue) => accumulator + currentValue);
+
   const [openCardModal, setOpenCardModal] = useState(false);
 
   const deleteCardHandler = () => {
@@ -88,23 +102,30 @@ const CardDetail = ({ card, sourceListId, showEditButton }) => {
 
       <BadgeContainer>
         <CardBadge
-          icon="attachment"
+          icon={() => <Paperclip size={16} />}
           content={card.attachments.length}
           hasBadge={hasAttachments}
         />
 
-        <CardBadge icon="checklist" hasBadge={hasChecklist} />
+        <CardBadge
+          icon={() => <CheckSquare size={16} />}
+          hasBadge={hasChecklist}
+          content={`${COMPLETED_TASKS}/${ALL_CHECKLISTS.length}`}
+        />
 
         <CardBadge
-          icon="comment"
+          icon={() => <MessageCircle size={16} />}
           content={card.comments.length}
           hasBadge={hasComments}
         />
 
-        <CardBadge icon="description" hasBadge={hasDescription} />
+        <CardBadge
+          hasBadge={hasDescription}
+          icon={() => <AlignLeft size={16} />}
+        />
 
         <CardBadge
-          icon="dueDate"
+          icon={() => <Clock size={16} />}
           content={getFormattedDate(card.dueDate.date, "MMM Do")}
           hasBadge={hasDueDate}
           as=""
