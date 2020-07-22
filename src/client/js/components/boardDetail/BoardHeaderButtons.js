@@ -16,6 +16,7 @@ import UIContainer from "../sharedComponents/UIContainer";
 import UIFormInput from "../sharedComponents/UIFormInput";
 import UIMessage from "../sharedComponents/UIMessage";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import { Check } from "react-feather";
 
 const StyledDiv = styled.div`
   justify-self: ${(props) => (props.mobile ? "center" : "end")};
@@ -141,6 +142,7 @@ const BoardHeaderButtons = ({ isBoardMenu }) => {
 
                 <UIWrapper className="user-invite-wrap">
                   <UIFormInput
+                    input
                     id="invite-input"
                     onChange={(e) => handleChange(e)}
                     onClick={(e) => e.stopPropagation()}
@@ -152,7 +154,7 @@ const BoardHeaderButtons = ({ isBoardMenu }) => {
                         ? "Invite Sent"
                         : "Add invite email and press Enter"
                     }
-                    icon={inviteDone && <Icon name="check" color="green" />}
+                    icon={() => (inviteDone ? <Check /> : null)}
                   />
                 </UIWrapper>
               </StyledDropdownMenu>

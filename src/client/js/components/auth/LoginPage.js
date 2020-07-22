@@ -24,6 +24,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
         name="email"
         onChange={(e) => onHandleChange(e)}
         defaultValue={env === "development" ? "test@testing.com" : ""}
+        input
       />
 
       <UIFormInput
@@ -38,6 +39,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
         type={type}
         onChange={(e) => onHandleChange(e)}
         dataTestId="password-input-field"
+        input
       />
     </AuthFormWrapper>
   );

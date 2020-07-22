@@ -32,6 +32,7 @@ const ResetPassword = ({
             type="password"
             name="password"
             onChange={(e) => onHandleChange(e)}
+            input
           />
           <UIFormInput
             id="password-confirm-input"
@@ -39,6 +40,7 @@ const ResetPassword = ({
             type="password"
             name="confirmPassword"
             onChange={(e) => onHandleChange(e)}
+            input
           />
         </>
       )}

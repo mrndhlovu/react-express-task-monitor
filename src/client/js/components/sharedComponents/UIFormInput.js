@@ -14,40 +14,25 @@ const InputWrapper = styled.div`
 `;
 
 const UIFormInput = ({
-  autoFocus,
-  dataTestId,
-  defaultValue,
-  iconProps,
-  id,
-  name,
-  onChange,
-  placeholder,
-  type,
-  onBlur,
-  onKeyDown,
   className = "ui-form-input",
-  onClick,
-  rows,
+  iconProps,
+  input = false,
+  icon,
+  ...rest
 }) => {
   return (
     <InputWrapper>
-      <textarea
-        className={className}
-        autoFocus={autoFocus}
-        data-test-id={dataTestId}
-        defaultValue={defaultValue}
-        onClick={onClick}
-        id={id}
-        name={name}
-        onChange={onChange}
-        placeholder={placeholder}
-        type={type}
-        onBlur={onBlur}
-        onKeyDown={onKeyDown}
-        rows={rows}
-      ></textarea>
+      {input ? (
+        <input className={className} {...rest} />
+      ) : (
+        <textarea className={className} {...rest} />
+      )}
 
-      <Icon {...iconProps} data-test-id="password-input-field-eye-icon" />
+      {icon ? (
+        icon()
+      ) : (
+        <Icon {...iconProps} data-test-id="password-input-field-eye-icon" />
+      )}
     </InputWrapper>
   );
 };

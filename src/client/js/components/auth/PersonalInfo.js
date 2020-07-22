@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 
-import { Header, Form, TextArea, Button } from "semantic-ui-react";
+import { Header, Form, Button } from "semantic-ui-react";
 
 import { useMainContext, useAuth } from "../../utils/hookUtils";
 import UIDivider from "../sharedComponents/UIDivider";
 import UIWrapper from "../sharedComponents/UIWrapper";
+import UIFormInput from "../sharedComponents/UIFormInput";
 
 const PersonalInfo = () => {
   const { alertUser, updateUserRequestHandler } = useMainContext();
@@ -31,20 +32,20 @@ const PersonalInfo = () => {
       <Header as="h5" content="About" />
       <UIDivider />
 
-      <Form>
-        <Form.Field
+      <form>
+        <UIFormInput
           defaultValue={user && user.username}
           label="Username"
-          control="input"
           placeholder="Username"
           onChange={(e) => setUserName(e.target.value)}
+          input
         />
         <Header content="Bio" as="h5" />
-        <TextArea
-          control="input"
+        <UIFormInput
           defaultValue={user && user.bio}
           placeholder="Bio"
           onChange={(e) => setBio(e.target.value)}
+          rows={5}
         />
         <UIWrapper padding="30px 0">
           <Button
@@ -56,7 +57,7 @@ const PersonalInfo = () => {
             onClick={() => saveClickHandler()}
           />
         </UIWrapper>
-      </Form>
+      </form>
     </>
   );
 };

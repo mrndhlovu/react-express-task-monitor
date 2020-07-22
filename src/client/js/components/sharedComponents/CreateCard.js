@@ -77,7 +77,6 @@ const CreateCard = ({ targetList, activeListId }) => {
         <StyledCard fluid>
           <UIFormInput
             id="create-card-input"
-            fluid={true}
             placeholder="Enter a title for this card..."
             onChange={(e) => handleChange(e)}
             autoFocus

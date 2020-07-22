@@ -62,6 +62,7 @@ const AccountSettings = () => {
               type="password"
               name="password"
               onChange={(e) => onHandleChange(e)}
+              input
             />
             <UIFormInput
               id="confirm-password-input"
@@ -69,6 +70,7 @@ const AccountSettings = () => {
               type="password"
               name="confirmPassword"
               onChange={(e) => onHandleChange(e)}
+              input
             />
             <UIWrapper padding="10px 0">
               <Button

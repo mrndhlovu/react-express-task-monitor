@@ -18,7 +18,6 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
       {...otherProps}
     >
       <UIFormInput
-        fluid
         id="emailFormField"
         name="email"
         onChange={(e) => onHandleChange(e)}
@@ -26,7 +25,6 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         type="email"
       />
       <UIFormInput
-        fluid
         id="fnameFormField"
         name="fname"
         onChange={(e) => onHandleChange(e)}
@@ -35,7 +33,6 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
       />
 
       <UIFormInput
-        fluid
         iconProps={{
           name: type === "password" ? "eye" : "hide",
           link: true,
