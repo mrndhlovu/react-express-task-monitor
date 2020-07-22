@@ -73,12 +73,19 @@ const CardDetail = ({ card, sourceListId, showEditButton }) => {
   const hasAssignees = card.assignees.length !== 0;
   const hasDueDate = Object.values(card.dueDate).length !== 0;
 
-  const CHECKLIST_TASKS_ =
-    hasChecklist && card.checklists.map((checklist) => checklist.tasks).flat();
+  const getCompletedTasks = () => {
+    const CHECKLIST_TASKS =
+      (hasChecklist && card.checklists.map((checklist) => checklist.tasks)) ||
+      [];
 
-  const COMPLETED_TASKS = CHECKLIST_TASKS_.filter(
-    (task) => task.status === "done"
-  ).length;
+    const hasTasks = CHECKLIST_TASKS.length !== 0;
+
+    const COMPLETED_TASKS =
+      hasTasks &&
+      CHECKLIST_TASKS.flat().filter((task) => task.status === "done").length;
+
+    return hasTasks ? `${COMPLETED_TASKS}/${CHECKLIST_TASKS.length}` : null;
+  };
 
   const [openCardModal, setOpenCardModal] = useState(false);
 
@@ -110,7 +117,7 @@ const CardDetail = ({ card, sourceListId, showEditButton }) => {
         <CardBadge
           icon={() => <CheckSquare size={16} />}
           hasBadge={hasChecklist}
-          content={`${COMPLETED_TASKS}/${CHECKLIST_TASKS_.length}`}
+          content={getCompletedTasks()}
         />
 
         <CardBadge
