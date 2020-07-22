@@ -73,12 +73,12 @@ const CardDetail = ({ card, sourceListId, showEditButton }) => {
   const hasAssignees = card.assignees.length !== 0;
   const hasDueDate = Object.values(card.dueDate).length !== 0;
 
-  const ALL_CHECKLISTS = hasChecklist && card.checklists.flat();
+  const CHECKLIST_TASKS_ =
+    hasChecklist && card.checklists.map((checklist) => checklist.tasks).flat();
 
-  const COMPLETED_TASKS = ALL_CHECKLISTS.map(
-    (checklist) =>
-      checklist.tasks.filter((task) => task.status === "done").length
-  ).reduce((accumulator, currentValue) => accumulator + currentValue);
+  const COMPLETED_TASKS = CHECKLIST_TASKS_.filter(
+    (task) => task.status === "done"
+  ).length;
 
   const [openCardModal, setOpenCardModal] = useState(false);
 
@@ -110,7 +110,7 @@ const CardDetail = ({ card, sourceListId, showEditButton }) => {
         <CardBadge
           icon={() => <CheckSquare size={16} />}
           hasBadge={hasChecklist}
-          content={`${COMPLETED_TASKS}/${ALL_CHECKLISTS.length}`}
+          content={`${COMPLETED_TASKS}/${CHECKLIST_TASKS_.length}`}
         />
 
         <CardBadge
