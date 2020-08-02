@@ -37,8 +37,7 @@
     "client": "cd client && yarn start",
     "server": "nodemon /server/server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "prod": "yarn server && cd client && yarn run prod",
-    "heroku-postbuild": "yarn install && cd client && yarn install && cd .. && yarn prod"
+    "heroku-postbuild": "yarn install && cd client && yarn install && yarn run prod"
   },
   "devDependencies": {
     "concurrently": "^5.2.0"
