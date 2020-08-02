@@ -31,7 +31,6 @@ const AuthContainer = ({ children }) => {
   }, [user]);
 
   useEffect(() => {
-    if (user) return;
     setIsLoading(true);
     const fetchUserInfo = async () => {
       await userInfo()
