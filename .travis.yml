@@ -1,14 +1,15 @@
 language: node.js
 node_js:
-  - 12.14.1
+  - 14.6.0
 cache: yarn
 
 install:
+  - cd client
   - yarn install
 
 script:
   - yarn test
-  - yarn run prod
+  - yarn run build
 
 deploy:
   provider: pages
