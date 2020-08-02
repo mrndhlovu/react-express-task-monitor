@@ -17,6 +17,6 @@ const serverConfig = (app, express, passport) => {
   );
 
   app.use(passport.initialize());
-  app.use(express.static(path.join(BUILD_DIR, "public/build")));
+  app.use(express.static(path.join(BUILD_DIR, "client/build")));
 };
 module.exports = serverConfig;
