@@ -36,7 +36,7 @@
   "scripts": {
     "client": "cd client && yarn start",
     "server": "nodemon /server/server.js",
-    "start": "node /server/server.js",
+    "start": "node server/server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
     "heroku-postbuild": "cd client && yarn install && yarn run build"
   },
