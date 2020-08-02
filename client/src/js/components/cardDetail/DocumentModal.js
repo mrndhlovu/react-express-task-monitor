@@ -4,16 +4,16 @@ import PropTypes from "prop-types";
 
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
+import { useCardDetailContext } from "../../utils/hookUtils";
 import DocumentPreviewButtons from "./DocumentPreviewButtons";
 import ImagePreviewButtons from "./ImagePreviewButtons";
 import TextFilePreviewButtons from "./TextFilePreviewButtons";
-import UIWrapper from "../sharedComponents/UIWrapper";
 import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
 import UIModal from "../sharedComponents/UIModal";
-import { useCardDetailContext } from "../../utils/hookUtils";
+import UIWrapper from "../sharedComponents/UIWrapper";
 
 const TextPreview = lazy(() => import("./TextPreview"));
-const PDFPreview = lazy(() => import("./PDFPreview.js"));
+// const PDFPreview = lazy(() => import("./PDFPreview.js"));
 
 const DocumentModal = ({ file, setOpenDocument }) => {
   const { handleMakeCover, editAttachments } = useCardDetailContext();
@@ -39,18 +39,18 @@ const DocumentModal = ({ file, setOpenDocument }) => {
   };
 
   const renderDocument = () => {
-    if (stringsEqual(filetype, "pdf"))
-      return (
-        <Suspense fallback={<UILoadingSpinner />}>
-          <PDFPreview
-            numPages={numPages}
-            scale={scale}
-            file={file}
-            setNumPages={setNumPages}
-            pageNumber={pageNumber}
-          />
-        </Suspense>
-      );
+    // if (stringsEqual(filetype, "pdf"))
+    //   return (
+    //     <Suspense fallback={<UILoadingSpinner />}>
+    //       <PDFPreview
+    //         numPages={numPages}
+    //         scale={scale}
+    //         file={file}
+    //         setNumPages={setNumPages}
+    //         pageNumber={pageNumber}
+    //       />
+    //     </Suspense>
+    //   );
 
     if (stringsEqual(filetype, ALLOWED_IMAGE_TYPES)) {
       return (
