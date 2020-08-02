@@ -1,7 +1,7 @@
 {
   "name": "trello-clone-server",
   "version": "1.0.0",
-  "description": "React, Node.js, Express and Webpack",
+  "description": "React, Node.js, Express and MongoDB",
   "main": "server/server.js",
   "author": "Mduduzi Ndhlovu",
   "license": "MIT",
