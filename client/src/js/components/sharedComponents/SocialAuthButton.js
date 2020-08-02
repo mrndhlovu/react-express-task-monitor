@@ -3,6 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { Icon } from "semantic-ui-react";
+import { getRootUrl } from "../../utils/urls";
 
 const StyledSegment = styled.button`
   border: 1px solid #e4e4e4;
@@ -15,16 +16,13 @@ const StyledSegment = styled.button`
   width: 100%;
 `;
 
-const SocialAuthButton = ({
-  buttonText,
-  color,
-  handleButtonClick,
-  icon,
-  size,
-}) => {
+const SocialAuthButton = ({ buttonText, color, provider }) => {
+  const handleButtonClick = () =>
+    (window.location = `${getRootUrl()}/auth/${provider}`);
+
   return (
     <StyledSegment onClick={handleButtonClick} type="button">
-      <Icon name={icon} color={color} size={size} />
+      <Icon name={provider} color={color} />
       {buttonText}
     </StyledSegment>
   );
@@ -33,9 +31,7 @@ const SocialAuthButton = ({
 SocialAuthButton.propTypes = {
   buttonText: PropTypes.string.isRequired,
   color: PropTypes.string,
-  icon: PropTypes.string.isRequired,
-  size: PropTypes.string,
-  handleButtonClick: PropTypes.func.isRequired,
+  provider: PropTypes.string.isRequired,
 };
 
 export default SocialAuthButton;

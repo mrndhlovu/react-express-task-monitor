@@ -26,15 +26,13 @@ const UserProfileContainer = ({ history }) => {
       await requestAuthLogin({ email: urlData.email }, urlData.token)
         .then((res) => {
           setAlertText("Success!");
-          auth.authListener(res.data.data, window.location.reload());
+          auth.authListener(res.data, () => history.push("/"));
         })
         .catch(() => setAlertText("Login to access this page!"));
     };
 
-    setTimeout(() => {
-      loginUser();
-    }, 500);
-  }, [user, auth, history]);
+    !user && loginUser();
+  }, [history, auth, user]);
 
   return <UserProfile history={history} alertText={alertText} />;
 };

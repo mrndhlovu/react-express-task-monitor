@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import { requestAuthLogout, userInfo } from "../apis/apiRequests";
-import { useFetch } from "../utils/hookUtils";
 import { UserContext } from "../utils/contextUtils";
-import { withRouter } from "react-router";
 import MainContainer from "./MainContainer";
 
-const AuthContainer = ({ children, history, location }) => {
-  const { from } = location.state || { from: { pathname: "/" } };
-
+const AuthContainer = ({ children }) => {
   const [authenticated, setAuthenticated] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
   const [user, setUser] = useState(undefined);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const authListener = (user, cb) => {
+  const authListener = useCallback((user, cb) => {
     if (!user) return;
     setUser(user);
-    setAuthenticated(true);
     cb && cb();
-  };
+  }, []);
 
-  const handleLogOut = async (reload) =>
+  const handleLogOut = async () =>
     await requestAuthLogout()
-      .then(() => history.push("/login"))
+      .then(() => {
+        authListener(undefined, window.location.reload());
+      })
       .catch(() => {
-        history.push("/login");
-        reload && window.location.reload();
+        setIsLoading(false);
+        authListener(undefined, window.location.reload());
       });
+
+  useEffect(() => {
+    setAuthenticated(user !== undefined && user !== null);
+  }, [user]);
 
   useEffect(() => {
     if (user) return;
@@ -41,16 +41,14 @@ const AuthContainer = ({ children, history, location }) => {
         })
         .catch((err) => {
           setIsLoading(false);
-          console.log("fetchUserInfo -> err", err.response.data);
         });
     };
     fetchUserInfo();
-  }, [user, from.pathname, history]);
+  }, [authListener]);
 
   return (
     <UserContext.Provider
       value={{
-        alert,
         auth: { authenticated, authListener },
         handleLogOut,
         isLoading,
@@ -65,14 +63,6 @@ const AuthContainer = ({ children, history, location }) => {
 
 AuthContainer.propTypes = {
   children: PropTypes.element.isRequired,
-  location: PropTypes.oneOfType([
-    PropTypes.shape({
-      state: PropTypes.shape({
-        from: PropTypes.shape({ pathname: PropTypes.string }),
-      }),
-    }),
-  ]),
-  history: PropTypes.shape({ push: PropTypes.func.isRequired }),
 };
 
-export default withRouter(AuthContainer);
+export default AuthContainer;

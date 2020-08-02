@@ -32,7 +32,7 @@ const SignupContainer = ({ history }) => {
         authListener(res.data, () => history.push("/"));
       })
       .catch((error) =>
-        alertUser(error.response.data, false, () => {
+        alertUser(error.response?.data, false, () => {
           resetForm("authForm");
           setLoading(false);
         })

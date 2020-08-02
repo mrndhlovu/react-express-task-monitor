@@ -82,7 +82,7 @@ const RightNavButtons = ({ history }) => {
         userName={user.fname}
         history={history}
         fontSize="13px"
-        handleLogOut={handleLogOut}
+        handleLogOut={() => handleLogOut(history.push("/login"))}
       />
     </StyledDiv>
   );

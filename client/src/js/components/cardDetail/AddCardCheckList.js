@@ -38,7 +38,7 @@ const AddCardCheckList = () => {
         resetForm("new-checklist");
         setChecklist(null);
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   useEffect(() => {

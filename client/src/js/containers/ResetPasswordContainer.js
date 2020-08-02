@@ -52,7 +52,7 @@ const ResetPasswordContainer = ({ history, location }) => {
         })
         .catch((error) => {
           setSave(false);
-          alertUser(error.response.data.message, false, () => clearError());
+          alertUser(error.response?.data.message, false, () => clearError());
         });
     };
     updatePassword();

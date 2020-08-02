@@ -1,7 +1,7 @@
 export const getRootUrl = () =>
   process.env.NODE_ENV === "production"
     ? "http://moneat.herokuapp.com"
-    : "http://localhost:3000";
+    : "http://localhost:5000";
 
 export const BOARDS_EP = `${getRootUrl()}/boards`;
 export const UPLOAD_EP = `${getRootUrl()}/upload`;

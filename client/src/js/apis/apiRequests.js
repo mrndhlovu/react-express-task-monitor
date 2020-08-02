@@ -1,13 +1,6 @@
 import axios from "axios";
 
-import {
-  AUTH_EP,
-  BOARDS_EP,
-  CARDS_EP,
-  params,
-  UPLOAD_EP,
-  getRootUrl,
-} from "../utils/urls";
+import { AUTH_EP, BOARDS_EP, CARDS_EP, params, UPLOAD_EP } from "../utils/urls";
 
 export const requestNewBoard = (board) =>
   axios.post(`${BOARDS_EP}/create-board`, board, params);
@@ -45,8 +38,6 @@ export const requestCardUpdate = (body, id) =>
 
 export const requestAuthSignup = (body) =>
   axios.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
-
-export const requestSocialAuth = () => axios.get(`${AUTH_EP}/spotify`);
 
 export const requestAuthLogin = (body, token) =>
   axios.post(`${AUTH_EP}/login?token=${token}`, body, params);

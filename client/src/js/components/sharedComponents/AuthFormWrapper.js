@@ -12,8 +12,6 @@ import UISmall from "./UISmall";
 
 import { SOCIAL_AUTH_OPTIONS } from "../../constants/constants";
 import { Target } from "react-feather";
-import { AUTH_EP } from "../../utils/urls";
-import { requestSocialAuth } from "../../apis/apiRequests";
 
 const StyledHeader = styled.div``;
 
@@ -74,13 +72,6 @@ const AuthFormWrapper = ({
     "/reset-password"
   );
 
-  const onButtonClick = (e, provider) => {
-    e.preventDefault();
-    const url = `${AUTH_EP}/${provider}`;
-    window.location = url;
-    console.log("onButtonClick -> url", url);
-  };
-
   return (
     <UIContainer dataTestId={dataTestId} className="auth-page">
       <FormWrapper data-test-id="login-form" id="authForm" target="#">
@@ -107,8 +98,7 @@ const AuthFormWrapper = ({
               <SocialAuthButton
                 key={option.key}
                 buttonText={`Continue with ${option.name}`}
-                icon={option.key}
-                handleButtonClick={(e) => onButtonClick(e, option.key)}
+                provider={option.key}
               />
             ))}
 

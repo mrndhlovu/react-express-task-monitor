@@ -63,7 +63,7 @@ const CheckLists = () => {
           saveCardChanges(res.data.card);
           updateBoardState(res.data.board);
         })
-        .catch((error) => alertUser(error.response.data.message));
+        .catch((error) => alertUser(error.response?.data.message));
 
       resetForm("checklist-item");
       setTask(null);

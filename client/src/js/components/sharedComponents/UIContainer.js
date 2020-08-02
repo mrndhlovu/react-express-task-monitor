@@ -40,7 +40,7 @@ UIContainer.propTypes = {
   className: PropTypes.string,
   dataTestId: PropTypes.string,
   display: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
-  nested: PropTypes.bool,
+  nested: PropTypes.object,
   padding: PropTypes.string,
   width: PropTypes.string,
 };

@@ -90,7 +90,7 @@ const AddAttachment = ({
           })
           .catch((error) => {
             setIsLoading("");
-            alertUser(error.response.data.message);
+            alertUser(error.response?.data.message);
           });
       };
       file && upload();

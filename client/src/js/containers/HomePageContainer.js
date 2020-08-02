@@ -1,23 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { HomepageContext } from "../utils/contextUtils";
-import { requestBoardList } from "../apis/apiRequests";
-import { useFetch, useAuth, useMainContext } from "../utils/hookUtils";
+import { useAuth, useMainContext } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const HomePageContainer = ({ history }) => {
-  const {
-    updateUserRequestHandler,
-    navDataHandler,
-    alertUser,
-  } = useMainContext();
-  const { user, handleLogOut } = useAuth();
-
-  const [boards, setBoards] = useState("");
-  const [data] = useFetch(requestBoardList);
+  const { updateUserRequestHandler, boards, setActiveBoard } = useMainContext();
+  const { user } = useAuth();
 
   const starBoardHandler = async (id, starRef) => {
     if (!starRef) return;
@@ -30,18 +22,11 @@ const HomePageContainer = ({ history }) => {
   };
 
   useEffect(() => {
-    if (!data) return;
-    setBoards(data);
-    navDataHandler(null, data);
-  }, [data, navDataHandler]);
+    setActiveBoard(undefined);
+  }, [setActiveBoard]);
 
-  return data && boards ? (
-    <HomepageContext.Provider
-      value={{
-        boards,
-        starBoardHandler,
-      }}
-    >
+  return boards ? (
+    <HomepageContext.Provider value={{ starBoardHandler }}>
       <HomePage history={history} />
     </HomepageContext.Provider>
   ) : (

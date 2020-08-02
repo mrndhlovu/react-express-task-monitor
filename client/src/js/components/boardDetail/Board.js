@@ -57,7 +57,7 @@ const Board = () => {
     const createTemplate = async () => {
       await requestCreateTemplate({ template })
         .then((res) => history.push(`/boards/id/${res.data._id}`))
-        .catch((error) => alertUser(error.response.data));
+        .catch((error) => alertUser(error.response?.data));
     };
     createTemplate();
   };

@@ -6,7 +6,6 @@ import { Header, Button } from "semantic-ui-react";
 
 import { emptyFunction, stringsEqual } from "../../utils/appUtils";
 import {
-  useFetch,
   useBoardContext,
   useBoardListContext,
   useMainContext,
@@ -14,7 +13,6 @@ import {
 import DropdownList from "../sharedComponents/DropdownList";
 import UIContainer from "../sharedComponents/UIContainer";
 import UIDivider from "../sharedComponents/UIDivider";
-import { requestBoardList } from "../../apis/apiRequests";
 
 const style = {
   display: "flex",
@@ -28,10 +26,9 @@ const MoveCardDialog = ({
   sourceListId,
   setClose,
 }) => {
-  const { alertUser } = useMainContext();
+  const { boards } = useMainContext();
   const { boardUpdateHandler } = useBoardContext();
   const { setSourceId } = useBoardListContext();
-  const [boards] = useFetch(requestBoardList, alertUser);
 
   const [move, setMove] = useState(false);
   const [moveDestination, setMoveDestination] = useState({

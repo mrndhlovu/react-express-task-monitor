@@ -82,7 +82,7 @@ const DropdownButton = ({
       onClick={() => setOpen(true)}
       open={open}
       size={size}
-      text={<span className={textClassName}>{buttonText}</span>}
+      text={buttonText}
       direction={direction}
       pointing={pointing}
       onBlur={() => (closeOnSelect ? handleClose(callback) : () => {})}

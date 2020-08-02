@@ -24,7 +24,7 @@ const CardComments = () => {
         saveCardChanges(res.data);
         resetForm("comment-input");
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   return (

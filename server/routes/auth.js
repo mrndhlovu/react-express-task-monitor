@@ -14,15 +14,10 @@ const crypto = require("crypto");
 const async = require("async");
 const passport = require("passport");
 const Notification = require("../models/Notification");
-
-const generateAccessCookie = async (res, token) => {
-  res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
-  res.cookie("access_token", token, {
-    maxAge: 9999999,
-    httpOnly: true,
-  });
-  await res.append("Set-Cookie", `access_token="${token}";`);
-};
+const {
+  getRedirectUrl,
+  generateAccessCookie,
+} = require("../utils/authUtils.js");
 
 router.post("/signup", async (req, res) => {
   const user = new User(req.body);
@@ -58,7 +53,7 @@ router.post("/login", async (req, res) => {
 
 router.get("/users/me", auth, async (req, res) => {
   try {
-    res.send({ data: req.user });
+    res.send(req.user);
   } catch (error) {
     res.status(400).send(error.message);
   }
@@ -232,7 +227,6 @@ router.get(
   "/spotify",
   passport.authenticate("spotify", {
     scope: ["user-read-email", "user-read-private"],
-    showDialog: true,
   })
 );
 
@@ -242,7 +236,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`/#/profile?token=${token}&email=${req.user.email}`);
+      res.redirect(getRedirectUrl(req.user.email, token));
     });
   }
 );
@@ -253,7 +247,7 @@ router.get(
   async (req, res) => {
     await req.user.getAuthToken().then((token) => {
       generateAccessCookie(res, token);
-      res.redirect(`/#/profile?token=${token}&email=${req.user.email}`);
+      res.redirect(getRedirectUrl(req.user.email, token));
     });
   }
 );

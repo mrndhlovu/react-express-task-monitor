@@ -37,7 +37,7 @@ const EmailRecoveryContainer = ({ history, location }) => {
         })
         .catch((error) => {
           setLoading(false);
-          alertUser(error.response.data.message, false, () => clearMsg());
+          alertUser(error.response?.data.message, false, () => clearMsg());
         });
     };
     recoverPassword();

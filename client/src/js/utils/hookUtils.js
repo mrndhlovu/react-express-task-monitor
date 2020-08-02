@@ -34,7 +34,7 @@ export const useFetch = (endPoint, cb, logout) => {
         })
         .catch((error) => {
           setLoading(false);
-          cb && cb(error.response.data.error, null, logout(true));
+          cb && cb(error.response?.data.error, null, logout(true));
         });
     };
 

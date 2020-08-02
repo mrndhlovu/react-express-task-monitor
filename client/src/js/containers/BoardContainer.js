@@ -15,24 +15,26 @@ import {
   requestCardUpdate,
 } from "../apis/apiRequests";
 
-import { resetForm, getUpdatedArray, findArrayItem } from "../utils/appUtils";
-import { useAuth, useMainContext, useFetch } from "../utils/hookUtils";
+import {
+  resetForm,
+  getUpdatedArray,
+  findArrayItem,
+  emptyFunction,
+} from "../utils/appUtils";
+import { useAuth, useMainContext } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
 import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
 
 const BoardContainer = ({ match, history, templateBoard }) => {
   const {
-    navDataHandler,
     boards,
     alertUser,
     updateUserRequestHandler,
+    updateBoardsListHandler,
+    setActiveBoard,
   } = useMainContext();
   const { user, auth } = useAuth();
   const { id } = match.params;
-  const [data] = useFetch(
-    !templateBoard && (() => requestBoardDetail(id)),
-    alertUser
-  );
 
   const [board, setBoard] = useState(undefined);
   const [inviteDone, setInviteDone] = useState(false);
@@ -57,10 +59,9 @@ const BoardContainer = ({ match, history, templateBoard }) => {
 
     await requestBoardUpdate(newId ? newId : id, body)
       .then((res) => {
-        navDataHandler(res.data.styleProperties);
         if (callback) callback();
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   const updateBoardState = (newBoard) => setBoard(newBoard);
@@ -100,7 +101,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
       const source = findArrayItem(boards, board._id, "_id");
       const removeIndex = boards.indexOf(source);
 
-      navDataHandler(null, getUpdatedArray(boards, removeIndex, newBoard));
+      updateBoardsListHandler(getUpdatedArray(boards, removeIndex, newBoard));
     }
 
     newBoard && boardUpdateHandler(newBoard, "styleProperties");
@@ -121,7 +122,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
         setLoading(false);
         resetForm("invite-input");
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   const createListHandler = async (listData, callback = () => {}) => {
@@ -133,7 +134,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
         resetForm("create-item-form");
         callback();
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   const cardUpdateRequestHandler = async (newCard, sourceId, cb = () => {}) => {
@@ -144,7 +145,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
         updateBoardState(res.data);
         cb && cb();
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   const createCardHandler = async (newCard, listId) => {
@@ -156,7 +157,7 @@ const BoardContainer = ({ match, history, templateBoard }) => {
         updateBoardState(res.data);
         resetForm("create-card-input");
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   const handleDeleteList = (listPosition) => {
@@ -166,15 +167,23 @@ const BoardContainer = ({ match, history, templateBoard }) => {
 
   useEffect(() => {
     if (templateBoard) {
-      setBoard(templateBoard);
-      return navDataHandler(templateBoard.styleProperties, boards);
+      setActiveBoard(templateBoard);
+      return setBoard(templateBoard);
     }
 
-    if (data) {
-      navDataHandler(data.styleProperties, boards);
-      setBoard(data);
-    }
-  }, [templateBoard, data, boards, navDataHandler]);
+    if (board || templateBoard) return emptyFunction();
+
+    const getBoard = async () => {
+      await requestBoardDetail(id)
+        .then((res) => {
+          setBoard(res.data);
+          setActiveBoard(res.data);
+        })
+        .catch((error) => alertUser(error.response?.data));
+    };
+
+    getBoard();
+  }, [templateBoard, alertUser, board, id, setActiveBoard]);
 
   const context = {
     board,

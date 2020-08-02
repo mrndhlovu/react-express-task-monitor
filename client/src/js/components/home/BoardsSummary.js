@@ -2,7 +2,7 @@ import React, { useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 
 import UIContainer from "../sharedComponents/UIContainer";
-import { useAuth, useMainContext, useHomeContext } from "../../utils/hookUtils";
+import { useAuth, useMainContext } from "../../utils/hookUtils";
 
 const BoardCategory = lazy(() => import("./BoardCategory"));
 const NewBoardModal = lazy(() => import("../sharedComponents/NewBoardModal"));
@@ -19,8 +19,8 @@ const BoardsSummary = () => {
     STARRED_BOARDS,
     PERSONAL_BOARDS,
     RECENT_BOARDS,
+    boards,
   } = useMainContext();
-  const { boards } = useHomeContext();
   const { user } = useAuth();
 
   const hasBoards = boards.length > 0;

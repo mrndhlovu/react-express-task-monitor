@@ -18,10 +18,11 @@ const UIFormInput = ({
   iconProps,
   input = false,
   icon,
+  dataTestId,
   ...rest
 }) => {
   return (
-    <InputWrapper>
+    <InputWrapper data-test-id={dataTestId}>
       {input ? (
         <input className={className} {...rest} />
       ) : (

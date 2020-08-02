@@ -36,7 +36,7 @@ const LoginContainer = ({ history, location }) => {
       )
       .catch((error) => {
         setLoading(false);
-        alertUser(error.response.data, false, () => {
+        alertUser(error.response?.data, false, () => {
           setCredentials({ password: null, email: null });
         });
       });

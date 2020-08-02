@@ -11,11 +11,11 @@ import UIWrapper from "../sharedComponents/UIWrapper";
 const TemplatesPage = ({ templates, handleUseTemplate }) => {
   const [template, setTemplate] = useState(null);
 
-  const { navDataHandler } = useMainContext();
+  const { setActiveBoard } = useMainContext();
 
   useEffect(() => {
-    if (!template) navDataHandler({ image: "", color: "" });
-  }, [template, navDataHandler]);
+    if (!template) setActiveBoard(undefined);
+  }, [template, setActiveBoard]);
 
   return !template ? (
     <UIWrapper className="template-page">

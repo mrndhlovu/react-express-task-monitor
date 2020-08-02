@@ -34,7 +34,7 @@ const CopyCardAction = () => {
         updateBoardState(res.data);
         setCopied(true);
       })
-      .catch((error) => alertUser(error.response.data.message));
+      .catch((error) => alertUser(error.response?.data.message));
   };
 
   return (

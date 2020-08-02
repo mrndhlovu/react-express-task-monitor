@@ -23,10 +23,12 @@ const TemplatesContainer = ({ history }) => {
     const getTemplates = async () => {
       await requestTemplates()
         .then((res) => setTemplates(res.data))
-        .catch((error) => alertUser(error.response.data.message));
+        .catch((error) => alertUser(error.response?.data.message));
     };
     getTemplates();
-    return setTemplates(null);
+    return () => {
+      setTemplates(null);
+    };
   }, [alertUser]);
 
   return (
@@ -34,6 +36,7 @@ const TemplatesContainer = ({ history }) => {
       <TemplatesPage
         handleUseTemplate={handleUseTemplate}
         templates={templates}
+        history={history}
       />
     )
   );
