@@ -20,5 +20,5 @@ socketIOConfig(server);
 serverConfig(app, express, passport);
 
 routesConfig(app, express);
-server.listen(PORT, () => log.success(`Server running on port ${PORT}`));
+server.listen(PORT, () => log.success(`Server listening on port ${PORT}`));
 process.on("exit", () => log.warning("Server shutdown."));
