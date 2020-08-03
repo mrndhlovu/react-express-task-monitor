@@ -1,10 +1,9 @@
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-const path = require("path");
 
 const { ROOT_URL } = require("../config");
 
-const BUILD_DIR = `${__dirname}/client/build`;
+const BUILD_DIR = "client/build";
 
 const serverConfig = (app, express, passport) => {
   app.use(express.json());
