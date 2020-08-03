@@ -27,8 +27,7 @@ const allowedFileTypes = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 const TOKEN_SIGNATURE = process.env.TOKEN_SIGNATURE;
-const ROOT_URL =
-  process.env.LOCAL_URL || `https://moneat.herokuapp.com:${PORT}`;
+const ROOT_URL = process.env.LOCAL_URL || `http://moneat.herokuapp.com:${PORT}`;
 
 const DEFAULT_TEMPLATES = [
   {
