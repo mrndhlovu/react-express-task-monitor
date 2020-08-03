@@ -31,7 +31,7 @@ const Container = styled.div`
 `;
 
 const MainContainer = ({ children, history }) => {
-  const { auth, user } = useAuth();
+  const { auth, user, handleLogOut } = useAuth();
   const { notify } = useAlert();
 
   const isHomePage = history.location.pathname === "/";
@@ -108,10 +108,13 @@ const MainContainer = ({ children, history }) => {
     const getBoards = async () => {
       await requestBoardList()
         .then((res) => setBoards(res.data))
-        .catch((error) => alertUser(error.response?.data));
+        .catch((error) => {
+          handleLogOut();
+          alertUser(error.response?.data);
+        });
     };
     getBoards();
-  }, [alertUser, boards, auth.authenticated]);
+  }, [alertUser, boards, auth.authenticated, handleLogOut]);
 
   const context = {
     activeBoard,
