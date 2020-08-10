@@ -1,7 +1,11 @@
 const { ROOT_URL } = require("./config");
 
-const getRedirectUrl = (email, token) =>
-  `${ROOT_URL}/#/profile?token=${token}&email=${email}`;
+const getRedirectUrl = (req, token) => {
+  const { email } = req.user;
+  const referer = req.headers["referer"];
+
+  return `${referer}/#/profile?token=${token}&email=${email}`;
+};
 
 const generateAccessCookie = async (res, token) => {
   res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
