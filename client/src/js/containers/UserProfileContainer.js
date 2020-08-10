@@ -25,7 +25,6 @@ const UserProfileContainer = ({ history }) => {
       setAlertText("Logging in!");
       await requestAuthLogin({ email: urlData.email }, urlData.token)
         .then((res) => {
-          setAlertText("Success!");
           auth.authListener(res.data, () => history.push("/"));
         })
         .catch(() => setAlertText("Login to access this page!"));
