@@ -41,7 +41,7 @@
     "heroku-postbuild": "yarn prod:build"
   },
   "engines": {
-    "node": "14.6.0"
+    "node": "14.7.0"
   },
   "devDependencies": {
     "concurrently": "^5.2.0"

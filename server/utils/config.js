@@ -3,11 +3,11 @@ dotenv.config();
 
 const environment = process.env.DEVELOPMENT ? "development" : "production";
 const isDevelopment = environment === "development";
-const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID;
+const ACCESS_KEY_ID_AWS = process.env.ACCESS_KEY_ID_AWS;
 const S_GRID_API_KEY = process.env.SEND_GRID_API_KEY;
-const AWS_ID_POOL = process.env.AWS_ID_POOL;
-const AWS_REGION = process.env.AWS_REGION;
-const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_KEY;
+const ID_POOL_AWS = process.env.ID_POOL_AWS;
+const REGION_AWS = process.env.REGION_AWS;
+const SECRET_ACCESS_KEY_AWS = process.env.AWS_SECRET_KEY;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
@@ -102,10 +102,10 @@ const allowedBoardUpdateFields = [
 module.exports = {
   allowedFileTypes,
   environment,
-  AWS_ACCESS_KEY_ID,
-  AWS_ID_POOL,
-  AWS_REGION,
-  AWS_SECRET_ACCESS_KEY,
+  ACCESS_KEY_ID_AWS,
+  ID_POOL_AWS,
+  REGION_AWS,
+  SECRET_ACCESS_KEY_AWS,
   ROOT_URL,
   CONNECTION_URI,
   LOCAL_MONGO_DB,
