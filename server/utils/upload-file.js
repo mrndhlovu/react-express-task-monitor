@@ -2,7 +2,7 @@ const multer = require("multer");
 const multerS3 = require("multer-s3");
 const AWS = require("aws-sdk");
 const {
-  S3_BUCKET,
+  S3_BUCKET_AWS,
   REGION_AWS,
   SECRET_ACCESS_KEY_AWS,
   ACCESS_KEY_ID_AWS,
@@ -27,7 +27,7 @@ const upload = multer({
   fileFilter,
   storage: multerS3({
     s3,
-    bucket: S3_BUCKET,
+    bucket: S3_BUCKET_AWS,
     acl: "public-read",
     limits: { fileSize: 2000000 },
     metadata: (req, file, cb) => {
