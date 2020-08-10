@@ -18,7 +18,7 @@ const LoginPage = ({ onHandleChange, handleLoginClick, ...rest }) => {
       {...rest}
     >
       <UIFormInput
-        autoFocus={true}
+        autoFocus
         placeholder="Email"
         type="email"
         name="email"

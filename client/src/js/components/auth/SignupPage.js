@@ -23,6 +23,8 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         onChange={(e) => onHandleChange(e)}
         placeholder="Email"
         type="email"
+        input
+        autoFocus
       />
       <UIFormInput
         id="fnameFormField"
@@ -30,6 +32,7 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         onChange={(e) => onHandleChange(e)}
         placeholder="Enter full name"
         type="text"
+        input
       />
 
       <UIFormInput
@@ -44,6 +47,7 @@ const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
         placeholder="Create password"
         type={type}
         dataTestId="password-form-input"
+        input
       />
     </AuthFormWrapper>
   );
