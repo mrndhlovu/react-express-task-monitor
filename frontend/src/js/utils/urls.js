@@ -1,14 +1,15 @@
-export const getRootUrl = () =>
+export const baseURL =
   process.env.NODE_ENV === "production"
-    ? "http://moneat.herokuapp.com"
+    ? "https://trello-clone.ndhlovu.com"
     : "http://localhost:5000";
 
-export const BOARDS_EP = `${getRootUrl()}/boards`;
-export const UPLOAD_EP = `${getRootUrl()}/upload`;
-export const CARDS_EP = `${getRootUrl()}/cards`;
-export const AUTH_EP = `${getRootUrl()}/auth`;
+export const BOARDS_EP = `${baseURL}/boards`;
+export const UPLOAD_EP = `${baseURL}/upload`;
+export const CARDS_EP = `${baseURL}/cards`;
+export const AUTH_EP = `${baseURL}/auth`;
 
-export const params = {
+export const PARAMS = {
+  baseURL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

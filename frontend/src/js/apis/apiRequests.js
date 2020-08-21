@@ -1,87 +1,88 @@
 import axios from "axios";
 
-import { AUTH_EP, BOARDS_EP, CARDS_EP, params, UPLOAD_EP } from "../utils/urls";
+import { AUTH_EP, BOARDS_EP, CARDS_EP, PARAMS, UPLOAD_EP } from "../utils/urls";
+
+const axiosInstance = axios.create({ ...PARAMS });
 
 export const requestNewBoard = (board) =>
-  axios.post(`${BOARDS_EP}/create-board`, board, params);
+  axiosInstance.post(`${BOARDS_EP}/create-board`, board);
 
 export const requestNewBoardList = (body, id) =>
-  axios.post(`${BOARDS_EP}/${id}/create-list`, body, params);
+  axiosInstance.post(`${BOARDS_EP}/${id}/create-list`, body);
 
-export const requestBoardList = () => axios.get(BOARDS_EP, params);
+export const requestBoardList = () => axios.get(BOARDS_EP);
 
 export const requestBoardDetail = (id) =>
-  axios.get(`${BOARDS_EP}/id/${id}`, params);
+  axiosInstance.get(`${BOARDS_EP}/id/${id}`);
 
 export const requestBoardDelete = (id) =>
-  axios.delete(`${BOARDS_EP}/${id}/delete-board`, params);
+  axiosInstance.delete(`${BOARDS_EP}/${id}/delete-board`);
 
 export const requestBoardUpdate = (id, body) => {
-  return axios.patch(`${BOARDS_EP}/${id}/update-board`, { ...body }, params);
+  return axiosInstance.patch(`${BOARDS_EP}/${id}/update-board`, { ...body });
 };
 
 export const requestCreateTemplate = (body) =>
-  axios.post(`${BOARDS_EP}/create-template`, body, params);
+  axiosInstance.post(`${BOARDS_EP}/create-template`, body);
 
 export const requestUpload = (type, body, boardId, listId, cardId) =>
-  axios.post(
+  axiosInstance.post(
     `${UPLOAD_EP}/${type}/${boardId}/${listId}/${cardId}/upload`,
-    body,
-    params
+    body
   );
 
 export const requestCreateNewCard = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/new-card`, body, params);
+  axiosInstance.patch(`${CARDS_EP}/${id}/new-card`, body);
 
 export const requestCardUpdate = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/update-card`, body, params);
+  axiosInstance.patch(`${CARDS_EP}/${id}/update-card`, body);
 
 export const requestAuthSignup = (body) =>
-  axios.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
+  axiosInstance.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
 
 export const requestAuthLogin = (body, token) =>
-  axios.post(`${AUTH_EP}/login?token=${token}`, body, params);
+  axiosInstance.post(`${AUTH_EP}/login?token=${token}`, body);
 
 export const requestAuthLogout = () =>
-  axios.post(`${AUTH_EP}/logoutAll`, null, params);
+  axiosInstance.post(`${AUTH_EP}/logoutAll`);
 
 export const userInfo = () =>
-  axios.get(`${AUTH_EP}/users/me`, { withCredentials: true });
+  axiosInstance.get(`${AUTH_EP}/users/me`, { withCredentials: true });
 
 export const requestUserUpdate = (body) =>
-  axios.patch(`${AUTH_EP}/update`, body, params);
+  axiosInstance.patch(`${AUTH_EP}/update`, body);
 
 export const requestEmailRecovery = (body) => {
-  return axios.post(`${AUTH_EP}/recovery`, body, params);
+  return axiosInstance.post(`${AUTH_EP}/recovery`, body);
 };
 
 export const requestDeleteAccount = () => {
-  return axios.delete(`${AUTH_EP}/delete-account`, null, params);
+  return axiosInstance.delete(`${AUTH_EP}/delete-account`);
 };
 
 export const requestUpdatePassword = (body, token) => {
-  return axios.post(`${AUTH_EP}/${token}/update-password`, body);
+  return axiosInstance.post(`${AUTH_EP}/${token}/update-password`, body);
 };
 
 export const requestUserInvite = (id, email) =>
-  axios.patch(`${BOARDS_EP}/id/${id}/invite`, { email }, params);
+  axiosInstance.patch(`${BOARDS_EP}/id/${id}/invite`, { email });
 
 export const requestChecklistTask = (body, id) =>
-  axios.post(`${CARDS_EP}/${id}/checklist-task`, body, params);
+  axiosInstance.post(`${CARDS_EP}/${id}/checklist-task`, body);
 
 export const requestNewChecklist = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/create-checklist`, body, params);
+  axiosInstance.patch(`${CARDS_EP}/${id}/create-checklist`, body);
 
 export const requestCreateComment = (body, id) =>
-  axios.patch(`${CARDS_EP}/${id}/comment`, body, params);
+  axiosInstance.patch(`${CARDS_EP}/${id}/comment`, body);
 
 export const requestBoardMembers = (id) =>
-  axios.get(`${BOARDS_EP}/id/${id}/members`, params);
+  axiosInstance.get(`${BOARDS_EP}/id/${id}/members`);
 
 export const requestImages = (query, page, orientation = "landscape") =>
-  axios.get(
+  axiosInstance.get(
     `${BOARDS_EP}/images?query=${query}&page=${page}&orientation=${orientation}`
   );
 
 export const requestTemplates = () =>
-  axios.get(`${BOARDS_EP}/templates`, params);
+  axiosInstance.get(`${BOARDS_EP}/templates`);

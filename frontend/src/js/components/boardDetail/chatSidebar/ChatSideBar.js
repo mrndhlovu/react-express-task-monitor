@@ -19,7 +19,7 @@ import {
   emptyFunction,
   getFormattedString,
 } from "../../../utils/appUtils";
-import { getRootUrl } from "../../../utils/urls";
+import { baseURL } from "../../../utils/urls";
 import { useAuth, useBoardContext } from "../../../utils/hookUtils";
 
 import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
@@ -57,8 +57,7 @@ const ChatSideBar = ({ openChat, handleClose }) => {
   const [error, setError] = useState(null);
 
   const socket = useMemo(
-    () =>
-      room && socketIOClient(`${getRootUrl()}/chat?name=${name}&room=${room}`),
+    () => room && socketIOClient(`${baseURL}/chat?name=${name}&room=${room}`),
     [name, room]
   );
 
