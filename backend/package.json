@@ -33,15 +33,11 @@
     "yarn": "1.22.0"
   },
   "scripts": {
-    "client": "cd client && yarn start",
-    "server": "nodemon server.js",
     "start": "node server.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
-    "prod:build": "concurrently \"cd client && yarn install && yarn build\" \"yarn install\"",
-    "heroku-postbuild": "yarn prod:build"
-  },
-  "engines": {
-    "node": "14.7.0"
+    "start:server": "nodemon server.js",
+    "client-install": "cd ../frontend && yarn install",
+    "client": "cd ../frontend && yarn start",
+    "dev": "concurrently --kill-others-on-fail \"yarn run start:server\"  \"yarn run client\" "
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
