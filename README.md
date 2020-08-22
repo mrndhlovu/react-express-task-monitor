@@ -4,7 +4,7 @@
 
 ## Description
 
-This is Trello clone attempt where a user can sign up for an account, create Kanban style boards with tasks which can be packed with productivity details. Built the backend using Node JS,MongoDB, express with the production version hosted on an Amazon EC2 instance. On the frontend drag and drop uses the popular `React DND` library and majority of components where built using the `semantic react` component library with some custom styling added using `Styled components` . Added a custom feature where on each board, there is a chat side bar and can join a specify board chat room.
+This is a Trello clone attempt where a user can sign up for an account, create Kanban style boards with tasks which can be packed with productivity details. Built the backend using Node JS,MongoDB, express with the production version hosted on an Amazon EC2 instance. On the frontend drag and drop uses the popular `React DND` library and majority of components where built using the `semantic react` component library with some custom styling added using `Styled components` . Added a custom feature where on each board, there is a chat side bar and can join a specify board chat room.
 
 ### Technologies
 
