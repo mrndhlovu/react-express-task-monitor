@@ -28,8 +28,8 @@ This is Trello clone attempt where a user can sign up for an account, create Kan
 
 ### Installation
 
-cd into the backend folder and run
-yarn && yarn client:install
+Clone the repo and `cd` into the backend folder and run
+`yarn && yarn client:install`
 
 Environmental variables
 In a `.env` file the project expects the following variables
