@@ -3,10 +3,10 @@ export const baseURL =
     ? "https://trello-clone.ndhlovu.com"
     : "http://localhost:5000";
 
-export const BOARDS_EP = `${baseURL}/boards`;
-export const UPLOAD_EP = `${baseURL}/upload`;
-export const CARDS_EP = `${baseURL}/cards`;
-export const AUTH_EP = `${baseURL}/auth`;
+export const BOARDS_EP = `${baseURL}/api/boards`;
+export const UPLOAD_EP = `${baseURL}/api/upload`;
+export const CARDS_EP = `${baseURL}/api/cards`;
+export const AUTH_EP = `${baseURL}/api/auth`;
 
 export const PARAMS = {
   baseURL,
