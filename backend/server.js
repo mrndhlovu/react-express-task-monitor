@@ -17,7 +17,7 @@ const app = express();
 const server = http.createServer(app);
 
 socketIOConfig(server);
-serverConfig(app, express, passport);
+serverConfig(app, passport);
 
 routesConfig(app, express);
 server.listen(PORT, () => log.success(`Server listening on port ${PORT}`));
