@@ -1,3 +1,6 @@
+const path = require("path");
+const express = require("express");
+
 const boardRoutes = require("../../routes/board");
 const cardRoutes = require("../../routes/cards");
 const uploadRoutes = require("../../routes/awsUpload");
