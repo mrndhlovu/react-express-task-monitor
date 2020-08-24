@@ -3,9 +3,9 @@ const { ROOT_URL, isDevelopment } = require("./config");
 const getRedirectUrl = (req, token) => {
   const { email } = req.user;
 
-  return isDevelopment
+  return process.env.DEVELOPMENT
     ? `${ROOT_URL}/#/profile?token=${token}&email=${email}`
-    : `${ROOT_URL}/#/profile?token=${token}&email=${email}`;
+    : `https://trello-clone.ndhlovu.com/#/profile?token=${token}&email=${email}`;
 };
 
 const generateAccessCookie = async (res, token) => {
