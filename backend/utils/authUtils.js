@@ -3,7 +3,7 @@ const { ROOT_URL, isDevelopment } = require("./config");
 const getRedirectUrl = (req, token) => {
   const { email } = req.user;
 
-  return `${ROOT_URL}/#/profile?token=${token}&email=${email}`;
+  return `https://trello-clone.ndhlovu.com/#/profile?token=${token}&email=${email}`;
   // : `${ROOT_URL}/#/profile?token=${token}&email=${email}`;
 };
 
