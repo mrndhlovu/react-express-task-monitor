@@ -5,12 +5,12 @@ import PropTypes from "prop-types";
 import { Button } from "semantic-ui-react";
 
 import { stringsEqual } from "../../utils/appUtils";
-import SocialAuthButton from "./SocialAuthButton";
+// import SocialAuthButton from "./SocialAuthButton";
 import UIContainer from "./UIContainer";
 import UIDivider from "./UIDivider";
 import UISmall from "./UISmall";
 
-import { SOCIAL_AUTH_OPTIONS } from "../../constants/constants";
+// import { SOCIAL_AUTH_OPTIONS } from "../../constants/constants";
 import { Target } from "react-feather";
 
 const StyledHeader = styled.div``;
@@ -92,7 +92,7 @@ const AuthFormWrapper = ({
         />
 
         {!resetPasswordPage && <UIDivider content="OR" horizontal={true} />}
-        {socialButtons && (
+        {/* {socialButtons && (
           <>
             {SOCIAL_AUTH_OPTIONS.map((option) => (
               <SocialAuthButton
@@ -104,7 +104,7 @@ const AuthFormWrapper = ({
 
             <UIDivider />
           </>
-        )}
+        )} */}
 
         {!resetPasswordPage && !passwordChanged && (
           <Subheader
