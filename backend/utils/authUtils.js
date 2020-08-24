@@ -9,7 +9,6 @@ const getRedirectUrl = (req, token) => {
 };
 
 const generateAccessCookie = async (res, token) => {
-  await res.setHeader("Access-Control-Allow-Origin", ROOT_URL);
   await res.cookie("access_token", token, {
     maxAge: 9999999,
     httpOnly: true,
