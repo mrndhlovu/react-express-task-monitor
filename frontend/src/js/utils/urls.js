@@ -1,7 +1,7 @@
 export const baseURL =
-  process.env.NODE_ENV === "production"
-    ? "https://trello-clone.ndhlovu.com"
-    : "http://localhost:5000";
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:5000"
+    : "https://trello-clone.ndhlovu.com";
 
 export const BOARDS_EP = `${baseURL}/api/boards`;
 export const UPLOAD_EP = `${baseURL}/api/upload`;
