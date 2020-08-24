@@ -10,7 +10,7 @@ export const requestNewBoard = (board) =>
 export const requestNewBoardList = (body, id) =>
   axiosInstance.post(`${BOARDS_EP}/${id}/create-list`, body);
 
-export const requestBoardList = () => axios.get(BOARDS_EP);
+export const requestBoardList = () => axiosInstance.get(BOARDS_EP);
 
 export const requestBoardDetail = (id) =>
   axiosInstance.get(`${BOARDS_EP}/id/${id}`);
@@ -19,7 +19,7 @@ export const requestBoardDelete = (id) =>
   axiosInstance.delete(`${BOARDS_EP}/${id}/delete-board`);
 
 export const requestBoardUpdate = (id, body) => {
-  return axiosInstance.patch(`${BOARDS_EP}/${id}/update-board`, { ...body });
+  return axiosInstance.patch(`${BOARDS_EP}/${id}/update-board`, body);
 };
 
 export const requestCreateTemplate = (body) =>
@@ -38,7 +38,7 @@ export const requestCardUpdate = (body, id) =>
   axiosInstance.patch(`${CARDS_EP}/${id}/update-card`, body);
 
 export const requestAuthSignup = (body) =>
-  axiosInstance.post(`${AUTH_EP}/signup`, body, { withCredentials: true });
+  axiosInstance.post(`${AUTH_EP}/signup`, body);
 
 export const requestAuthLogin = (body, token) =>
   axiosInstance.post(`${AUTH_EP}/login?token=${token}`, body);
@@ -46,8 +46,7 @@ export const requestAuthLogin = (body, token) =>
 export const requestAuthLogout = () =>
   axiosInstance.post(`${AUTH_EP}/logoutAll`);
 
-export const userInfo = () =>
-  axiosInstance.get(`${AUTH_EP}/users/me`, { withCredentials: true });
+export const userInfo = () => axiosInstance.get(`${AUTH_EP}/users/me`);
 
 export const requestUserUpdate = (body) =>
   axiosInstance.patch(`${AUTH_EP}/update`, body);
