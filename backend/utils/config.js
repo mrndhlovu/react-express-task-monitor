@@ -27,8 +27,9 @@ const allowedFileTypes = [
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
 ];
 const TOKEN_SIGNATURE = process.env.TOKEN_SIGNATURE;
-const ROOT_URL =
-  "http://localhost:3000" || `http://moneat.herokuapp.com:${PORT}`;
+const ROOT_URL = isDevelopment
+  ? "http://localhost:3000"
+  : `https://trello-clone.ndhlovu.com:${PORT}`;
 
 const DEFAULT_TEMPLATES = [
   {
