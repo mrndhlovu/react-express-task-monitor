@@ -1,11 +1,10 @@
 const { ROOT_URL, isDevelopment } = require("./config");
 
-const getRedirectUrl = (req, token) => {
+const RedirectUrl = (req, token) => {
   const { email } = req.user;
 
-  return isDevelopment
-    ? `${ROOT_URL}/#/profile?token=${token}&email=${email}`
-    : `/#/profile?token=${token}&email=${email}`;
+  return  `${ROOT_URL}/#/profile?token=${token}&email=${email}`
+   // : `http://172.31.32.194/#/profile?token=${token}&email=${email}`;
 };
 
 const generateAccessCookie = async (res, token) => {
