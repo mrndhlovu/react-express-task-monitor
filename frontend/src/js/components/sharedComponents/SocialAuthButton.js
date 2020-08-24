@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { Icon } from "semantic-ui-react";
-import { baseURL } from "../../utils/urls";
+import { AUTH_EP } from "../../utils/urls";
 
 const StyledSegment = styled.button`
   border: 1px solid #e4e4e4;
@@ -17,8 +17,7 @@ const StyledSegment = styled.button`
 `;
 
 const SocialAuthButton = ({ buttonText, color, provider }) => {
-  const handleButtonClick = () =>
-    (window.location = `${baseURL}/auth/${provider}`);
+  const handleButtonClick = () => (window.location = `${AUTH_EP}/${provider}`);
 
   return (
     <StyledSegment onClick={handleButtonClick} type="button">

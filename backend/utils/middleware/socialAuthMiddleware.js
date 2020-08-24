@@ -34,7 +34,7 @@ const passportInit = (passport) => {
   passport.use(
     new GoogleStrategy(
       {
-        callbackURL: "/auth/google/redirect",
+        callbackURL: "/api/auth/google/redirect",
         clientID: GOOGLE_CLIENT_ID,
         clientSecret: GOOGLE_CLIENT_SECRET,
       },
@@ -45,7 +45,7 @@ const passportInit = (passport) => {
   passport.use(
     new SpotifyStrategy(
       {
-        callbackURL: "/auth/spotify/redirect",
+        callbackURL: "/api/auth/spotify/redirect",
         clientID: SPOTIFY_CLIENT_ID,
         clientSecret: SPOTIFY_SECRET_ID,
       },

@@ -5,7 +5,7 @@ const getRedirectUrl = (req, token) => {
 
   return isDevelopment
     ? `${ROOT_URL}/#/profile?token=${token}&email=${email}`
-    : `/#/profile?token=${token}&email=${email}`;
+    : `${ROOT_URL}/#/profile?token=${token}&email=${email}`;
 };
 
 const generateAccessCookie = async (res, token) => {
