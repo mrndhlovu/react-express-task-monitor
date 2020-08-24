@@ -3,9 +3,8 @@ const { ROOT_URL, isDevelopment } = require("./config");
 const getRedirectUrl = (req, token) => {
   const { email } = req.user;
 
-  return isDevelopment
-    ? `${ROOT_URL}/#/profile?token=${token}&email=${email}`
-    : `/#/profile?token=${token}&email=${email}`;
+  return `${ROOT_URL}/#/profile?token=${token}&email=${email}`;
+  // : `${ROOT_URL}/#/profile?token=${token}&email=${email}`;
 };
 
 const generateAccessCookie = async (res, token) => {
