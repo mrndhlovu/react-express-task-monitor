@@ -13,7 +13,7 @@ import UIModal from "../sharedComponents/UIModal";
 import UIWrapper from "../sharedComponents/UIWrapper";
 
 const TextPreview = lazy(() => import("./TextPreview"));
-// const PDFPreview = lazy(() => import("./PDFPreview.js"));
+const PDFPreview = lazy(() => import("./PDFPreview.js"));
 
 const DocumentModal = ({ file, setOpenDocument }) => {
   const { handleMakeCover, editAttachments } = useCardDetailContext();
@@ -39,18 +39,18 @@ const DocumentModal = ({ file, setOpenDocument }) => {
   };
 
   const renderDocument = () => {
-    // if (stringsEqual(filetype, "pdf"))
-    //   return (
-    //     <Suspense fallback={<UILoadingSpinner />}>
-    //       <PDFPreview
-    //         numPages={numPages}
-    //         scale={scale}
-    //         file={file}
-    //         setNumPages={setNumPages}
-    //         pageNumber={pageNumber}
-    //       />
-    //     </Suspense>
-    //   );
+    if (stringsEqual(filetype, "pdf"))
+      return (
+        <Suspense fallback={<UILoadingSpinner />}>
+          <PDFPreview
+            numPages={numPages}
+            scale={scale}
+            file={file}
+            setNumPages={setNumPages}
+            pageNumber={pageNumber}
+          />
+        </Suspense>
+      );
 
     if (stringsEqual(filetype, ALLOWED_IMAGE_TYPES)) {
       return (

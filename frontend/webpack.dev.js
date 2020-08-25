@@ -15,6 +15,7 @@ module.exports = merge(shared, {
     hotUpdateChunkFilename: ".hot/[id].hot-update.js",
     hotUpdateMainFilename: ".hot/.hot-update.json",
   },
+  devtool: "source-map",
   module: {
     rules: [
       {

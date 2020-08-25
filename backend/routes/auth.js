@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
     const user = await User.findByCredentials(email, password, req.query.token);
 
     const token = await user.getAuthToken();
-    await generateAccessCookie(res, token);
+    generateAccessCookie(res, token);
     res.send(user);
   } catch (error) {
     res.status(400).send(error.message);
@@ -66,6 +66,8 @@ router.post("/logout", auth, async (req, res) => {
     );
 
     await req.user.save();
+    res.clearCookie("access_token");
+
     res.send();
   } catch (error) {
     res.status(500).send();
@@ -175,6 +177,8 @@ router.post("/logoutAll", auth, async (req, res) => {
   try {
     req.user.tokens = [];
     await req.user.save();
+
+    res.clearCookie("access_token");
 
     res.send();
   } catch (error) {

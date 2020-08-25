@@ -1,4 +1,4 @@
-const { ROOT_URL, isDevelopment } = require("./config");
+const { ROOT_URL } = require("./config");
 
 const getRedirectUrl = (req, token) => {
   const { email } = req.user;
@@ -7,10 +7,12 @@ const getRedirectUrl = (req, token) => {
 };
 
 const generateAccessCookie = async (res, token) => {
-  await res.cookie("access_token", token, {
-    maxAge: 9999999,
+  const options = {
+    maxAge: 3600 * 1000,
     httpOnly: true,
-  });
+  };
+
+  res.cookie("access_token", token, options);
 };
 
 module.exports = { getRedirectUrl, generateAccessCookie };
