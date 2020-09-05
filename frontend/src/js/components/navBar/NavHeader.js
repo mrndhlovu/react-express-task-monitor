@@ -22,7 +22,7 @@ const NavContainer = styled.nav`
   justify-content: space-between;
 `;
 
-const NavHeader = ({ history }) => {
+const NavHeader = ({ history, authenticated }) => {
   const { activeBoard } = useMainContext();
 
   const BG_COLOR =
@@ -32,7 +32,7 @@ const NavHeader = ({ history }) => {
       ? "transparent"
       : activeBoard.styleProperties?.color;
 
-  return (
+  return authenticated ? (
     <NavContainer className="nav-container" bgColor={BG_COLOR}>
       <NavWrapper>
         <LeftNavButtons history={history} />
@@ -40,11 +40,16 @@ const NavHeader = ({ history }) => {
         <RightNavButtons history={history} />
       </NavWrapper>
     </NavContainer>
-  );
+  ) : null;
+};
+
+NavHeader.defaultProps = {
+  authenticated: false,
 };
 
 NavHeader.propTypes = {
   history: PropTypes.shape({ push: PropTypes.func.isRequired }).isRequired,
+  authenticated: PropTypes.bool,
 };
 
 export default withRouter(memo(NavHeader));

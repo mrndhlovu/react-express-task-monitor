@@ -15,7 +15,6 @@ import {
 import { emptyFunction } from "../utils/appUtils";
 import { useDimensions, useAuth } from "../utils/hookUtils";
 import NavHeader from "../components/navBar/NavHeader";
-import SearchPage from "../components/search/SearchPage";
 
 const Container = styled.div`
   padding: 0;
@@ -136,8 +135,7 @@ const MainContainer = ({ children, history }) => {
   return (
     <MainContext.Provider value={context}>
       <Container data-test-id="app-container" bg={activeBoard?.styleProperties}>
-        {auth.authenticated && boards && <NavHeader />}
-        {search && <SearchPage />}
+        <NavHeader authenticated={boards && auth.authenticated} />
         <Sidebar.Pushable>{children}</Sidebar.Pushable>
       </Container>
     </MainContext.Provider>
