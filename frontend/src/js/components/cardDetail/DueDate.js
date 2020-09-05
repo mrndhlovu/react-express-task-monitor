@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { Checkbox, Label, Button } from "semantic-ui-react";
 
 import { getFormattedDate } from "../../utils/appUtils";
-import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import CardDetailHeader from "../shared/CardDetailHeader";
+import CardDetailSegment from "../shared/CardDetailSegment";
 import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
 import { Clock } from "react-feather";
 

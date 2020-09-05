@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { CreditCard } from "react-feather";
 
 import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
-import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import DropdownButton from "../sharedComponents/DropdownButton";
+import CardDetailHeader from "../shared/CardDetailHeader";
+import DropdownButton from "../shared/DropdownButton";
 import MoveCardDialog from "../boardDetail/MoveCardDialog";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UIWrapper from "../shared/UIWrapper";
 
 const Container = styled.div`
   position: relative;

@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { Tag } from "react-feather";
 
 import { useBoardContext, useCardDetailContext } from "../../utils/hookUtils";
-import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import CardLabelColors from "../sharedComponents/CardLabelColors";
-import DropdownButton from "../sharedComponents/DropdownButton";
+import CardDetailHeader from "../shared/CardDetailHeader";
+import CardDetailSegment from "../shared/CardDetailSegment";
+import CardLabelColors from "../shared/CardLabelColors";
+import DropdownButton from "../shared/DropdownButton";
 
 const Container = styled.div`
   display: flex;

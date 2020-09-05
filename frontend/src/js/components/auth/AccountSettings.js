@@ -6,11 +6,11 @@ import { Button, Header } from "semantic-ui-react";
 
 import { stringsEqual, resetForm } from "../../utils/appUtils";
 import { useAuth, useMainContext } from "../../utils/hookUtils";
-import UIContainer from "../sharedComponents/UIContainer";
-import UIDivider from "../sharedComponents/UIDivider";
-import UIFormInput from "../sharedComponents/UIFormInput";
-import UISmall from "../sharedComponents/UISmall";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UIContainer from "../shared/UIContainer";
+import UIDivider from "../shared/UIDivider";
+import UIFormInput from "../shared/UIFormInput";
+import UISmall from "../shared/UISmall";
+import UIWrapper from "../shared/UIWrapper";
 
 const AccountSettings = () => {
   const {

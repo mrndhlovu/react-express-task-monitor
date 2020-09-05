@@ -3,8 +3,8 @@ import styled from "styled-components";
 import _debounce from "debounce";
 
 import { Icon, TextArea, Form, Button } from "semantic-ui-react";
-import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import CardDetailHeader from "../shared/CardDetailHeader";
+import CardDetailSegment from "../shared/CardDetailSegment";
 import { useCardDetailContext } from "../../utils/hookUtils";
 import { AlignLeft } from "react-feather";
 

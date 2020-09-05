@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
-import UIFormInput from "../sharedComponents/UIFormInput";
+import AuthFormWrapper from "../shared/AuthFormWrapper";
+import UIFormInput from "../shared/UIFormInput";
 
 const ResetPassword = ({
   onHandleChange,

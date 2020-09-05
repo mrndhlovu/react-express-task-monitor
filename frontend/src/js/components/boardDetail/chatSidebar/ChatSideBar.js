@@ -22,9 +22,9 @@ import {
 import { baseURL } from "../../../utils/urls";
 import { useAuth, useBoardContext } from "../../../utils/hookUtils";
 
-import SideBarWrapper from "../../sharedComponents/SideBarWrapper";
-import UIMessage from "../../sharedComponents/UIMessage";
-import UILoadingSpinner from "../../sharedComponents/UILoadingSpinner";
+import SideBarWrapper from "../../shared/SideBarWrapper";
+import UIMessage from "../../shared/UIMessage";
+import UILoadingSpinner from "../../shared/UILoadingSpinner";
 
 const RoomSelector = lazy(() => import("./RoomSelector"));
 const Thread = lazy(() => import("./Thread"));

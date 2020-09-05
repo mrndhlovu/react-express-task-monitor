@@ -6,10 +6,10 @@ import { Button } from "semantic-ui-react";
 import { BG_COLORS } from "../../constants/constants";
 import { stringsEqual } from "../../utils/appUtils";
 import AddCoverImage from "../cardDetail/AddCoverImage";
-import SideBarWrapper from "../sharedComponents/SideBarWrapper";
-import UIContainer from "../sharedComponents/UIContainer";
-import UIDivider from "../sharedComponents/UIDivider";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import SideBarWrapper from "../shared/SideBarWrapper";
+import UIContainer from "../shared/UIContainer";
+import UIDivider from "../shared/UIDivider";
+import UIWrapper from "../shared/UIWrapper";
 
 const colorStyle = {
   borderRadius: "8px",

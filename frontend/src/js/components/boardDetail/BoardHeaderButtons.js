@@ -11,11 +11,11 @@ import {
   useMainContext,
   useAuth,
 } from "../../utils/hookUtils";
-import NavButton from "../sharedComponents/NavButton";
-import UIContainer from "../sharedComponents/UIContainer";
-import UIFormInput from "../sharedComponents/UIFormInput";
-import UIMessage from "../sharedComponents/UIMessage";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import NavButton from "../shared/NavButton";
+import UIContainer from "../shared/UIContainer";
+import UIFormInput from "../shared/UIFormInput";
+import UIMessage from "../shared/UIMessage";
+import UIWrapper from "../shared/UIWrapper";
 import { Check } from "react-feather";
 
 const StyledDiv = styled.div`

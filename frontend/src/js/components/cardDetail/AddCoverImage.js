@@ -8,9 +8,9 @@ import { requestImages } from "../../apis/apiRequests";
 import { SUGGESTED_COVERS, BUTTON_COLORS } from "../../constants/constants";
 import { useMainContext } from "../../utils/hookUtils";
 import SearchImageList from "./SearchImageList";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UIWrapper from "../shared/UIWrapper";
 import { X, Search } from "react-feather";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import UILoadingSpinner from "../shared/UILoadingSpinner";
 
 const displayStyles = {
   display: "flex",

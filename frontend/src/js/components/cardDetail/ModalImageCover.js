@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import AddCover from "./AddCover";
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 import { useCardDetailContext } from "../../utils/hookUtils";
 
 const ButtonWrapper = styled.div`

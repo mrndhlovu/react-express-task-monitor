@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { Header, Icon } from "semantic-ui-react";
 
-import CreateNewBoard from "../sharedComponents/CreateNewBoard";
+import CreateNewBoard from "../shared/CreateNewBoard";
 import Summary from "./Summary";
 import { useAuth, useMainContext } from "../../utils/hookUtils";
 
@@ -23,9 +23,8 @@ const Span = styled(Header)`
   font-weight: 700 !important;
   padding: 0 5px !important;
   &:after {
-    content: '${(props) => props.text}';
+    content: "${(props) => props.text}";
   }
-
 `;
 
 const BoardCategory = ({

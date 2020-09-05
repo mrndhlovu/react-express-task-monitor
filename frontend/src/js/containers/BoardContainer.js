@@ -23,7 +23,7 @@ import {
 } from "../utils/appUtils";
 import { useAuth, useMainContext } from "../utils/hookUtils";
 import Board from "../components/boardDetail/Board";
-import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import UILoadingSpinner from "../components/shared/UILoadingSpinner";
 
 const BoardContainer = ({ match, history, templateBoard }) => {
   const {

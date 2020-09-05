@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useAuth } from "../../utils/hookUtils";
 import TabPaneHeader from "./TabPaneHeader";
 import TabProfileContent from "./TabProfileContent";
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 
 const displayStyle = {
   height: "97vh",

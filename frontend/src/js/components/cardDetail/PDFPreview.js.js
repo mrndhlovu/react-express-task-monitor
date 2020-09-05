@@ -2,12 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 // import { Document, Page } from "react-pdf/dist/entry.webpack";
 
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UIWrapper from "../shared/UIWrapper";
 
-const options = {
-  cMapUrl: "cmaps/",
-  cMapPacked: true,
-};
+// const options = {
+//   cMapUrl: "cmaps/",
+//   cMapPacked: true,
+// };
 
 const PDFPreview = ({ file, setNumPages, pageNumber, scale }) => {
   return (

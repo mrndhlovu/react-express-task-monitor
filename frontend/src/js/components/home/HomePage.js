@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import BoardsSummary from "./BoardsSummary";
 import HomeSideMenu from "./HomeSideMenu";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UIWrapper from "../shared/UIWrapper";
 
 const StyledContainer = styled.div`
   font-family: roboto, sans-serif;

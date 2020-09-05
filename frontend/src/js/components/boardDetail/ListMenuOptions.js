@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { LIST_MENU_OPTIONS } from "../../constants/constants";
-import UIDivider from "../sharedComponents/UIDivider";
+import UIDivider from "../shared/UIDivider";
 
 const DropdownItem = styled.li`
   font-size: 15px !important;

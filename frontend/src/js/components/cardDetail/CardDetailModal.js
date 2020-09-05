@@ -9,9 +9,9 @@ import {
 
 import CardLabels from "./CardLabels";
 import CheckLists from "./CheckLists";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UIModal from "../sharedComponents/UIModal";
+import UILoadingSpinner from "../shared/UILoadingSpinner";
+import UIWrapper from "../shared/UIWrapper";
+import UIModal from "../shared/UIModal";
 
 const Attachments = lazy(() => import("./Attachments"));
 const CardModalActivities = lazy(() => import("./CardModalActivities"));

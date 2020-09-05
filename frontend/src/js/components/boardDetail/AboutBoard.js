@@ -6,11 +6,11 @@ import { Icon, Button } from "semantic-ui-react";
 
 import { getUserInitials } from "../../utils/appUtils";
 import { useAuth, useBoardContext } from "../../utils/hookUtils";
-import SideBarWrapper from "../sharedComponents/SideBarWrapper";
-import UIDivider from "../sharedComponents/UIDivider";
-import UISmall from "../sharedComponents/UISmall";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UserAvatar from "../sharedComponents/UserAvatar";
+import SideBarWrapper from "../shared/SideBarWrapper";
+import UIDivider from "../shared/UIDivider";
+import UISmall from "../shared/UISmall";
+import UIWrapper from "../shared/UIWrapper";
+import UserAvatar from "../shared/UserAvatar";
 
 const AboutBoard = ({ setShowAboutCard, showAboutCard, history }) => {
   const { user } = useAuth();

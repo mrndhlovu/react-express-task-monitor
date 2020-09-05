@@ -6,11 +6,11 @@ import { Button } from "semantic-ui-react";
 
 import { useBoardContext } from "../../utils/hookUtils";
 import CopyListDialog from "./CopyListDialog";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import EditableHeader from "../sharedComponents/EditableHeader";
+import DropdownButton from "../shared/DropdownButton";
+import EditableHeader from "../shared/EditableHeader";
 import ListMenuOptions from "./ListMenuOptions";
 import MoveListDialog from "./MoveListDialog";
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 
 const HeaderWrapper = styled.div`
   display: flex;

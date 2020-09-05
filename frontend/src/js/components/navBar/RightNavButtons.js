@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 import { Accordion, Icon } from "semantic-ui-react";
 
 import { useAuth, useMainContext } from "../../utils/hookUtils";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import NavUserAvatar from "../sharedComponents/NavUserAvatar";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import DropdownButton from "../shared/DropdownButton";
+import NavUserAvatar from "../shared/NavUserAvatar";
+import UIWrapper from "../shared/UIWrapper";
 
 const StyledDiv = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Route, Switch } from "react-router-dom";
 
-import UILoadingSpinner from "./components/sharedComponents/UILoadingSpinner";
+import UILoadingSpinner from "./components/shared/UILoadingSpinner";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ErrorPage from "./components/ErrorPage";
 

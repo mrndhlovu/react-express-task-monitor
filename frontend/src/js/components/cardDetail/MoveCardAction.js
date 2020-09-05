@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
-import DropdownButton from "../sharedComponents/DropdownButton";
+import DropdownButton from "../shared/DropdownButton";
 import MoveCardDialog from "../boardDetail/MoveCardDialog";
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 import { useBoardContext, useCardDetailContext } from "../../utils/hookUtils";
 
 const MoveCardAction = () => {

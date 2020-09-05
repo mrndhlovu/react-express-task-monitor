@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { useBoardContext } from "../../utils/hookUtils";
-import CreateInput from "../sharedComponents/CreateInput";
+import CreateInput from "../shared/CreateInput";
 
 const CopyListDialog = ({ close, listId, title }) => {
   const { getSourceList, createListHandler } = useBoardContext();

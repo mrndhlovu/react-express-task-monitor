@@ -5,12 +5,12 @@ import PropTypes from "prop-types";
 import { Button } from "semantic-ui-react";
 
 import { useBoardContext, useMainContext } from "../../utils/hookUtils";
-import BoardMembersList from "../sharedComponents/BoardMembersList";
-import CreateInput from "../sharedComponents/CreateInput";
-import EditCardButton from "../sharedComponents/EditCardButton";
+import BoardMembersList from "../shared/BoardMembersList";
+import CreateInput from "../shared/CreateInput";
+import EditCardButton from "../shared/EditCardButton";
 import MoveCardDialog from "./MoveCardDialog";
-import PickDueDate from "../sharedComponents/PickDueDate";
-import UIModal from "../sharedComponents/UIModal";
+import PickDueDate from "../shared/PickDueDate";
+import UIModal from "../shared/UIModal";
 
 const Wrapper = styled.div`
   display: flex;

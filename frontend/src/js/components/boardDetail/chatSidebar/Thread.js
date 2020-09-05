@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 import { Comment, Icon } from "semantic-ui-react";
 import { getFormattedDate } from "../../../utils/appUtils";
-import UIDivider from "../../sharedComponents/UIDivider";
+import UIDivider from "../../shared/UIDivider";
 
 const Message = styled.div`
   background-color: ${(props) =>

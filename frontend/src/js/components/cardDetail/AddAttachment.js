@@ -7,11 +7,11 @@ import { Input, Button } from "semantic-ui-react";
 
 import { resetForm, findArrayItem } from "../../utils/appUtils";
 import { requestUpload } from "../../apis/apiRequests";
-import AttachmentOption from "../sharedComponents/AttachmentOption";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import UIDivider from "../sharedComponents/UIDivider";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UIContainer from "../sharedComponents/UIContainer";
+import AttachmentOption from "../shared/AttachmentOption";
+import DropdownButton from "../shared/DropdownButton";
+import UIDivider from "../shared/UIDivider";
+import UIWrapper from "../shared/UIWrapper";
+import UIContainer from "../shared/UIContainer";
 import {
   ALLOWED_IMAGE_TYPES,
   ALLOWED_DOCUMENT_TYPES,

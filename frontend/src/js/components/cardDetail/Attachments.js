@@ -5,10 +5,10 @@ import { Paperclip } from "react-feather";
 import { stringsEqual } from "../../utils/appUtils";
 import { useCardDetailContext } from "../../utils/hookUtils";
 import AddAttachment from "./AddAttachment";
-import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import CardDetailHeader from "../shared/CardDetailHeader";
+import CardDetailSegment from "../shared/CardDetailSegment";
 import SingleAttachment from "./SingleAttachment";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UIWrapper from "../shared/UIWrapper";
 
 const Attachments = () => {
   const { card, hasAttachments, isLoading } = useCardDetailContext();

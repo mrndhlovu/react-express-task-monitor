@@ -2,7 +2,7 @@ import React from "react";
 
 import { useMainContext, useBoardContext } from "../../utils/hookUtils";
 import BoardHeaderButtons from "./BoardHeaderButtons";
-import EditableHeader from "../sharedComponents/EditableHeader";
+import EditableHeader from "../shared/EditableHeader";
 
 const BoardHeader = () => {
   const { board, boardUpdateHandler } = useBoardContext();

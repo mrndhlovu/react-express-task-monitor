@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 import { BoardListsContext } from "../../utils/contextUtils";
 
 import { useBoardContext } from "../../utils/hookUtils";
-import CreateItemForm from "../sharedComponents/CreateItemForm";
+import CreateItemForm from "../shared/CreateItemForm";
 import Lists from "./Lists";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import UILoadingSpinner from "../shared/UILoadingSpinner";
 
 const CardDetailContainer = lazy(() =>
   import("../../containers/CardDetailContainer")

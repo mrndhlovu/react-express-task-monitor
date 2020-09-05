@@ -1,11 +1,11 @@
 import React, { useState, lazy, Suspense } from "react";
 import styled from "styled-components";
 
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 import { useAuth, useMainContext } from "../../utils/hookUtils";
 
 const BoardCategory = lazy(() => import("./BoardCategory"));
-const NewBoardModal = lazy(() => import("../sharedComponents/NewBoardModal"));
+const NewBoardModal = lazy(() => import("../shared/NewBoardModal"));
 
 const StyledContainer = styled.div`
   justify-self: start;

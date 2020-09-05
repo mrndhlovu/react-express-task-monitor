@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import { Checkbox } from "semantic-ui-react";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import EditableHeader from "../sharedComponents/EditableHeader";
-import UIButton from "../sharedComponents/UIButton";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import DropdownButton from "../shared/DropdownButton";
+import EditableHeader from "../shared/EditableHeader";
+import UIButton from "../shared/UIButton";
+import UIWrapper from "../shared/UIWrapper";
 
 const TextContainer = styled.div`
   display: flex !important;

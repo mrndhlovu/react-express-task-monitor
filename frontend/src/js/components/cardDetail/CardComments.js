@@ -3,8 +3,8 @@ import React, { lazy, Suspense } from "react";
 import { resetForm } from "../../utils/appUtils";
 import { requestCreateComment } from "../../apis/apiRequests";
 import { useCardDetailContext, useMainContext } from "../../utils/hookUtils";
-import CardCommentInput from "../sharedComponents/CardCommentInput";
-import UIContainer from "../sharedComponents/UIContainer";
+import CardCommentInput from "../shared/CardCommentInput";
+import UIContainer from "../shared/UIContainer";
 
 const Comment = lazy(() => import("./Comment"));
 

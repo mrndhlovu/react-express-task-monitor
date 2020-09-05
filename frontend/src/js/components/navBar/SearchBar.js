@@ -3,7 +3,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 
 import { Input } from "semantic-ui-react";
-import NavButton from "../sharedComponents/NavButton";
+import NavButton from "../shared/NavButton";
 import { MainContext } from "../../utils/contextUtils";
 
 const StyledSearchInput = styled(Input)`

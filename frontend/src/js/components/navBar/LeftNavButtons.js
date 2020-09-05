@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 import { useMainContext } from "../../utils/hookUtils";
-import NavButton from "../sharedComponents/NavButton";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import NavBoardsCategory from "../sharedComponents/NavBoardsCategory";
+import NavButton from "../shared/NavButton";
+import DropdownButton from "../shared/DropdownButton";
+import UIWrapper from "../shared/UIWrapper";
+import NavBoardsCategory from "../shared/NavBoardsCategory";
 
 const StyledDiv = styled.div`
   display: flex;

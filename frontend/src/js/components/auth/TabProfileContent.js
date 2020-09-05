@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { Tab } from "semantic-ui-react";
 
 import PersonalInfo from "./PersonalInfo";
-import TabContainer from "../sharedComponents/TabContainer";
-import UIContainer from "../sharedComponents/UIContainer";
+import TabContainer from "../shared/TabContainer";
+import UIContainer from "../shared/UIContainer";
 import AccountSettings from "./AccountSettings";
 import { useMainContext } from "../../utils/hookUtils";
 

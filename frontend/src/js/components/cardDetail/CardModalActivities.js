@@ -1,12 +1,10 @@
 import React, { lazy, Suspense } from "react";
 
 import { useCardDetailContext } from "../../utils/hookUtils";
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 
 const CardComments = lazy(() => import("./CardComments"));
-const CardDetailSegment = lazy(() =>
-  import("../sharedComponents/CardDetailSegment")
-);
+const CardDetailSegment = lazy(() => import("../shared/CardDetailSegment"));
 const ActivitiesHeader = lazy(() => import("./ActivitiesHeader"));
 const Activities = lazy(() => import("./Activities"));
 

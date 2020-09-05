@@ -10,9 +10,9 @@ import {
   useBoardListContext,
   useMainContext,
 } from "../../utils/hookUtils";
-import DropdownList from "../sharedComponents/DropdownList";
-import UIContainer from "../sharedComponents/UIContainer";
-import UIDivider from "../sharedComponents/UIDivider";
+import DropdownList from "../shared/DropdownList";
+import UIContainer from "../shared/UIContainer";
+import UIDivider from "../shared/UIDivider";
 
 const style = {
   display: "flex",

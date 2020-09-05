@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { Header, Button } from "semantic-ui-react";
 
 import { useMainContext, useAuth } from "../../utils/hookUtils";
-import UIDivider from "../sharedComponents/UIDivider";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UIFormInput from "../sharedComponents/UIFormInput";
+import UIDivider from "../shared/UIDivider";
+import UIWrapper from "../shared/UIWrapper";
+import UIFormInput from "../shared/UIFormInput";
 
 const PersonalInfo = () => {
   const { alertUser, updateUserRequestHandler } = useMainContext();

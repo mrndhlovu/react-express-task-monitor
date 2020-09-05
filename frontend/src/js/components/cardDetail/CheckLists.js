@@ -12,12 +12,12 @@ import {
   useBoardContext,
   useMainContext,
 } from "../../utils/hookUtils";
-import CardDetailHeader from "../sharedComponents/CardDetailHeader";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
+import CardDetailHeader from "../shared/CardDetailHeader";
+import CardDetailSegment from "../shared/CardDetailSegment";
 import ChecklistItem from "./ChecklistItem";
-import CreateInput from "../sharedComponents/CreateInput";
+import CreateInput from "../shared/CreateInput";
 import ProgressBar from "./ProgressBar";
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 import { CheckSquare } from "react-feather";
 
 const CheckLists = () => {

@@ -2,9 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import UserAvatar from "../sharedComponents/UserAvatar";
-import UIContainer from "../sharedComponents/UIContainer";
+import CardDetailSegment from "../shared/CardDetailSegment";
+import UserAvatar from "../shared/UserAvatar";
+import UIContainer from "../shared/UIContainer";
 import { useBoardContext, useAuth } from "../../utils/hookUtils";
 
 const display = {

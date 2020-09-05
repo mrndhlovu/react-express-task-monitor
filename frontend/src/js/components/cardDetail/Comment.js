@@ -5,8 +5,8 @@ import PropTypes from "prop-types";
 import { getUserInitials, getFormattedDate } from "../../utils/appUtils";
 
 import { useCardDetailContext } from "../../utils/hookUtils";
-import CreateInput from "../sharedComponents/CreateInput";
-import UserAvatar from "../sharedComponents/UserAvatar";
+import CreateInput from "../shared/CreateInput";
+import UserAvatar from "../shared/UserAvatar";
 
 const EditCommentIcons = lazy(() => import("./EditCommentIcons"));
 

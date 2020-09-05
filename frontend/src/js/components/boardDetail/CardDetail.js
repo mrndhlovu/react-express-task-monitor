@@ -9,8 +9,8 @@ import {
   findArrayItem,
 } from "../../utils/appUtils";
 import { useBoardContext, useBoardListContext } from "../../utils/hookUtils";
-import Assignees from "../sharedComponents/Assignees";
-import CardBadge from "../sharedComponents/CardBadge";
+import Assignees from "../shared/Assignees";
+import CardBadge from "../shared/CardBadge";
 import CardCover from "../cardDetail/CardCover";
 import EditCardModal from "./EditCardModal";
 import EditCardPenIcon from "./EditCardPenIcon";
@@ -30,7 +30,7 @@ const CardTitle = styled.div`
   letter-spacing: 0.8px;
   padding: 5px 10px;
   &:after {
-    content: '${({ title }) => title}';
+    content: "${({ title }) => title}";
   }
 `;
 

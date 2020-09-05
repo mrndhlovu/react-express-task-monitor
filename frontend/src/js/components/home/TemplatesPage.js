@@ -5,8 +5,8 @@ import { Header, Button } from "semantic-ui-react";
 
 import { useMainContext } from "../../utils/hookUtils";
 import BoardContainer from "../../containers/BoardContainer";
-import UISmall from "../sharedComponents/UISmall";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UISmall from "../shared/UISmall";
+import UIWrapper from "../shared/UIWrapper";
 
 const TemplatesPage = ({ templates, handleUseTemplate }) => {
   const [template, setTemplate] = useState(null);

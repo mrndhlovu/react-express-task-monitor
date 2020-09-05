@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { HomepageContext } from "../utils/contextUtils";
 import { useAuth, useMainContext } from "../utils/hookUtils";
 import HomePage from "../components/home/HomePage";
-import UILoadingSpinner from "../components/sharedComponents/UILoadingSpinner";
+import UILoadingSpinner from "../components/shared/UILoadingSpinner";
 
 const HomePageContainer = ({ history }) => {
   const { updateUserRequestHandler, boards, setActiveBoard } = useMainContext();

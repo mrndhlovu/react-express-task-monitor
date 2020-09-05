@@ -2,9 +2,9 @@ import React, { useState, useEffect, lazy, Suspense } from "react";
 
 import { requestCardUpdate } from "../../apis/apiRequests";
 import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
-import DropdownButton from "../sharedComponents/DropdownButton";
+import DropdownButton from "../shared/DropdownButton";
 
-const PickDueDate = lazy(() => import("../sharedComponents/PickDueDate"));
+const PickDueDate = lazy(() => import("../shared/PickDueDate"));
 
 const AddCardDueDate = () => {
   const { card, saveCardChanges, id, sourceId } = useCardDetailContext();

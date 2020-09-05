@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import AuthFormWrapper from "../sharedComponents/AuthFormWrapper";
-import UIFormInput from "../sharedComponents/UIFormInput";
+import AuthFormWrapper from "../shared/AuthFormWrapper";
+import UIFormInput from "../shared/UIFormInput";
 
 const SignupPage = ({ onHandleChange, handleSignupClick, ...otherProps }) => {
   const [type, setType] = useState("password");

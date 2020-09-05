@@ -5,10 +5,10 @@ import { Button } from "semantic-ui-react";
 
 import { useCardDetailContext } from "../../utils/hookUtils";
 import AddCoverImage from "./AddCoverImage";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import UIContainer from "../sharedComponents/UIContainer";
-import UIDivider from "../sharedComponents/UIDivider";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import DropdownButton from "../shared/DropdownButton";
+import UIContainer from "../shared/UIContainer";
+import UIDivider from "../shared/UIDivider";
+import UIWrapper from "../shared/UIWrapper";
 
 const AddCover = ({ color, buttonSize, upward = true }) => {
   const {

@@ -6,7 +6,7 @@ import { requestCreateTemplate } from "../../apis/apiRequests";
 import { useMainContext, useBoardContext } from "../../utils/hookUtils";
 import AboutBoard from "./AboutBoard";
 import BoardHeader from "./BoardHeader";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import UILoadingSpinner from "../shared/UILoadingSpinner";
 
 const ChangeBackGround = lazy(() => import("./ChangeBackGround"));
 const BoardLists = lazy(() => import("./BoardLists"));

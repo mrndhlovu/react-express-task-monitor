@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import UIFormInput from "../sharedComponents/UIFormInput";
+import UIFormInput from "../shared/UIFormInput";
 
 const Span = styled.span`
   font-size: ${({ fontSize }) => fontSize};

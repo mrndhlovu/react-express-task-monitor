@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { Dropdown } from "semantic-ui-react";
 import { getFormattedDate } from "../../../utils/appUtils";
-import UIDivider from "../../sharedComponents/UIDivider";
+import UIDivider from "../../shared/UIDivider";
 
 const StyledDiv = styled.div`
   margin-top: 20px;

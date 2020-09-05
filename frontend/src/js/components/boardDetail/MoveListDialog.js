@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { useBoardContext } from "../../utils/hookUtils";
-import CreateInput from "../sharedComponents/CreateInput";
+import CreateInput from "../shared/CreateInput";
 
 const MoveListDialog = ({ close, listId, listPosition }) => {
   const { getSourceList, boardUpdateHandler, board } = useBoardContext();

@@ -3,9 +3,9 @@ import React from "react";
 import { findArrayItem } from "../../utils/appUtils";
 import { requestCardUpdate } from "../../apis/apiRequests";
 import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
-import BoardMembersList from "../sharedComponents/BoardMembersList";
-import CardDetailSegment from "../sharedComponents/CardDetailSegment";
-import DropdownButton from "../sharedComponents/DropdownButton";
+import BoardMembersList from "../shared/BoardMembersList";
+import CardDetailSegment from "../shared/CardDetailSegment";
+import DropdownButton from "../shared/DropdownButton";
 
 const AddCardMembers = () => {
   const { card, saveCardChanges, sourceId, id } = useCardDetailContext();

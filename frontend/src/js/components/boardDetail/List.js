@@ -9,7 +9,7 @@ import { Segment } from "semantic-ui-react";
 import { DRAG_TYPES } from "../../constants/constants";
 import { useBoardListContext, useMainContext } from "../../utils/hookUtils";
 import Cards from "./Cards";
-import CreateCard from "../sharedComponents/CreateCard";
+import CreateCard from "../shared/CreateCard";
 import ListMenu from "./ListMenu";
 
 const ListSegment = styled(Segment)`

@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import HomeSidebarButton from "../sharedComponents/HomeSidebarButton";
-import UIContainer from "../sharedComponents/UIContainer";
+import HomeSidebarButton from "../shared/HomeSidebarButton";
+import UIContainer from "../shared/UIContainer";
 
 const HomeSideMenu = ({ history, className, callback }) => {
   return (

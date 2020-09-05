@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 
 import { useAuth } from "../../utils/hookUtils";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import UILoadingSpinner from "../shared/UILoadingSpinner";
 
 const ProtectedRoute = ({ component: ComposedComponent, ...rest }) => {
   const { auth, isLoading } = useAuth();

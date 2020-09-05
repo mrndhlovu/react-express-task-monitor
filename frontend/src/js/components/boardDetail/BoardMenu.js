@@ -6,10 +6,10 @@ import { Menu, Button } from "semantic-ui-react";
 import Activities from "../cardDetail/Activities";
 import ActivitiesHeader from "../cardDetail/ActivitiesHeader";
 import BoardHeaderButtons from "./BoardHeaderButtons";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import SideBarWrapper from "../sharedComponents/SideBarWrapper";
-import UIDivider from "../sharedComponents/UIDivider";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import DropdownButton from "../shared/DropdownButton";
+import SideBarWrapper from "../shared/SideBarWrapper";
+import UIDivider from "../shared/UIDivider";
+import UIWrapper from "../shared/UIWrapper";
 import {
   useAuth,
   useMainContext,

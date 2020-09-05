@@ -6,10 +6,10 @@ import { Header, Loader } from "semantic-ui-react";
 
 import { getUserInitials, stringsEqual } from "../../utils/appUtils";
 import { useAuth, useMainContext } from "../../utils/hookUtils";
-import UIContainer from "../sharedComponents/UIContainer";
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UserAvatar from "../sharedComponents/UserAvatar";
-import UIButton from "../sharedComponents/UIButton";
+import UIContainer from "../shared/UIContainer";
+import UIWrapper from "../shared/UIWrapper";
+import UserAvatar from "../shared/UserAvatar";
+import UIButton from "../shared/UIButton";
 
 const Small = styled.span`
   font-size: 14px;

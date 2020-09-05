@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Button } from "semantic-ui-react";
 import { X, Plus } from "react-feather";
 
-import UIFormInput from "../sharedComponents/UIFormInput";
+import UIFormInput from "../shared/UIFormInput";
 
 const StyledWrapper = styled.div`
   min-width: 272px;

@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import { Image, Dropdown } from "semantic-ui-react";
 
-import UIWrapper from "../sharedComponents/UIWrapper";
-import UISmall from "../sharedComponents/UISmall";
+import UIWrapper from "../shared/UIWrapper";
+import UISmall from "../shared/UISmall";
 
 const SearchImageList = ({ images, handleMakeCover }) => {
   return (

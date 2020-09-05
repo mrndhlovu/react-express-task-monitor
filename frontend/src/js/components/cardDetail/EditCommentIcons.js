@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { Picker, Emoji } from "emoji-mart";
 
-const DropdownButton = lazy(() => import("../sharedComponents/DropdownButton"));
+const DropdownButton = lazy(() => import("../shared/DropdownButton"));
 
 const Container = styled.div`
   padding-left: 10px;
@@ -22,14 +22,14 @@ const CommentLink = styled.a`
   transition-property: color;
   cursor: pointer;
   &:hover {
-  color: grey 
+    color: grey;
   }
 
-  &:after{
-  content:'${(props) => props.content}';
-  padding: 0 5px;
-  text-decoration: underline;
-  font-size: 10px
+  &:after {
+    content: "${(props) => props.content}";
+    padding: 0 5px;
+    text-decoration: underline;
+    font-size: 10px;
   }
 `;
 

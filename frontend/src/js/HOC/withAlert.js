@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 import { AlertContext } from "../utils/contextUtils";
 import { emptyFunction } from "../utils/appUtils";
-import UIMessage from "../components/sharedComponents/UIMessage";
+import UIMessage from "../components/shared/UIMessage";
 
-import UIPortal from "../components/sharedComponents/UIPortal";
+import UIPortal from "../components/shared/UIPortal";
 
 const INITIAL_STATE = {
   reason: null,

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { X } from "react-feather";
 
-import UIContainer from "../sharedComponents/UIContainer";
+import UIContainer from "../shared/UIContainer";
 
 const Header = styled.span`
   font-weight: 700;

@@ -1,8 +1,8 @@
 import React from "react";
 
 import { requestCardUpdate } from "../../apis/apiRequests";
-import CardLabelColors from "../sharedComponents/CardLabelColors";
-import DropdownButton from "../sharedComponents/DropdownButton";
+import CardLabelColors from "../shared/CardLabelColors";
+import DropdownButton from "../shared/DropdownButton";
 import { useCardDetailContext, useBoardContext } from "../../utils/hookUtils";
 
 const AddCardLabel = () => {

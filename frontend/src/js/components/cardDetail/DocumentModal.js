@@ -8,9 +8,9 @@ import { useCardDetailContext } from "../../utils/hookUtils";
 import DocumentPreviewButtons from "./DocumentPreviewButtons";
 import ImagePreviewButtons from "./ImagePreviewButtons";
 import TextFilePreviewButtons from "./TextFilePreviewButtons";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
-import UIModal from "../sharedComponents/UIModal";
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UILoadingSpinner from "../shared/UILoadingSpinner";
+import UIModal from "../shared/UIModal";
+import UIWrapper from "../shared/UIWrapper";
 
 const TextPreview = lazy(() => import("./TextPreview"));
 const PDFPreview = lazy(() => import("./PDFPreview.js"));

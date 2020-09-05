@@ -2,7 +2,7 @@ import React from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import UIButton from "./sharedComponents/UIButton";
+import UIButton from "./shared/UIButton";
 
 const ErrorPage = ({ history }) => {
   return (

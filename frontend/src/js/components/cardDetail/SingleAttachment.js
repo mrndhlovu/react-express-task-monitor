@@ -8,8 +8,8 @@ import {
   stringsEqual,
   emptyFunction,
 } from "../../utils/appUtils";
-import EditableHeader from "../sharedComponents/EditableHeader";
-import UILoadingSpinner from "../sharedComponents/UILoadingSpinner";
+import EditableHeader from "../shared/EditableHeader";
+import UILoadingSpinner from "../shared/UILoadingSpinner";
 import { ALLOWED_IMAGE_TYPES } from "../../constants/constants";
 import { useCardDetailContext } from "../../utils/hookUtils";
 
@@ -37,15 +37,15 @@ const AttachmentLink = styled.a`
   color: grey;
   transition-duration: 400ms;
   transition-property: color;
-  
+
   &:hover {
-  color: #000;
+    color: #000;
   }
 
-  &:after{
-  content:'${(props) => props.content}';
-  padding: 0 5px;
-  font-size: 11px
+  &:after {
+    content: "${(props) => props.content}";
+    padding: 0 5px;
+    font-size: 11px;
   }
 `;
 

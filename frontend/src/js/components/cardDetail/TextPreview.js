@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import UIWrapper from "../sharedComponents/UIWrapper";
+import UIWrapper from "../shared/UIWrapper";
 
 const TextPreview = ({ file }) => {
   const renderText = () => {

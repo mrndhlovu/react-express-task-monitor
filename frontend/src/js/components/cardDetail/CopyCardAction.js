@@ -6,9 +6,9 @@ import {
   useBoardContext,
   useMainContext,
 } from "../../utils/hookUtils";
-import CreateInput from "../sharedComponents/CreateInput";
-import DropdownButton from "../sharedComponents/DropdownButton";
-import UIContainer from "../sharedComponents/UIContainer";
+import CreateInput from "../shared/CreateInput";
+import DropdownButton from "../shared/DropdownButton";
+import UIContainer from "../shared/UIContainer";
 
 const CopyCardAction = () => {
   const { card, sourceId, id } = useCardDetailContext();
