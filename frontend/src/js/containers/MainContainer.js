@@ -16,7 +16,6 @@ import { emptyFunction } from "../utils/appUtils";
 import { useDimensions, useAuth } from "../utils/hookUtils";
 import NavHeader from "../components/navBar/NavHeader";
 import SearchPage from "../components/search/SearchPage";
-import UIAlert from "../components/shared/UIAlert";
 
 const Container = styled.div`
   padding: 0;
@@ -30,15 +29,8 @@ const Container = styled.div`
   background-size: cover;
 `;
 
-const INITIAL_STATE = {
-  reason: null,
-  message: null,
-  success: false,
-  cb: emptyFunction,
-};
-
 const MainContainer = ({ children, history }) => {
-  const { auth, user, handleLogOut } = useAuth();
+  const { auth, user, handleLogOut, alertUser } = useAuth();
 
   const isHomePage = history.location.pathname === "/";
 
@@ -46,7 +38,7 @@ const MainContainer = ({ children, history }) => {
   const [search, setSearch] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [activeBoard, setActiveBoard] = useState(undefined);
-  const [alert, setAlert] = useState(INITIAL_STATE);
+
   const [showNavBoard, setShowNavBoards] = useState({
     starred: true,
     recent: false,
@@ -63,12 +55,6 @@ const MainContainer = ({ children, history }) => {
   const STARRED_BOARDS =
     PERSONAL_BOARDS &&
     PERSONAL_BOARDS.filter((board) => user.starred.includes(board._id));
-
-  const alertUser = useCallback(
-    (message, success = false, cb = () => {}, reason) =>
-      setAlert({ ...INITIAL_STATE, reason, message, success, cb }),
-    []
-  );
 
   const toggleMenuHandler = (name) => {
     const field = name.toLowerCase();
@@ -149,7 +135,6 @@ const MainContainer = ({ children, history }) => {
 
   return (
     <MainContext.Provider value={context}>
-      <UIAlert message={alert} alertUser={alertUser} />
       <Container data-test-id="app-container" bg={activeBoard?.styleProperties}>
         {auth.authenticated && boards && <NavHeader />}
         {search && <SearchPage />}

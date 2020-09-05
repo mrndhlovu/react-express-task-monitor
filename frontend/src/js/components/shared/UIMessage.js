@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { Message } from "semantic-ui-react";
@@ -11,9 +11,11 @@ const UIMessage = ({
   list,
   dataTestId,
 }) => {
-  setTimeout(() => {
-    handleDismiss && handleDismiss();
-  }, 2000);
+  useEffect(() => {
+    setTimeout(() => {
+      handleDismiss();
+    }, 2000);
+  }, [handleDismiss]);
 
   return (
     <Message

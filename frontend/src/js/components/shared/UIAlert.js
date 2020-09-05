@@ -1,32 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { AlertContext } from "../../utils/contextUtils";
 import UIMessage from "./UIMessage";
 import UIPortal from "./UIPortal";
 
-const UIAlert = ({ message, alertUser }) => {
-  return message.message ? (
+const UIAlert = ({ alert, alertUser }) => {
+  return alert.message ? (
     <UIPortal>
-      <AlertContext.Provider>
-        <UIMessage
-          message={message.reason}
-          handleDismiss={() => alertUser()}
-          list={[message.message]}
-          error={!message.success}
-          success={message.success}
-        />
-      </AlertContext.Provider>
+      <UIMessage
+        alert={alert.reason}
+        handleDismiss={() => alertUser()}
+        list={[alert.message]}
+        error={!alert.success}
+        success={alert.success}
+      />
     </UIPortal>
   ) : null;
 };
 
 UIAlert.defaultProps = {
-  message: {},
+  alert: {},
 };
 
 UIAlert.propTypes = {
-  message: PropTypes.shape({}),
+  alert: PropTypes.shape({}),
   alertUser: PropTypes.func.isRequired,
 };
 
