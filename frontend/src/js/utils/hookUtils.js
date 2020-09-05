@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useContext } from "react";
 
 import {
-  AlertContext,
   UserContext,
   HomepageContext,
   MainContext,
@@ -10,7 +9,6 @@ import {
   BoardListsContext,
 } from "./contextUtils";
 
-export const useAlert = () => useContext(AlertContext);
 export const useAuth = () => useContext(UserContext);
 export const useBoardContext = () => useContext(BoardContext);
 export const useBoardListContext = () => useContext(BoardListsContext);
