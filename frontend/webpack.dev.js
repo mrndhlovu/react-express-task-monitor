@@ -41,7 +41,7 @@ module.exports = merge(shared, {
   ],
   externals: {
     config: JSON.stringify({
-      apiUrl: "http://localhost:5000",
+      apiUrl: "http://localhost:7000",
     }),
   },
   devServer: {
