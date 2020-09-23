@@ -1,0 +1,133 @@
+.board-header-button {
+  color: #fff !important;
+}
+
+.board-menu-sidebar {
+  width: 350px !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.board-menu-sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+.board-creator {
+  font-weight: 800;
+}
+
+.board-creator-details {
+  display: flex;
+  padding-top: 20px;
+  font-size: 17px;
+  align-items: center;
+}
+
+.board-creator-small {
+  display: flex;
+  flex-direction: column;
+  padding-left: 15px;
+}
+
+.board-creator-small > span {
+  font-weight: 800;
+}
+
+.board-delete-button-wrap {
+  position: fixed;
+  bottom: 0;
+  padding-bottom: 5%;
+  width: 95%;
+  background: #fff;
+}
+
+.board-content {
+  display: grid;
+  height: 92vh;
+  left: 0;
+  position: relative;
+  top: 0%;
+  width: 100%;
+  padding-top: 5px;
+}
+
+.boards-container::-webkit-scrollbar {
+  display: none;
+}
+
+.lists-container::-webkit-scrollbar {
+  display: none;
+}
+
+.board-header {
+  align-items: center;
+  display: flex;
+  left: 2px;
+  max-height: 40px;
+  padding-right: 8px;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  padding-top: 3px;
+  background: #0000000d;
+}
+
+.card-template-label {
+  position: absolute;
+  bottom: 3%;
+  left: 3%;
+  opacity: 0.8;
+}
+
+.board-colors-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 0;
+}
+
+.ui-form-input {
+  margin: 0;
+  max-width: 100%;
+  flex: 1 0 auto;
+  outline: 0;
+  text-align: left;
+  line-height: 1;
+  padding: 10px;
+  background: #fff;
+  border: 1px solid #22242626;
+  color: #000000de;
+  border-radius: 3px;
+  -webkit-transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: border-color 0.1s ease, -webkit-box-shadow 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease,
+    -webkit-box-shadow 0.1s ease;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  width: 100%;
+  margin: 0 0 10px 0;
+  letter-spacing: 1px;
+  font-family: Lato, "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+.editable-header-input {
+  padding: 2px 5px;
+  margin-top: 0;
+  font-weight: 800;
+}
+
+.editable-header {
+  cursor: pointer;
+  display: flex;
+  padding: 0 9px;
+  width: max-content;
+}
+
+.editable-header-text {
+  font-weight: 700;
+  color: #000000de;
+}
+
+.user-invite-wrap {
+  width: 300px;
+}

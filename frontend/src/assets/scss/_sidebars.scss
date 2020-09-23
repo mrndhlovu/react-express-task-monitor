@@ -1,0 +1,133 @@
+.sidebar-board-description {
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 10px;
+}
+
+.sidebar-board-description > span {
+  padding-left: 15px;
+  font-weight: 800;
+}
+
+.sidebar-activities::-webkit-scrollbar {
+  display: none;
+  overflow-y: scroll;
+}
+.sidebar {
+  border: none !important;
+}
+
+.ui.sidebar {
+  border-radius: 3px !important;
+}
+
+.chat-sidebar {
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.thread-time,
+.chat-room-counter {
+  color: #000;
+}
+
+.sidebar-activities-wrap {
+  max-height: 45vh;
+  overflow-x: hidden;
+}
+
+.template-sidebar {
+  width: 35%;
+}
+
+.template-small {
+  padding-bottom: 10px;
+}
+
+.bg-options-wrap {
+  display: flex;
+}
+
+.bg-option {
+  background: #e6e6fa;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 96px;
+  margin-bottom: 8px;
+  margin: 5px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #162b4d;
+  font-weight: 800;
+  font-size: 18px;
+}
+
+.bg-option:hover {
+  opacity: 0.8;
+}
+
+.custom-image-link {
+  margin-bottom: 5px;
+}
+
+.ui-textarea.custom-image-link {
+  min-height: 20px !important;
+  height: 39px !important;
+  padding-left: 8px;
+}
+
+.search-image {
+  margin: 3px;
+  cursor: pointer;
+  border-radius: 5px !important;
+}
+
+.search-images-wrap {
+  padding: 5px !important;
+  vertical-align: top;
+  z-index: 1;
+}
+
+.images-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 50%);
+  min-height: 400px;
+  margin-top: 10px;
+  overflow-y: auto;
+  padding: 0;
+  text-align: center;
+}
+
+.image-owner {
+  font-size: 10px;
+  font-weight: 800;
+  color: #162b4d;
+}
+
+.image-owner:hover {
+  color: #162b4d;
+}
+
+.images-source {
+  padding-left: 5px !important;
+}
+
+.images-source:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.image-search-input {
+  margin: 5px 0 0 5px !important;
+}
+
+.pagination-container {
+  padding: 0;
+}
+
+.add-image-container {
+  height: 347px;
+  overflow-y: auto;
+}

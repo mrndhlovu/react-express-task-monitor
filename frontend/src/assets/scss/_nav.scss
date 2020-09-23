@@ -1,0 +1,96 @@
+.nav-container {
+  padding: 3px;
+}
+
+.nav-menu-icon {
+  color: white;
+  font-size: 20px !important;
+  font-weight: 100 !important;
+}
+
+.mobile-navbar {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+  padding: 5px 10px;
+  align-items: center;
+  height: 40px;
+}
+
+.nav-button-text {
+  color: #fff !important;
+}
+
+.nav-button-icon {
+  font-size: 14px !important;
+  color: #fff;
+}
+
+.nav-board-image {
+  border-radius: 2px;
+}
+
+i.big.icon {
+  font-size: 32px !important;
+  margin-left: -12px;
+}
+
+.notifications {
+  width: 300px;
+}
+
+.single-notification {
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 2px;
+  font-weight: 800;
+  color: #172b4d;
+}
+
+.single-notification:hover {
+  background: #dce3eb;
+}
+
+.single-notification,
+.notification-description {
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+.note-read {
+  text-decoration: line-through;
+}
+
+.notifications-count {
+  color: #000 !important;
+  font-size: 10px;
+  font-weight: 800;
+  position: absolute;
+  left: -5px !important;
+  top: -5px;
+  z-index: 100000;
+  background: #fff;
+  padding: 2px 5px;
+  border-radius: 50px;
+}
+
+.nav-boards-list {
+  width: 280px;
+  padding: 5px;
+}
+
+.navBoardsButton {
+  height: 100%;
+  padding: 12px !important;
+}
+
+.navButton {
+  background-color: #ffffff3d !important;
+}
+
+.uiTextWhite {
+  color: white;
+}

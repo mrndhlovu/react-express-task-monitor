@@ -1,0 +1,31 @@
+.logo {
+  font-family: "Poppins";
+  font-size: 20px;
+  color: white;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+}
+
+.nav-container > i {
+  color: white;
+}
+
+.logo > h2 {
+  cursor: pointer;
+  margin: 0;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #0079bf !important;
+  padding: 10px 0 !important;
+}
+
+.logo-container > span {
+  font-size: 20px;
+}

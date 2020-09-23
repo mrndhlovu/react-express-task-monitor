@@ -1,0 +1,35 @@
+.icon-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.icon-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.chat-icon {
+  position: absolute;
+  bottom: 3%;
+  right: 1%;
+  position: fixed;
+  z-index: 100;
+  color: #fff;
+}
+.uiStarYellow,
+.yellow-star {
+  color: yellow !important;
+}
+
+.uiStarWhite,
+.white-star {
+  color: #fff !important;
+}
+
+.white-star,
+.yellow-star {
+  position: absolute !important;
+  bottom: 12% !important;
+  right: 3%;
+  width: 20px;
+  transition-duration: 300ms;
+  transition-timing-function: ease-in-out;
+}
