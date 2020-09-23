@@ -14,7 +14,7 @@ const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID;
 const SPOTIFY_SECRET_ID = process.env.SPOTIFY_SECRET_ID;
 const CONNECTION_URI = process.env.MONGODB_URI;
 const LOCAL_MONGO_DB = process.env.LOCAL_MONGO_DB;
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 7000;
 const S3_BUCKET_AWS = process.env.S3_BUCKET_AWS;
 const IMAGES_EP = `https://api.unsplash.com/search/photos?client_id=${process.env.REACT_APP_UNSPLASH_ACCESS_KEY}`;
 const allowedFileTypes = [
